@@ -8,13 +8,13 @@
 ###目录说明
 
     ./comms                      公共函数，第三方插件(webdriver,allure)
-    ./config/settings.py         配置文件，包含环境配置
+    ./config/settings.py         配置文件，项目启动必须配置
     ./projects                   测试用例，子目录对应不同project
     ./testData                   测试数据，目录结构与projects对应
     ./result                     运行后的结果文件
     ./report                     HTML格式的测试报告，allure生成
     ./requirements.txt           第三方依赖库
-    ./main.py                    启动文件，启动方式：python  main.py ,可选填参数-p -t -s，-p: 报告路径，-t: 用例标签，-s: 模块名称
+    ./main.py                    启动文件，启动方式：python  main.py
                      
 
 
@@ -33,7 +33,7 @@
 
     项目结构
 
-            1.多个项目通过路径区分：projects/{projectname}/test_*.py
+            1.多个项目通过路径区分：projects/{moduletname}/test_*.py
             2.测试数据目录结构与case路径对应：testData/{projectname}/file
             3.所有测试数据文件建议采用json文件
  

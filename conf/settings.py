@@ -6,11 +6,12 @@
 """
 
 class Project:
-    name='ivy'
-    tag=''
-    path='/'
+    name='ivy'          #与下面setting项目key对应
+    tag=''              #对应comms.marker
+    path='/'            #对testData目录接口对应
 
 
+#所有项目配置
 setting={
     "ivy":{
         "db_host":"10.32.233.164",
