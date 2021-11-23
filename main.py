@@ -21,8 +21,8 @@ logging.info('''测试前准备，清理历史数据............................
 #创建result目录
 
 if  os.path.exists('./result/') :
-    shutil.rmtree('./result/')   #清空历史数据
-    os.mkdir('./result/')
+    shutil.rmtree('./result/')   #清空历史数据,系统自动创建resulthe report路径
+
 else:
     print('一切ok')
 
@@ -47,7 +47,12 @@ else:
 
 
 #报告生成
-os.system("allure  generate  ./result/  -o  ./report/%s  --clean" % time.strftime('%Y%m%d%H%M%S',time.localtime()))
+if os.listdir('./result') != []:
+    os.system("allure  generate  ./result/  -o  ./report/%s  --clean" % time.strftime('%Y%m%d%H%M%S',time.localtime()))
+
+else:
+
+    print('无结果数据，无法生成报告')
 
 
 
