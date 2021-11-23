@@ -18,13 +18,12 @@ logging.basicConfig(level=logging.DEBUG)
 logging.info('''测试前准备，清理历史数据..............................................''')
 
 
-#创建result目录
+# 创建result目录
 
-if  os.path.exists('./result/') :
-    shutil.rmtree('./result/')   #清空历史数据
-    os.mkdir('./result/')
+if  os.path.exists('./result/'):
+    shutil.rmtree('./result/')   #清空历史数据，系统会自动创建result和report目录
 else:
-    print('一切ok')
+    print('路径已清空')
 
 
 logging.info('Testing  Start !!!!!!!!!!!!!!!!!!!!!!!!')
@@ -47,8 +46,12 @@ else:
 
 
 #报告生成
+if os.listdir('./result') !=[]:
 
     os.system("allure  generate  ./result/  -o  ./report/%s  --clean" % time.strftime('%Y%m%d%H%M%S',time.localtime()))
+
+else:
+    print('没有结果数据，无法生成报告')
 
 
 
