@@ -23,12 +23,12 @@ from openpyxl.utils import get_column_letter
 from openpyxl.styles import Border, Side, Font
 
 
-from comms.DataFormatAPI import *
-from comms.DlmsAPI import *
-from comms.UsefulAPI import *
-from comms.KFLog import *
-from comms.GuiDialog import *
-from comms.PushAPI import *
+from common.DataFormatAPI import *
+from common.DlmsAPI import *
+from common.UsefulAPI import *
+from common.KFLog import *
+from common.GuiDialog import *
+from common.PushAPI import *
 
 from libs.DlmsLib import *
 from libs.CmcsLib import *

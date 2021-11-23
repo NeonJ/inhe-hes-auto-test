@@ -8,7 +8,7 @@ import time
 import shutil
 
 
-from comms import *
+from common import *
 from libs import *
 from dlms import *
 from api import *

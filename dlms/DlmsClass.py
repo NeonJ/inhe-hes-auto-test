@@ -2,7 +2,7 @@
 
 
 from .XmlPdu import *
-from comms import *
+from common import *
 from libs.Constants import *
 
 

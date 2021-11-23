@@ -7,7 +7,7 @@
 
 import  allure,pytest
 import  cx_Oracle  as cx
-from conf.settings import *
+from config.settings import *
 
 @allure.step("建立数据库连接")
 @pytest.fixture(scope='session',autouse = True )

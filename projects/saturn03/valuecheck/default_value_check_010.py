@@ -50,7 +50,7 @@ def default_value_check_010():
         # return
 
         # read excel config
-        # file_path = os.path.abspath(f"conf/DefaultValue/{Singleton().Project}/user.yaml")
+        # file_path = os.path.abspath(f"config/DefaultValue/{Singleton().Project}/user.yaml")
         # user_config = read_config(file_path)
 
         # read target data from excel

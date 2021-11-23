@@ -36,7 +36,7 @@ def meter_smoke_by_hes():
         # return
 
         # read excel config
-        # file_path = os.path.abspath(f"conf/DefaultValue/{Singleton().Project}/user.yaml")
+        # file_path = os.path.abspath(f"config/DefaultValue/{Singleton().Project}/user.yaml")
 
         # read target data from excel
 

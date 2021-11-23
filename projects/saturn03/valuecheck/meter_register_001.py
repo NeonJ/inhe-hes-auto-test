@@ -8,7 +8,7 @@ import json
 import requests
 import socket
 from binascii import hexlify, unhexlify
-# from comms import *
+# from common import *
 import yaml
 from convertdate import persian
 from .comm import *
@@ -27,7 +27,7 @@ def meter_register_001():
     continue_last_check = False
 
     start_time = time.time()
-    file_path = os.path.abspath("conf/DefaultValue/{}/user.yaml".format(Singleton().Project))
+    file_path = os.path.abspath("config/DefaultValue/{}/user.yaml".format(Singleton().Project))
     user_config = DB.read_config(file_path)
     database = DB(source=user_config['Database']['source'], host=user_config['Database']['host'],
                   database=user_config['Database']['database'], username=user_config['Database']['username'],

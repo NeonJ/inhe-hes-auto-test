@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 
 from lxml import etree
-from comms import *
+from common import *
 
 
 class Service(object):

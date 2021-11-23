@@ -9,7 +9,7 @@
 import logging,os,shutil
 import time
 
-from conf.settings import *
+from config.settings import *
 
 logging.basicConfig(level=logging.DEBUG)
 
