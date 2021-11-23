@@ -11,7 +11,7 @@ from common.DB import *
 
 @pytest.fixture(scope="function")
 def get_database(project='saturn03'):
-    file_path = os.path.join(os.path.abspath('../../../'), "config\\{}.yaml".format(project))
+    file_path = os.path.join(os.path.abspath('.'), "config\\{}.yaml".format(project))
     print(file_path)
     user_config = DB.read_config(file_path)
     database = DB(source=user_config['Database']['source'], host=user_config['Database']['host'],
@@ -23,7 +23,7 @@ def get_database(project='saturn03'):
 
 def get_db_register_get(project='saturn03'):
     register_list = []
-    file_path = os.path.join(os.path.abspath('../../../'), "config\\{}.yaml".format(project))
+    file_path = os.path.join(os.path.abspath('.'), "config\\{}.yaml".format(project))
     user_config = DB.read_config(file_path)
     database = DB(source=user_config['Database']['source'], host=user_config['Database']['host'],
                   database=user_config['Database']['database'], username=user_config['Database']['username'],
@@ -45,7 +45,7 @@ def get_db_register_get(project='saturn03'):
 
 def get_db_register_set(project='saturn03'):
     register_list = []
-    file_path = os.path.join(os.path.abspath('../../../'), "config\\{}.yaml".format(project))
+    file_path = os.path.join(os.path.abspath('.'), "config\\{}.yaml".format(project))
     user_config = DB.read_config(file_path)
     database = DB(source=user_config['Database']['source'], host=user_config['Database']['host'],
                   database=user_config['Database']['database'], username=user_config['Database']['username'],
@@ -68,7 +68,7 @@ def get_db_register_set(project='saturn03'):
 @pytest.fixture(scope="function")
 def get_db_register_action(project='saturn03'):
     register_list = []
-    file_path = os.path.join(os.path.abspath('../../../'), "config\\{}.yaml".format(project))
+    file_path = os.path.join(os.path.abspath('.'), "config\\{}.yaml".format(project))
     user_config = DB.read_config(file_path)
     database = DB(source=user_config['Database']['source'], host=user_config['Database']['host'],
                   database=user_config['Database']['database'], username=user_config['Database']['username'],
@@ -110,7 +110,7 @@ def register_set(request):
 
 @pytest.fixture(scope="function")
 def get_result_table(project='saturn03'):
-    file_path = os.path.join(os.path.abspath('../../../'), "config\\{}.yaml".format(project))
+    file_path = os.path.join(os.path.abspath('.'), "config\\{}.yaml".format(project))
     user_config = DB.read_config(file_path)
     database = DB(source=user_config['Database']['source'], host=user_config['Database']['host'],
                   database=user_config['Database']['database'], username=user_config['Database']['username'],
@@ -123,7 +123,7 @@ def get_result_table(project='saturn03'):
 
 @pytest.fixture(scope="function")
 def get_project_config(project='saturn03'):
-    file_path = os.path.join(os.path.abspath('../../../'), "config\\{}.yaml".format(project))
+    file_path = os.path.join(os.path.abspath('.'), "config\\{}.yaml".format(project))
     user_config = DB.read_config(file_path)
     return user_config
 

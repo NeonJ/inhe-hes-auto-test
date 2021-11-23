@@ -6,8 +6,8 @@
 """
 
 class Project:
-    name='ivy'          #与下面setting项目key对应
-    tag=''              #对应comms.marker
+    name='saturn03'          #与下面setting项目key对应
+    tag='hesTest'              #对应comms.marker
     path='/'            #对testData目录接口对应
 
 
@@ -21,7 +21,7 @@ setting={
         "db_service":'ami',
         "meter":312121
     },
-    "plum":{
+    "saturn03":{
         "db_host":"10.32.233.164",
         "db_user":"ami",
         "db_port":1621,

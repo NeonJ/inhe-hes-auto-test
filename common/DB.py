@@ -198,23 +198,23 @@ class DB:
             cur.close()
             con.close()
 
-if __name__ == '__main__':
-    file_path = os.path.abspath(f"conf/DefaultValue/tulip/user.yaml")
-    user_config = DB.read_config(file_path)
-    db_queue = DB(source=user_config['Database']['source'], host=user_config['Database']['host'],
-                  database=user_config['Database']['database'], username=user_config['Database']['username'],
-                  passwd=user_config['Database']['passwd'], port=user_config['Database']['port'],
-                  sid=user_config['Database']['sid']).fetchall_dict(
-        "select register_id,class_id,attribute_id,register_desc,is_method,data_type,rw from H_PTL_REGISTER where PTL_TYPE = (select PTL_TYPE from c_ar_model where MODEL_CODE = (select model_code from c_ar_meter where meter_no='1KFM5600000003'))")
-    print(db_queue)
-
-    DB(source=user_config['Database']['source'], host=user_config['Database']['host'],
-       database=user_config['Database']['database'], username=user_config['Database']['username'],
-       passwd=user_config['Database']['passwd'], port=user_config['Database']['port'],
-       sid=user_config['Database']['sid']).save_result('set_result', {
-        "dataItemType": 16,
-        "dataItemValue": "-60"
-    }, '0.0.1.0.0.255830')
+# if __name__ == '__main__':
+#     file_path = os.path.abspath(f"conf/DefaultValue/tulip/user.yaml")
+#     user_config = DB.read_config(file_path)
+#     db_queue = DB(source=user_config['Database']['source'], host=user_config['Database']['host'],
+#                   database=user_config['Database']['database'], username=user_config['Database']['username'],
+#                   passwd=user_config['Database']['passwd'], port=user_config['Database']['port'],
+#                   sid=user_config['Database']['sid']).fetchall_dict(
+#         "select register_id,class_id,attribute_id,register_desc,is_method,data_type,rw from H_PTL_REGISTER where PTL_TYPE = (select PTL_TYPE from c_ar_model where MODEL_CODE = (select model_code from c_ar_meter where meter_no='1KFM5600000003'))")
+#     print(db_queue)
+#
+#     DB(source=user_config['Database']['source'], host=user_config['Database']['host'],
+#        database=user_config['Database']['database'], username=user_config['Database']['username'],
+#        passwd=user_config['Database']['passwd'], port=user_config['Database']['port'],
+#        sid=user_config['Database']['sid']).save_result('set_result', {
+#         "dataItemType": 16,
+#         "dataItemValue": "-60"
+#     }, '0.0.1.0.0.255830')
 
     # class MyOracle:
     #     SHOW_SQL = True

@@ -17,7 +17,7 @@ from common.HESAPI import *
 from common.marker import *
 from common.KFLog import *
 
-
+@hesTest
 class Test_HES_Register_Check:
     """
     根据转化后的Register进行OBIS Check,并将结果输出到数据库结果表
