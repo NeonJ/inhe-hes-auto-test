@@ -47,8 +47,7 @@ else:
 
 
 #报告生成
-
-    os.system("allure  generate  ./result/  -o  ./report/%s  --clean" % time.strftime('%Y%m%d%H%M%S',time.localtime()))
+os.system("allure  generate  ./result/  -o  ./report/%s  --clean" % time.strftime('%Y%m%d%H%M%S',time.localtime()))
 
 
 
