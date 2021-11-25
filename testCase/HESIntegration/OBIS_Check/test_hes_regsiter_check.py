@@ -5,13 +5,6 @@
 # version    ：python 3.7
 """
 
-import re
-import os
-import time
-import json
-import requests
-from common import *
-
 import pytest, allure, time, requests
 from common.HESAPI import *
 from common.marker import *
