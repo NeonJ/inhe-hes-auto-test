@@ -5,6 +5,12 @@ import os
 import json
 import requests
 import yaml
+path=os.path.join(os.path.dirname(__file__),"../config/ivy.yaml")
+
+f=open(path,encoding='utf-8').read()
+
+file=yaml.load(f,Loader = yaml.FullLoader)
+
 
 class HESAPI(object):
 
@@ -364,3 +370,5 @@ class ResponseMessage(object):
         self.registerId = argv['registerId']
         self.featurePoint = argv['featurePoint']
         self.parameter = argv['parameter']
+
+

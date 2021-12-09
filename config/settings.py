@@ -6,9 +6,9 @@
 """
 
 class Project:
-    name='saturn03'          #与下面setting项目key对应
+    name='ivy'          #与下面setting项目key对应
     tag='hesTest'              #对应comms.marker
-    path='/'            #对testData目录接口对应
+    path='/'            #对testCase目录接口对应
 
 
 #所有项目配置
@@ -19,7 +19,9 @@ setting={
         "db_port":1621,
         "db_pwd":'ami',
         "db_service":'ami',
-        "meter":312121
+        "meter":312121,
+        "HESAPI":'http://10.32.233.31:30073'
+
     },
     "saturn03":{
         "db_host":"10.32.233.164",

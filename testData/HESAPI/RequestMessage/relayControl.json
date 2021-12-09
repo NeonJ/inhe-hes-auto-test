@@ -1,0 +1,115 @@
+{
+  "test_RELAY_CONTROL_RELAYON":{
+    "request": {
+      "header":{
+          "correlationId":"68e19310-1253-4a6c-bd9c-e60266e52429",
+          "messageId":"05a98597-fa9c-49bd-99ca-69d30d30dace",
+          "createTime":"20200910191946",
+          "serviceType":"RELAY_CONTROL",
+          "businessType":"RELAY_CONTROL",
+          "source":"MDM",
+          "messageType":"REQUEST",
+          "asyncReplyFlag":false
+      },
+      "payload":[
+          {
+              "deviceNo":"M202009040003",
+              "deviceType":"METER",
+              "transactionId":"5ebbd125-e1d0-4a90-b0af-6d13d22f78e6",
+              "data":[
+                  {
+                    "featurePoint": "fp.relayControl.relayOn.standard"
+                  }
+              ]
+          }
+      ]
+
+    },
+
+    "response": {
+        "header": {
+            "correlationId": "68e19310-1253-4a6c-bd9c-e60266e52429",
+            "serviceType": "RELAY_CONTROL",
+            "businessType": "RELAY_CONTROL",
+            "source": "HES",
+            "messageType": "RESPONSE"
+          },
+          "payload": [
+            {
+              "code": 200,
+              "desc": "OK",
+              "deviceNo": "M202009040003",
+              "deviceType": "METER",
+              "data": [
+                {
+                  "controlState": "CONNECTED"
+                }
+              ]
+            }
+          ],
+          "reply": {
+            "replyCode": 200,
+            "replyDesc": "OK"
+          }
+    }
+
+  },
+
+
+  "test_RELAY_CONTROL_RELAYOFF":{
+    "request": {
+      "header":{
+          "correlationId":"68e19310-1253-4a6c-bd9c-e60266e52429",
+          "messageId":"05a98597-fa9c-49bd-99ca-69d30d30dace",
+          "createTime":"20200910191946",
+          "serviceType":"RELAY_CONTROL",
+          "businessType":"RELAY_CONTROL",
+          "source":"MDM",
+          "messageType":"REQUEST",
+          "asyncReplyFlag":false
+      },
+      "payload":[
+          {
+              "deviceNo":"M202009040003",
+              "deviceType":"METER",
+              "transactionId":"5ebbd125-e1d0-4a90-b0af-6d13d22f78e6",
+              "data":[
+                  {
+                    "featurePoint": "fp.relayControl.relayOff.standard"
+                  }
+              ]
+          }
+      ]
+
+    },
+
+    "response": {
+        "header": {
+            "correlationId": "68e19310-1253-4a6c-bd9c-e60266e52429",
+            "serviceType": "RELAY_CONTROL",
+            "businessType": "RELAY_CONTROL",
+            "source": "HES",
+            "messageType": "RESPONSE"
+          },
+          "payload": [
+            {
+              "code": 200,
+              "desc": "OK",
+              "deviceNo": "M202009040003",
+              "deviceType": "METER",
+              "data": [
+                {
+                  "controlState": "DISCONNECTED"
+                }
+              ]
+            }
+          ],
+          "reply": {
+            "replyCode": 200,
+            "replyDesc": "OK"
+          }
+    }
+
+  }
+
+}
