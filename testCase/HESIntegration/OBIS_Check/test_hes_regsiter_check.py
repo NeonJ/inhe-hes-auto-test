@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 """
 # File       : test_hes_regsiter_check.py
 # Time       ：2021/5/12 14:18
@@ -8,37 +9,31 @@
 import pytest, allure, time, requests
 from common.HESAPI import *
 from common.marker import *
-from common.KFLog import *
+from config.settings import *
 
-@hesTest
+
 class Test_HES_Register_Check:
     """
     根据转化后的Register进行OBIS Check,并将结果输出到数据库结果表
     """
 
-    @pytest.mark.skip
-    def test_register_get(self, register_get, get_project_config, get_database, get_result_table):
+    # @pytest.mark.skip
+    @hesTest
+    def test_register_get(self, register_get, get_database, get_result_table, caseData):
         DeviceBusy = 1
         print("Register_ID:{}".format(register_get))
-        RequestQueue = RequestMessage(correlationId=get_project_config['Request']['correlationId'],
-                                      messageId=get_project_config['Request']['messageId'],
-                                      source=get_project_config['Request']['source'],
-                                      serviceType='GET_COMMON',
-                                      businessType='GET_COMMON',
-                                      messageType=get_project_config['Request']['messageType'],
-                                      asyncReplyFlag=get_project_config['Request']['asyncReplyFlag'],
-                                      deviceNo=get_project_config['Request']['deviceNo'],
-                                      deviceType=get_project_config['Request']['deviceType'],
-                                      registerId=register_get,
-                                      transactionId=get_project_config['Request']['transactionId'],
-                                      jobUniqueFlag=get_project_config['Request']['jobUniqueFlag'],
-                                      parameter=get_project_config['Request']['parameter'],
-                                      jobType=None,
-                                      accessSelector=get_project_config['Request']['accessSelector']).request_json()
+        data = caseData('testData/HESAPI/OBISCheck/register_get.json')['register_get']
+        requestData = data['request']
+        expectResJson = data['response']
+        print(caseData)
+        # response = requests.post(url=testUrl,json=requestData)
         while DeviceBusy == 1:
-            response = requests.post(url=HESAPI(Address=get_project_config['HESAPI']['url']).requestAddress(),
+            # response = requests.post(url=HESAPI(Address=get_project_config['HESAPI']['url']).requestAddress(),
+            #                          headers={"Content-Type": "application/json"},
+            #                          data=json.dumps(RequestQueue, indent=4), timeout=40)
+            response = requests.post(url=HESAPI(Address=setting[Project.name]['api_url']).requestAddress(),
                                      headers={"Content-Type": "application/json"},
-                                     data=json.dumps(RequestQueue, indent=4), timeout=40)
+                                     data=requestData, timeout=40)
             time.sleep(1)
             if response.status_code == 504:
                 print('504 Error and try again')
@@ -60,7 +55,7 @@ class Test_HES_Register_Check:
                 get_database.save_result(get_result_table, 'get_value', data.get('resultValue'), register_get)
                 assert data.get('resultDesc') == 'OK'
 
-    # @pytest.mark.skip
+    @pytest.mark.skip
     def test_register_set(self, register_set, get_project_config, get_database, get_result_table):
         DeviceBusy = 1
         print("Register_ID:{}".format(register_set))
@@ -86,7 +81,7 @@ class Test_HES_Register_Check:
         #     for data in payload.get('data'):
         #         print('Read Result: ', data.get('resultDesc'))
         while DeviceBusy == 1:
-            response = requests.post(url=HESAPI(Address=get_project_config['HESAPI']['url']).requestAddress(),
+            response = requests.post(url=HESAPI(Address=setting[Project.name]['api_url']).requestAddress(),
                                      headers={"Content-Type": "application/json"},
                                      data=json.dumps(RequestQueue), timeout=40)
             time.sleep(1)
@@ -129,7 +124,7 @@ class Test_HES_Register_Check:
                                       accessSelector=get_project_config['Request']['accessSelector']).request_json()
         DeviceBusy = 1
         while DeviceBusy == 1:
-            response = requests.post(url=HESAPI(Address=get_project_config['HESAPI']['url']).requestAddress(),
+            response = requests.post(url=HESAPI(Address=setting[Project.name]['api_url']).requestAddress(),
                                      headers={"Content-Type": "application/json"},
                                      data=json.dumps(RequestQueue), timeout=40)
             time.sleep(1)

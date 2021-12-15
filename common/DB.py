@@ -19,11 +19,11 @@ import datetime
 #     print(row)
 # conn.close()
 
-try:
-    cx_Oracle.init_oracle_client(lib_dir=r"E:\Tool\instantclient-basic-nt-19.12.0.0.0dbru\instantclient_19_12")
-except Exception as err:
-    print("Whoops! cx_Oracle 32bit failed")
-    print(err)
+# try:
+#     cx_Oracle.init_oracle_client(lib_dir=r"E:\Tool\instantclient-basic-nt-19.12.0.0.0dbru\instantclient_19_12")
+# except Exception as err:
+#     print("Whoops! cx_Oracle 32bit failed")
+#     print(err)
 
 class DB:
 
@@ -119,7 +119,15 @@ class DB:
             cur = con.cursor()
             cur.execute(sql)
             fc = cur.fetchone()
-            return fc
+            cols = [d[0] for d in cur.description]
+            print(cols)
+            print(fc)
+            fc1 = []
+            for row in fc:
+                b = dict(zip(cols, row))
+                fc1.append(b)
+                print(fc1)
+            return fc1
         except Exception as e:
             print("get error: %s" % e)
         finally:
@@ -154,7 +162,7 @@ class DB:
             con = self.connect()
             cur = con.cursor()
             cur.execute(
-                f"create table {table_name} as select * from h_ptl_register where device_type=1 and ptl_type =(select PTL_TYPE from c_ar_model where MODEL_CODE = (select model_code from c_ar_meter where meter_no='{meter_no}'))")
+                f"create table {table_name} as select * from h_ptl_register_bak where device_type=1 and ptl_type =(select PTL_TYPE from c_ar_model where MODEL_CODE = (select model_code from c_ar_meter where meter_no='{meter_no}'))")
             cur.execute(f"alter table {table_name} add get_result varchar(128)")
             cur.execute(f"alter table {table_name} add get_value varchar(1280)")
             cur.execute(f"alter table {table_name} add set_result varchar(128)")

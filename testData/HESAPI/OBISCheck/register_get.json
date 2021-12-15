@@ -1,0 +1,185 @@
+{
+  "device_info": {
+    "meter_no": ""
+  },
+  "register_get": {
+    "request": {
+      "header": {
+        "correlationId": "68e19310-1253-4a6c-bd9c-e60266e52429",
+        "messageId": "05a98597-fa9c-49bd-99ca-69d30d30dace",
+        "createTime": "20200910191946",
+        "serviceType": "GET_COMMON",
+        "businessType": "GET_COMMON",
+        "source": "MDM",
+        "messageType": "REQUEST",
+        "asyncReplyFlag": false
+      },
+      "payload": [
+        {
+          "deviceNo": "M202009040003",
+          "deviceType": "METER",
+          "transactionId": "5ebbd125-e1d0-4a90-b0af-6d13d22f78e6",
+          "data": [
+            {
+              "registerId": "9300"
+            }
+          ]
+        }
+      ]
+    },
+    "response": {
+      "header": {
+        "serviceType": "GET_COMMON",
+        "businessType": "GET_COMMON",
+        "source": "HES",
+        "createTime": "20200910191946",
+        "messageType": "RESPONSE"
+      },
+      "payload": [
+        {
+          "code": 200,
+          "desc": "OK",
+          "deviceNo": "M202009040003",
+          "deviceType": "METER",
+          "data": [
+            {
+              "registerId": "9300",
+              "featurePoint": null,
+              "resultCode": 200,
+              "resultDesc": "OK",
+              "resultValue": {
+                "scalar": "0",
+                "unit": null,
+                "dataItemType": 9
+              }
+            }
+          ]
+        }
+      ],
+      "reply": {
+        "replyCode": 200,
+        "replyDesc": "OK"
+      }
+    }
+  },
+  "register_set": {
+    "request": {
+      "header": {
+        "correlationId": "68e19310-1253-4a6c-bd9c-e60266e52429",
+        "messageId": "05a98597-fa9c-49bd-99ca-69d30d30dace",
+        "createTime": "20200910191946",
+        "serviceType": "GET_COMMON",
+        "businessType": "GET_COMMON",
+        "source": "MDM",
+        "messageType": "REQUEST",
+        "asyncReplyFlag": false
+      },
+      "payload": [
+        {
+          "deviceNo": "M202009040003",
+          "deviceType": "METER",
+          "transactionId": "5ebbd125-e1d0-4a90-b0af-6d13d22f78e6",
+          "data": [
+            {
+              "registerId": "9300"
+            }
+          ]
+        }
+      ]
+    },
+    "response": {
+      "header": {
+        "serviceType": "GET_COMMON",
+        "businessType": "GET_COMMON",
+        "source": "HES",
+        "createTime": "20200910191946",
+        "messageType": "RESPONSE"
+      },
+      "payload": [
+        {
+          "code": 200,
+          "desc": "OK",
+          "deviceNo": "M202009040003",
+          "deviceType": "METER",
+          "data": [
+            {
+              "registerId": "9300",
+              "featurePoint": null,
+              "resultCode": 200,
+              "resultDesc": "OK",
+              "resultValue": {
+                "scalar": "0",
+                "unit": null,
+                "dataItemType": 9
+              }
+            }
+          ]
+        }
+      ],
+      "reply": {
+        "replyCode": 200,
+        "replyDesc": "OK"
+      }
+    }
+  },
+  "register_action": {
+    "request": {
+      "header": {
+        "correlationId": "68e19310-1253-4a6c-bd9c-e60266e52429",
+        "messageId": "05a98597-fa9c-49bd-99ca-69d30d30dace",
+        "createTime": "20200910191946",
+        "serviceType": "GET_COMMON",
+        "businessType": "GET_COMMON",
+        "source": "MDM",
+        "messageType": "REQUEST",
+        "asyncReplyFlag": false
+      },
+      "payload": [
+        {
+          "deviceNo": "M202009040003",
+          "deviceType": "METER",
+          "transactionId": "5ebbd125-e1d0-4a90-b0af-6d13d22f78e6",
+          "data": [
+            {
+              "registerId": "9300"
+            }
+          ]
+        }
+      ]
+    },
+    "response": {
+      "header": {
+        "serviceType": "GET_COMMON",
+        "businessType": "GET_COMMON",
+        "source": "HES",
+        "createTime": "20200910191946",
+        "messageType": "RESPONSE"
+      },
+      "payload": [
+        {
+          "code": 200,
+          "desc": "OK",
+          "deviceNo": "M202009040003",
+          "deviceType": "METER",
+          "data": [
+            {
+              "registerId": "9300",
+              "featurePoint": null,
+              "resultCode": 200,
+              "resultDesc": "OK",
+              "resultValue": {
+                "scalar": "0",
+                "unit": null,
+                "dataItemType": 9
+              }
+            }
+          ]
+        }
+      ],
+      "reply": {
+        "replyCode": 200,
+        "replyDesc": "OK"
+      }
+    }
+  }
+}
