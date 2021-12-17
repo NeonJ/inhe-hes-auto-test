@@ -1,7 +1,7 @@
 """
 # File       : configs.py
-# Time       : 2021/10/19 9:03
-# Author     : 黄大彬
+# Time       : 2021/12/16 18:03
+# Author     : 曹剑南
 # version    : python 3.7
 """
 
@@ -44,7 +44,8 @@ class Project:
     name = 'empower'  # 与下面setting项目key对应
     tag = 'hesTest'  # 对应comms.marker
     path = '/'  # 对testData目录接口对应
-    continue_last_check = True #是否断点续测OBIS
+    continue_last_check = False  # 是否断点续测OBIS
+
     obis_sql1 = "select register_id, class_id, attribute_id, register_desc, is_method, data_type, rw from "
     obis_sql2 = " where PTL_TYPE = (select PTL_TYPE from c_ar_model where MODEL_CODE = (select model_code from c_ar_meter where meter_no = '{}'))".format(
         setting[name]['meter_no'])

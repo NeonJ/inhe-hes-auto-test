@@ -1,4 +1,9 @@
-# -*- coding: UTF-8 -*-
+"""
+# File       : configs.py
+# Time       : 2021/12/16 18:03
+# Author     : 曹剑南
+# version    : python 3.7
+"""
 import psycopg2
 import psycopg2.extras
 import cx_Oracle
@@ -157,7 +162,7 @@ class DB:
 
     def initial_result(self, meter_no):
         """初始化OBIS Check结果表"""
-        table_name = 'h_ptl_register_check_' + datetime.datetime.now().strftime('%Y%m%d%H%M')
+        table_name = 'h_ptl_register_check_' + datetime.datetime.now().strftime('%Y%m%d')
         try:
             con = self.connect()
             cur = con.cursor()

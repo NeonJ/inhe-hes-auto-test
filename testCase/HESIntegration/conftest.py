@@ -1,4 +1,3 @@
-# -*- coding: UTF-8 -*-
 """
 # File       : conftest.py
 # Time       ：2021/5/12 14:18
@@ -9,18 +8,32 @@
 import requests, pytest, allure, os
 from common.DB import *
 from config.settings import *
-import sys
-import io
-sys.stdout = io.TextIOWrapper(sys.stdout.buffer,encoding='gb18030')
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture()
 def get_database(project):
-    database = DB(source=setting[Project.name]['db_source'], host=setting[Project.name]['db_host'],
-                  database=setting[Project.name]['db_database'], username=setting[Project.name]['db_user'],
-                  passwd=setting[Project.name]['db_pwd'], port=setting[Project.name]['db_port'],
-                  sid=setting[Project.name]['db_service'])
+    database = DB(source=setting[project]['db_source'], host=setting[project]['db_host'],
+                  database=setting[project]['db_database'], username=setting[project]['db_user'],
+                  passwd=setting[project]['db_pwd'], port=setting[project]['db_port'],
+                  sid=setting[project]['db_service'])
     return database
+
+
+def result_table(project):
+    database = DB(source=setting[project]['db_source'], host=setting[project]['db_host'],
+                  database=setting[project]['db_database'], username=setting[project]['db_user'],
+                  passwd=setting[project]['db_pwd'], port=setting[project]['db_port'],
+                  sid=setting[project]['db_service'])
+    if Project.continue_last_check:
+        table_name = database.orcl_find_last_result()[0]
+    else:
+        try:
+            table_name = database.initial_result(meter_no=setting[project]['meter_no'])
+        except:
+            print("The OBIS inspection result table already exists on the day: ", database.orcl_find_last_result()[0])
+    return table_name
+
+result_table1 = result_table(Project.name)
 
 
 def get_db_register_get(project):
@@ -29,10 +42,7 @@ def get_db_register_get(project):
                   database=setting[project]['db_database'], username=setting[project]['db_user'],
                   passwd=setting[project]['db_pwd'], port=setting[project]['db_port'],
                   sid=setting[project]['db_service'])
-    if Project.continue_last_check:
-        table_name = database.orcl_find_last_result()[0]
-    else:
-        table_name = database.initial_result(meter_no=setting[project]['meter_no'])
+    table_name = database.orcl_find_last_result()[0]
     print('Result Table Name: ', table_name)
     sql = Project.obis_sql1 +'{}'.format(table_name) + Project.obis_sql2
     db_queue = database.orcl_fetchall_dict(sql)
@@ -48,75 +58,61 @@ def get_db_register_set(project):
                   database=setting[project]['db_database'], username=setting[project]['db_user'],
                   passwd=setting[project]['db_pwd'], port=setting[project]['db_port'],
                   sid=setting[project]['db_service'])
-    if Project.continue_last_check:
-        table_name = database.orcl_find_last_result()[0]
-    else:
-        table_name = database.initial_result(meter_no=setting[project]['meter_no'])
+    table_name = database.orcl_find_last_result()[0]
     print('Result Table Name: ', table_name)
     sql = Project.obis_sql1 +'{}'.format(table_name) + Project.obis_sql2
     db_queue = database.orcl_fetchall_dict(sql)
     for queue in db_queue:
-        if queue.get('rw') == 'rw':
-            register_list.append(queue.get('register_id'))
+        if queue.get('RW') == 'rw':
+            register_list.append(queue.get('REGISTER_ID'))
     return register_list
 
 
-@pytest.fixture(scope="function")
 def get_db_register_action(project):
     register_list = []
     database = DB(source=setting[project]['db_source'], host=setting[project]['db_host'],
                   database=setting[project]['db_database'], username=setting[project]['db_user'],
                   passwd=setting[project]['db_pwd'], port=setting[project]['db_port'],
                   sid=setting[project]['db_service'])
-    if Project.continue_last_check:
-        table_name = database.orcl_find_last_result()[0]
-    else:
-        table_name = database.initial_result(meter_no=setting[project]['meter_no'])
+    table_name = database.orcl_find_last_result()[0]
     print('Result Table Name: ', table_name)
     sql = Project.obis_sql1 +'{}'.format(table_name) + Project.obis_sql2
     db_queue = database.orcl_fetchall_dict(sql)
     for queue in db_queue:
-        if queue.get('rw') == 'w':
-            register_list.append(queue.get('register_id'))
+        if queue.get('RW') == 'w':
+            register_list.append(queue.get('REGISTER_ID'))
     return register_list
 
 
 register_get = get_db_register_get(Project.name)
-# register_set = get_db_register_set(Project.name)
+register_set = get_db_register_set(Project.name)
 # register_action = get_db_register_action(Project.name)
-
 
 @pytest.fixture(params=register_get)
 def register_get(request):
     return request.param
 
 
-# @pytest.fixture(params=register_set)
-# def register_set(request):
-#     return request.param
+@pytest.fixture(params=register_set)
+def register_set(request):
+    return request.param
 
 
 # @pytest.fixture(params=register_action)
 # def register_action(request):
 #     return request.param
 
-
-@pytest.fixture(scope="function")
+@pytest.fixture()
 def get_result_table(project):
-    database = DB(source=setting[Project.name]['db_source'], host=setting[Project.name]['db_host'],
-                  database=setting[Project.name]['db_database'], username=setting[Project.name]['db_user'],
-                  passwd=setting[Project.name]['db_pwd'], port=setting[Project.name]['db_port'],
-                  sid=setting[Project.name]['db_service'])
-    table_name = database.find_last_result()[0]
+    database = DB(source=setting[project]['db_source'], host=setting[project]['db_host'],
+                  database=setting[project]['db_database'], username=setting[project]['db_user'],
+                  passwd=setting[project]['db_pwd'], port=setting[project]['db_port'],
+                  sid=setting[project]['db_service'])
+    table_name = database.orcl_find_last_result()[0]
     print('Result Table Name: ', table_name)
     return table_name
 
 
-@pytest.fixture(scope="function")
-def get_project_config(project):
-    file_path = os.path.join(os.path.abspath('.'), "config\\{}.yaml".format(project))
-    user_config = DB.read_config(file_path)
-    return user_config
 
 # @pytest.fixture(scope="session",autouse=True)
 # def   tmp_dir():
