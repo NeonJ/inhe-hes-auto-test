@@ -211,6 +211,18 @@ class DB:
             cur.close()
             con.close()
 
+    def orcl_meter_init(self,meter_no):
+        try:
+            con = self.connect()
+            cur = con.cursor()
+            sql = "update c_ar_meter set DEV_STATUS=2 where METER_NO='{}'".format(meter_no)
+            cur.execute(sql)
+            con.commit()
+        except Exception as e:
+            print("get error: %s" % e)
+        finally:
+            cur.close()
+            con.close()
 # if __name__ == '__main__':
 #     file_path = os.path.abspath(f"conf/DefaultValue/tulip/user.yaml")
 #     user_config = DB.read_config(file_path)
