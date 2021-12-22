@@ -16,7 +16,7 @@ setting = {
         "db_service": "ami_empower",
         "db_database": "ami_db",
         "meter_no": "M202009040003",
-        "api_url": "http://empower.hes-api.kaifa.tst/"
+        "api_url": "http://empower.hes-api.kaifa.tst"
     },
     "ivy": {
         "db_source": "Oracle",
