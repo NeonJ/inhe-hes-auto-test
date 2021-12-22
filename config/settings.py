@@ -18,7 +18,13 @@ setting = {
         "meter_no": "M202009040003",
         "api_url": "http://empower.hes-api.kaifa.tst/",
         "daily_entries":93,
-        "daily_len":22
+        "daily_len":22,
+        "monthly_entries":12,
+        "monthly_len":33,
+        "lp_entries": 4512,
+        "lp_len": 5,
+        "pq_entries": 1440,
+        "pq_len": 5
     },
     "ivy": {
         "db_source": "Oracle",

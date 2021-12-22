@@ -118,6 +118,3 @@ class AssertIn:
 
     def _clear(self):
         self.result = set()
-
-
-

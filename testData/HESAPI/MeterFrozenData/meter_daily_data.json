@@ -30,11 +30,11 @@
               "registerId": "Contract Daily Billing Profile",
               "accessSelector": 0,
               "parameter": {
-                "dataFetchMode": 0,
+                "dataFetchMode": 2,
                 "readTarget": 0,
-                "startTime": "",
-                "endTime": "",
-                "fromEntry": "0",
+                "startTime": "20211222",
+                "endTime": "20211222",
+                "fromEntry": "1",
                 "toEntry": "1",
                 "fromSelectedValue": 1,
                 "toSelectedValue": 0
@@ -168,7 +168,7 @@
           "data": [
             {
               "clientId": null,
-              "registerId": "Contract Daily Billing Profile",
+              "registerId": "Contract Daily Billing Profile Inuse",
               "accessSelector": 0,
               "parameter": {
                 "dataFetchMode": 0,
