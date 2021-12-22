@@ -1,3 +1,4 @@
+# -*-coding:utf-8-*-
 """
 # File       : test_hes_regsiter_check.py
 # Time       ：2021/5/12 14:18
@@ -17,7 +18,7 @@ class Test_HES_Register_Check:
     """
 
     # @pytest.mark.skip
-    @hesTest
+    @OBISTest
     def test_register_get(self, register_get, get_database, get_result_table, caseData):
         DeviceBusy = 1
         print("Register_ID:{}".format(register_get))
@@ -35,23 +36,27 @@ class Test_HES_Register_Check:
                 time.sleep(3)
                 continue
             for payload in json.loads(response.text).get('payload'):
-                for data in payload.get('data'):
-                    print('Read Result: ', data.get('resultDesc'))
-                    if data.get('resultDesc') == 'Device Busying !':
-                        DeviceBusy = 1
-                        print('Device Busy and try again')
-                    else:
-                        DeviceBusy = 0
+                if payload.get('data') == []:
+                    print("RegisterID ERROR", json.loads(response.text).get('payload'))
+                    assert False
+                else:
+                    for data in payload.get('data'):
+                        print('Read Result: ', data.get('resultDesc'))
+                        if data.get('resultDesc') == 'Device Busying !':
+                            DeviceBusy = 1
+                            print('Device Busy and try again')
+                        else:
+                            DeviceBusy = 0
 
         for payload in json.loads(response.text).get('payload'):
             for data in payload.get('data'):
                 print('Get Value: ', data.get('resultValue'))
                 get_database.save_result(get_result_table, 'get_result', data.get('resultDesc'), register_get)
                 get_database.save_result(get_result_table, 'get_value', data.get('resultValue'), register_get)
-                assert data.get('resultDesc') == 'OK'
+            assert data.get('resultDesc') == 'OK'
 
     # @pytest.mark.skip
-    @hesTest
+    @OBISTest
     def test_register_set(self, register_set, get_database, get_result_table, caseData):
         DeviceBusy = 1
         print("Register_ID:{}".format(register_set))
@@ -69,13 +74,17 @@ class Test_HES_Register_Check:
                 time.sleep(3)
                 continue
             for payload in json.loads(response.text).get('payload'):
-                for data in payload.get('data'):
-                    print('Read Result: ', data.get('resultDesc'))
-                    if data.get('resultDesc') == 'Device Busying !':
-                        DeviceBusy = 1
-                        print('Device Busy and try again')
-                    else:
-                        DeviceBusy = 0
+                if payload.get('data') == []:
+                    print("RegisterID ERROR", json.loads(response.text).get('payload'))
+                    assert False
+                else:
+                    for data in payload.get('data'):
+                        print('Read Result: ', data.get('resultDesc'))
+                        if data.get('resultDesc') == 'Device Busying !':
+                            DeviceBusy = 1
+                            print('Device Busy and try again')
+                        else:
+                            DeviceBusy = 0
 
         for payload in json.loads(response.text).get('payload'):
             for data in payload.get('data'):

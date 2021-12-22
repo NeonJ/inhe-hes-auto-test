@@ -16,7 +16,9 @@ setting = {
         "db_service": "ami_empower",
         "db_database": "ami_db",
         "meter_no": "M202009040003",
-        "api_url": "http://empower.hes-api.kaifa.tst/"
+        "api_url": "http://empower.hes-api.kaifa.tst/",
+        "daily_entries":93,
+        "daily_len":22
     },
     "ivy": {
         "db_source": "Oracle",
@@ -42,7 +44,7 @@ setting = {
 
 class Project:
     name = 'empower'  # 与下面setting项目key对应
-    tag = 'hesTest'  # 对应comms.marker
+    tag = 'hesSyncTest'  # 对应comms.marker
     path = '/'  # 对testData目录接口对应
     continue_last_check = False  # 是否断点续测OBIS
 
