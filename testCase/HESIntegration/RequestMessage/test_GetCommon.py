@@ -2,7 +2,9 @@
 # @Time : 2021/12/9 9:21
 # @Author : JingYang
 # @File : test_GetCommon.py
-import allure, pytest, requests
+import sys
+
+import allure, pytest, requests,logging
 from common.UtilTools import *
 
 class Test_GetCommon:
@@ -15,11 +17,9 @@ class Test_GetCommon:
         data = caseData('testData/HESAPI/RequestMessage/getCommon.json')['test_GET_COMMOM']
         requestData = data['request']
         expectResJson = data['response']
-        print(caseData)
-        # response = requests.post(url=url,headers={'content-type':'application/json'},data=requestData)
         response = requests.post(url=testUrl,json=requestData)
-        # response = requests.post(url=testUrl,data=requestData,headers={"Content-Type": "application/json"})
-        print(response.json())
+
+
 
         assert response.status_code == 200
         assert AssertIn().checkIn(expectResJson, response.json()) is True
