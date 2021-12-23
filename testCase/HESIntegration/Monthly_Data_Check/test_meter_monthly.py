@@ -14,7 +14,7 @@ from config.settings import *
 
 class Test_Meter_Monthly:
 
-    # @hesSyncTest
+    @hesSyncTest
     def test_get_monthly_entries(self, caseData):
         """
         使用同步读取的方式去对电表进行日结entries数据对比
@@ -41,7 +41,7 @@ class Test_Meter_Monthly:
                 assert int(json.loads(response.text).get('payload')[0].get('data')[0].get('resultValue').get(
                     'dataItemValue')) == setting[Project.name]['monthly_entries']
 
-    # @hesSyncTest
+    @hesSyncTest
     def test_get_monthly_date(self, caseData):
         """
         使用同步读取的方式去对电表进行月结读取 - 按照Entry+Date方式进行并进行数据项对比

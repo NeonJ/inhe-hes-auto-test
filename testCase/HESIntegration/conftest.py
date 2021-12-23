@@ -10,14 +10,29 @@ from common.DB import *
 from config.settings import *
 
 
-# @pytest.fixture(scope='function')
-# def meter_init(project):
-#     database = DB(source=setting[project]['db_source'], host=setting[project]['db_host'],
-#                   database=setting[project]['db_database'], username=setting[project]['db_user'],
-#                   passwd=setting[project]['db_pwd'], port=setting[project]['db_port'],
-#                   sid=setting[project]['db_service'])
-#     database.orcl_meter_init(setting[project]['meter_no'])
+@pytest.fixture(scope='function')
+def meter_init(project):
+    database = DB(source=setting[project]['db_source'], host=setting[project]['db_host'],
+                  database=setting[project]['db_database'], username=setting[project]['db_user'],
+                  passwd=setting[project]['db_pwd'], port=setting[project]['db_port'],
+                  sid=setting[project]['db_service'])
+    database.orcl_meter_init(setting[project]['meter_no'])
 
+@pytest.fixture(scope='function')
+def meter_init_except_1(project):
+    database = DB(source=setting[project]['db_source'], host=setting[project]['db_host'],
+                  database=setting[project]['db_database'], username=setting[project]['db_user'],
+                  passwd=setting[project]['db_pwd'], port=setting[project]['db_port'],
+                  sid=setting[project]['db_service'])
+    database.orcl_meter_init_except_1(setting[project]['meter_no'])
+
+@pytest.fixture(scope='function')
+def meter_init_except_2(project):
+    database = DB(source=setting[project]['db_source'], host=setting[project]['db_host'],
+                  database=setting[project]['db_database'], username=setting[project]['db_user'],
+                  passwd=setting[project]['db_pwd'], port=setting[project]['db_port'],
+                  sid=setting[project]['db_service'])
+    database.orcl_meter_init_except_2(setting[project]['meter_no'])
 
 @pytest.fixture()
 def get_database(project):

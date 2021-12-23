@@ -51,7 +51,7 @@ setting = {
 
 class Project:
     name = 'empower'  # 与下面setting项目key对应
-    tag = 'hesSyncTest'  # 对应comms.marker
+    tag = 'hesAsyncTest'  # 对应comms.marker
     path = '/'  # 对testData目录接口对应
     continue_last_check = False  # 是否断点续测OBIS
 
