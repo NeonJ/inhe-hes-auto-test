@@ -16,6 +16,7 @@ class HESAPI(object):
         self.HESAPIAddress = argv['Address']
         self.HESRequestMessage = argv.get('RequestMessage', 'api/v1/Request/RequestMessage')
         self.HESCreateTask = argv.get('CreateTask', 'Mdm/CreateTas')
+        self.HESMeterStatus = argv.get('MeterStatus','Mdm/GetMeterStatus?MeterNo=')
         # self.HESDLMS = argv.get('', '')
         # OBIS、升级、时间、费率、结算、需量、负荷曲线、质量曲线、状态字、时间、负控、预付费
 

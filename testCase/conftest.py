@@ -1,5 +1,5 @@
 import allure
-import pytest, json, os
+import pytest, json, os, requests
 
 from config.settings import *
 from common.DB import *
@@ -26,3 +26,14 @@ def caseData():
 @pytest.fixture(scope='session')
 def project():
     yield Project.name
+
+
+@allure.step("Web Token")
+@pytest.fixture(scope='session')
+def token():
+    re = requests.post(url=setting[Project.name]['web_url'] + 'api/gateway-service/tokens.json',
+                       json={"language": "en", "username": setting[Project.name]['ami_user'],
+                             "password": setting[Project.name]['ami_passwd']})
+    access_token = re.json()['data']['access_token']
+
+    yield {'Access-Token': access_token, 'Application-Id': 'AMI_WEB'}

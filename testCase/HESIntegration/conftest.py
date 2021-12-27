@@ -5,9 +5,10 @@
 # version    ：python 3.7
 """
 
-import requests, pytest, allure, os
+import requests, pytest, allure, os, time
 from common.DB import *
 from config.settings import *
+from common.HESAPI import *
 
 
 @pytest.fixture(scope='function')
@@ -18,6 +19,7 @@ def meter_init(project):
                   sid=setting[project]['db_service'])
     database.orcl_meter_init(setting[project]['meter_no'])
 
+
 @pytest.fixture(scope='function')
 def meter_init_except_1(project):
     database = DB(source=setting[project]['db_source'], host=setting[project]['db_host'],
@@ -26,6 +28,7 @@ def meter_init_except_1(project):
                   sid=setting[project]['db_service'])
     database.orcl_meter_init_except_1(setting[project]['meter_no'])
 
+
 @pytest.fixture(scope='function')
 def meter_init_except_2(project):
     database = DB(source=setting[project]['db_source'], host=setting[project]['db_host'],
@@ -33,6 +36,7 @@ def meter_init_except_2(project):
                   passwd=setting[project]['db_pwd'], port=setting[project]['db_port'],
                   sid=setting[project]['db_service'])
     database.orcl_meter_init_except_2(setting[project]['meter_no'])
+
 
 @pytest.fixture()
 def get_database(project):
@@ -57,6 +61,7 @@ def result_table(project):
             print("The OBIS inspection result table already exists on the day: ", database.orcl_find_last_result()[0])
     return table_name
 
+
 result_table1 = result_table(Project.name)
 
 
@@ -68,7 +73,7 @@ def get_db_register_get(project):
                   sid=setting[project]['db_service'])
     table_name = database.orcl_find_last_result()[0]
     print('Result Table Name: ', table_name)
-    sql = Project.obis_sql1 +'{}'.format(table_name) + Project.obis_sql2
+    sql = Project.obis_sql1 + '{}'.format(table_name) + Project.obis_sql2
     db_queue = database.orcl_fetchall_dict(sql)
     for queue in db_queue:
         if queue.get('RW') == 'r':
@@ -84,7 +89,7 @@ def get_db_register_set(project):
                   sid=setting[project]['db_service'])
     table_name = database.orcl_find_last_result()[0]
     print('Result Table Name: ', table_name)
-    sql = Project.obis_sql1 +'{}'.format(table_name) + Project.obis_sql2
+    sql = Project.obis_sql1 + '{}'.format(table_name) + Project.obis_sql2
     db_queue = database.orcl_fetchall_dict(sql)
     for queue in db_queue:
         if queue.get('RW') == 'rw':
@@ -100,7 +105,7 @@ def get_db_register_action(project):
                   sid=setting[project]['db_service'])
     table_name = database.orcl_find_last_result()[0]
     print('Result Table Name: ', table_name)
-    sql = Project.obis_sql1 +'{}'.format(table_name) + Project.obis_sql2
+    sql = Project.obis_sql1 + '{}'.format(table_name) + Project.obis_sql2
     db_queue = database.orcl_fetchall_dict(sql)
     for queue in db_queue:
         if queue.get('RW') == 'w':
@@ -110,6 +115,8 @@ def get_db_register_action(project):
 
 register_get = get_db_register_get(Project.name)
 register_set = get_db_register_set(Project.name)
+
+
 # register_action = get_db_register_action(Project.name)
 
 @pytest.fixture(params=register_get)
@@ -137,6 +144,126 @@ def get_result_table(project):
     return table_name
 
 
+@pytest.fixture(scope='function')
+def get_daily_date(caseData):
+    """
+    使用同步读取的方式去对电表进行日结读取 - 按照Entry+Date方式进行并进行数据项对比
+     """
+
+    print("获取当前电表第一条日结数据")
+    startTime = None
+    DeviceBusy = 1
+    data = caseData('testData/HESAPI/MeterFrozenData/meter_daily_data.json')['meter_daily_data']
+    requestData = data['request']
+    requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
+    while DeviceBusy == 1:
+        response = requests.post(url=HESAPI(Address=setting[Project.name]['api_url']).requestAddress(),
+                                 headers={"Content-Type": "application/json"},
+                                 json=requestData, timeout=40)
+        time.sleep(1)
+        if response.status_code == 504:
+            print('504 Error and try again')
+            time.sleep(3)
+            response = requests.post(url=HESAPI(Address=setting[Project.name]['api_url']).requestAddress(),
+                                     headers={"Content-Type": "application/json"},
+                                     json=requestData, timeout=40)
+        if json.loads(response.text).get('reply')['replyCode'] != 200:
+            assert False
+        else:
+            DeviceBusy = 0
+            assert len(json.loads(response.text).get('payload')[0].get('data')) == setting[Project.name][
+                'daily_len']
+            startTime = json.loads(response.text).get('payload')[0].get('data')[0].get('dataTime')
+    return startTime
+
+
+@pytest.fixture(scope='function')
+def get_monthly_date(caseData):
+    print("Step 1 : 获取当前电表第一条月结数据")
+    DeviceBusy = 1
+    data = caseData('testData/HESAPI/MeterFrozenData/meter_monthly_data.json')['meter_monthly_data']
+    requestData = data['request']
+    requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
+    while DeviceBusy == 1:
+        response = requests.post(url=HESAPI(Address=setting[Project.name]['api_url']).requestAddress(),
+                                 headers={"Content-Type": "application/json"},
+                                 json=requestData, timeout=40)
+        time.sleep(1)
+        if response.status_code == 504:
+            print('504 Error and try again')
+            time.sleep(3)
+            response = requests.post(url=HESAPI(Address=setting[Project.name]['api_url']).requestAddress(),
+                                     headers={"Content-Type": "application/json"},
+                                     json=requestData, timeout=40)
+        if json.loads(response.text).get('reply')['replyCode'] != 200:
+            assert False
+        else:
+            DeviceBusy = 0
+            assert len(json.loads(response.text).get('payload')[0].get('data')) == setting[Project.name][
+                'monthly_len']
+            startTime = json.loads(response.text).get('payload')[0].get('data')[0].get('dataTime')
+    return startTime
+
+
+@pytest.fixture(scope='function')
+def get_lp_date(caseData):
+    """
+    使用同步读取的方式去对电表进行lp读取 - 按照Entry+Date方式进行并进行数据项对比
+     """
+    print("Step 1 : 获取当前电表第一条lp数据")
+    DeviceBusy = 1
+    data = caseData('testData/HESAPI/MeterFrozenData/meter_profile_data.json')['meter_lp_data']
+    requestData = data['request']
+    requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
+    while DeviceBusy == 1:
+        response = requests.post(url=HESAPI(Address=setting[Project.name]['api_url']).requestAddress(),
+                                 headers={"Content-Type": "application/json"},
+                                 json=requestData, timeout=40)
+        time.sleep(1)
+        if response.status_code == 504:
+            print('504 Error and try again')
+            time.sleep(3)
+            response = requests.post(url=HESAPI(Address=setting[Project.name]['api_url']).requestAddress(),
+                                     headers={"Content-Type": "application/json"},
+                                     json=requestData, timeout=40)
+        if json.loads(response.text).get('reply')['replyCode'] != 200:
+            assert False
+        else:
+            DeviceBusy = 0
+            assert len(json.loads(response.text).get('payload')[0].get('data')) == setting[Project.name][
+                'lp_len']
+            startTime = json.loads(response.text).get('payload')[0].get('data')[0].get('dataTime')
+    return startTime
+
+
+@pytest.fixture(scope='function')
+def get_daily_event(caseData):
+    """
+    使用同步读取的方式去对电表进行daily event读取 - 按照Entry+Date方式进行并进行数据项对比
+     """
+    print("Step 1 : 获取当前电表第一条daily event数据")
+    DeviceBusy = 1
+    data = caseData('testData/HESAPI/MeterFrozenData/meter_event_data.json')['meter_daily_event']
+    requestData = data['request']
+    requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
+    while DeviceBusy == 1:
+        response = requests.post(url=HESAPI(Address=setting[Project.name]['api_url']).requestAddress(),
+                                 headers={"Content-Type": "application/json"},
+                                 json=requestData, timeout=40)
+        time.sleep(1)
+        if response.status_code == 504:
+            print('504 Error and try again')
+            time.sleep(3)
+            response = requests.post(url=HESAPI(Address=setting[Project.name]['api_url']).requestAddress(),
+                                     headers={"Content-Type": "application/json"},
+                                     json=requestData, timeout=40)
+        if json.loads(response.text).get('reply')['replyCode'] != 200:
+            assert False
+        else:
+            DeviceBusy = 0
+            assert len(json.loads(response.text).get('payload')[0].get('data')) == 64
+            startTime = json.loads(response.text).get('payload')[0].get('data')[0].get('dataTime')
+    return startTime
 
 # @pytest.fixture(scope="session",autouse=True)
 # def   tmp_dir():
