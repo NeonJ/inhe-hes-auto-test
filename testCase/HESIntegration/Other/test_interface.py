@@ -35,7 +35,7 @@ class Test_Meter_Status:
     @hesSyncTest
     def test_get_device_online(self):
         """
-        验证接口获取电表和DCU上下线状态
+        验证接口获取电表和DCU上下线状态 GetOnlineDevice
         """
         data = "OnlineDevice/GetOnlineDevice?deviceNo={}".format(setting[Project.name]['meter_no'])
         response = requests.get(url=setting[Project.name]['api_url'] + data,
@@ -49,6 +49,42 @@ class Test_Meter_Status:
                                     headers={"Content-Type": "application/json"},
                                     timeout=40)
         assert json.loads(response.text)['DeviceNo'] == setting[Project.name]['meter_no']
+
+    @hesSyncTest
+    def test_get_device_online2(self):
+        """
+        验证接口获取电表和DCU上下线状态 getMeterOnlineStatus
+        """
+        data = "Mdm/getMeterOnlineStatus?meterNo={}".format(setting[Project.name]['meter_no'])
+        response = requests.get(url=setting[Project.name]['api_url'] + data,
+                                headers={"Content-Type": "application/json"},
+                                timeout=40)
+        time.sleep(1)
+        if response.status_code == 504 or response.status_code == 500:
+            print('504 Error and try again')
+            time.sleep(3)
+            response = requests.get(url=setting[Project.name]['api_url'] + data,
+                                    headers={"Content-Type": "application/json"},
+                                    timeout=40)
+        assert json.loads(response.text)['desc'] == "Online"
+
+    @hesSyncTest
+    def test_get_device_online2(self):
+        """
+        验证接口获取电表和DCU上下线状态 getDeviceNoOnlineStatus
+        """
+        data = "Mdm/getDeviceNoOnlineStatus?deviceNo={}".format(setting[Project.name]['meter_no'])
+        response = requests.get(url=setting[Project.name]['api_url'] + data,
+                                headers={"Content-Type": "application/json"},
+                                timeout=40)
+        time.sleep(1)
+        if response.status_code == 504 or response.status_code == 500:
+            print('504 Error and try again')
+            time.sleep(3)
+            response = requests.get(url=setting[Project.name]['api_url'] + data,
+                                    headers={"Content-Type": "application/json"},
+                                    timeout=40)
+        assert json.loads(response.text)['desc'] == "Online"
 
     @hesSyncTest
     def test_MasterCoreState(self):

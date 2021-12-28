@@ -80,7 +80,7 @@
       }
     }
   },
-  "meter_daily_entries": {
+  "meter_daily_event_entries": {
     "request": {
       "header": {
         "correlationId": "68e19310-1253-4a6c-bd9c-e60266e52429",
@@ -99,7 +99,7 @@
           "transactionId": "5ebbd125-e1d0-4a90-b0af-6d13d22f78e6",
           "data": [
             {
-              "registerId": "Daily Billing Profile Entries"
+              "registerId": "Daily event log entries"
             }
           ]
         }
@@ -140,7 +140,7 @@
       }
     }
   },
-  "meter_daily_entries_inuse": {
+  "meter_daily_event_entries_inuse": {
     "request": {
       "header": {
         "correlationId": "68e19310-1253-4a6c-bd9c-e60266e52429",

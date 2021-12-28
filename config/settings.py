@@ -28,7 +28,8 @@ setting = {
         "lp_entries": 4512,
         "lp_len": 5,
         "pq_entries": 1440,
-        "pq_len": 5
+        "pq_len": 5,
+        "event_entries": 3
     },
     "ivy": {
         "db_source": "Oracle",
@@ -54,7 +55,7 @@ setting = {
 
 class Project:
     name = 'empower'  # 与下面setting项目key对应
-    tag = 'hesAsyncTime'  # 对应comms.marker
+    tag = 'hesSyncTest or hesAsyncTest'  # 对应comms.marker
     path = '/'  # 对testData目录接口对应
     continue_last_check = False  # 是否断点续测OBIS
 

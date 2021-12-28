@@ -168,6 +168,7 @@ def get_daily_date(caseData):
                                      headers={"Content-Type": "application/json"},
                                      json=requestData, timeout=40)
         if json.loads(response.text).get('reply')['replyCode'] != 200:
+            print(json.loads(response.text).get('payload')[0]['desc'])
             assert False
         else:
             DeviceBusy = 0
@@ -196,6 +197,7 @@ def get_monthly_date(caseData):
                                      headers={"Content-Type": "application/json"},
                                      json=requestData, timeout=40)
         if json.loads(response.text).get('reply')['replyCode'] != 200:
+            print(json.loads(response.text).get('payload')[0]['desc'])
             assert False
         else:
             DeviceBusy = 0
@@ -227,6 +229,7 @@ def get_lp_date(caseData):
                                      headers={"Content-Type": "application/json"},
                                      json=requestData, timeout=40)
         if json.loads(response.text).get('reply')['replyCode'] != 200:
+            print(json.loads(response.text).get('payload')[0]['desc'])
             assert False
         else:
             DeviceBusy = 0
@@ -258,6 +261,7 @@ def get_daily_event(caseData):
                                      headers={"Content-Type": "application/json"},
                                      json=requestData, timeout=40)
         if json.loads(response.text).get('reply')['replyCode'] != 200:
+            print(json.loads(response.text).get('payload')[0]['desc'])
             assert False
         else:
             DeviceBusy = 0

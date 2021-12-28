@@ -14,7 +14,7 @@ from config.settings import *
 
 class Test_Meter_Monthly:
 
-    # @hesSyncTest
+    @hesSyncTest
     def test_get_monthly_entries(self, caseData):
         """
         使用同步读取的方式去对电表进行日结entries数据对比
@@ -28,12 +28,14 @@ class Test_Meter_Monthly:
                                      headers={"Content-Type": "application/json"},
                                      json=requestData, timeout=40)
             time.sleep(1)
-            if response.status_code == 504:
+            if response.status_code == 504 or json.loads(response.text).get('payload')[0].get(
+                    'desc') == 'Device Busying !':
                 print('504 Error and try again')
                 time.sleep(3)
                 response = requests.post(url=HESAPI(Address=setting[Project.name]['api_url']).requestAddress(),
                                          headers={"Content-Type": "application/json"},
                                          json=requestData, timeout=40)
+                continue
             if json.loads(response.text).get('reply')['replyCode'] != 200:
                 assert False
             else:
@@ -41,7 +43,7 @@ class Test_Meter_Monthly:
                 assert int(json.loads(response.text).get('payload')[0].get('data')[0].get('resultValue').get(
                     'dataItemValue')) == setting[Project.name]['monthly_entries']
 
-    # @hesSyncTest
+    @hesSyncTest
     def test_get_monthly_date(self, caseData):
         """
         使用同步读取的方式去对电表进行月结读取 - 按照Entry+Date方式进行并进行数据项对比
@@ -58,12 +60,14 @@ class Test_Meter_Monthly:
                                      headers={"Content-Type": "application/json"},
                                      json=requestData, timeout=40)
             time.sleep(1)
-            if response.status_code == 504:
+            if response.status_code == 504 or json.loads(response.text).get('payload')[0].get(
+                    'desc') == 'Device Busying !':
                 print('504 Error and try again')
                 time.sleep(3)
                 response = requests.post(url=HESAPI(Address=setting[Project.name]['api_url']).requestAddress(),
                                          headers={"Content-Type": "application/json"},
                                          json=requestData, timeout=40)
+                continue
             if json.loads(response.text).get('reply')['replyCode'] != 200:
                 assert False
             else:
@@ -89,12 +93,14 @@ class Test_Meter_Monthly:
                                      headers={"Content-Type": "application/json"},
                                      json=requestData, timeout=40)
             time.sleep(1)
-            if response.status_code == 504:
+            if response.status_code == 504 or json.loads(response.text).get('payload')[0].get(
+                    'desc') == 'Device Busying !':
                 print('504 Error and try again')
                 time.sleep(3)
                 response = requests.post(url=HESAPI(Address=setting[Project.name]['api_url']).requestAddress(),
                                          headers={"Content-Type": "application/json"},
                                          json=requestData, timeout=40)
+                continue
             if json.loads(response.text).get('reply')['replyCode'] != 200:
                 assert False
             else:

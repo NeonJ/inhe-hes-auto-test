@@ -22,7 +22,7 @@ if os.path.exists('./result/'):
 else:
     print('一切ok')
 
-logging.info('Testing  Start !!!!!!!!!!!!!!!!!!!!!!!!')
+logging.info('Testing  Start..............................................')
 
 if Project.name is not None:
 
@@ -30,7 +30,8 @@ if Project.name is not None:
 
         # 指定tag和项目
         os.system(
-            'pytest   --json-report   -v  testCase/%s   -m  %s    --alluredir  ./result/' % (Project.path, Project.tag))
+            "pytest   --json-report   -v  testCase/%s   -m  \"%s\"    --alluredir  ./result/" % (Project.path, Project.tag))
+
     else:
 
         # 不指定tag

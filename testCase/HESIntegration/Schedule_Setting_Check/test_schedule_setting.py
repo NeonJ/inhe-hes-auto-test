@@ -230,7 +230,7 @@ class Test_Schedule_Setting:
                 "scheduleType": "TEMPORARY",
                 "taskObjectType": "METER",
                 "deviceType": "METER",
-                "frequencyInterval": 30,
+                "frequencyInterval": 60,
                 "frequencyUnit": "MIN",
                 "delayTimeHour": 2,
                 "delayTimeMin": 10,
@@ -410,6 +410,103 @@ class Test_Schedule_Setting:
             assert re.json()['data']['pageData'][0]['taskStatus'] == 'SUCCESS'
 
     @hesAsyncTest
+    def test_meter_schedule_setting_st(self, get_database, token):
+        """
+        验证Schedule Setting生成区域GPRS校时任务
+        """
+        count = 1
+        with allure.step('添加电表日结采集任务'):
+            scheduleName = "AutoHES-ST" + faker.name()
+            url = setting[Project.name]['web_url'] + 'api/hes-service/schedule.json'
+            sstime = (datetime.datetime.now() - datetime.timedelta(days=1)).strftime('%d/%m/%Y %H:%M:%S')
+            data = {
+                "taskType": "SetTime",
+                "scheduleType": "PERIODIC",
+                "taskObjectType": "REGION",
+                "deviceType": "GPRS_METER",
+                "frequencyInterval": 1,
+                "frequencyUnit": "DAY",
+                "delayTimeHour": 2,
+                "delayTimeMin": 10,
+                "retryTimes": 3,
+                "retryInterval": 1,
+                "isAdd": "true",
+                "taskTypeName": "Set Time",
+                "taskTypeNameI18nCode": "view.set_time",
+                "desc": "AutoTest",
+                "delayExecutionTime": 130,
+                "profileType": "SET_TIME",
+                "scheduleName": scheduleName,
+                "startTime": sstime  # "25/12/2021 00:00:00"
+            }
+            print(url)
+            print(token)
+            print(data)
+            response = requests.post(url=url, headers=token, json=data)
+            assert response.status_code == 200
+            assert response.json()['code'] == 200
+
+        with allure.step('获取任务schedule ID'):
+            url = setting[Project.name]['web_url'] + 'api/hes-service/schedule.json'
+            data = 'pageNo=1&pageSize=20&scheduleName={}'.format(scheduleName)
+            re = requests.get(url, json=data, headers=token)
+            assert re.status_code == 200
+            assert re.json()['code'] == 200
+            schedule_id = re.json()['data']['pageData'][0]['scheduleId']
+
+        with allure.step('获取区域TR object ID'):
+            sql = "select FUNC_GET_TR_REGION_ID(FULL_AREA_ID) ID from c_ar_meter_pnt where INSTALL_METER_NO='{}'".format(
+                setting[Project.name]['meter_no'])
+            object_id = get_database.orcl_fetchall_dict(sql)[0]['ID']
+
+        with allure.step('添加TR到Task'):
+            url = setting[Project.name]['web_url'] + 'api/hes-service/schedule/object/{}'.format(schedule_id)
+            data = {"taskObjectType": "REGION", "scheduleObjectList": [{"objectId": object_id}]}
+            re = requests.post(url, json=data, headers=token)
+
+            assert re.status_code == 200
+            assert re.json()['code'] == 200
+            assert re.json()['desc'] == 'OK'
+
+        with allure.step('执行任务'):
+            url = setting[Project.name]['web_url'] + 'api/hes-service/schedule/status/{}'.format(schedule_id)
+            data = {"scheduleId": schedule_id, "scheduleName": scheduleName,
+                    "startTime": sstime}
+            re = requests.put(url, json=data, headers=token)
+            assert re.status_code == 200
+            assert re.json()['code'] == 200
+            assert re.json()['desc'] == 'OK'
+
+        with allure.step('查看生成任务和执行结果'):
+            sql1 = "select AUTO_RUN_ID from H_TASK_RUNNING where NODE_NO='{}' and JOB_TYPE='SetTime'".format(
+                setting[Project.name]['meter_no'])
+            db_queue = get_database.orcl_fetchall_dict(sql1)
+            while len(db_queue) == 0 and count < 12:
+                time.sleep(10)
+                db_queue = get_database.orcl_fetchall_dict(sql1)
+                print(db_queue)
+                print('Waiting for Reg Tasks to Create...')
+                count = count + 1
+
+            sql2 = "select TASK_STATE from h_task_run_his where AUTO_RUN_ID='{}'".format(db_queue[0]['AUTO_RUN_ID'])
+            db_queue = get_database.orcl_fetchall_dict(sql2)
+            while len(db_queue) == 0 and count < 25:
+                time.sleep(10)
+                db_queue = get_database.orcl_fetchall_dict(sql2)
+                print(db_queue)
+                print('Waiting for Reg Tasks to finish...')
+                count = count + 1
+            assert db_queue[0]['TASK_STATE'] == 3
+
+        with allure.step('停止周期任务'):
+            url = setting[Project.name]['web_url'] + 'api/hes-service/schedule/status/{}'.format(schedule_id)
+            data = {}
+            re = requests.put(url, json=data, headers=token)
+            assert re.status_code == 200
+            assert re.json()['code'] == 200
+            assert re.json()['desc'] == 'OK'
+
+    @hesAsyncTest
     def test_meter_schedule_setting_event(self, get_database, token, get_daily_event):
         """
         验证Schedule Setting生成采集GPRS电表日结
@@ -499,107 +596,10 @@ class Test_Schedule_Setting:
                 (datetime.datetime.now() - datetime.timedelta(days=1)).strftime('%d/%m/%Y'),
                 (datetime.datetime.now() + datetime.timedelta(days=1)).strftime('%d/%m/%Y'))
             re = requests.get(url, json=data, headers=token)
-            while re.json()['data']['pageData'] == [] and count < 20:
+            while re.json()['data']['pageData'] == [] and count < 25:
                 re = requests.get(url, json=data, headers=token)
                 time.sleep(10)
                 count = count + 1
             assert re.status_code == 200
             assert re.json()['code'] == 200
             assert re.json()['data']['pageData'][0]['taskStatus'] == 'SUCCESS'
-
-    @hesAsyncTest
-    def test_meter_schedule_setting_st(self, get_database, token):
-        """
-        验证Schedule Setting生成区域GPRS校时任务
-        """
-        count = 1
-        with allure.step('添加电表日结采集任务'):
-            scheduleName = "AutoHES-ST" + faker.name()
-            url = setting[Project.name]['web_url'] + 'api/hes-service/schedule.json'
-            sstime = (datetime.datetime.now() - datetime.timedelta(days=1)).strftime('%d/%m/%Y %H:%M:%S')
-            data = {
-                "taskType": "SetTime",
-                "scheduleType": "PERIODIC",
-                "taskObjectType": "REGION",
-                "deviceType": "GPRS_METER",
-                "frequencyInterval": 1,
-                "frequencyUnit": "DAY",
-                "delayTimeHour": 2,
-                "delayTimeMin": 10,
-                "retryTimes": 3,
-                "retryInterval": 1,
-                "isAdd": "true",
-                "taskTypeName": "Set Time",
-                "taskTypeNameI18nCode": "view.set_time",
-                "desc": "AutoTest",
-                "delayExecutionTime": 130,
-                "profileType": "SET_TIME",
-                "scheduleName": scheduleName,
-                "startTime": sstime  # "25/12/2021 00:00:00"
-            }
-            print(url)
-            print(token)
-            print(data)
-            response = requests.post(url=url, headers=token, json=data)
-            assert response.status_code == 200
-            assert response.json()['code'] == 200
-
-        with allure.step('获取任务schedule ID'):
-            url = setting[Project.name]['web_url'] + 'api/hes-service/schedule.json'
-            data = 'pageNo=1&pageSize=20&scheduleName={}'.format(scheduleName)
-            re = requests.get(url, json=data, headers=token)
-            assert re.status_code == 200
-            assert re.json()['code'] == 200
-            schedule_id = re.json()['data']['pageData'][0]['scheduleId']
-
-        with allure.step('获取区域TR object ID'):
-            sql = "select FUNC_GET_TR_REGION_ID(FULL_AREA_ID) ID from c_ar_meter_pnt where INSTALL_METER_NO='{}'".format(
-                setting[Project.name]['meter_no'])
-            object_id = get_database.orcl_fetchall_dict(sql)[0]['ID']
-
-        with allure.step('添加TR到Task'):
-            url = setting[Project.name]['web_url'] + 'api/hes-service/schedule/object/{}'.format(schedule_id)
-            data = {"taskObjectType": "REGION", "scheduleObjectList": [{"objectId": object_id}]}
-            re = requests.post(url, json=data, headers=token)
-
-            assert re.status_code == 200
-            assert re.json()['code'] == 200
-            assert re.json()['desc'] == 'OK'
-
-        with allure.step('执行任务'):
-            url = setting[Project.name]['web_url'] + 'api/hes-service/schedule/status/{}'.format(schedule_id)
-            data = {"scheduleId": schedule_id, "scheduleName": scheduleName,
-                    "startTime": sstime}
-            re = requests.put(url, json=data, headers=token)
-            assert re.status_code == 200
-            assert re.json()['code'] == 200
-            assert re.json()['desc'] == 'OK'
-
-        with allure.step('查看生成任务和执行结果'):
-            sql1 = "select AUTO_RUN_ID from H_TASK_RUNNING where NODE_NO='{}' and JOB_TYPE='SetTime'".format(
-                setting[Project.name]['meter_no'])
-            db_queue = get_database.orcl_fetchall_dict(sql1)
-            while len(db_queue) == 0 and count < 10:
-                time.sleep(10)
-                db_queue = get_database.orcl_fetchall_dict(sql1)
-                print(db_queue)
-                print('Waiting for Reg Tasks to Create...')
-                count = count + 1
-
-            sql2 = "select TASK_STATE from h_task_run_his where AUTO_RUN_ID='{}'".format(db_queue[0]['AUTO_RUN_ID'])
-            db_queue = get_database.orcl_fetchall_dict(sql2)
-            while len(db_queue) == 0 and count < 22:
-                time.sleep(10)
-                db_queue = get_database.orcl_fetchall_dict(sql2)
-                print(db_queue)
-                print('Waiting for Reg Tasks to finish...')
-                count = count + 1
-            assert db_queue[0]['TASK_STATE'] == 3
-
-        with allure.step('停止周期任务'):
-            url = setting[Project.name]['web_url'] + 'api/hes-service/schedule/status/{}'.format(schedule_id)
-            data = {}
-            re = requests.put(url, json=data, headers=token)
-            assert re.status_code == 200
-            assert re.json()['code'] == 200
-            assert re.json()['desc'] == 'OK'
