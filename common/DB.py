@@ -43,6 +43,7 @@ class DB:
                                         host=self.host, port=self.port)
             except Exception as e:
                 print("get error: %s" % e)
+
         elif self.source == 'Oracle':
             try:
                 dsn_tns = cx_Oracle.makedsn(self.host, self.port, self.sid)
@@ -52,6 +53,7 @@ class DB:
                 return conn
             except Exception as e:
                 print("get error: %s" % e)
+
 
     def fetchall(self, sql):
         try:
@@ -81,6 +83,7 @@ class DB:
         finally:
             cur.close()
             con.close()
+
 
     def orcl_fetchall_dict(self, sql):
         try:
