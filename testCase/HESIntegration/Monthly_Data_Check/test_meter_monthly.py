@@ -1,6 +1,6 @@
 # -*-coding:utf-8-*-
 """
-# File       : test_meter_daily.py
+# File       : test_meter_profile.py
 # Time       ：2021/12/21 14:18
 # Author     ：cao jiann
 # version    ：python 3.7
@@ -12,15 +12,15 @@ from common.marker import *
 from config.settings import *
 
 
-class Test_Meter_Daily:
+class Test_Meter_Monthly:
 
     # @hesSyncTest
-    def test_get_daily_entries(self, caseData):
+    def test_get_monthly_entries(self, caseData):
         """
         使用同步读取的方式去对电表进行日结entries数据对比
         """
         DeviceBusy = 1
-        data = caseData('testData/HESAPI/MeterFrozenData/meter_daily_data.json')['meter_daily_entries']
+        data = caseData('testData/HESAPI/MeterFrozenData/meter_monthly_data.json')['meter_monthly_entries']
         requestData = data['request']
         requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
         while DeviceBusy == 1:
@@ -39,18 +39,18 @@ class Test_Meter_Daily:
             else:
                 DeviceBusy = 0
                 assert int(json.loads(response.text).get('payload')[0].get('data')[0].get('resultValue').get(
-                    'dataItemValue')) == setting[Project.name]['daily_entries']
+                    'dataItemValue')) == setting[Project.name]['monthly_entries']
 
     # @hesSyncTest
-    def test_get_daily_date(self, caseData):
+    def test_get_monthly_date(self, caseData):
         """
-        使用同步读取的方式去对电表进行日结读取 - 按照Entry+Date方式进行并进行数据项对比
+        使用同步读取的方式去对电表进行月结读取 - 按照Entry+Date方式进行并进行数据项对比
          """
 
-        print("Step 1 : 获取当前电表第一条日结数据")
+        print("Step 1 : 获取当前电表第一条月结数据")
         startTime = None
         DeviceBusy = 1
-        data = caseData('testData/HESAPI/MeterFrozenData/meter_daily_data.json')['meter_daily_data']
+        data = caseData('testData/HESAPI/MeterFrozenData/meter_monthly_data.json')['meter_monthly_data']
         requestData = data['request']
         requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
         while DeviceBusy == 1:
@@ -69,15 +69,15 @@ class Test_Meter_Daily:
             else:
                 DeviceBusy = 0
                 assert len(json.loads(response.text).get('payload')[0].get('data')) == setting[Project.name][
-                    'daily_len']
+                    'monthly_len']
                 startTime = json.loads(response.text).get('payload')[0].get('data')[0].get('dataTime')
 
-        print(f"Step 2 : 按照时间获取日结数据")
+        print(f"Step 2 : 按照时间获取月结数据")
         """
-        使用同步读取的方式去对电表进行日结读取 - 按照Entry+Date方式进行并进行数据项对比
+        使用同步读取的方式去对电表进行月结读取 - 按照Entry+Date方式进行并进行数据项对比
          """
         DeviceBusy = 1
-        data = caseData('testData/HESAPI/MeterFrozenData/meter_daily_data.json')['meter_daily_data']
+        data = caseData('testData/HESAPI/MeterFrozenData/meter_monthly_data.json')['meter_monthly_data']
         requestData = data['request']
         requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
         requestData['payload'][0]['data'][0]['parameter']['dataFetchMode'] = 1
@@ -100,4 +100,4 @@ class Test_Meter_Daily:
             else:
                 DeviceBusy = 0
                 assert len(json.loads(response.text).get('payload')[0].get('data')) == setting[Project.name][
-                    'daily_len']
+                    'monthly_len']

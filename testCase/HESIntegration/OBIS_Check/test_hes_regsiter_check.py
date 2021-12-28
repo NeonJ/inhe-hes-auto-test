@@ -1,4 +1,4 @@
-# -*- coding: UTF-8 -*-
+# -*-coding:utf-8-*-
 """
 # File       : test_hes_regsiter_check.py
 # Time       ：2021/5/12 14:18
@@ -19,85 +19,73 @@ class Test_HES_Register_Check:
 
 
     # @pytest.mark.skip
-    @hesTest
+    @OBISTest
     def test_register_get(self, register_get, get_database, get_result_table, caseData):
         DeviceBusy = 1
         print("Register_ID:{}".format(register_get))
         data = caseData('testData/HESAPI/OBISCheck/register_get.json')['register_get']
         requestData = data['request']
-        expectResJson = data['response']
-        print(caseData)
-        # response = requests.post(url=testUrl,json=requestData)
+        requestData['payload'][0]['data'][0]['registerId'] = register_get
+        requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
         while DeviceBusy == 1:
-            # response = requests.post(url=HESAPI(Address=get_project_config['HESAPI']['url']).requestAddress(),
-            #                          headers={"Content-Type": "application/json"},
-            #                          data=json.dumps(RequestQueue, indent=4), timeout=40)
             response = requests.post(url=HESAPI(Address=setting[Project.name]['api_url']).requestAddress(),
                                      headers={"Content-Type": "application/json"},
-                                     data=requestData, timeout=40)
+                                     json=requestData, timeout=40)
             time.sleep(1)
             if response.status_code == 504:
                 print('504 Error and try again')
                 time.sleep(3)
                 continue
             for payload in json.loads(response.text).get('payload'):
-                for data in payload.get('data'):
-                    print('Read Result: ', data.get('resultDesc'))
-                    if data.get('resultDesc') == 'Device Busying !':
-                        DeviceBusy = 1
-                        print('Device Busy and try again')
-                    else:
-                        DeviceBusy = 0
+                if payload.get('data') == []:
+                    print("RegisterID ERROR", json.loads(response.text).get('payload'))
+                    assert False
+                else:
+                    for data in payload.get('data'):
+                        print('Read Result: ', data.get('resultDesc'))
+                        if data.get('resultDesc') == 'Device Busying !':
+                            DeviceBusy = 1
+                            print('Device Busy and try again')
+                        else:
+                            DeviceBusy = 0
 
         for payload in json.loads(response.text).get('payload'):
             for data in payload.get('data'):
                 print('Get Value: ', data.get('resultValue'))
                 get_database.save_result(get_result_table, 'get_result', data.get('resultDesc'), register_get)
                 get_database.save_result(get_result_table, 'get_value', data.get('resultValue'), register_get)
-                assert data.get('resultDesc') == 'OK'
+            assert data.get('resultDesc') == 'OK'
 
-    @pytest.mark.skip
-    def test_register_set(self, register_set, get_project_config, get_database, get_result_table):
+    # @pytest.mark.skip
+    @OBISTest
+    def test_register_set(self, register_set, get_database, get_result_table, caseData):
         DeviceBusy = 1
         print("Register_ID:{}".format(register_set))
-        RequestQueue = RequestMessage(correlationId=get_project_config['Request']['correlationId'],
-                                      messageId=get_project_config['Request']['messageId'],
-                                      source=get_project_config['Request']['source'],
-                                      serviceType='GET_COMMON',
-                                      businessType='GET_COMMON',
-                                      messageType=get_project_config['Request']['messageType'],
-                                      asyncReplyFlag=get_project_config['Request']['asyncReplyFlag'],
-                                      deviceNo=get_project_config['Request']['deviceNo'],
-                                      deviceType=get_project_config['Request']['deviceType'],
-                                      registerId=register_set,
-                                      transactionId=get_project_config['Request']['transactionId'],
-                                      jobUniqueFlag=get_project_config['Request']['jobUniqueFlag'],
-                                      parameter=get_project_config['Request']['parameter'],
-                                      jobType=None,
-                                      accessSelector=get_project_config['Request']['accessSelector']).request_json()
-        # response = requests.post(url=HESAPI(Address=user_config['HESAPI']['url']).requestAddress(),
-        #                          headers={"Content-Type": "application/json"},
-        #                          data=json.dumps(RequestQueue, indent=4), timeout=40)
-        # for payload in json.loads(response.text).get('payload'):
-        #     for data in payload.get('data'):
-        #         print('Read Result: ', data.get('resultDesc'))
+        data = caseData('testData/HESAPI/OBISCheck/register_get.json')['register_get']
+        requestData = data['request']
+        requestData['payload'][0]['data'][0]['registerId'] = register_set
+        requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
         while DeviceBusy == 1:
             response = requests.post(url=HESAPI(Address=setting[Project.name]['api_url']).requestAddress(),
                                      headers={"Content-Type": "application/json"},
-                                     data=json.dumps(RequestQueue), timeout=40)
+                                     json=requestData, timeout=40)
             time.sleep(1)
             if response.status_code == 504:
                 print('504 Error and try again')
                 time.sleep(3)
                 continue
             for payload in json.loads(response.text).get('payload'):
-                for data in payload.get('data'):
-                    print('Read Result: ', data.get('resultDesc'))
-                    if data.get('resultDesc') == 'Device Busying !':
-                        DeviceBusy = 1
-                        print('Device Busy and try again')
-                    else:
-                        DeviceBusy = 0
+                if payload.get('data') == []:
+                    print("RegisterID ERROR", json.loads(response.text).get('payload'))
+                    assert False
+                else:
+                    for data in payload.get('data'):
+                        print('Read Result: ', data.get('resultDesc'))
+                        if data.get('resultDesc') == 'Device Busying !':
+                            DeviceBusy = 1
+                            print('Device Busy and try again')
+                        else:
+                            DeviceBusy = 0
 
         for payload in json.loads(response.text).get('payload'):
             for data in payload.get('data'):
@@ -108,26 +96,16 @@ class Test_HES_Register_Check:
                 get_database.save_result(get_result_table, 'get_value', data.get('resultValue'),
                                          register_set)
 
-        RequestQueue = RequestMessage(correlationId=get_project_config['Request']['correlationId'],
-                                      messageId=get_project_config['Request']['messageId'],
-                                      source=get_project_config['Request']['source'],
-                                      serviceType='SET_COMMON',
-                                      businessType='SET_COMMON',
-                                      messageType=get_project_config['Request']['messageType'],
-                                      asyncReplyFlag=get_project_config['Request']['asyncReplyFlag'],
-                                      deviceNo=get_project_config['Request']['deviceNo'],
-                                      deviceType=get_project_config['Request']['deviceType'],
-                                      registerId=register_set,
-                                      transactionId=get_project_config['Request']['transactionId'],
-                                      jobUniqueFlag=get_project_config['Request']['jobUniqueFlag'],
-                                      parameter=parameter,
-                                      jobType=None,
-                                      accessSelector=get_project_config['Request']['accessSelector']).request_json()
+        data = caseData('testData/HESAPI/OBISCheck/register_set.json')['register_set']
+        requestData = data['request']
+        requestData['payload'][0]['data'][0]['registerId'] = register_set
+        requestData['payload'][0]['data'][0]['parameter'] = parameter
+        requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
         DeviceBusy = 1
         while DeviceBusy == 1:
             response = requests.post(url=HESAPI(Address=setting[Project.name]['api_url']).requestAddress(),
                                      headers={"Content-Type": "application/json"},
-                                     data=json.dumps(RequestQueue), timeout=40)
+                                     json=requestData, timeout=40)
             time.sleep(1)
             if response.status_code == 504:
                 print('504 Error and try again')

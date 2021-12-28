@@ -18,9 +18,10 @@ class Test_RelayControl:
         data = caseData('testData/HESAPI/RequestMessage/relayControl.json')['test_RELAY_CONTROL_RELAYON']
         requestData = data['request']
         expectResJson = data['response']
-        print(caseData)
         response = requests.post(url=url,json=requestData)
         print(response.json())
+
+        assert response.status_code == 200
         assert AssertIn().checkIn(expectResJson, response.json()) is True
 
 
@@ -31,8 +32,9 @@ class Test_RelayControl:
         data = caseData('testData/HESAPI/RequestMessage/relayControl.json')['test_RELAY_CONTROL_RELAYOFF']
         requestData = data['request']
         expectResJson = data['response']
-        print(caseData)
         response = requests.post(url=url,json=requestData)
         print(response.json())
+
+        assert response.status_code == 200
         assert AssertIn().checkIn(expectResJson, response.json()) is True
 

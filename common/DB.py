@@ -1,4 +1,9 @@
-# -*- coding: UTF-8 -*-
+"""
+# File       : configs.py
+# Time       : 2021/12/16 18:03
+# Author     : 曹剑南
+# version    : python 3.7
+"""
 import psycopg2
 import psycopg2.extras
 import cx_Oracle
@@ -160,7 +165,7 @@ class DB:
 
     def initial_result(self, meter_no):
         """初始化OBIS Check结果表"""
-        table_name = 'h_ptl_register_check_' + datetime.datetime.now().strftime('%Y%m%d%H%M')
+        table_name = 'h_ptl_register_check_' + datetime.datetime.now().strftime('%Y%m%d')
         try:
             con = self.connect()
             cur = con.cursor()
@@ -209,6 +214,44 @@ class DB:
             cur.close()
             con.close()
 
+    def orcl_meter_init(self,meter_no):
+        try:
+            con = self.connect()
+            cur = con.cursor()
+            sql = "update c_ar_meter set DEV_STATUS=2 where METER_NO='{}'".format(meter_no)
+            cur.execute(sql)
+            con.commit()
+        except Exception as e:
+            print("get error: %s" % e)
+        finally:
+            cur.close()
+            con.close()
+
+    def orcl_meter_init_except_1(self,meter_no):
+        try:
+            con = self.connect()
+            cur = con.cursor()
+            sql = "update c_ar_meter set DEV_STATUS=1 where METER_NO='{}'".format(meter_no)
+            cur.execute(sql)
+            con.commit()
+        except Exception as e:
+            print("get error: %s" % e)
+        finally:
+            cur.close()
+            con.close()
+
+    def orcl_meter_init_except_2(self,meter_no):
+        try:
+            con = self.connect()
+            cur = con.cursor()
+            sql = "update c_ar_meter set DEV_STATUS=2, CONN_TYPE=13, COMMUNICATION_TYPE=7 where METER_NO='{}'".format(meter_no)
+            cur.execute(sql)
+            con.commit()
+        except Exception as e:
+            print("get error: %s" % e)
+        finally:
+            cur.close()
+            con.close()
 # if __name__ == '__main__':
 #     file_path = os.path.abspath(f"conf/DefaultValue/tulip/user.yaml")
 #     user_config = DB.read_config(file_path)

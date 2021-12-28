@@ -1,13 +1,15 @@
 {
-  "register_get": {
+  "register_action": {
     "request": {
       "header": {
-        "correlationId": "68e19310-1253-4a6c-bd9c-e60266e52429",
-        "messageId": "05a98597-fa9c-49bd-99ca-69d30d30dace",
-        "createTime": "20200910191946",
-        "serviceType": "GET_COMMON",
-        "businessType": "GET_COMMON",
+        "correlationId": "30b20234-6317-477e-abbd-c34e9ad4b35a",
+        "messageId": "7aea3826-e739-4c77-a527-2b7b17dbc982",
+        "serviceType": "SET_COMMON",
+        "businessType": "SET_COMMON",
         "source": "MDM",
+        "createTime": "211216200147",
+        "replyAddress": null,
+        "replyType": null,
         "messageType": "REQUEST",
         "asyncReplyFlag": false
       },
@@ -15,10 +17,26 @@
         {
           "deviceNo": "M202009040003",
           "deviceType": "METER",
-          "transactionId": "5ebbd125-e1d0-4a90-b0af-6d13d22f78e6",
+          "retryCount": 0,
+          "retryInterval": 0,
+          "priority": 0,
+          "endTime": null,
+          "startTime": null,
+          "transactionId": "4b76d9d8-fce9-40f7-8121-1c68055421b3",
+          "jobUniqueFlag": false,
           "data": [
             {
-              "registerId": "9300"
+              "clientId": null,
+              "registerId": "scriptRelayOff",
+              "accessSelector": 0,
+              "parameter": {
+                "dataItemName": "",
+                "dataItemType": 18,
+                "dataItemValue": "4",
+                "scalar": 0,
+                "unit": ""
+              },
+              "featurePoint": null
             }
           ]
         }
