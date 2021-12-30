@@ -4,7 +4,6 @@
 # @File : Test_RelayControl_Task.py
 
 import allure, pytest, requests, logging, time, datetime
-from kafka import KafkaProducer, KafkaConsumer
 from common.marker import *
 from config.settings import *
 
@@ -39,7 +38,7 @@ class Test_RelayControl_Task:
         requestData['payload'][0]['endTime'] = endTime
         requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
         response = requests.post(url=testUrl, json=requestData)
-        # assert response.status_code == 200
+        assert response.status_code == 200
 
         # Step2 生成异步任务后，任务正常执行完毕进入his，进入his表，则认为任务结束
         # 过期时间到，也会进入his表，这里暂不考虑
@@ -58,7 +57,7 @@ class Test_RelayControl_Task:
         # 查询生成Core执行结束后，his表任务状态
         sql_his = "select TASK_STATE from H_TASK_RUN_HIS where AUTO_RUN_ID='{}'".format(db_queue[0]['AUTO_RUN_ID'])
         db_queue = get_database.orcl_fetchall_dict(sql_his)
-        while len(db_queue) == 0 and count < 10:
+        while len(db_queue) == 0 and count < 50:
             time.sleep(5)
             db_queue = get_database.orcl_fetchall_dict(sql_his)
             print(db_queue)
