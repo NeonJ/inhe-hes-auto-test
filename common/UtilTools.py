@@ -38,7 +38,7 @@ class AssertIn:
                 if type(value) == list:
                     if value == []:
                         self.result.add(key)
-                        self.result.add(value)
+                        self.result.add(None)
                     else:
                         self._getKeys(value)
 
@@ -46,17 +46,17 @@ class AssertIn:
                     ## 如果dict为空处理
                     if value == {}:
                         self.result.add(key)
-                        self.result.add(value)
+                        self.result.add(None)
                     else:
                         self._getKeys(value)
                 ## 同list
                 if type(value) == tuple:
                     if value == ():
                         self.result.add(key)
-                        self.result.add(value)
+                        self.result.add(None)
                     else:
                         self._getKeys(value)
-                    self._getKeys(value)
+                    ##self._getKeys(value)
 
                 ## 如果循环的value类型为基本类型，直接添加
                 if type(value) in (str,int,float,set):
