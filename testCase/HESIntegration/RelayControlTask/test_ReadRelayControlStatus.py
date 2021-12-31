@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 # @Time : 2021/12/29 14:48
 # @Author : JingYang
-# @File : Test_RelayControl_Task.py
+# @File : test_ReadRelayControlStatus.py
 
 import allure, pytest, requests, logging, time, datetime
 from common.marker import *
 from config.settings import *
 
 
-class Test_RelayControl_Task:
+class Test_ReadRelayControlStatus:
 
     # Step1. 调用/api/v1/Request/RequestMessage接口，生成running任务
     # Step2. 待Core执行完毕，a)生成running s任务， b)Topic: relay-status-sync-task
