@@ -14,7 +14,7 @@ from common.UtilTools import *
 
 class Test_Auto_Register:
 
-    # @hesAsyncTest
+    @hesAsyncTest
     def test_meter_register(self, get_database, caseData, meter_init):
         """
         验证GPRS电表正常自动注册流程
@@ -29,8 +29,8 @@ class Test_Auto_Register:
         sql1 = "select AUTO_RUN_ID from H_TASK_RUNNING where NODE_NO='{}' and JOB_TYPE='DeviceRegist'".format(
             setting[Project.name]['meter_no'])
         db_queue = get_database.orcl_fetchall_dict(sql1)
-        while len(db_queue) == 0 and count < 6:
-            time.sleep(5)
+        while len(db_queue) == 0 and count < 10:
+            time.sleep(6)
             db_queue = get_database.orcl_fetchall_dict(sql1)
             print(db_queue)
             print('Waiting for Reg Tasks to Create...')
@@ -38,7 +38,7 @@ class Test_Auto_Register:
 
         sql2 = "select TASK_STATE from h_task_run_his where AUTO_RUN_ID='{}'".format(db_queue[0]['AUTO_RUN_ID'])
         db_queue = get_database.orcl_fetchall_dict(sql2)
-        while len(db_queue) == 0 and count < 15:
+        while len(db_queue) == 0 and count < 20:
             time.sleep(8)
             db_queue = get_database.orcl_fetchall_dict(sql2)
             print(db_queue)
@@ -51,7 +51,7 @@ class Test_Auto_Register:
         print(db_queue)
         assert db_queue[0]['DEV_STATUS'] == 4
 
-    # @hesAsyncTest
+    @hesAsyncTest
     def test_meter_register_exception_1(self, get_database, caseData, meter_init_except_1):
         """
         验证GPRS电表未安装不会自动注册
@@ -75,7 +75,7 @@ class Test_Auto_Register:
         fetch_data_list = []
         consumer = KafkaConsumer('comm-event-process', group_id='tester',
                                  bootstrap_servers=setting[Project.name]['kafka_url'])
-        while count < 5:
+        while count < 10:
             fetch_data_dict = consumer.poll(timeout_ms=2000, max_records=20)
             for keys, values in fetch_data_dict.items():
                 for i in values:
@@ -88,7 +88,7 @@ class Test_Auto_Register:
             fetch_data_list.append(fetch_data_dict)
         assert 'AR_UNINSTALLED_REG_DEVICE' in fetch_data_list.__str__()
 
-    # @hesAsyncTest
+    @hesAsyncTest
     def test_meter_register_exception_2(self, get_database, caseData, meter_init_except_2):
         """
         验证系统档案中电表档案不是GPRS电表但是通过了FEP请求注册,会将设备档案修改conn_type=1, communication_type=2后进行自动注册
@@ -104,8 +104,8 @@ class Test_Auto_Register:
         sql1 = "select AUTO_RUN_ID from H_TASK_RUNNING where NODE_NO='{}' and JOB_TYPE='DeviceRegist'".format(
             setting[Project.name]['meter_no'])
         db_queue = get_database.orcl_fetchall_dict(sql1)
-        while len(db_queue) == 0 and count < 6:
-            time.sleep(5)
+        while len(db_queue) == 0 and count < 10:
+            time.sleep(6)
             db_queue = get_database.orcl_fetchall_dict(sql1)
             print(db_queue)
             print('Waiting for Reg Tasks to Create...')
@@ -113,7 +113,7 @@ class Test_Auto_Register:
 
         sql2 = "select TASK_STATE from h_task_run_his where AUTO_RUN_ID='{}'".format(db_queue[0]['AUTO_RUN_ID'])
         db_queue = get_database.orcl_fetchall_dict(sql2)
-        while len(db_queue) == 0 and count < 15:
+        while len(db_queue) == 0 and count < 20:
             time.sleep(8)
             db_queue = get_database.orcl_fetchall_dict(sql2)
             print(db_queue)

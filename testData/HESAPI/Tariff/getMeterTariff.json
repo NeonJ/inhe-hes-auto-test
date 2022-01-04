@@ -1,0 +1,35 @@
+{
+  "test_GetMeterTariff_Active": {
+    "request": {
+      "meterNo": "M202009040003",
+      "tariffType": "1"
+    },
+    "response": {
+      "code": 200,
+      "desc": ""
+
+    }
+  },
+
+  "test_GetMeterTariff_Passive": {
+    "request": {
+      "meterNo": "M202009040003",
+      "tariffType": "2"
+    },
+    "response": {
+      "code": 200,
+      "desc": ""
+    }
+  },
+
+  "test_GetMeterTariff_All": {
+    "request": {
+      "meterNo": "M202009040003",
+      "tariffType": "0"
+    },
+    "response": {
+      "code": 200,
+      "desc": ""
+    }
+  }
+}
