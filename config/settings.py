@@ -18,13 +18,13 @@ setting = {
         "meter_no": "M202009040003",
         "api_url": "http://empower.hes-api.kaifa.tst",
         "web_url": "http://10.32.233.31:30071",
-        "kafka_url":"10.32.233.63:30077",
-        "ami_user":"dmms",
-        "ami_passwd":"sa",
-        "daily_entries":93,
-        "daily_len":22,
-        "monthly_entries":12,
-        "monthly_len":33,
+        "kafka_url": "10.32.233.63:30077",
+        "ami_user": "dmms",
+        "ami_passwd": "sa",
+        "daily_entries": 93,
+        "daily_len": 22,
+        "monthly_entries": 12,
+        "monthly_len": 33,
         "lp_entries": 4512,
         "lp_len": 5,
         "pq_entries": 1440,
@@ -49,16 +49,40 @@ setting = {
         "db_pwd": 'ami',
         "db_service": 'ami',
         "meter": 312121
+    },
+    "bamboo01": {
+        "db_source": "Oracle",
+        "db_host": "10.32.233.209",
+        "db_port": 1521,
+        "db_user": "empower",
+        "db_pwd": "empower",
+        "db_service": "ami_bamboo01",
+        "db_database": "ami_db",
+        "meter_no": "KFM3210700000004",
+        "api_url": "http://bamboo01.kaifa.tst/",
+        "web_url": "http://10.32.233.31:30536",
+        "kafka_url": "10.32.233.31:30553",
+        "ami_user": "dmms",
+        "ami_passwd": "sa",
+        "daily_entries": 90,
+        "daily_len": 21,
+        "monthly_entries": 15,
+        "monthly_len": 21,
+        "lp_entries": 100,
+        "lp_len": 2,
+        "pq_entries": 1440,
+        "pq_len": 5,
+        "event_entries": 3
     }
 }
 
 
 class Project:
-    name = 'empower'  # 与下面setting项目key对应
+    name = 'bamboo01'  # 与下面setting项目key对应
     tag = 'hesSyncTest or hesAsyncTest'  # 对应comms.marker  hesSyncTest or hesAsyncTest
     path = '/'  # 对testData目录接口对应
     continue_last_check = False  # 是否断点续测OBIS
 
-    obis_sql1 = "select register_id, class_id, attribute_id, register_desc, is_method, data_type, rw from "
+    obis_sql1 = "select register_id, class_id, index_id, register_type,data_type_int, rw from "
     obis_sql2 = " where PTL_TYPE = (select PTL_TYPE from c_ar_model where MODEL_CODE = (select model_code from c_ar_meter where meter_no = '{}'))".format(
         setting[name]['meter_no'])

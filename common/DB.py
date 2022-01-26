@@ -165,7 +165,30 @@ class DB:
 
     def initial_result(self, meter_no):
         """初始化OBIS Check结果表"""
-        table_name = 'h_ptl_register_check_' + datetime.datetime.now().strftime('%Y%m%d')
+        table_name = 'h_config_register_check_' + datetime.datetime.now().strftime('%Y%m%d')
+        try:
+            con = self.connect()
+            cur = con.cursor()
+            cur.execute(
+                f"create table {table_name} as select * from H_CONFIG_REGISTER where  ptl_type =(select PTL_TYPE from c_ar_model where MODEL_CODE = (select model_code from c_ar_meter where meter_no='{meter_no}'))")
+            cur.execute(f"alter table {table_name} add get_result varchar(128)")
+            cur.execute(f"alter table {table_name} add get_value varchar(1280)")
+            cur.execute(f"alter table {table_name} add set_result varchar(128)")
+            cur.execute(f"alter table {table_name} add set_value varchar(128)")
+            cur.execute(f"alter table {table_name} add action_result varchar(128)")
+            cur.execute(f"alter table {table_name} add action_value varchar(128)")
+            cur.execute(f"alter table {table_name} add default_value varchar(1024)")
+            con.commit()
+            return table_name
+        except Exception as e:
+            print("initial check result error: %s" % e)
+        finally:
+            cur.close()
+            con.close()
+
+    def initial_result_4(self, meter_no):
+        """初始化OBIS Check结果表"""
+        table_name = 'h_config_register_check_' + datetime.datetime.now().strftime('%Y%m%d')
         try:
             con = self.connect()
             cur = con.cursor()
@@ -204,7 +227,7 @@ class DB:
         try:
             con = self.connect()
             cur = con.cursor()
-            sql = "select table_name from user_tables where table_name like 'H_PTL_REGISTER_CHECK%' and ROWNUM=1 order by table_name desc"
+            sql = "select table_name from user_tables where table_name like 'H_CONFIG_REGISTER_CHECK_%' and ROWNUM=1 order by table_name desc"
             cur.execute(sql)
             fc = cur.fetchone()
             return fc
