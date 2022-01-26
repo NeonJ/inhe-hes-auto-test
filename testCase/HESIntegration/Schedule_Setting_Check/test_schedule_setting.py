@@ -25,7 +25,7 @@ class Test_Schedule_Setting:
         count = 1
         with allure.step('添加电表日结采集任务'):
             scheduleName = "AutoHES-Daily" + faker.name()
-            url = setting[Project.name]['web_url'] + 'api/hes-service/schedule.json'
+            url = setting[Project.name]['web_url'] + '/api/hes-service/schedule.json'
             etime = datetime.datetime.strptime(get_daily_date, "%y%m%d%H%M%S")
             sstime = (etime - datetime.timedelta(days=1)).strftime('%d/%m/%Y %H:%M:%S')
             eetime = etime.strftime('%d/%m/%Y %H:%M:%S')
@@ -55,7 +55,7 @@ class Test_Schedule_Setting:
             assert response.json()['code'] == 200
 
         with allure.step('获取任务schedule ID'):
-            url = setting[Project.name]['web_url'] + 'api/hes-service/schedule.json'
+            url = setting[Project.name]['web_url'] + '/api/hes-service/schedule.json'
             data = 'pageNo=1&pageSize=20&scheduleName={}'.format(scheduleName)
             re = requests.get(url, json=data, headers=token)
             assert re.status_code == 200
@@ -70,7 +70,7 @@ class Test_Schedule_Setting:
             print(object_id, meter_no)
 
         with allure.step('添加设备到Task'):
-            url = setting[Project.name]['web_url'] + 'api/hes-service/schedule/object/{}'.format(schedule_id)
+            url = setting[Project.name]['web_url'] + '/api/hes-service/schedule/object/{}'.format(schedule_id)
             data = {"taskObjectType": "METER", "scheduleObjectList": [{"objectId": object_id, "objectNo": meter_no}]}
             re = requests.post(url, json=data, headers=token)
 
@@ -79,7 +79,7 @@ class Test_Schedule_Setting:
             assert re.json()['desc'] == 'OK'
 
         with allure.step('执行任务'):
-            url = setting[Project.name]['web_url'] + 'api/hes-service/schedule/status/{}'.format(schedule_id)
+            url = setting[Project.name]['web_url'] + '/api/hes-service/schedule/status/{}'.format(schedule_id)
             data = {"scheduleId": schedule_id, "scheduleName": scheduleName,
                     "startTime": sstime, "endTime": eetime}
             re = requests.put(url, json=data, headers=token)
@@ -88,7 +88,7 @@ class Test_Schedule_Setting:
             assert re.json()['desc'] == 'OK'
 
         with allure.step('查看生成任务是否正确'):
-            url = setting[Project.name]['web_url'] + 'api/hes-service/schedule/task/{}.json'.format(schedule_id)
+            url = setting[Project.name]['web_url'] + '/api/hes-service/schedule/task/{}.json'.format(schedule_id)
             data = 'taskStatus=&pageNo=1&pageSize=20&deviceType=METER&scheduleFilterDeviceType='
             sql1 = "select * from H_CONFIG_PRODUCT_PROFILE where PROFILE_TYPE=1 and PRODUCT_CODE=(select PRODUCT_CODE from c_ar_meter where METER_NO='{}')".format(
                 setting[Project.name]['meter_no'])
@@ -102,7 +102,7 @@ class Test_Schedule_Setting:
             # assert obis in re.json()['data']['pageData'][0]['remark']  可以添加采集profiel obis的对比
 
         with allure.step('查看任务执行状态'):
-            url = setting[Project.name]['web_url'] + 'api/hes-service/schedule/task/history/{}.json'.format(schedule_id)
+            url = setting[Project.name]['web_url'] + '/api/hes-service/schedule/task/history/{}.json'.format(schedule_id)
             data = 'taskStatus=&pageNo=1&pageSize=20&deviceType=METER&scheduleFilterDeviceType=&startGenerateTime{}&endGenerateTime={}'.format(
                 (datetime.datetime.now() - datetime.timedelta(days=1)).strftime('%d/%m/%Y'),
                 (datetime.datetime.now() + datetime.timedelta(days=1)).strftime('%d/%m/%Y'))
@@ -123,7 +123,7 @@ class Test_Schedule_Setting:
         count = 1
         with allure.step('添加电表月结采集任务'):
             scheduleName = "AutoHES-Monthly" + faker.name()
-            url = setting[Project.name]['web_url'] + 'api/hes-service/schedule.json'
+            url = setting[Project.name]['web_url'] + '/api/hes-service/schedule.json'
             etime = datetime.datetime.strptime(get_monthly_date, "%y%m%d%H%M%S")
             sstime = (etime - datetime.timedelta(days=31)).strftime('%d/%m/%Y %H:%M:%S')
             eetime = (etime + datetime.timedelta(days=31)).strftime('%d/%m/%Y %H:%M:%S')
@@ -153,7 +153,7 @@ class Test_Schedule_Setting:
             assert response.json()['code'] == 200
 
         with allure.step('获取任务schedule ID'):
-            url = setting[Project.name]['web_url'] + 'api/hes-service/schedule.json'
+            url = setting[Project.name]['web_url'] + '/api/hes-service/schedule.json'
             data = 'pageNo=1&pageSize=20&scheduleName={}'.format(scheduleName)
             re = requests.get(url, json=data, headers=token)
             assert re.status_code == 200
@@ -168,7 +168,7 @@ class Test_Schedule_Setting:
             print(object_id, meter_no)
 
         with allure.step('添加设备到Task'):
-            url = setting[Project.name]['web_url'] + 'api/hes-service/schedule/object/{}'.format(schedule_id)
+            url = setting[Project.name]['web_url'] + '/api/hes-service/schedule/object/{}'.format(schedule_id)
             data = {"taskObjectType": "METER", "scheduleObjectList": [{"objectId": object_id, "objectNo": meter_no}]}
             re = requests.post(url, json=data, headers=token)
 
@@ -177,7 +177,7 @@ class Test_Schedule_Setting:
             assert re.json()['desc'] == 'OK'
 
         with allure.step('执行任务'):
-            url = setting[Project.name]['web_url'] + 'api/hes-service/schedule/status/{}'.format(schedule_id)
+            url = setting[Project.name]['web_url'] + '/api/hes-service/schedule/status/{}'.format(schedule_id)
             data = {"scheduleId": schedule_id, "scheduleName": scheduleName,
                     "startTime": sstime, "endTime": eetime}
             re = requests.put(url, json=data, headers=token)
@@ -186,7 +186,7 @@ class Test_Schedule_Setting:
             assert re.json()['desc'] == 'OK'
 
         with allure.step('查看生成任务是否正确'):
-            url = setting[Project.name]['web_url'] + 'api/hes-service/schedule/task/{}.json'.format(schedule_id)
+            url = setting[Project.name]['web_url'] + '/api/hes-service/schedule/task/{}.json'.format(schedule_id)
             data = 'taskStatus=&pageNo=1&pageSize=20&deviceType=METER&scheduleFilterDeviceType='
             sql1 = "select * from H_CONFIG_PRODUCT_PROFILE where PROFILE_TYPE=2 and PRODUCT_CODE=(select PRODUCT_CODE from c_ar_meter where METER_NO='{}')".format(
                 setting[Project.name]['meter_no'])
@@ -200,7 +200,7 @@ class Test_Schedule_Setting:
             # assert obis in re.json()['data']['pageData'][0]['remark']  可以添加采集profiel obis的对比
 
         with allure.step('查看任务执行状态'):
-            url = setting[Project.name]['web_url'] + 'api/hes-service/schedule/task/history/{}.json'.format(schedule_id)
+            url = setting[Project.name]['web_url'] + '/api/hes-service/schedule/task/history/{}.json'.format(schedule_id)
             data = 'taskStatus=&pageNo=1&pageSize=20&deviceType=METER&scheduleFilterDeviceType=&startGenerateTime{}&endGenerateTime={}'.format(
                 (datetime.datetime.now() - datetime.timedelta(days=1)).strftime('%d/%m/%Y'),
                 (datetime.datetime.now() + datetime.timedelta(days=1)).strftime('%d/%m/%Y'))
@@ -221,7 +221,7 @@ class Test_Schedule_Setting:
         count = 1
         with allure.step('添加电表曲线采集任务'):
             scheduleName = "AutoHES-LP" + faker.name()
-            url = setting[Project.name]['web_url'] + 'api/hes-service/schedule.json'
+            url = setting[Project.name]['web_url'] + '/api/hes-service/schedule.json'
             etime = datetime.datetime.strptime(get_lp_date, "%y%m%d%H%M%S")
             sstime = (etime - datetime.timedelta(hours=1)).strftime('%d/%m/%Y %H:%M:%S')
             eetime = (etime + datetime.timedelta(hours=1)).strftime('%d/%m/%Y %H:%M:%S')
@@ -251,7 +251,7 @@ class Test_Schedule_Setting:
             assert response.json()['code'] == 200
 
         with allure.step('获取任务schedule ID'):
-            url = setting[Project.name]['web_url'] + 'api/hes-service/schedule.json'
+            url = setting[Project.name]['web_url'] + '/api/hes-service/schedule.json'
             data = 'pageNo=1&pageSize=20&scheduleName={}'.format(scheduleName)
             re = requests.get(url, json=data, headers=token)
             assert re.status_code == 200
@@ -266,7 +266,7 @@ class Test_Schedule_Setting:
             print(object_id, meter_no)
 
         with allure.step('添加设备到Task'):
-            url = setting[Project.name]['web_url'] + 'api/hes-service/schedule/object/{}'.format(schedule_id)
+            url = setting[Project.name]['web_url'] + '/api/hes-service/schedule/object/{}'.format(schedule_id)
             data = {"taskObjectType": "METER", "scheduleObjectList": [{"objectId": object_id, "objectNo": meter_no}]}
             re = requests.post(url, json=data, headers=token)
 
@@ -275,7 +275,7 @@ class Test_Schedule_Setting:
             assert re.json()['desc'] == 'OK'
 
         with allure.step('执行任务'):
-            url = setting[Project.name]['web_url'] + 'api/hes-service/schedule/status/{}'.format(schedule_id)
+            url = setting[Project.name]['web_url'] + '/api/hes-service/schedule/status/{}'.format(schedule_id)
             data = {"scheduleId": schedule_id, "scheduleName": scheduleName,
                     "startTime": sstime, "endTime": eetime}
             re = requests.put(url, json=data, headers=token)
@@ -284,7 +284,7 @@ class Test_Schedule_Setting:
             assert re.json()['desc'] == 'OK'
 
         with allure.step('查看生成任务是否正确'):
-            url = setting[Project.name]['web_url'] + 'api/hes-service/schedule/task/{}.json'.format(schedule_id)
+            url = setting[Project.name]['web_url'] + '/api/hes-service/schedule/task/{}.json'.format(schedule_id)
             data = 'taskStatus=&pageNo=1&pageSize=20&deviceType=METER&scheduleFilterDeviceType='
             sql1 = "select * from H_CONFIG_PRODUCT_PROFILE where PROFILE_TYPE=3 and PRODUCT_CODE=(select PRODUCT_CODE from c_ar_meter where METER_NO='{}')".format(
                 setting[Project.name]['meter_no'])
@@ -298,7 +298,7 @@ class Test_Schedule_Setting:
             # assert obis in re.json()['data']['pageData'][0]['remark']  可以添加采集profiel obis的对比
 
         with allure.step('查看任务执行状态'):
-            url = setting[Project.name]['web_url'] + 'api/hes-service/schedule/task/history/{}.json'.format(schedule_id)
+            url = setting[Project.name]['web_url'] + '/api/hes-service/schedule/task/history/{}.json'.format(schedule_id)
             data = 'taskStatus=&pageNo=1&pageSize=20&deviceType=METER&scheduleFilterDeviceType=&startGenerateTime{}&endGenerateTime={}'.format(
                 (datetime.datetime.now() - datetime.timedelta(days=1)).strftime('%d/%m/%Y'),
                 (datetime.datetime.now() + datetime.timedelta(days=1)).strftime('%d/%m/%Y'))
@@ -319,7 +319,7 @@ class Test_Schedule_Setting:
         count = 1
         with allure.step('添加电表日结采集任务'):
             scheduleName = "AutoHES-Daily-FreezeEvent" + faker.name()
-            url = setting[Project.name]['web_url'] + 'api/hes-service/schedule.json'
+            url = setting[Project.name]['web_url'] + '/api/hes-service/schedule.json'
             etime = datetime.datetime.strptime(get_daily_event, "%y%m%d%H%M%S")
             sstime = (etime - datetime.timedelta(days=1)).strftime('%d/%m/%Y %H:%M:%S')
             eetime = (etime + datetime.timedelta(days=1)).strftime('%d/%m/%Y %H:%M:%S')
@@ -349,7 +349,7 @@ class Test_Schedule_Setting:
             assert response.json()['code'] == 200
 
         with allure.step('获取任务schedule ID'):
-            url = setting[Project.name]['web_url'] + 'api/hes-service/schedule.json'
+            url = setting[Project.name]['web_url'] + '/api/hes-service/schedule.json'
             data = 'pageNo=1&pageSize=20&scheduleName={}'.format(scheduleName)
             re = requests.get(url, json=data, headers=token)
             assert re.status_code == 200
@@ -364,7 +364,7 @@ class Test_Schedule_Setting:
             print(object_id, meter_no)
 
         with allure.step('添加设备到Task'):
-            url = setting[Project.name]['web_url'] + 'api/hes-service/schedule/object/{}'.format(schedule_id)
+            url = setting[Project.name]['web_url'] + '/api/hes-service/schedule/object/{}'.format(schedule_id)
             data = {"taskObjectType": "METER", "scheduleObjectList": [{"objectId": object_id, "objectNo": meter_no}]}
             re = requests.post(url, json=data, headers=token)
 
@@ -373,7 +373,7 @@ class Test_Schedule_Setting:
             assert re.json()['desc'] == 'OK'
 
         with allure.step('执行任务'):
-            url = setting[Project.name]['web_url'] + 'api/hes-service/schedule/status/{}'.format(schedule_id)
+            url = setting[Project.name]['web_url'] + '/api/hes-service/schedule/status/{}'.format(schedule_id)
             data = {"scheduleId": schedule_id, "scheduleName": scheduleName,
                     "startTime": sstime, "endTime": eetime}
             re = requests.put(url, json=data, headers=token)
@@ -382,7 +382,7 @@ class Test_Schedule_Setting:
             assert re.json()['desc'] == 'OK'
 
         with allure.step('查看生成任务是否正确'):
-            url = setting[Project.name]['web_url'] + 'api/hes-service/schedule/task/{}.json'.format(schedule_id)
+            url = setting[Project.name]['web_url'] + '/api/hes-service/schedule/task/{}.json'.format(schedule_id)
             data = 'taskStatus=&pageNo=1&pageSize=20&deviceType=METER&scheduleFilterDeviceType='
             sql1 = "select * from H_CONFIG_PRODUCT_PROFILE where PROFILE_TYPE=5 and PRODUCT_CODE=(select PRODUCT_CODE from c_ar_meter where METER_NO='{}')".format(
                 setting[Project.name]['meter_no'])
@@ -396,7 +396,7 @@ class Test_Schedule_Setting:
             # assert obis in re.json()['data']['pageData'][0]['remark']  可以添加采集profiel obis的对比
 
         with allure.step('查看任务执行状态'):
-            url = setting[Project.name]['web_url'] + 'api/hes-service/schedule/task/history/{}.json'.format(schedule_id)
+            url = setting[Project.name]['web_url'] + '/api/hes-service/schedule/task/history/{}.json'.format(schedule_id)
             data = 'taskStatus=&pageNo=1&pageSize=20&deviceType=METER&scheduleFilterDeviceType=&startGenerateTime{}&endGenerateTime={}'.format(
                 (datetime.datetime.now() - datetime.timedelta(days=1)).strftime('%d/%m/%Y'),
                 (datetime.datetime.now() + datetime.timedelta(days=1)).strftime('%d/%m/%Y'))
@@ -417,7 +417,7 @@ class Test_Schedule_Setting:
         count = 1
         with allure.step('添加电表日结采集任务'):
             scheduleName = "AutoHES-ST" + faker.name()
-            url = setting[Project.name]['web_url'] + 'api/hes-service/schedule.json'
+            url = setting[Project.name]['web_url'] + '/api/hes-service/schedule.json'
             sstime = (datetime.datetime.now() - datetime.timedelta(days=1)).strftime('%d/%m/%Y %H:%M:%S')
             data = {
                 "taskType": "SetTime",
@@ -447,7 +447,7 @@ class Test_Schedule_Setting:
             assert response.json()['code'] == 200
 
         with allure.step('获取任务schedule ID'):
-            url = setting[Project.name]['web_url'] + 'api/hes-service/schedule.json'
+            url = setting[Project.name]['web_url'] + '/api/hes-service/schedule.json'
             data = 'pageNo=1&pageSize=20&scheduleName={}'.format(scheduleName)
             re = requests.get(url, json=data, headers=token)
             assert re.status_code == 200
@@ -460,7 +460,7 @@ class Test_Schedule_Setting:
             object_id = get_database.orcl_fetchall_dict(sql)[0]['ID']
 
         with allure.step('添加TR到Task'):
-            url = setting[Project.name]['web_url'] + 'api/hes-service/schedule/object/{}'.format(schedule_id)
+            url = setting[Project.name]['web_url'] + '/api/hes-service/schedule/object/{}'.format(schedule_id)
             data = {"taskObjectType": "REGION", "scheduleObjectList": [{"objectId": object_id}]}
             re = requests.post(url, json=data, headers=token)
 
@@ -469,7 +469,7 @@ class Test_Schedule_Setting:
             assert re.json()['desc'] == 'OK'
 
         with allure.step('执行任务'):
-            url = setting[Project.name]['web_url'] + 'api/hes-service/schedule/status/{}'.format(schedule_id)
+            url = setting[Project.name]['web_url'] + '/api/hes-service/schedule/status/{}'.format(schedule_id)
             data = {"scheduleId": schedule_id, "scheduleName": scheduleName,
                     "startTime": sstime}
             re = requests.put(url, json=data, headers=token)
@@ -499,7 +499,7 @@ class Test_Schedule_Setting:
             assert db_queue[0]['TASK_STATE'] == 3
 
         with allure.step('停止周期任务'):
-            url = setting[Project.name]['web_url'] + 'api/hes-service/schedule/status/{}'.format(schedule_id)
+            url = setting[Project.name]['web_url'] + '/api/hes-service/schedule/status/{}'.format(schedule_id)
             data = {}
             re = requests.put(url, json=data, headers=token)
             assert re.status_code == 200

@@ -19,7 +19,7 @@ class Test_Meter_Status:
         """
         验证接口获取电表状态字
         """
-        data = "Mdm/GetMeterStatus?MeterNo={}".format(setting[Project.name]['meter_no'])
+        data = "/Mdm/GetMeterStatus?MeterNo={}".format(setting[Project.name]['meter_no'])
         response = requests.get(url=setting[Project.name]['api_url'] + data,
                                 headers={"Content-Type": "application/json"},
                                 timeout=40)
@@ -37,7 +37,7 @@ class Test_Meter_Status:
         """
         验证接口获取电表和DCU上下线状态 GetOnlineDevice
         """
-        data = "OnlineDevice/GetOnlineDevice?deviceNo={}".format(setting[Project.name]['meter_no'])
+        data = "/OnlineDevice/GetOnlineDevice?deviceNo={}".format(setting[Project.name]['meter_no'])
         response = requests.get(url=setting[Project.name]['api_url'] + data,
                                 headers={"Content-Type": "application/json"},
                                 timeout=40)
@@ -55,7 +55,7 @@ class Test_Meter_Status:
         """
         验证接口获取电表和DCU上下线状态 getMeterOnlineStatus
         """
-        data = "Mdm/getMeterOnlineStatus?meterNo={}".format(setting[Project.name]['meter_no'])
+        data = "/Mdm/getMeterOnlineStatus?meterNo={}".format(setting[Project.name]['meter_no'])
         response = requests.get(url=setting[Project.name]['api_url'] + data,
                                 headers={"Content-Type": "application/json"},
                                 timeout=40)
@@ -73,7 +73,7 @@ class Test_Meter_Status:
         """
         验证接口获取电表和DCU上下线状态 getDeviceNoOnlineStatus
         """
-        data = "Mdm/getDeviceNoOnlineStatus?deviceNo={}".format(setting[Project.name]['meter_no'])
+        data = "/Mdm/getDeviceNoOnlineStatus?deviceNo={}".format(setting[Project.name]['meter_no'])
         response = requests.get(url=setting[Project.name]['api_url'] + data,
                                 headers={"Content-Type": "application/json"},
                                 timeout=40)
@@ -91,7 +91,7 @@ class Test_Meter_Status:
         """
         验证接口获取MasterCore任务状态
         """
-        data = "Monitor/GetMasterCoreState"
+        data = "/Monitor/GetMasterCoreState"
         response = requests.get(url=setting[Project.name]['api_url'] + data,
                                 headers={"Content-Type": "application/json"},
                                 timeout=40)
@@ -109,7 +109,7 @@ class Test_Meter_Status:
         """
         验证接口暂停和启动MasterCore任务生成，加载，分发
         """
-        data = "Monitor/SuspendMasterCoreTask?signal=2"  # 暂停
+        data = "/Monitor/SuspendMasterCoreTask?signal=2"  # 暂停
         response = requests.get(url=setting[Project.name]['api_url'] + data,
                                 headers={"Content-Type": "application/json"},
                                 timeout=40)
@@ -127,7 +127,7 @@ class Test_Meter_Status:
         """
         验证接口暂停和启动MasterCore任务生成，加载，分发
         """
-        data = "Monitor/SuspendMasterCoreTask?signal=1"  # 启动
+        data = "/Monitor/SuspendMasterCoreTask?signal=1"  # 启动
         response = requests.get(url=setting[Project.name]['api_url'] + data,
                                 headers={"Content-Type": "application/json"},
                                 timeout=40)

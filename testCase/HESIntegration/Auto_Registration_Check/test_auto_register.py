@@ -26,6 +26,7 @@ class Test_Auto_Register:
         producer = KafkaProducer(bootstrap_servers=setting[Project.name]['kafka_url'])
         producer.send('register-event-process', key=b'KafkaBatchPush', value=json.dumps(data).encode())
         producer.close()
+        time.sleep(5)
         sql1 = "select AUTO_RUN_ID from H_TASK_RUNNING where NODE_NO='{}' and JOB_TYPE='DeviceRegist'".format(
             setting[Project.name]['meter_no'])
         db_queue = get_database.orcl_fetchall_dict(sql1)

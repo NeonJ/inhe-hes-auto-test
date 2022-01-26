@@ -10,6 +10,7 @@ import pytest, allure, time, datetime, requests, random
 from common.HESAPI import *
 from common.marker import *
 from config.settings import *
+from common.Request import *
 
 
 class Test_Meter_Daily:
@@ -19,29 +20,17 @@ class Test_Meter_Daily:
         """
         使用同步读取的方式去对电表进行日结entries数据对比
         """
-        DeviceBusy = 1
         data = caseData('testData/HESAPI/MeterFrozenData/meter_daily_data.json')['meter_daily_entries']
         requestData = data['request']
         requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
-        while DeviceBusy == 1:
-            response = requests.post(url=HESAPI(Address=setting[Project.name]['api_url']).requestAddress(),
-                                     headers={"Content-Type": "application/json"},
-                                     json=requestData, timeout=40)
-            time.sleep(1)
-            if response.status_code == 504 or json.loads(response.text).get('payload')[0].get(
-                    'desc') == 'Device Busying !':
-                print('504 Error and try again')
-                time.sleep(3)
-                response = requests.post(url=HESAPI(Address=setting[Project.name]['api_url']).requestAddress(),
-                                         headers={"Content-Type": "application/json"},
-                                         json=requestData, timeout=40)
-                continue
-            if json.loads(response.text).get('reply')['replyCode'] != 200:
-                assert False
-            else:
-                DeviceBusy = 0
-                assert int(json.loads(response.text).get('payload')[0].get('data')[0].get('resultValue').get(
-                    'dataItemValue')) == setting[Project.name]['daily_entries']
+        response = TestRequest().post(url=HESAPI(Address=setting[Project.name]['api_url']).requestAddress(),
+                                      params=requestData)
+        print(response)
+        if response.get('reply')['replyCode'] != 200:
+            assert False
+        else:
+            assert int(response.get('payload')[0].get('data')[0].get('resultValue').get(
+                'dataItemValue')) == setting[Project.name]['daily_entries']
 
     @hesSyncTest
     def test_get_daily_date(self, caseData):
