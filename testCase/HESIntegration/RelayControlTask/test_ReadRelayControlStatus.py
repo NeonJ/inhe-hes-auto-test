@@ -19,6 +19,7 @@ class Test_ReadRelayControlStatus:
         # Step1 生成异步操作读取任务，hes-api同步执行
         data = caseData('testData/HESAPI/RelayControlTask/read_RelayControlStatus.json')['ReadRelayControlStatusSync']
         requestData = data['request']
+        requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
         response = requests.post(url=testUrl, json=requestData)
         assert response.status_code == 200
 

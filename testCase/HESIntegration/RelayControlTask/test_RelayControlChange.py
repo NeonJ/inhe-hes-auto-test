@@ -20,6 +20,7 @@ class Test_RelayControlChange:
         data = caseData('testData/HESAPI/RelayControlTask/relayControl.json')['test_RELAY_CONTROL_RELAYON']
         requestData = data['request']
         expectResJson = data['response']
+        requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
         response = requests.post(url=url,json=requestData)
         print(response.json())
 
@@ -34,6 +35,7 @@ class Test_RelayControlChange:
         data = caseData('testData/HESAPI/RelayControlTask/relayControl.json')['test_RELAY_CONTROL_RELAYOFF']
         requestData = data['request']
         expectResJson = data['response']
+        requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
         response = requests.post(url=url,json=requestData)
         print(response.json())
 
