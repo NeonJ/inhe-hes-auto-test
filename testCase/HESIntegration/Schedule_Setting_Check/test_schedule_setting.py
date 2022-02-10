@@ -125,8 +125,8 @@ class Test_Schedule_Setting:
             scheduleName = "AutoHES-Monthly" + faker.name()
             url = setting[Project.name]['web_url'] + '/api/hes-service/schedule.json'
             etime = datetime.datetime.strptime(get_monthly_date, "%y%m%d%H%M%S")
-            sstime = (etime - datetime.timedelta(days=31)).strftime('%d/%m/%Y %H:%M:%S')
-            eetime = (etime + datetime.timedelta(days=31)).strftime('%d/%m/%Y %H:%M:%S')
+            sstime = (etime - datetime.timedelta(days=15)).strftime('%d/%m/%Y %H:%M:%S')
+            eetime = (etime).strftime('%d/%m/%Y %H:%M:%S')
             data = {
                 "taskType": "ProfileRM",
                 "scheduleType": "TEMPORARY",
@@ -145,9 +145,11 @@ class Test_Schedule_Setting:
                 "delayExecutionTime": 130,
                 "profileType": "MONTHLY",
                 "scheduleName": scheduleName,
+                "scheduleTypeFilter": "ALL",
                 "startTime": sstime,  # "25/12/2021 00:00:00"
                 "endTime": eetime  # "27/12/2021 00:00:00"
             }
+            print(data)
             response = requests.post(url=url, headers=token, json=data)
             assert response.status_code == 200
             assert response.json()['code'] == 200
@@ -192,7 +194,7 @@ class Test_Schedule_Setting:
                 setting[Project.name]['meter_no'])
             obis = get_database.orcl_fetchall_dict(sql1)
             re = requests.get(url, json=data, headers=token)
-            while re.json()['data']['pageData'] == [] and count < 20:
+            while re.json()['data']['pageData'] == [] and count < 30:
                 re = requests.get(url, json=data, headers=token)
                 time.sleep(10)
                 count = count + 1
@@ -205,7 +207,7 @@ class Test_Schedule_Setting:
                 (datetime.datetime.now() - datetime.timedelta(days=1)).strftime('%d/%m/%Y'),
                 (datetime.datetime.now() + datetime.timedelta(days=1)).strftime('%d/%m/%Y'))
             re = requests.get(url, json=data, headers=token)
-            while re.json()['data']['pageData'] == [] and count < 20:
+            while re.json()['data']['pageData'] == [] and count < 40:
                 re = requests.get(url, json=data, headers=token)
                 time.sleep(10)
                 count = count + 1
@@ -481,7 +483,7 @@ class Test_Schedule_Setting:
             sql1 = "select AUTO_RUN_ID from H_TASK_RUNNING where NODE_NO='{}' and JOB_TYPE='SetTime'".format(
                 setting[Project.name]['meter_no'])
             db_queue = get_database.orcl_fetchall_dict(sql1)
-            while len(db_queue) == 0 and count < 12:
+            while len(db_queue) == 0 and count < 20:
                 time.sleep(10)
                 db_queue = get_database.orcl_fetchall_dict(sql1)
                 print(db_queue)
@@ -490,7 +492,7 @@ class Test_Schedule_Setting:
 
             sql2 = "select TASK_STATE from h_task_run_his where AUTO_RUN_ID='{}'".format(db_queue[0]['AUTO_RUN_ID'])
             db_queue = get_database.orcl_fetchall_dict(sql2)
-            while len(db_queue) == 0 and count < 25:
+            while len(db_queue) == 0 and count < 30:
                 time.sleep(10)
                 db_queue = get_database.orcl_fetchall_dict(sql2)
                 print(db_queue)
@@ -506,18 +508,18 @@ class Test_Schedule_Setting:
             assert re.json()['code'] == 200
             assert re.json()['desc'] == 'OK'
 
-    @hesAsyncTest
-    def test_meter_schedule_setting_event(self, get_database, token, get_daily_event):
+    @hesAsyncTest1
+    def test_meter_schedule_setting_event(self, get_database, token, get_event_standard):
         """
-        验证Schedule Setting生成采集GPRS电表日结
+        验证Schedule Setting生成采集GPRS电表事件采集
         """
         count = 1
-        with allure.step('添加电表日结采集任务'):
-            scheduleName = "AutoHES-Daily-Event" + faker.name()
-            url = setting[Project.name]['web_url'] + 'api/hes-service/schedule.json'
-            etime = datetime.datetime.strptime(get_daily_event, "%y%m%d%H%M%S")
+        with allure.step('添加电表事件采集任务'):
+            scheduleName = "AutoHES-Event" + faker.name()
+            url = setting[Project.name]['web_url'] + '/api/hes-service/schedule.json'
+            etime = datetime.datetime.strptime(get_event_standard, "%y%m%d%H%M%S")
             sstime = (etime - datetime.timedelta(hours=12)).strftime('%d/%m/%Y %H:%M:%S')
-            eetime = (etime + datetime.timedelta(hours=12)).strftime('%d/%m/%Y %H:%M:%S')
+            eetime = (etime).strftime('%d/%m/%Y %H:%M:%S')
             data = {
                 "taskType": "ProfileRE",
                 "scheduleType": "TEMPORARY",
@@ -544,7 +546,7 @@ class Test_Schedule_Setting:
             assert response.json()['code'] == 200
 
         with allure.step('获取任务schedule ID'):
-            url = setting[Project.name]['web_url'] + 'api/hes-service/schedule.json'
+            url = setting[Project.name]['web_url'] + '/api/hes-service/schedule.json'
             data = 'pageNo=1&pageSize=20&scheduleName={}'.format(scheduleName)
             re = requests.get(url, json=data, headers=token)
             assert re.status_code == 200
@@ -559,7 +561,7 @@ class Test_Schedule_Setting:
             print(object_id, meter_no)
 
         with allure.step('添加设备到Task'):
-            url = setting[Project.name]['web_url'] + 'api/hes-service/schedule/object/{}'.format(schedule_id)
+            url = setting[Project.name]['web_url'] + '/api/hes-service/schedule/object/{}'.format(schedule_id)
             data = {"taskObjectType": "METER", "scheduleObjectList": [{"objectId": object_id, "objectNo": meter_no}]}
             re = requests.post(url, json=data, headers=token)
 
@@ -568,7 +570,7 @@ class Test_Schedule_Setting:
             assert re.json()['desc'] == 'OK'
 
         with allure.step('执行任务'):
-            url = setting[Project.name]['web_url'] + 'api/hes-service/schedule/status/{}'.format(schedule_id)
+            url = setting[Project.name]['web_url'] + '/api/hes-service/schedule/status/{}'.format(schedule_id)
             data = {"scheduleId": schedule_id, "scheduleName": scheduleName,
                     "startTime": sstime, "endTime": eetime}
             re = requests.put(url, json=data, headers=token)
@@ -577,13 +579,13 @@ class Test_Schedule_Setting:
             assert re.json()['desc'] == 'OK'
 
         with allure.step('查看生成任务是否正确'):
-            url = setting[Project.name]['web_url'] + 'api/hes-service/schedule/task/{}.json'.format(schedule_id)
+            url = setting[Project.name]['web_url'] + '/api/hes-service/schedule/task/{}.json'.format(schedule_id)
             data = 'taskStatus=&pageNo=1&pageSize=20&deviceType=METER&scheduleFilterDeviceType='
             sql1 = "select * from H_CONFIG_PRODUCT_PROFILE where PROFILE_TYPE=4 and PRODUCT_CODE=(select PRODUCT_CODE from c_ar_meter where METER_NO='{}')".format(
                 setting[Project.name]['meter_no'])
             obis = get_database.orcl_fetchall_dict(sql1)
             re = requests.get(url, json=data, headers=token)
-            while re.json()['data']['pageData'] == [] and count < 20:
+            while re.json()['data']['pageData'] == [] and count < 30:
                 re = requests.get(url, json=data, headers=token)
                 time.sleep(10)
                 count = count + 1
@@ -591,12 +593,12 @@ class Test_Schedule_Setting:
             # assert obis in re.json()['data']['pageData'][0]['remark']  可以添加采集profiel obis的对比
 
         with allure.step('查看任务执行状态'):
-            url = setting[Project.name]['web_url'] + 'api/hes-service/schedule/task/history/{}.json'.format(schedule_id)
+            url = setting[Project.name]['web_url'] + '/api/hes-service/schedule/task/history/{}.json'.format(schedule_id)
             data = 'taskStatus=&pageNo=1&pageSize=20&deviceType=METER&scheduleFilterDeviceType=&startGenerateTime{}&endGenerateTime={}'.format(
                 (datetime.datetime.now() - datetime.timedelta(days=1)).strftime('%d/%m/%Y'),
                 (datetime.datetime.now() + datetime.timedelta(days=1)).strftime('%d/%m/%Y'))
             re = requests.get(url, json=data, headers=token)
-            while re.json()['data']['pageData'] == [] and count < 25:
+            while re.json()['data']['pageData'] == [] and count < 45:
                 re = requests.get(url, json=data, headers=token)
                 time.sleep(10)
                 count = count + 1

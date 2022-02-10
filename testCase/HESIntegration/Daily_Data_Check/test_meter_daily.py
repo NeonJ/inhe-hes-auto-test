@@ -20,7 +20,7 @@ class Test_Meter_Daily:
         """
         使用同步读取的方式去对电表进行日结entries数据对比
         """
-        data = caseData('testData/HESAPI/MeterFrozenData/meter_daily_data.json')['meter_daily_entries']
+        data = caseData('testData/{}/MeterFrozenData/meter_daily_data.json'.format(Project.name))['meter_daily_entries']
         requestData = data['request']
         requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
         response = TestRequest().post(url=HESAPI(Address=setting[Project.name]['api_url']).requestAddress(),
@@ -41,23 +41,21 @@ class Test_Meter_Daily:
         print("Step 1 : 获取当前电表第一条日结数据")
         startTime = None
         DeviceBusy = 1
-        data = caseData('testData/HESAPI/MeterFrozenData/meter_daily_data.json')['meter_daily_data']
+        data = caseData('testData/{}/MeterFrozenData/meter_daily_data.json'.format(Project.name))['meter_daily_data']
         requestData = data['request']
         requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
         while DeviceBusy == 1:
             response = requests.post(url=HESAPI(Address=setting[Project.name]['api_url']).requestAddress(),
                                      headers={"Content-Type": "application/json"},
-                                     json=requestData, timeout=40)
+                                     json=requestData, timeout=66)
             time.sleep(1)
             if response.status_code == 504 or json.loads(response.text).get('payload')[0].get(
                     'desc') == 'Device Busying !':
                 print('504 Error and try again')
                 time.sleep(3)
-                response = requests.post(url=HESAPI(Address=setting[Project.name]['api_url']).requestAddress(),
-                                         headers={"Content-Type": "application/json"},
-                                         json=requestData, timeout=40)
                 continue
-            if json.loads(response.text).get('reply')['replyCode'] != 200:
+            elif json.loads(response.text).get('reply')['replyCode'] != 200:
+                DeviceBusy = 0
                 assert False
             else:
                 DeviceBusy = 0
@@ -70,7 +68,7 @@ class Test_Meter_Daily:
         使用同步读取的方式去对电表进行日结读取 - 按照Entry+Date方式进行并进行数据项对比
          """
         DeviceBusy = 1
-        data = caseData('testData/HESAPI/MeterFrozenData/meter_daily_data.json')['meter_daily_data']
+        data = caseData('testData/{}/MeterFrozenData/meter_daily_data.json'.format(Project.name))['meter_daily_data']
         requestData = data['request']
         requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
         requestData['payload'][0]['data'][0]['parameter']['dataFetchMode'] = 1
@@ -80,17 +78,15 @@ class Test_Meter_Daily:
         while DeviceBusy == 1:
             response = requests.post(url=HESAPI(Address=setting[Project.name]['api_url']).requestAddress(),
                                      headers={"Content-Type": "application/json"},
-                                     json=requestData, timeout=40)
+                                     json=requestData,timeout=66)
             time.sleep(1)
             if response.status_code == 504 or json.loads(response.text).get('payload')[0].get(
                     'desc') == 'Device Busying !':
                 print('504 Error and try again')
                 time.sleep(3)
-                response = requests.post(url=HESAPI(Address=setting[Project.name]['api_url']).requestAddress(),
-                                         headers={"Content-Type": "application/json"},
-                                         json=requestData, timeout=40)
                 continue
-            if json.loads(response.text).get('reply')['replyCode'] != 200:
+            elif json.loads(response.text).get('reply')['replyCode'] != 200:
+                DeviceBusy = 0
                 assert False
             else:
                 DeviceBusy = 0

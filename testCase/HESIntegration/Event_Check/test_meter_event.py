@@ -19,7 +19,7 @@ class Test_Meter_Event:
         使用同步读取的方式去对电表进行日结entries数据对比
         """
         DeviceBusy = 1
-        data = caseData('testData/HESAPI/MeterFrozenData/meter_event_data.json')['meter_daily_event_entries']
+        data = caseData('testData/{}/MeterFrozenData/meter_event_data.json'.format(Project.name))['meter_daily_event_entries']
         requestData = data['request']
         requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
         while DeviceBusy == 1:
@@ -49,7 +49,7 @@ class Test_Meter_Event:
          """
         print("Step 1 : 获取当前电表第一条daily event数据")
         DeviceBusy = 1
-        data = caseData('testData/HESAPI/MeterFrozenData/meter_event_data.json')['meter_daily_event']
+        data = caseData('testData/{}/MeterFrozenData/meter_event_data.json'.format(Project.name))['meter_daily_event']
         requestData = data['request']
         requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
         while DeviceBusy == 1:
@@ -78,7 +78,7 @@ class Test_Meter_Event:
         使用同步读取的方式去对电表进行事件读取 - 按照Entry+Date方式进行并进行数据项对比
          """
         DeviceBusy = 1
-        data = caseData('testData/HESAPI/MeterFrozenData/meter_event_data.json')['meter_daily_event']
+        data = caseData('testData/{}/MeterFrozenData/meter_event_data.json'.format(Project.name))['meter_daily_event']
         requestData = data['request']
         requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
         requestData['payload'][0]['data'][0]['parameter']['dataFetchMode'] = 1

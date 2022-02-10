@@ -153,20 +153,20 @@ def get_daily_date(caseData):
     print("获取当前电表第一条日结数据")
     startTime = None
     DeviceBusy = 1
-    data = caseData('testData/HESAPI/MeterFrozenData/meter_daily_data.json')['meter_daily_data']
+    data = caseData('testData/{}/MeterFrozenData/meter_daily_data.json'.format(Project.name))['meter_daily_data']
     requestData = data['request']
     requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
     while DeviceBusy == 1:
         response = requests.post(url=HESAPI(Address=setting[Project.name]['api_url']).requestAddress(),
                                  headers={"Content-Type": "application/json"},
-                                 json=requestData, timeout=40)
+                                 json=requestData, timeout=66)
         time.sleep(1)
         if response.status_code == 504:
             print('504 Error and try again')
             time.sleep(3)
             response = requests.post(url=HESAPI(Address=setting[Project.name]['api_url']).requestAddress(),
                                      headers={"Content-Type": "application/json"},
-                                     json=requestData, timeout=40)
+                                     json=requestData, timeout=66)
         if json.loads(response.text).get('reply')['replyCode'] != 200:
             print(json.loads(response.text).get('payload')[0]['desc'])
             assert False
@@ -182,20 +182,20 @@ def get_daily_date(caseData):
 def get_monthly_date(caseData):
     print("Step 1 : 获取当前电表第一条月结数据")
     DeviceBusy = 1
-    data = caseData('testData/HESAPI/MeterFrozenData/meter_monthly_data.json')['meter_monthly_data']
+    data = caseData('testData/{}/MeterFrozenData/meter_monthly_data.json'.format(Project.name))['meter_monthly_data']
     requestData = data['request']
     requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
     while DeviceBusy == 1:
         response = requests.post(url=HESAPI(Address=setting[Project.name]['api_url']).requestAddress(),
                                  headers={"Content-Type": "application/json"},
-                                 json=requestData, timeout=40)
+                                 json=requestData, timeout=66)
         time.sleep(1)
         if response.status_code == 504:
             print('504 Error and try again')
             time.sleep(3)
             response = requests.post(url=HESAPI(Address=setting[Project.name]['api_url']).requestAddress(),
                                      headers={"Content-Type": "application/json"},
-                                     json=requestData, timeout=40)
+                                     json=requestData, timeout=66)
         if json.loads(response.text).get('reply')['replyCode'] != 200:
             print(json.loads(response.text).get('payload')[0]['desc'])
             assert False
@@ -214,20 +214,20 @@ def get_lp_date(caseData):
      """
     print("Step 1 : 获取当前电表第一条lp数据")
     DeviceBusy = 1
-    data = caseData('testData/HESAPI/MeterFrozenData/meter_profile_data.json')['meter_lp_data']
+    data = caseData('testData/{}/MeterFrozenData/meter_profile_data.json'.format(Project.name))['meter_lp_data']
     requestData = data['request']
     requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
     while DeviceBusy == 1:
         response = requests.post(url=HESAPI(Address=setting[Project.name]['api_url']).requestAddress(),
                                  headers={"Content-Type": "application/json"},
-                                 json=requestData, timeout=40)
+                                 json=requestData, timeout=66)
         time.sleep(1)
         if response.status_code == 504:
             print('504 Error and try again')
             time.sleep(3)
             response = requests.post(url=HESAPI(Address=setting[Project.name]['api_url']).requestAddress(),
                                      headers={"Content-Type": "application/json"},
-                                     json=requestData, timeout=40)
+                                     json=requestData, timeout=66)
         if json.loads(response.text).get('reply')['replyCode'] != 200:
             print(json.loads(response.text).get('payload')[0]['desc'])
             assert False
@@ -246,20 +246,20 @@ def get_daily_event(caseData):
      """
     print("Step 1 : 获取当前电表第一条daily event数据")
     DeviceBusy = 1
-    data = caseData('testData/HESAPI/MeterFrozenData/meter_event_data.json')['meter_daily_event']
+    data = caseData('testData/{}/MeterFrozenData/meter_event_data.json'.format(Project.name))['meter_daily_event']
     requestData = data['request']
     requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
     while DeviceBusy == 1:
         response = requests.post(url=HESAPI(Address=setting[Project.name]['api_url']).requestAddress(),
                                  headers={"Content-Type": "application/json"},
-                                 json=requestData, timeout=40)
+                                 json=requestData, timeout=66)
         time.sleep(1)
         if response.status_code == 504:
             print('504 Error and try again')
             time.sleep(3)
             response = requests.post(url=HESAPI(Address=setting[Project.name]['api_url']).requestAddress(),
                                      headers={"Content-Type": "application/json"},
-                                     json=requestData, timeout=40)
+                                     json=requestData, timeout=66)
         if json.loads(response.text).get('reply')['replyCode'] != 200:
             print(json.loads(response.text).get('payload')[0]['desc'])
             assert False
@@ -269,6 +269,36 @@ def get_daily_event(caseData):
             startTime = json.loads(response.text).get('payload')[0].get('data')[0].get('dataTime')
     return startTime
 
+
+@pytest.fixture(scope='function')
+def get_event_standard(caseData):
+    """
+    使用同步读取的方式去对电表进行daily event读取 - 按照Entry+Date方式进行并进行数据项对比
+     """
+    print("Step 1 : 获取当前电表第一条daily event数据")
+    DeviceBusy = 1
+    data = caseData('testData/{}/MeterFrozenData/meter_event_data.json'.format(Project.name))['meter_daily_event_standard']
+    requestData = data['request']
+    requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
+    while DeviceBusy == 1:
+        response = requests.post(url=HESAPI(Address=setting[Project.name]['api_url']).requestAddress(),
+                                 headers={"Content-Type": "application/json"},
+                                 json=requestData, timeout=66)
+        time.sleep(1)
+        if response.status_code == 504:
+            print('504 Error and try again')
+            time.sleep(3)
+            response = requests.post(url=HESAPI(Address=setting[Project.name]['api_url']).requestAddress(),
+                                     headers={"Content-Type": "application/json"},
+                                     json=requestData, timeout=66)
+        if json.loads(response.text).get('reply')['replyCode'] != 200:
+            print(json.loads(response.text).get('payload')[0]['desc'])
+            assert False
+        else:
+            DeviceBusy = 0
+            assert len(json.loads(response.text).get('payload')[0].get('data')) != 64
+            startTime = json.loads(response.text).get('payload')[0].get('data')[0].get('dataTime')
+    return startTime
 # @pytest.fixture(scope="session",autouse=True)
 # def   tmp_dir():
 #

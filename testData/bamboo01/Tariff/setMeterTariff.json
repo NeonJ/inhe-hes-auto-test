@@ -1,0 +1,42 @@
+{
+  "test_SetMeterTariff": {
+    "request": {
+      "header": {
+        "correlationId": "285553e8-811f-4cff-b75f-1d780911f76b",
+        "messageId": "4a455662-57ed-418f-a7eb-9de4081ffdd1",
+        "serviceType": "SET_TARIFF_CONTENT",
+        "businessType": "SET_TARIFF_CONTENT",
+        "source": "MDM",
+        "createTime": "220210154001",
+        "replyAddress": "hes-change-meter-tariff",
+        "replyType": "MQ",
+        "messageType": "REQUEST",
+        "asyncReplyFlag": true
+      },
+      "payload": [
+        {
+          "deviceNo": "KFM1201209231301",
+          "deviceType": "METER",
+          "retryCount": 1,
+          "retryInterval": 0,
+          "priority": 0,
+          "endTime": "220210174001",
+          "startTime": "220210154001",
+          "transactionId": "ee7199c4-1104-44ff-b732-dc86a1f53d72",
+          "jobUniqueFlag": false,
+          "data": [
+            {
+              "clientId": null,
+              "registerId": "",
+              "accessSelector": 0,
+              "parameter": {
+                "tariffXML": "<Tariff QTY=\"6\" Decoded=\"true\" ProtocolType=\"04010A00\">\n  <Contracat>1</Contracat>\n  <Calendar_Name_Passive>Neon</Calendar_Name_Passive>\n  <Season_Profile_Passive QTY=\"1\">\n    <Season Season_Profile_Name=\"0\" Season_Start=\"01-02\" Week_Name=\"0\"/>\n  </Season_Profile_Passive>\n  <Week_Profile_Table_Passive QTY=\"1\">\n    <Week Week_Profile_Name=\"0\" Monday=\"0\" Tuesday=\"1\" Wednesday=\"0\" Thursday=\"1\" Friday=\"0\" Saturday=\"1\" Sunday=\"0\"/>\n  </Week_Profile_Table_Passive>\n  <Day_Profile_Table_Passive QTY=\"2\">\n    <Day DayID=\"0\" QTY=\"4\">\n      <Day_profile_action start_time=\"00:00:00\" script_selector=\"1\" script_logical_name=\"\"/>\n      <Day_profile_action start_time=\"06:00:00\" script_selector=\"2\" script_logical_name=\"\"/>\n      <Day_profile_action start_time=\"12:00:00\" script_selector=\"3\" script_logical_name=\"\"/>\n      <Day_profile_action start_time=\"20:00:00\" script_selector=\"4\" script_logical_name=\"\"/>\n    </Day>\n    <Day DayID=\"1\" QTY=\"4\">\n      <Day_profile_action start_time=\"00:00:00\" script_selector=\"2\" script_logical_name=\"\"/>\n      <Day_profile_action start_time=\"06:00:00\" script_selector=\"3\" script_logical_name=\"\"/>\n      <Day_profile_action start_time=\"12:00:00\" script_selector=\"4\" script_logical_name=\"\"/>\n      <Day_profile_action start_time=\"18:30:00\" script_selector=\"1\" script_logical_name=\"\"/>\n    </Day>\n  </Day_Profile_Table_Passive>\n  <Activate_Passive_Calendar_Time>10-02-2099 14:45:48</Activate_Passive_Calendar_Time>\n</Tariff>"
+              },
+              "featurePoint": ""
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

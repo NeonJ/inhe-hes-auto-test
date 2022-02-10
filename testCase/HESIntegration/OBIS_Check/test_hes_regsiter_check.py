@@ -23,7 +23,7 @@ class Test_HES_Register_Check:
     def test_register_get(self, register_get, get_database, get_result_table, caseData):
         DeviceBusy = 1
         print("Register_ID:{}".format(register_get))
-        data = caseData('testData/HESAPI/OBISCheck/register_get.json')['register_get']
+        data = caseData('testData/{}/OBISCheck/register_get.json'.format(Project.name))['register_get']
         requestData = data['request']
         requestData['payload'][0]['data'][0]['registerId'] = register_get
         requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
@@ -61,7 +61,7 @@ class Test_HES_Register_Check:
     def test_register_set(self, register_set, get_database, get_result_table, caseData):
         DeviceBusy = 1
         print("Register_ID:{}".format(register_set))
-        data = caseData('testData/HESAPI/OBISCheck/register_get.json')['register_get']
+        data = caseData('testData/{}/OBISCheck/register_get.json'.format(Project.name))['register_get']
         requestData = data['request']
         requestData['payload'][0]['data'][0]['registerId'] = register_set
         requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
@@ -96,7 +96,7 @@ class Test_HES_Register_Check:
                 get_database.save_result(get_result_table, 'get_value', data.get('resultValue'),
                                          register_set)
 
-        data = caseData('testData/HESAPI/OBISCheck/register_set.json')['register_set']
+        data = caseData('testData/{}/OBISCheck/register_set.json'.format(Project.name))['register_set']
         requestData = data['request']
         requestData['payload'][0]['data'][0]['registerId'] = register_set
         requestData['payload'][0]['data'][0]['parameter'] = parameter

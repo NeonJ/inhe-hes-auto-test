@@ -14,10 +14,26 @@ class Test_RelayControlChange:
     # Step1:relayStatus= on,
     # Step1:relayStatus= off,
     @hesSyncTest
-    def test_RELAY_CONTROL_RELAYON(self,url,caseData):
+    def test_relay_on_standard(self,url,caseData):
 
         url = url +'/api/v1/Request/RequestMessage'
-        data = caseData('testData/HESAPI/RelayControlTask/relayControl.json')['test_RELAY_CONTROL_RELAYON']
+        data = caseData('testData/{}/RelayControlTask/relayControl.json'.format(Project.name))['test_RELAY_CONTROL_RELAYON']
+        requestData = data['request']
+        expectResJson = data['response']
+        requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
+        response = requests.post(url=url,json=requestData)
+        print(response.json())
+
+        assert response.status_code == 200
+        # assert AssertIn().checkIn(expectResJson, response.json()) is True
+
+
+    @hesSyncTest
+    def test_relay_off_standard(self,url,caseData):
+
+        url = url +'/api/v1/Request/RequestMessage'
+
+        data = caseData('testData/{}/RelayControlTask/relayControl.json'.format(Project.name))['test_RELAY_CONTROL_RELAYOFF']
         requestData = data['request']
         expectResJson = data['response']
         requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
@@ -28,11 +44,10 @@ class Test_RelayControlChange:
         # assert AssertIn().checkIn(expectResJson, response.json()) is True
 
     @hesSyncTest
-    def test_RELAY_CONTROL_RELAYOFF(self,url,caseData):
+    def test_relay_on_home(self,url,caseData):
 
         url = url +'/api/v1/Request/RequestMessage'
-
-        data = caseData('testData/HESAPI/RelayControlTask/relayControl.json')['test_RELAY_CONTROL_RELAYOFF']
+        data = caseData('testData/{}/RelayControlTask/relayControl.json'.format(Project.name))['test_relay_on_home_sync']
         requestData = data['request']
         expectResJson = data['response']
         requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
@@ -40,15 +55,32 @@ class Test_RelayControlChange:
         print(response.json())
 
         assert response.status_code == 200
+        assert "CONNECTED" in response.text
+        # assert AssertIn().checkIn(expectResJson, response.json()) is True
+
+    @hesSyncTest
+    def test_relay_off_home(self,url,caseData):
+
+        url = url +'/api/v1/Request/RequestMessage'
+
+        data = caseData('testData/{}/RelayControlTask/relayControl.json'.format(Project.name))['test_relay_off_home_sync']
+        requestData = data['request']
+        expectResJson = data['response']
+        requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
+        response = requests.post(url=url,json=requestData)
+        print(response.json())
+
+        assert response.status_code == 200
+        # assert "DISCONNECTED" in response.json()
         # assert AssertIn().checkIn(expectResJson, response.json()) is True
 
     @hesAsyncTest
-    def test_RelayControl_OnTask(self,url,get_database,caseData):
+    def test_relay_on_task(self,url,get_database,caseData):
 
         testUrl = url + '/api/v1/Request/RequestMessage'
         count = 0
         # Step1 生成异步操作读取任务，hes-api异步执行，生成running表
-        data = caseData('testData/HESAPI/RelayControlTask/relayControl.json')['test_RelayControl_OnTask']
+        data = caseData('testData/{}/RelayControlTask/relayControl.json'.format(Project.name))['test_RelayControl_OnTask']
         requestData = data['request']
         # 设定三分钟异步任务，三分钟后失效
         currentTime = datetime.datetime.now().strftime('%y%m%d%H%M%S')
@@ -87,12 +119,12 @@ class Test_RelayControlChange:
 
 
     @hesAsyncTest
-    def test_RelayControl_OffTask(self,url,get_database,caseData):
+    def test_relay_off_task(self,url,get_database,caseData):
 
         testUrl = url + '/api/v1/Request/RequestMessage'
         count = 0
         # Step1 生成异步操作读取任务，hes-api异步执行，生成running表
-        data = caseData('testData/HESAPI/RelayControlTask/relayControl.json')['test_RelayControl_OffTask']
+        data = caseData('testData/{}/RelayControlTask/relayControl.json'.format(Project.name))['test_RelayControl_OffTask']
         requestData = data['request']
         # 设定三分钟异步任务，三分钟后失效
         currentTime = datetime.datetime.now().strftime('%y%m%d%H%M%S')

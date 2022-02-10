@@ -1,5 +1,5 @@
 {
-  "meter_lp_data": {
+  "meter_daily_event": {
     "request": {
       "header": {
         "correlationId": "68e19310-1253-4a6c-bd9c-e60266e52429",
@@ -27,7 +27,7 @@
           "data": [
             {
               "clientId": null,
-              "registerId": "Load Profile",
+              "registerId": "Daily event log",
               "accessSelector": 0,
               "parameter": {
                 "dataFetchMode": 2,
@@ -80,7 +80,7 @@
       }
     }
   },
-  "meter_lp_entries": {
+  "meter_daily_event_entries": {
     "request": {
       "header": {
         "correlationId": "68e19310-1253-4a6c-bd9c-e60266e52429",
@@ -99,7 +99,7 @@
           "transactionId": "5ebbd125-e1d0-4a90-b0af-6d13d22f78e6",
           "data": [
             {
-              "registerId": "Energy Load Profile Entries"
+              "registerId": "Daily event log entries"
             }
           ]
         }
@@ -140,7 +140,7 @@
       }
     }
   },
-  "meter_lp_entries_inuse": {
+  "meter_daily_event_entries_inuse": {
     "request": {
       "header": {
         "correlationId": "68e19310-1253-4a6c-bd9c-e60266e52429",
@@ -168,7 +168,7 @@
           "data": [
             {
               "clientId": null,
-              "registerId": "Energy Load Profile Entries Inuse",
+              "registerId": "Contract Daily Billing Profile Inuse",
               "accessSelector": 0,
               "parameter": {
                 "dataFetchMode": 0,
@@ -221,7 +221,7 @@
       }
     }
   },
-  "meter_pq_data": {
+  "meter_daily_event_standard": {
     "request": {
       "header": {
         "correlationId": "68e19310-1253-4a6c-bd9c-e60266e52429",
@@ -249,7 +249,7 @@
           "data": [
             {
               "clientId": null,
-              "registerId": "Quality Profile",
+              "registerId": "Standard Event Log",
               "accessSelector": 0,
               "parameter": {
                 "dataFetchMode": 2,
@@ -302,7 +302,7 @@
       }
     }
   },
-  "meter_pq_entries": {
+  "meter_daily_event_standard_entries": {
     "request": {
       "header": {
         "correlationId": "68e19310-1253-4a6c-bd9c-e60266e52429",
@@ -321,7 +321,7 @@
           "transactionId": "5ebbd125-e1d0-4a90-b0af-6d13d22f78e6",
           "data": [
             {
-              "registerId": "Power Quality Profile Entries"
+              "registerId": "Standard Event Log-profile_entries"
             }
           ]
         }
@@ -362,7 +362,7 @@
       }
     }
   },
-  "meter_pq_entries_inuse": {
+  "meter_daily_event_standard_entries_inuse": {
     "request": {
       "header": {
         "correlationId": "68e19310-1253-4a6c-bd9c-e60266e52429",
@@ -390,7 +390,7 @@
           "data": [
             {
               "clientId": null,
-              "registerId": "Power Quality Profile Entries Inuse",
+              "registerId": "Standard Event Log-entries_in_use",
               "accessSelector": 0,
               "parameter": {
                 "dataFetchMode": 0,

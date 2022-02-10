@@ -17,16 +17,16 @@ class Test_Meter_Monthly:
     @hesSyncTest
     def test_get_monthly_entries(self, caseData):
         """
-        使用同步读取的方式去对电表进行日结entries数据对比
+        使用同步读取的方式去对电表进行月结entries数据对比
         """
         DeviceBusy = 1
-        data = caseData('testData/HESAPI/MeterFrozenData/meter_monthly_data.json')['meter_monthly_entries']
+        data = caseData('testData/{}/MeterFrozenData/meter_monthly_data.json'.format(Project.name))['meter_monthly_entries']
         requestData = data['request']
         requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
         while DeviceBusy == 1:
             response = requests.post(url=HESAPI(Address=setting[Project.name]['api_url']).requestAddress(),
                                      headers={"Content-Type": "application/json"},
-                                     json=requestData, timeout=40)
+                                     json=requestData, timeout=66)
             time.sleep(1)
             if response.status_code == 504 or json.loads(response.text).get('payload')[0].get(
                     'desc') == 'Device Busying !':
@@ -34,7 +34,7 @@ class Test_Meter_Monthly:
                 time.sleep(3)
                 response = requests.post(url=HESAPI(Address=setting[Project.name]['api_url']).requestAddress(),
                                          headers={"Content-Type": "application/json"},
-                                         json=requestData, timeout=40)
+                                         json=requestData, timeout=66)
                 continue
             if json.loads(response.text).get('reply')['replyCode'] != 200:
                 assert False
@@ -52,13 +52,13 @@ class Test_Meter_Monthly:
         print("Step 1 : 获取当前电表第一条月结数据")
         startTime = None
         DeviceBusy = 1
-        data = caseData('testData/HESAPI/MeterFrozenData/meter_monthly_data.json')['meter_monthly_data']
+        data = caseData('testData/{}/MeterFrozenData/meter_monthly_data.json'.format(Project.name))['meter_monthly_data']
         requestData = data['request']
         requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
         while DeviceBusy == 1:
             response = requests.post(url=HESAPI(Address=setting[Project.name]['api_url']).requestAddress(),
                                      headers={"Content-Type": "application/json"},
-                                     json=requestData, timeout=40)
+                                     json=requestData, timeout=66)
             time.sleep(1)
             if response.status_code == 504 or json.loads(response.text).get('payload')[0].get(
                     'desc') == 'Device Busying !':
@@ -66,7 +66,7 @@ class Test_Meter_Monthly:
                 time.sleep(3)
                 response = requests.post(url=HESAPI(Address=setting[Project.name]['api_url']).requestAddress(),
                                          headers={"Content-Type": "application/json"},
-                                         json=requestData, timeout=40)
+                                         json=requestData, timeout=66)
                 continue
             if json.loads(response.text).get('reply')['replyCode'] != 200:
                 assert False
@@ -81,7 +81,7 @@ class Test_Meter_Monthly:
         使用同步读取的方式去对电表进行月结读取 - 按照Entry+Date方式进行并进行数据项对比
          """
         DeviceBusy = 1
-        data = caseData('testData/HESAPI/MeterFrozenData/meter_monthly_data.json')['meter_monthly_data']
+        data = caseData('testData/{}/MeterFrozenData/meter_monthly_data.json'.format(Project.name))['meter_monthly_data']
         requestData = data['request']
         requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
         requestData['payload'][0]['data'][0]['parameter']['dataFetchMode'] = 1
@@ -91,7 +91,7 @@ class Test_Meter_Monthly:
         while DeviceBusy == 1:
             response = requests.post(url=HESAPI(Address=setting[Project.name]['api_url']).requestAddress(),
                                      headers={"Content-Type": "application/json"},
-                                     json=requestData, timeout=40)
+                                     json=requestData, timeout=66)
             time.sleep(1)
             if response.status_code == 504 or json.loads(response.text).get('payload')[0].get(
                     'desc') == 'Device Busying !':
@@ -99,7 +99,7 @@ class Test_Meter_Monthly:
                 time.sleep(3)
                 response = requests.post(url=HESAPI(Address=setting[Project.name]['api_url']).requestAddress(),
                                          headers={"Content-Type": "application/json"},
-                                         json=requestData, timeout=40)
+                                         json=requestData, timeout=66)
                 continue
             if json.loads(response.text).get('reply')['replyCode'] != 200:
                 assert False

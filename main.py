@@ -40,10 +40,12 @@ else:
 
     print('settings文件参数错误，name是必填参数')
 
+
+
 # 报告生成
 if os.listdir('./result') != []:
-    os.system("allure  generate  ./result/  -o  ./report/%s  --clean" % time.strftime('%Y%m%d%H%M%S',time.localtime()))
-
+    # os.system("allure  generate  ./result/  -o  ./report/%s  --clean" % time.strftime('%Y%m%d%H%M%S',time.localtime()))
+    os.system("allure  generate  ./result/  -o  ./report/%s --clean" % '20220128162626')
 else:
 
     print('无结果数据，无法生成报告')

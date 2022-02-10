@@ -6,7 +6,7 @@
 import allure, pytest, requests
 
 from common.UtilTools import *
-from common.marker import hesSyncTest
+from common.marker import *
 from config.settings import *
 
 
@@ -17,7 +17,7 @@ class Test_GetMeterTariff:
         url = url + '/Tariff/GetMeterTariff'
         print("get request data")
         # active request parameter
-        data = caseData('testData/HESAPI/Tariff/getMeterTariff.json')['test_GetMeterTariff_Active']
+        data = caseData('testData/{}/Tariff/getMeterTariff.json'.format(Project.name))['test_GetMeterTariff_Active']
         requestData = data['request']
         requestData['meterNo'] = setting[Project.name]['meter_no']
 
@@ -35,7 +35,7 @@ class Test_GetMeterTariff:
 
         print("get request data")
         # passive request parameter
-        data = caseData('testData/HESAPI/Tariff/getMeterTariff.json')['test_GetMeterTariff_Passive']
+        data = caseData('testData/{}/Tariff/getMeterTariff.json'.format(Project.name))['test_GetMeterTariff_Passive']
         requestData = data['request']
         requestData['meterNo'] = setting[Project.name]['meter_no']
 
@@ -52,7 +52,7 @@ class Test_GetMeterTariff:
 
         print("get request data")
         # request parameter:get all tariff
-        data = caseData('testData/HESAPI/Tariff/getMeterTariff.json')['test_GetMeterTariff_All']
+        data = caseData('testData/{}/Tariff/getMeterTariff.json'.format(Project.name))['test_GetMeterTariff_All']
         requestData = data['request']
         requestData['meterNo'] = setting[Project.name]['meter_no']
 

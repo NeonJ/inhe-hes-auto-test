@@ -1,5 +1,5 @@
 {
-  "meter_monthly_data": {
+  "meter_daily_data": {
     "request": {
       "header": {
         "correlationId": "68e19310-1253-4a6c-bd9c-e60266e52429",
@@ -27,7 +27,7 @@
           "data": [
             {
               "clientId": null,
-              "registerId": "Monthly Billing Profile",
+              "registerId": "Daily Billing Profile",
               "accessSelector": 0,
               "parameter": {
                 "dataFetchMode": 2,
@@ -80,7 +80,7 @@
       }
     }
   },
-  "meter_monthly_entries": {
+  "meter_daily_entries": {
     "request": {
       "header": {
         "correlationId": "68e19310-1253-4a6c-bd9c-e60266e52429",
@@ -99,7 +99,7 @@
           "transactionId": "5ebbd125-e1d0-4a90-b0af-6d13d22f78e6",
           "data": [
             {
-              "registerId": "Monthly Billing Profile Entries"
+              "registerId": "Data of billing period 2-profile_entries"
             }
           ]
         }
@@ -140,7 +140,7 @@
       }
     }
   },
-  "meter_monthly_entries_inuse": {
+  "meter_daily_entries_inuse": {
     "request": {
       "header": {
         "correlationId": "68e19310-1253-4a6c-bd9c-e60266e52429",
@@ -168,7 +168,7 @@
           "data": [
             {
               "clientId": null,
-              "registerId": "Contract Monthly Billing Profile Inuse",
+              "registerId": "Data of billing period 2-entries_in_use",
               "accessSelector": 0,
               "parameter": {
                 "dataFetchMode": 0,

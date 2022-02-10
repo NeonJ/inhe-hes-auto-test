@@ -17,19 +17,20 @@ class Test_ReadRelayControlStatus:
     def test_ReadRelayControlStatusSync(self, url, caseData):
         testUrl = url + '/api/v1/Request/RequestMessage'
         # Step1 生成异步操作读取任务，hes-api同步执行
-        data = caseData('testData/HESAPI/RelayControlTask/read_RelayControlStatus.json')['ReadRelayControlStatusSync']
+        data = caseData('testData/{}/RelayControlTask/read_RelayControlStatus.json'.format(Project.name))[
+            'ReadRelayControlStatusSync']
         requestData = data['request']
         requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
         response = requests.post(url=testUrl, json=requestData)
         assert response.status_code == 200
 
-
     @hesAsyncTest
-    def test_ReadRelayControlStatusAsync(self, url,get_database, caseData):
+    def test_ReadRelayControlStatusAsync(self, url, get_database, caseData):
         testUrl = url + '/api/v1/Request/RequestMessage'
         count = 0
         # Step1 生成异步操作读取任务，hes-api异步执行，生成running表
-        data = caseData('testData/HESAPI/RelayControlTask/read_RelayControlStatus.json')['ReadRelayControlStatusAsync']
+        data = caseData('testData/{}/RelayControlTask/read_RelayControlStatus.json'.format(Project.name))[
+            'ReadRelayControlStatusAsync']
         requestData = data['request']
         # 设定三分钟异步任务，三分钟后失效
         currentTime = datetime.datetime.now().strftime('%y%m%d%H%M%S')
@@ -44,8 +45,9 @@ class Test_ReadRelayControlStatus:
         # Step2 生成异步任务后，任务正常执行完毕进入his，进入his表，则认为任务结束
         # 过期时间到，也会进入his表，这里暂不考虑
         time.sleep(3)
-        #查询生成Core执行的任务的 AUTO_RUN_ID
-        sql_running = "select AUTO_RUN_ID from H_TASK_RUNNING where NODE_NO='{}' and JOB_TYPE='GET_COMMON_PARAM'".format(setting[Project.name]['meter_no'])
+        # 查询生成Core执行的任务的 AUTO_RUN_ID
+        sql_running = "select AUTO_RUN_ID from H_TASK_RUNNING where NODE_NO='{}' and JOB_TYPE='GET_COMMON_PARAM'".format(
+            setting[Project.name]['meter_no'])
         db_queue = get_database.orcl_fetchall_dict(sql_running)
         while len(db_queue) == 0 and count < 2:
             time.sleep(3)

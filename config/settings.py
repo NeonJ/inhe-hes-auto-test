@@ -58,9 +58,9 @@ setting = {
         "db_pwd": "empower",
         "db_service": "ami_bamboo01",
         "db_database": "ami_db",
-        "meter_no": "KFM3210700000004",
-        "api_url": "http://bamboo01.kaifa.tst/",
-        "web_url": "http://10.32.233.31:30536",
+        "meter_no": "KFM1201209231301",
+        "api_url": "http://bamboo01.hes-api.kaifa.tst",
+        "web_url": "http://10.32.233.31:30530",
         "kafka_url": "10.32.233.31:30553",
         "ami_user": "dmms",
         "ami_passwd": "sa",
@@ -68,8 +68,8 @@ setting = {
         "daily_len": 21,
         "monthly_entries": 15,
         "monthly_len": 21,
-        "lp_entries": 100,
-        "lp_len": 2,
+        "lp_entries": 4320,
+        "lp_len": 10,
         "pq_entries": 1440,
         "pq_len": 5,
         "event_entries": 3
@@ -79,7 +79,7 @@ setting = {
 
 class Project:
     name = 'bamboo01'  # 与下面setting项目key对应
-    tag = 'hesSyncTest or hesAsyncTest'  # 对应comms.marker  hesSyncTest or hesAsyncTest
+    tag = 'hesAsyncTest1'  # 对应1· comms.marker  hesSyncTest or hesAsyncTest HES-Web
     path = '/'  # 对testData目录接口对应
     continue_last_check = False  # 是否断点续测OBIS
 

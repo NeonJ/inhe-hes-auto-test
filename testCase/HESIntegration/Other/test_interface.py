@@ -22,7 +22,7 @@ class Test_Meter_Status:
         data = "/Mdm/GetMeterStatus?MeterNo={}".format(setting[Project.name]['meter_no'])
         response = requests.get(url=setting[Project.name]['api_url'] + data,
                                 headers={"Content-Type": "application/json"},
-                                timeout=40)
+                                timeout=66)
         time.sleep(1)
         if response.status_code == 504 or response.status_code == 500:
             print('504 Error and try again')

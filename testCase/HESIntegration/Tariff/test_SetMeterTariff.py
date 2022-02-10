@@ -14,7 +14,7 @@ class Test_SetMeterTariff:
         testUrl = url + '/api/v1/Request/RequestMessage'
         count = 0
         # Step1 生成异步操作读取任务，hes-api，生成running表
-        data = caseData('testData/HESAPI/Tariff/setMeterTariff.json')['test_SetMeterTariff']
+        data = caseData('testData/{}/Tariff/setMeterTariff.json'.format(Project.name))['test_SetMeterTariff']
         requestData = data['request']
         # 设定三分钟异步任务，三分钟后失效
         currentTime = datetime.datetime.now().strftime('%y%m%d%H%M%S')
@@ -43,7 +43,7 @@ class Test_SetMeterTariff:
         # 查询生成Core执行结束后，his表任务状态
         sql_his = "select TASK_STATE from H_TASK_RUN_HIS where AUTO_RUN_ID='{}'".format(db_queue[0]['AUTO_RUN_ID'])
         db_queue = get_database.orcl_fetchall_dict(sql_his)
-        while len(db_queue) == 0 and count < 30:
+        while len(db_queue) == 0 and count < 40:
             time.sleep(10)
             db_queue = get_database.orcl_fetchall_dict(sql_his)
             print(db_queue)

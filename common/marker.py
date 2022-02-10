@@ -16,3 +16,7 @@ hesSyncTest = pytest.mark.hesSyncTest  # HES同步功能测试
 hesAsyncTest = pytest.mark.hesAsyncTest  # HES异步功能测试
 
 OBISTest = pytest.mark.OBISTest  # HES接口检查电表OBIS
+
+hesSyncTest1 = pytest.mark.hesSyncTest1
+
+hesAsyncTest1 = pytest.mark.hesAsyncTest1
