@@ -1,8 +1,9 @@
 # -*- coding: UTF-8 -*-
 
-from dlms.DlmsClass import *
 from libs.DllLoader import *
 from libs.Singleton import *
+
+from dlms.DlmsClass import *
 
 
 class C64SecuritySetup(DlmsClass):
@@ -32,7 +33,6 @@ class C64SecuritySetup(DlmsClass):
     def __init__(self, conn, obis=None):
         super().__init__(conn, obis, classId=64)
 
-
     # Attribute of logical_name (No.1)
     @formatResponse
     def get_logical_name(self, dataType=False, response=None):
@@ -56,7 +56,6 @@ class C64SecuritySetup(DlmsClass):
             return hex_toOBIS(ret[0]), ret[1]
         return hex_toOBIS(ret[0])
 
-
     @formatResponse
     def check_logical_name(self, ck_data):
         """
@@ -70,7 +69,6 @@ class C64SecuritySetup(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_logical_name(self, data):
         """
@@ -80,7 +78,6 @@ class C64SecuritySetup(DlmsClass):
         :return:             KFResult对象
         """
         return self.setRequest(1, obis_toHex(data), "OctetString", data)
-
 
     # Attribute of security_policy (No.2)
     @formatResponse
@@ -115,7 +112,6 @@ class C64SecuritySetup(DlmsClass):
             return hex_toDec(ret[0]), ret[1]
         return hex_toDec(ret[0])
 
-
     @formatResponse
     def check_security_policy(self, ck_data):
         """
@@ -129,7 +125,6 @@ class C64SecuritySetup(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_security_policy(self, data):
         """
@@ -139,7 +134,6 @@ class C64SecuritySetup(DlmsClass):
         :return:        返回 KFResult 对象
         """
         return self.setRequest(2, dec_toHexStr(data, 2), "Enum", data)
-
 
     # Attribute of security_suite (No.3)
     @formatResponse
@@ -170,7 +164,6 @@ class C64SecuritySetup(DlmsClass):
             return hex_toDec(ret[0]), ret[1]
         return hex_toDec(ret[0])
 
-
     @formatResponse
     def check_security_suite(self, ck_data):
         """
@@ -184,7 +177,6 @@ class C64SecuritySetup(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_security_suite(self, data):
         """
@@ -194,7 +186,6 @@ class C64SecuritySetup(DlmsClass):
         :return:    返回 KFResult 对象
         """
         return self.setRequest(3, dec_toHexStr(data, 2), "Enum", data)
-
 
     # Attribute of client_system_title (No.4)
     @formatResponse
@@ -214,7 +205,6 @@ class C64SecuritySetup(DlmsClass):
             return ret
         return ret[0]
 
-
     @formatResponse
     def check_client_system_title(self, ck_data):
         """
@@ -228,7 +218,6 @@ class C64SecuritySetup(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_client_system_title(self, data):
         """
@@ -238,7 +227,6 @@ class C64SecuritySetup(DlmsClass):
         :return:        返回 KFResult 对象
         """
         return self.setRequest(4, data, "OctetString", data)
-
 
     # Attribute of server_system_title (No.5)
     @formatResponse
@@ -258,7 +246,6 @@ class C64SecuritySetup(DlmsClass):
             return ret
         return ret[0]
 
-
     @formatResponse
     def check_server_system_title(self, ck_data):
         """
@@ -272,7 +259,6 @@ class C64SecuritySetup(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_server_system_title(self, data):
         """
@@ -282,7 +268,6 @@ class C64SecuritySetup(DlmsClass):
         :return:        返回 KFResult 对象
         """
         return self.setRequest(5, data, "OctetString", data)
-
 
     # Attribute of get_certificates (No.6)
     @formatResponse
@@ -316,7 +301,6 @@ class C64SecuritySetup(DlmsClass):
             return response
         return response[0]
 
-
     @formatResponse
     def check_certificates(self, ck_data):
         """
@@ -332,7 +316,6 @@ class C64SecuritySetup(DlmsClass):
         }
         """
         return checkResponsValue(self.get_certificates(), ck_data)
-
 
     @formatResponse
     def set_certificates(self, data):
@@ -360,7 +343,6 @@ class C64SecuritySetup(DlmsClass):
                     etree.SubElement(struct, "OctetString").set("Value", subItem)
         return self.setRequest(6, array, "Array", data)
 
-
     # Method of security_activate (No.1)
     @formatResponse
     def act_security_activate(self, data=0):
@@ -371,7 +353,6 @@ class C64SecuritySetup(DlmsClass):
         :return:        返回 KFResult 对象
         """
         return self.actionRequest(1, dec_toHexStr(data, 2), "Enum", data)
-
 
     # Method of key_transfer (No.2)
     @formatResponse
@@ -394,10 +375,10 @@ class C64SecuritySetup(DlmsClass):
         :return:    返回 KFResult 对象
         """
         keyMap = {
-            'ekey' : 0,
-            'bkey' : 1,
-            'akey' : 2,
-            'kek'  : 3
+            'ekey': 0,
+            'bkey': 1,
+            'akey': 2,
+            'kek': 3
         }
         if data is None:
             data = {}
@@ -431,7 +412,6 @@ class C64SecuritySetup(DlmsClass):
                         self.conn.classDlms.CommunicationParam.SecInfo.UsingMasterKey = value[1]
                         Singleton().MasterKey = value[1]
         return result
-
 
     # Method of key_agreement (No.3)
     @formatResponse
@@ -469,7 +449,6 @@ class C64SecuritySetup(DlmsClass):
                     etree.SubElement(struct, "OctetString").set("Value", subItem)
         return self.actionRequest(3, array, "Array", data)
 
-
     # Method of generate_key_pair (No.4)
     @formatResponse
     def act_generate_key_pair(self, data=0):
@@ -481,7 +460,6 @@ class C64SecuritySetup(DlmsClass):
         :return:            KFResult 对象
         """
         return self.actionRequest(4, dec_toHexStr(data, 2), "Enum", data)
-
 
     # Method of generate_certificate_request (No.5)
     @formatResponse
@@ -496,7 +474,6 @@ class C64SecuritySetup(DlmsClass):
         """
         return self.actionRequest(5, dec_toHexStr(data, 2), "Enum", data)
 
-
     # Method of import_certificate (No.6)
     @formatResponse
     def act_import_certificate(self, data=""):
@@ -507,7 +484,6 @@ class C64SecuritySetup(DlmsClass):
         :return:              KFResult 对象
         """
         return self.actionRequest(6, data, "OctetString", data)
-
 
     # Method of export_certificate (No.7)
     @formatResponse
@@ -546,8 +522,7 @@ class C64SecuritySetup(DlmsClass):
         subStruct.set("Qty", "0002")
         etree.SubElement(subStruct, "OctetString").set("Value", serialNumber)
         etree.SubElement(subStruct, "OctetString").set("Value", ascii_toHex(issuer))
-        return self.actionRequest(7, struct, "structure", {'serialNumber' : serialNumber, 'issuer' : issuer})
-
+        return self.actionRequest(7, struct, "structure", {'serialNumber': serialNumber, 'issuer': issuer})
 
     # Method of remove_certificate (No.8)
     @formatResponse
@@ -567,4 +542,4 @@ class C64SecuritySetup(DlmsClass):
         subStruct.set("Qty", "0002")
         etree.SubElement(subStruct, "OctetString").set("Value", serialNumber)
         etree.SubElement(subStruct, "OctetString").set("Value", ascii_toHex(issuer))
-        return self.actionRequest(8, struct, "structure", {'serialNumber' : serialNumber, 'issuer' : issuer})
+        return self.actionRequest(8, struct, "structure", {'serialNumber': serialNumber, 'issuer': issuer})

@@ -13,7 +13,7 @@ HESAPI:
   url: http://empower.hes-api.kaifa.tst/
 
 TaskData:
-  REG_CHECK_COMM: [{"registerId": "9300"}]
+  REG_CHECK_COMM: [ { "registerId": "9300" } ]
 
 Request:
   deviceNo: M202009040003

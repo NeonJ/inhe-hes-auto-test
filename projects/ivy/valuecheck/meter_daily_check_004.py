@@ -1,21 +1,17 @@
 # -*- coding:utf-8 -*-
 
-import re
-import os
-import time
 import datetime
 import json
-import requests
-import socket
-from binascii import hexlify, unhexlify
-# from common import *
-import yaml
-from convertdate import persian
-from .comm import *
+import os
+import time
 
-from HESAPI import *
+import requests
 from DB import DB
+from HESAPI import *
 from libs.Singleton import Singleton
+
+# from common import *
+from .comm import *
 
 
 @tag('meter_daily_check')
@@ -57,7 +53,7 @@ def meter_daily_check_004():
                                              "fromEntry": "1", "toEntry": "1", "fromSelectedValue": 1,
                                              "toSelectedValue": 0},
                                   registerId=user_config['Profile']['daily_obis'], jobUniqueFlag="false",
-                                  accessSelector=1,jobType=None).request_json()
+                                  accessSelector=1, jobType=None).request_json()
     response = requests.post(url=HESAPI(Address=user_config['HESAPI']['url']).requestAddress(),
                              headers={"Content-Type": "application/json"},
                              data=json.dumps(RequestQueue, indent=4), timeout=40)

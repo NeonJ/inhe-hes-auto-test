@@ -2,8 +2,8 @@
 
 from dlms.DlmsClass import *
 
-class C47GSMDiagnostic(DlmsClass):
 
+class C47GSMDiagnostic(DlmsClass):
     attr_index_dict = {
         1: "logical_name",
         2: "operator",
@@ -17,7 +17,6 @@ class C47GSMDiagnostic(DlmsClass):
 
     def __init__(self, conn, obis=None):
         super().__init__(conn, obis, classId=47)
-
 
     # Attribute of logical_name
     @formatResponse
@@ -42,7 +41,6 @@ class C47GSMDiagnostic(DlmsClass):
             return hex_toOBIS(ret[0]), ret[1]
         return hex_toOBIS(ret[0])
 
-
     @formatResponse
     def check_logical_name(self, ck_data):
         """
@@ -56,7 +54,6 @@ class C47GSMDiagnostic(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_logical_name(self, data):
         """
@@ -66,7 +63,6 @@ class C47GSMDiagnostic(DlmsClass):
         :return:             KFResult对象
         """
         return self.setRequest(1, obis_toHex(data), "OctetString", data)
-
 
     # Attribute of operator
     @formatResponse
@@ -86,7 +82,6 @@ class C47GSMDiagnostic(DlmsClass):
             return ret
         return ret[0]
 
-
     @formatResponse
     def check_operator(self, ck_data):
         """
@@ -100,7 +95,6 @@ class C47GSMDiagnostic(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_operator(self, data):
         """
@@ -110,7 +104,6 @@ class C47GSMDiagnostic(DlmsClass):
         :return:           KFResult对象
         """
         return self.setRequest(2, data, "VisibleString", data)
-
 
     # Attribute of status
     @formatResponse
@@ -135,7 +128,6 @@ class C47GSMDiagnostic(DlmsClass):
             return hex_toDec(ret[0]), ret[1]
         return hex_toDec(ret[0])
 
-
     @formatResponse
     def check_status(self, ck_data):
         """
@@ -149,7 +141,6 @@ class C47GSMDiagnostic(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_status(self, data):
         """
@@ -159,7 +150,6 @@ class C47GSMDiagnostic(DlmsClass):
         :return:             KFResult对象
         """
         return self.setRequest(3, dec_toHexStr(data, 2), "Enum", data)
-
 
     # Attribute of cs_attachment
     @formatResponse
@@ -184,7 +174,6 @@ class C47GSMDiagnostic(DlmsClass):
             return hex_toDec(ret[0]), ret[1]
         return hex_toDec(ret[0])
 
-
     @formatResponse
     def check_cs_attachment(self, ck_data):
         """
@@ -198,7 +187,6 @@ class C47GSMDiagnostic(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_cs_attachment(self, data):
         """
@@ -208,7 +196,6 @@ class C47GSMDiagnostic(DlmsClass):
         :return:             KFResult对象
         """
         return self.setRequest(4, dec_toHexStr(data, 2), "Enum", data)
-
 
     # Attribute of ps_status
     @formatResponse
@@ -233,7 +220,6 @@ class C47GSMDiagnostic(DlmsClass):
             return hex_toDec(ret[0]), ret[1]
         return hex_toDec(ret[0])
 
-
     @formatResponse
     def check_ps_status(self, ck_data):
         """
@@ -247,7 +233,6 @@ class C47GSMDiagnostic(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_ps_status(self, data):
         """
@@ -257,7 +242,6 @@ class C47GSMDiagnostic(DlmsClass):
         :return:             KFResult对象
         """
         return self.setRequest(5, dec_toHexStr(data, 2), "Enum", data)
-
 
     # Attribute of cell_info
     @formatResponse
@@ -284,7 +268,6 @@ class C47GSMDiagnostic(DlmsClass):
             return response
         return response[0]
 
-
     @formatResponse
     def check_cell_info(self, ck_data):
         """
@@ -299,7 +282,6 @@ class C47GSMDiagnostic(DlmsClass):
         }
         """
         return checkResponsValue(self.get_cell_info(), ck_data)
-
 
     @formatResponse
     def set_cell_info(self, data):
@@ -326,7 +308,6 @@ class C47GSMDiagnostic(DlmsClass):
                     etree.SubElement(struct, "Unsigned").set("Value", dec_toHexStr(subItem, 2))
         return self.setRequest(6, struct, "Struct", data)
 
-
     # Attribute of adjacent_cells
     @formatResponse
     def get_adjacent_cells(self, dataType=False, response=None):
@@ -352,7 +333,6 @@ class C47GSMDiagnostic(DlmsClass):
             return response
         return response[0]
 
-
     @formatResponse
     def check_adjacent_cells(self, ck_data):
         """
@@ -372,7 +352,6 @@ class C47GSMDiagnostic(DlmsClass):
         }
         """
         return checkResponsValue(self.get_adjacent_cells(), ck_data)
-
 
     @formatResponse
     def set_adjacent_cells(self, data):
@@ -404,7 +383,6 @@ class C47GSMDiagnostic(DlmsClass):
                     etree.SubElement(struct, "Unsigned").set("Value", dec_toHexStr(subItem, 2))
         return self.setRequest(7, array, "Array", data)
 
-
     # Attribute of capture_time
     @formatResponse
     def get_capture_time(self, dataType=False, response=None):
@@ -428,7 +406,6 @@ class C47GSMDiagnostic(DlmsClass):
             return hex_toDateTimeString(ret[0]), ret[1]
         return hex_toDateTimeString(ret[0])
 
-
     @formatResponse
     def check_capture_time(self, ck_data):
         """
@@ -441,7 +418,6 @@ class C47GSMDiagnostic(DlmsClass):
         if ret.lower() == ck_data.strip().lower():
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
-
 
     @formatResponse
     def set_capture_time(self, data):

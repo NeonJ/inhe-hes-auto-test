@@ -2,8 +2,8 @@
 
 from dlms.DlmsClass import *
 
-class C9Script(DlmsClass):
 
+class C9Script(DlmsClass):
     attr_index_dict = {
         1: "logical_name",
         2: "scripts"
@@ -15,7 +15,6 @@ class C9Script(DlmsClass):
 
     def __init__(self, conn, obis=None):
         super().__init__(conn, obis, classId=9)
-
 
     # Attribute of logical_name (No.1)
     @formatResponse
@@ -39,7 +38,6 @@ class C9Script(DlmsClass):
             return hex_toOBIS(ret[0]), ret[1]
         return hex_toOBIS(ret[0])
 
-
     @formatResponse
     def check_logical_name(self, ck_data):
         """
@@ -53,7 +51,6 @@ class C9Script(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_logical_name(self, data):
         """
@@ -63,7 +60,6 @@ class C9Script(DlmsClass):
         :return:            返回一个KFResult对象
         """
         return self.setRequest(1, obis_toHex(data), "OctetString", data)
-
 
     # Attribute of scripts (No.2)
     @formatResponse
@@ -81,7 +77,7 @@ class C9Script(DlmsClass):
         response = getStrucDataFromGetResp(response)
         if isinstance(response[0], dict):
             for value in response[0].values():
-                value[0] = hex_toDec(value[0])      # script_identifier
+                value[0] = hex_toDec(value[0])  # script_identifier
                 for item in value[1]:
                     for subIndex, subItem in enumerate(item):
                         if subIndex == 0 and len(subItem) > 0:
@@ -99,7 +95,6 @@ class C9Script(DlmsClass):
             return response
         return response[0]
 
-
     @formatResponse
     def check_scripts(self, ck_data):
         """
@@ -114,7 +109,6 @@ class C9Script(DlmsClass):
         }
         """
         return checkResponsValue(self.get_scripts(), ck_data)
-
 
     @formatResponse
     def set_scripts(self, data):
@@ -158,7 +152,6 @@ class C9Script(DlmsClass):
                                 else:
                                     etree.SubElement(subStruct, "NullData")
         return self.setRequest(2, array, "Array", data)
-
 
     # Method of execute (No.1)
     @formatResponse

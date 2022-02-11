@@ -2,8 +2,8 @@
 
 from dlms.DlmsClass import *
 
-class C71Limiter(DlmsClass):
 
+class C71Limiter(DlmsClass):
     attr_index_dict = {
         1: "logical_name",
         2: "monitored_value",
@@ -20,7 +20,6 @@ class C71Limiter(DlmsClass):
 
     def __init__(self, conn, obis=None):
         super().__init__(conn, obis, classId=71)
-
 
     # Attribute of logical_name
     @formatResponse
@@ -45,7 +44,6 @@ class C71Limiter(DlmsClass):
             return hex_toOBIS(ret[0]), ret[1]
         return hex_toOBIS(ret[0])
 
-
     @formatResponse
     def check_logical_name(self, ck_data):
         """
@@ -59,7 +57,6 @@ class C71Limiter(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_logical_name(self, data):
         """
@@ -69,7 +66,6 @@ class C71Limiter(DlmsClass):
         :return:             KFResult对象
         """
         return self.setRequest(1, obis_toHex(data), "OctetString", data)
-
 
     # Attribute of monitored_value
     @formatResponse
@@ -101,7 +97,6 @@ class C71Limiter(DlmsClass):
             return response
         return response[0]
 
-
     @formatResponse
     def check_monitored_value(self, ck_data):
         """
@@ -116,7 +111,6 @@ class C71Limiter(DlmsClass):
         }
         """
         return checkResponsValue(self.get_monitored_value(), ck_data)
-
 
     @formatResponse
     def set_monitored_value(self, data):
@@ -143,7 +137,6 @@ class C71Limiter(DlmsClass):
                     etree.SubElement(struct, "Integer").set("Value", dec_toHexStr(subItem, 2))
         return self.setRequest(2, struct, "Struct", data)
 
-
     # Attribute of threshold_active
     @formatResponse
     def get_threshold_active(self, dataType=False, response=None):
@@ -167,7 +160,6 @@ class C71Limiter(DlmsClass):
             return hex_toDec(ret[0]), ret[1]
         return hex_toDec(ret[0])
 
-
     @formatResponse
     def check_threshold_active(self, ck_data):
         """
@@ -181,7 +173,6 @@ class C71Limiter(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_threshold_active(self, data):
         """
@@ -191,7 +182,6 @@ class C71Limiter(DlmsClass):
         :return:             KFResult对象
         """
         return self.setRequest(3, dec_toHexStr(data, 8), "DoubleLongUnsigned", data)
-
 
     # Attribute of threshold_normal
     @formatResponse
@@ -216,7 +206,6 @@ class C71Limiter(DlmsClass):
             return hex_toDec(ret[0]), ret[1]
         return hex_toDec(ret[0])
 
-
     @formatResponse
     def check_threshold_normal(self, ck_data):
         """
@@ -230,7 +219,6 @@ class C71Limiter(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_threshold_normal(self, data):
         """
@@ -240,7 +228,6 @@ class C71Limiter(DlmsClass):
         :return:         KFResult对象
         """
         return self.setRequest(4, dec_toHexStr(data, 8), "DoubleLongUnsigned", data)
-
 
     # Attribute of threshold_emergency
     @formatResponse
@@ -265,7 +252,6 @@ class C71Limiter(DlmsClass):
             return hex_toDec(ret[0]), ret[1]
         return hex_toDec(ret[0])
 
-
     @formatResponse
     def check_threshold_emergency(self, ck_data):
         """
@@ -279,7 +265,6 @@ class C71Limiter(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_threshold_emergency(self, data):
         """
@@ -289,7 +274,6 @@ class C71Limiter(DlmsClass):
         :return:                 KFResult对象
         """
         return self.setRequest(5, dec_toHexStr(data, 8), "DoubleLongUnsigned", data)
-
 
     # Attribute of min_over_threshold_duration
     @formatResponse
@@ -314,7 +298,6 @@ class C71Limiter(DlmsClass):
             return hex_toDec(ret[0]), ret[1]
         return hex_toDec(ret[0])
 
-
     @formatResponse
     def check_min_over_threshold_duration(self, ck_data):
         """
@@ -328,7 +311,6 @@ class C71Limiter(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_min_over_threshold_duration(self, data):
         """
@@ -338,7 +320,6 @@ class C71Limiter(DlmsClass):
         :return:              KFResult对象
         """
         return self.setRequest(6, dec_toHexStr(data, 8), "DoubleLongUnsigned", data)
-
 
     # Attribute of min_under_threshold_duration
     @formatResponse
@@ -363,7 +344,6 @@ class C71Limiter(DlmsClass):
             return hex_toDec(ret[0]), ret[1]
         return hex_toDec(ret[0])
 
-
     @formatResponse
     def check_min_under_threshold_duration(self, ck_data):
         """
@@ -377,7 +357,6 @@ class C71Limiter(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_min_under_threshold_duration(self, data):
         """
@@ -387,7 +366,6 @@ class C71Limiter(DlmsClass):
         :return:               KFResult对象
         """
         return self.setRequest(7, dec_toHexStr(data, 8), "DoubleLongUnsigned", data)
-
 
     # Attribute of emergency_profile
     @formatResponse
@@ -420,7 +398,6 @@ class C71Limiter(DlmsClass):
             return response
         return response[0]
 
-
     @formatResponse
     def check_emergency_profile(self, ck_data):
         """
@@ -435,7 +412,6 @@ class C71Limiter(DlmsClass):
         }
         """
         return checkResponsValue(self.get_emergency_profile(), ck_data)
-
 
     @formatResponse
     def set_emergency_profile(self, data):
@@ -465,7 +441,6 @@ class C71Limiter(DlmsClass):
                     etree.SubElement(struct, "DoubleLongUnsigned").set("Value", dec_toHexStr(subItem, 8))
         return self.setRequest(8, struct, "Struct", data)
 
-
     # Attribute of emergency_profile_group_id_list
     @formatResponse
     def get_emergency_profile_group_id_list(self, dataType=False, response=None):
@@ -491,7 +466,6 @@ class C71Limiter(DlmsClass):
             return response
         return response[0]
 
-
     @formatResponse
     def check_emergency_profile_group_id_list(self, ck_data):
         """
@@ -510,7 +484,6 @@ class C71Limiter(DlmsClass):
         if sorted(ck_data.values()) == sorted(ret.values()):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
-
 
     @formatResponse
     def set_emergency_profile_group_id_list(self, data):
@@ -532,7 +505,6 @@ class C71Limiter(DlmsClass):
             for index, item in enumerate(value):
                 etree.SubElement(array, "LongUnsigned").set("Value", dec_toHexStr(item, 4))
         return self.setRequest(9, array, "Struct", data)
-
 
     # Attribute of emergency_profile_active
     @formatResponse
@@ -557,7 +529,6 @@ class C71Limiter(DlmsClass):
             return hex_toDec(ret[0]), ret[1]
         return hex_toDec(ret[0])
 
-
     @formatResponse
     def check_emergency_profile_active(self, ck_data):
         """
@@ -571,7 +542,6 @@ class C71Limiter(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_emergency_profile_active(self, data):
         """
@@ -581,7 +551,6 @@ class C71Limiter(DlmsClass):
         :return:      KFResult对象
         """
         return self.setRequest(10, dec_toHexStr(data, 2), "Bool", data)
-
 
     # Attribute of actions
     @formatResponse
@@ -611,7 +580,6 @@ class C71Limiter(DlmsClass):
             return response
         return response[0]
 
-
     @formatResponse
     def check_actions(self, ck_data):
         """
@@ -627,7 +595,6 @@ class C71Limiter(DlmsClass):
         }
         """
         return checkResponsValue(self.get_actions(), ck_data)
-
 
     @formatResponse
     def set_actions(self, data):

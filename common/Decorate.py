@@ -1,10 +1,11 @@
 # -*- coding: UTF-8 -*-
 
+import functools
 import sys
 import traceback
-import functools
-from .KFLog import *
+
 from .DataFormatAPI import KFResult
+from .KFLog import *
 
 
 def formatDict(data, isInputData=False):
@@ -57,8 +58,6 @@ def formatDict(data, isInputData=False):
     return "## Response ## : " + str(result)
 
 
-
-
 def formatResponse(func):
     """
     格式化目标函数返回结果
@@ -66,6 +65,7 @@ def formatResponse(func):
     :param func:         目标函数
     :return:             执行目标函数并格式化返回数据
     """
+
     @functools.wraps(func)
     def wrap(*args, **kwargs):
         # debug(f'** {func.__code__.co_filename} -- "{func.__name__}" **')
@@ -101,10 +101,8 @@ def formatResponse(func):
             exc_type, exc_value, exc_traceback_obj = sys.exc_info()
             error("".join(traceback.format_exception(exc_type, exc_value, exc_traceback_obj)))
             return "".join(traceback.format_exception(exc_type, exc_value, exc_traceback_obj))
+
     return wrap
-
-
-
 
 
 # def loggerFuncName(func):
@@ -156,4 +154,5 @@ def tag(*decorators):
     def wrap(func):
         func.__decorators = decorators
         return func
+
     return wrap

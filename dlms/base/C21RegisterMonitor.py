@@ -2,8 +2,8 @@
 
 from dlms.DlmsClass import *
 
-class C21RegisterMonitor(DlmsClass):
 
+class C21RegisterMonitor(DlmsClass):
     attr_index_dict = {
         1: "logical_name",
         2: "thresholds",
@@ -13,7 +13,6 @@ class C21RegisterMonitor(DlmsClass):
 
     def __init__(self, conn, obis=None):
         super().__init__(conn, obis, classId=21)
-
 
     # Attribute of logical_name (No.1)
     @formatResponse
@@ -38,7 +37,6 @@ class C21RegisterMonitor(DlmsClass):
             return hex_toOBIS(ret[0]), ret[1]
         return hex_toOBIS(ret[0])
 
-
     @formatResponse
     def check_logical_name(self, ck_data):
         """
@@ -52,7 +50,6 @@ class C21RegisterMonitor(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_logical_name(self, data):
         """
@@ -62,7 +59,6 @@ class C21RegisterMonitor(DlmsClass):
         :return:            返回一个KFResult对象
         """
         return self.setRequest(1, obis_toHex(data), "OctetString", data)
-
 
     # Attribute of thresholds (No.2)
     @formatResponse
@@ -89,7 +85,6 @@ class C21RegisterMonitor(DlmsClass):
             return response
         return response[0]
 
-
     @formatResponse
     def check_thresholds(self, ck_data):
         """
@@ -104,7 +99,6 @@ class C21RegisterMonitor(DlmsClass):
         }
         """
         return checkResponsValue(self.get_thresholds(), ck_data)
-
 
     @formatResponse
     def set_thresholds(self, data):
@@ -125,7 +119,6 @@ class C21RegisterMonitor(DlmsClass):
             for index, item in enumerate(value):
                 etree.SubElement(array, "DoubleLongUnsigned").set("Value", dec_toHexStr(item, 8))
         return self.setRequest(2, array, "Array", data)
-
 
     # Attribute of monitored_value (No.3)
     @formatResponse
@@ -155,7 +148,6 @@ class C21RegisterMonitor(DlmsClass):
             return response
         return response[0]
 
-
     @formatResponse
     def check_monitored_value(self, ck_data):
         """
@@ -170,7 +162,6 @@ class C21RegisterMonitor(DlmsClass):
         }
         """
         return checkResponsValue(self.get_monitored_value(), ck_data)
-
 
     @formatResponse
     def set_monitored_value(self, data):
@@ -196,7 +187,6 @@ class C21RegisterMonitor(DlmsClass):
                 if subIndex == 2:
                     etree.SubElement(struct, "Integer").set("Value", dec_toHexStr(subItem, 2))
         return self.setRequest(3, struct, "Struct", data)
-
 
     # Attribute of actions (No.4)
     @formatResponse
@@ -227,7 +217,6 @@ class C21RegisterMonitor(DlmsClass):
             return response
         return response[0]
 
-
     @formatResponse
     def check_actions(self, ck_data):
         """
@@ -242,7 +231,6 @@ class C21RegisterMonitor(DlmsClass):
         }
         """
         return checkResponsValue(self.get_actions(), ck_data)
-
 
     @formatResponse
     def set_actions(self, data):

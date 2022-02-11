@@ -32,7 +32,6 @@ class DiamondValueCheck(ValueCheck):
         "PP": 3,
     }
 
-
     def getColumnData(self, clientDict, config, excel_path, meterTypeDict, object_model_sheet_index):
         attr_name = config['Config']['attr_name']
         attr_name_index = config['Config']['index']
@@ -108,6 +107,7 @@ class DiamondValueCheck(ValueCheck):
             "clientAccessRights": client_access_rights_list,
             "responseValue": get_value_list,
         }
+
 
 readDataByAdmin = DiamondValueCheck().read_data_by_admin
 defaultValueCheck = DiamondValueCheck().default_value_check

@@ -2,8 +2,8 @@
 
 from dlms.DlmsClass import *
 
-class C29AutoConnect(DlmsClass):
 
+class C29AutoConnect(DlmsClass):
     attr_index_dict = {
         1: "logical_name",
         2: "mode",
@@ -19,7 +19,6 @@ class C29AutoConnect(DlmsClass):
 
     def __init__(self, conn, obis=None):
         super().__init__(conn, obis, classId=29)
-
 
     # Attribute of logical_name
     @formatResponse
@@ -44,7 +43,6 @@ class C29AutoConnect(DlmsClass):
             return hex_toOBIS(ret[0]), ret[1]
         return hex_toOBIS(ret[0])
 
-
     @formatResponse
     def check_logical_name(self, ck_data):
         """
@@ -58,7 +56,6 @@ class C29AutoConnect(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_logical_name(self, data):
         """
@@ -68,7 +65,6 @@ class C29AutoConnect(DlmsClass):
         :return:            返回一个KFResult对象
         """
         return self.setRequest(1, obis_toHex(data), "OctetString", data)
-
 
     # Attribute of mode
     @formatResponse
@@ -93,7 +89,6 @@ class C29AutoConnect(DlmsClass):
             return hex_toDec(ret[0]), ret[1]
         return hex_toDec(ret[0])
 
-
     @formatResponse
     def check_mode(self, ck_data):
         """
@@ -107,7 +102,6 @@ class C29AutoConnect(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_mode(self, data):
         """
@@ -117,7 +111,6 @@ class C29AutoConnect(DlmsClass):
         :return:            KFResult 对象
         """
         return self.setRequest(2, dec_toHexStr(data, 2), "Enum", data)
-
 
     # Attribute of repetitions
     @formatResponse
@@ -142,7 +135,6 @@ class C29AutoConnect(DlmsClass):
             return hex_toDec(ret[0]), ret[1]
         return hex_toDec(ret[0])
 
-
     @formatResponse
     def check_repetitions(self, ck_data):
         """
@@ -156,7 +148,6 @@ class C29AutoConnect(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_repetitions(self, data):
         """
@@ -166,7 +157,6 @@ class C29AutoConnect(DlmsClass):
         :return:            KFResult 对象
         """
         return self.setRequest(3, dec_toHexStr(data, 2), "Unsigned", data)
-
 
     # Attribute of repetition_delay
     @formatResponse
@@ -191,7 +181,6 @@ class C29AutoConnect(DlmsClass):
             return hex_toDec(ret[0]), ret[1]
         return hex_toDec(ret[0])
 
-
     @formatResponse
     def check_repetition_delay(self, ck_data):
         """
@@ -205,7 +194,6 @@ class C29AutoConnect(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_repetition_delay(self, data):
         """
@@ -215,7 +203,6 @@ class C29AutoConnect(DlmsClass):
         :return:            KFResult 对象
         """
         return self.setRequest(4, dec_toHexStr(data, 4), "LongUnsigned", data)
-
 
     # Attribute of calling_window
     @formatResponse
@@ -235,7 +222,6 @@ class C29AutoConnect(DlmsClass):
             return ret
         return ret[0]
 
-
     @formatResponse
     def check_calling_window(self, ck_data):
         """
@@ -250,7 +236,6 @@ class C29AutoConnect(DlmsClass):
         }
         """
         return checkResponsValue(self.get_calling_window(), ck_data)
-
 
     @formatResponse
     def set_calling_window(self, data):
@@ -274,7 +259,6 @@ class C29AutoConnect(DlmsClass):
                 etree.SubElement(struct, "OctetString").set("Value", dateTime_toHex(subItem))
         return self.setRequest(5, array, "Array", data)
 
-
     # Attribute of destination_list
     @formatResponse
     def get_destination_list(self, dataType=False, response=None):
@@ -293,7 +277,6 @@ class C29AutoConnect(DlmsClass):
             return ret
         return ret[0]
 
-
     @formatResponse
     def check_destination_list(self, ck_data):
         """
@@ -308,7 +291,6 @@ class C29AutoConnect(DlmsClass):
         }
         """
         return checkResponsValue(self.get_destination_list(), ck_data)
-
 
     @formatResponse
     def set_destination_list(self, data):
@@ -331,7 +313,6 @@ class C29AutoConnect(DlmsClass):
             for subIndex, subItem in enumerate(value):
                 etree.SubElement(struct, "OctetString").set("Value", subItem)
         return self.setRequest(6, array, "Array", data)
-
 
     # Method of connect
     @formatResponse

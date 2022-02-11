@@ -2,8 +2,8 @@
 
 from dlms.DlmsClass import *
 
-class C7Profile(DlmsClass):
 
+class C7Profile(DlmsClass):
     attr_index_dict = {
         1: "logical_name",
         2: "buffer",
@@ -22,7 +22,6 @@ class C7Profile(DlmsClass):
 
     def __init__(self, conn, obis=None):
         super().__init__(conn, obis, classId=7)
-
 
     @staticmethod
     def __bufferResponse(data, dataType):
@@ -43,25 +42,35 @@ class C7Profile(DlmsClass):
                             if isinstance(subItem, list):
                                 for sub2Index, sub2Item in enumerate(subItem):
                                     if isinstance(sub2Item, list):
-                                        for sub3Index, sub3Item in enumerate(sub2Item):          # for 0-0:94.43.132.255
+                                        for sub3Index, sub3Item in enumerate(sub2Item):  # for 0-0:94.43.132.255
                                             if isinstance(sub3Item, list):
                                                 for sub4Index, sub4Item in enumerate(sub3Item):
-                                                    if checkDataTypeIsNum(dataType[key][index][subIndex][sub2Index][sub3Index][sub4Index]).status:
+                                                    if checkDataTypeIsNum(
+                                                            dataType[key][index][subIndex][sub2Index][sub3Index][
+                                                                sub4Index]).status:
                                                         sub3Item[sub4Index] = hex_toDec(sub4Item)
                                             else:
-                                                if checkDataTypeIsNum(dataType[key][index][subIndex][sub2Index][sub3Index]).status:
+                                                if checkDataTypeIsNum(
+                                                        dataType[key][index][subIndex][sub2Index][sub3Index]).status:
                                                     sub2Item[sub3Index] = hex_toDec(sub3Item)
-                                                elif len(sub3Item.strip()) >= 24 and dataType[key][index][subIndex][sub2Index][sub3Index] in ["OctetString", "DateTime"]:
+                                                elif len(sub3Item.strip()) >= 24 and \
+                                                        dataType[key][index][subIndex][sub2Index][sub3Index] in [
+                                                    "OctetString", "DateTime"]:
                                                     sub2Item[sub3Index] = hex_toDateTimeString(sub3Item)
-                                                elif len(sub3Item.strip()) == 12 and dataType[key][index][subIndex][sub2Index][sub3Index] in ["OctetString"]:
+                                                elif len(sub3Item.strip()) == 12 and \
+                                                        dataType[key][index][subIndex][sub2Index][sub3Index] in [
+                                                    "OctetString"]:
                                                     sub2Item[sub3Index] = hex_toOBIS(sub3Item)
-                                    elif len(sub2Item.strip()) >= 24 and dataType[key][index][subIndex][sub2Index] in ["OctetString", "DateTime"]:
+                                    elif len(sub2Item.strip()) >= 24 and dataType[key][index][subIndex][sub2Index] in [
+                                        "OctetString", "DateTime"]:
                                         subItem[sub2Index] = hex_toDateTimeString(sub2Item)
                                     elif checkDataTypeIsNum(dataType[key][index][subIndex][sub2Index]).status:
                                         subItem[sub2Index] = hex_toDec(sub2Item)
-                                    elif len(sub2Item.strip()) == 12 and dataType[key][index][subIndex][sub2Index] in ["OctetString"]:
+                                    elif len(sub2Item.strip()) == 12 and dataType[key][index][subIndex][sub2Index] in [
+                                        "OctetString"]:
                                         subItem[sub2Index] = hex_toOBIS(sub2Item)
-                            elif len(subItem.strip()) >= 24 and dataType[key][index][subIndex] in ["OctetString", "DateTime"]:
+                            elif len(subItem.strip()) >= 24 and dataType[key][index][subIndex] in ["OctetString",
+                                                                                                   "DateTime"]:
                                 item[subIndex] = hex_toDateTimeString(subItem)
                             elif len(subItem.strip()) == 12 and dataType[key][index][subIndex] in ["OctetString"]:
                                 item[subIndex] = hex_toOBIS(subItem)
@@ -76,7 +85,6 @@ class C7Profile(DlmsClass):
                             value[index] = hex_toDec(item)
         return data
 
-
     @staticmethod
     def __checkPeriod(response, capture_period):
         """
@@ -90,11 +98,10 @@ class C7Profile(DlmsClass):
             return KFResult(False, "the response data is not correct")
         time_list = [string_toTimestamp(item[0][:19]) for item in response.values()]
         for i in range(len(time_list) - 1):
-            if (time_list[i+1] - time_list[i]) != capture_period:
-                return KFResult(False, f"{time_list[i+1]} and {time_list[i]} is not successive")
+            if (time_list[i + 1] - time_list[i]) != capture_period:
+                return KFResult(False, f"{time_list[i + 1]} and {time_list[i]} is not successive")
         info("Check capture period success")
         return KFResult(True, "Check capture period success")
-
 
     # Attribute of logical_name (No.1)
     @formatResponse
@@ -118,7 +125,6 @@ class C7Profile(DlmsClass):
             return hex_toOBIS(ret[0]), ret[1]
         return hex_toOBIS(ret[0])
 
-
     @formatResponse
     def check_logical_name(self, ck_data):
         """
@@ -132,7 +138,6 @@ class C7Profile(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_logical_name(self, data):
         """
@@ -142,7 +147,6 @@ class C7Profile(DlmsClass):
         :return:            返回一个KFResult对象
         """
         return self.setRequest(1, obis_toHex(data), "OctetString", data)
-
 
     # Attribute of buffer (No.2)
     @formatResponse
@@ -166,7 +170,6 @@ class C7Profile(DlmsClass):
             return self.__bufferResponse(response[0], response[1]), response[1]
         return self.__bufferResponse(response[0], response[1])
 
-
     @formatResponse
     def check_buffer(self, ck_data, isCheckPeriod=False):
         """
@@ -188,7 +191,6 @@ class C7Profile(DlmsClass):
             if not ret.status:
                 return ret
         return checkResponsValue(data, ck_data)
-
 
     @formatResponse
     def set_buffer(self, data):
@@ -216,7 +218,6 @@ class C7Profile(DlmsClass):
                     etree.SubElement(struct, "OctetString").set("Value", dec_toHexStr(item))
         return self.setRequest(2, array, "Array", data)
 
-
     @formatResponse
     def get_buffer_by_range(self, startTime, endTime, captureObjects=None, dataType=False):
         """
@@ -240,7 +241,6 @@ class C7Profile(DlmsClass):
         if dataType:
             return self.__bufferResponse(response[0], response[1]), response[1]
         return self.__bufferResponse(response[0], response[1])
-
 
     @formatResponse
     def check_buffer_by_range(self, startTime, endTime, ck_data, captureObjects=None, isCheckPeriod=False):
@@ -276,7 +276,6 @@ class C7Profile(DlmsClass):
                 return ret
         return checkResponsValue(data, ck_data)
 
-
     @formatResponse
     def get_buffer_by_range_today(self, captureObjects=None, dataType=False):
         """
@@ -298,7 +297,6 @@ class C7Profile(DlmsClass):
         if dataType:
             return self.get_buffer_by_range(startTime, endTime, captureObjects, dataType=True)
         return self.get_buffer_by_range(startTime, endTime, captureObjects)
-
 
     @formatResponse
     def check_buffer_by_range_today(self, ck_data, captureObjects=None, isCheckPeriod=False):
@@ -332,7 +330,6 @@ class C7Profile(DlmsClass):
                 return ret
         return checkResponsValue(data, ck_data)
 
-
     @formatResponse
     def get_buffer_by_range_yesterday(self, captureObjects=None, dataType=False):
         """
@@ -354,7 +351,6 @@ class C7Profile(DlmsClass):
         if dataType:
             return self.get_buffer_by_range(startTime, endTime, captureObjects, dataType=True)
         return self.get_buffer_by_range(startTime, endTime, captureObjects)
-
 
     @formatResponse
     def check_buffer_by_range_yesterday(self, ck_data, captureObjects=None, isCheckPeriod=False):
@@ -388,7 +384,6 @@ class C7Profile(DlmsClass):
                 return ret
         return checkResponsValue(data, ck_data)
 
-
     @formatResponse
     def get_buffer_by_range_lastWeek(self, captureObjects=None, dataType=False):
         """
@@ -410,7 +405,6 @@ class C7Profile(DlmsClass):
         if dataType:
             return self.get_buffer_by_range(startTime, endTime, captureObjects, True)
         return self.get_buffer_by_range(startTime, endTime, captureObjects)
-
 
     @formatResponse
     def check_buffer_by_range_lastWeek(self, ck_data, captureObjects=None, isCheckPeriod=False):
@@ -444,9 +438,9 @@ class C7Profile(DlmsClass):
                 return ret
         return checkResponsValue(data, ck_data)
 
-
     @formatResponse
-    def get_buffer_by_entry(self, startEntry, endEntry, startCaptureIndex=1, endCaptureIndex=0, dataType=False, obis=None):
+    def get_buffer_by_entry(self, startEntry, endEntry, startCaptureIndex=1, endCaptureIndex=0, dataType=False,
+                            obis=None):
         """
         基于条目索引选择性返回部分曲线, 索引起始值为1, 支持负数索引(-1 代表最后一个索引)
 
@@ -463,14 +457,15 @@ class C7Profile(DlmsClass):
             totalEntries = self.get_entries_in_use(obis=obis)
             startEntry = totalEntries + 1 + int(startEntry) if int(startEntry) < 0 else startEntry
             endEntry = totalEntries + 1 + int(endEntry) if int(endEntry) < 0 else endEntry
-        response = getStrucDataFromGetResp(self.getRequestByEntryWithObis(2, obis, startEntry, endEntry, startCaptureIndex, endCaptureIndex))
+        response = getStrucDataFromGetResp(
+            self.getRequestByEntryWithObis(2, obis, startEntry, endEntry, startCaptureIndex, endCaptureIndex))
         if dataType:
-            return self.__bufferResponse(response[0],  response[1]), response[1]
+            return self.__bufferResponse(response[0], response[1]), response[1]
         return self.__bufferResponse(response[0], response[1])
 
-
     @formatResponse
-    def check_buffer_by_entry(self, startEntry, endEntry, ck_data, startCaptureIndex=1, endCaptureIndex=0, isCheckPeriod=False):
+    def check_buffer_by_entry(self, startEntry, endEntry, ck_data, startCaptureIndex=1, endCaptureIndex=0,
+                              isCheckPeriod=False):
         """
         基于条目索引检查返回的部分曲线
 
@@ -495,7 +490,6 @@ class C7Profile(DlmsClass):
             if not ret.status:
                 return ret
         return checkResponsValue(data, ck_data)
-
 
     # Attribute of capture_objects (No.3)
     @formatResponse
@@ -525,7 +519,6 @@ class C7Profile(DlmsClass):
             return response
         return response[0]
 
-
     @formatResponse
     def check_capture_objects(self, ck_data):
         """
@@ -546,7 +539,6 @@ class C7Profile(DlmsClass):
         for value in ck_data.values():
             value[1].replace("-", ".").replace(":", ".")
         return checkResponsValue(self.get_capture_objects(), ck_data)
-
 
     @formatResponse
     def set_capture_objects(self, data):
@@ -586,7 +578,6 @@ class C7Profile(DlmsClass):
                         etree.SubElement(struct, "LongUnsigned").set("Value", dec_toHexStr(subItem, 4))
             return self.setRequest(3, array, "Array", data)
 
-
     # Attribute of capture_period (No.4)
     @formatResponse
     def get_capture_period(self, dataType=False, response=None):
@@ -607,7 +598,6 @@ class C7Profile(DlmsClass):
             return hex_toDec(ret[0]), ret[1]
         return hex_toDec(ret[0])
 
-
     @formatResponse
     def check_capture_period(self, ck_data):
         """
@@ -621,7 +611,6 @@ class C7Profile(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_capture_period(self, data):
         """
@@ -631,7 +620,6 @@ class C7Profile(DlmsClass):
         :return:                    返回一个 KFResult 对象
         """
         return self.setRequest(4, dec_toHexStr(data, 8), "DoubleLongUnsigned", data)
-
 
     # Attribute of sort_method (No.5)
     @formatResponse
@@ -655,7 +643,6 @@ class C7Profile(DlmsClass):
             return hex_toDec(ret[0]), ret[1]
         return hex_toDec(ret[0])
 
-
     @formatResponse
     def check_sort_method(self, ck_data):
         """
@@ -673,7 +660,6 @@ class C7Profile(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_sort_method(self, data):
         """
@@ -685,7 +671,6 @@ class C7Profile(DlmsClass):
         if isinstance(data, dict):
             data = data.get(0)
         return self.setRequest(5, dec_toHexStr(data, 2), "Enum", data)
-
 
     # Attribute of sort_object (No.6)
     @formatResponse
@@ -715,7 +700,6 @@ class C7Profile(DlmsClass):
             return response
         return response[0]
 
-
     @formatResponse
     def check_sort_object(self, ck_data):
         """
@@ -730,7 +714,6 @@ class C7Profile(DlmsClass):
         }
         """
         return checkResponsValue(self.get_sort_object(), ck_data)
-
 
     @formatResponse
     def set_sort_object(self, data):
@@ -759,7 +742,6 @@ class C7Profile(DlmsClass):
                     etree.SubElement(struct, "LongUnsigned").set("Value", dec_toHexStr(subItem, 4))
         return self.setRequest(6, struct, "Struct", data)
 
-
     # Attribute of entries_in_use (No.7)
     @formatResponse
     def get_entries_in_use(self, dataType=False, response=None, obis=None):
@@ -785,7 +767,6 @@ class C7Profile(DlmsClass):
             return hex_toDec(response[0]), response[1]
         return hex_toDec(response[0])
 
-
     @formatResponse
     def check_entries_in_use(self, ck_data):
         """
@@ -799,7 +780,6 @@ class C7Profile(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_entries_in_use(self, data):
         """
@@ -809,7 +789,6 @@ class C7Profile(DlmsClass):
         :return:                    返回一个 KFResult 对象
         """
         return self.setRequest(7, dec_toHexStr(data, 8), "DoubleLongUnsigned", data)
-
 
     # Attribute of profile_entries (No.8)
     @formatResponse
@@ -833,7 +812,6 @@ class C7Profile(DlmsClass):
             return hex_toDec(response[0]), response[1]
         return hex_toDec(response[0])
 
-
     @formatResponse
     def check_profile_entries(self, ck_data):
         """
@@ -847,7 +825,6 @@ class C7Profile(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_profile_entries(self, data):
         """
@@ -857,7 +834,6 @@ class C7Profile(DlmsClass):
         :return:                    返回一个 KFResult 对象
         """
         return self.setRequest(8, dec_toHexStr(data, 8), "DoubleLongUnsigned", data)
-
 
     # Method of reset
     @formatResponse
@@ -871,7 +847,6 @@ class C7Profile(DlmsClass):
         :return:                    返回一个 KFResult 对象
         """
         return self.actionRequest(1, dec_toHexStr(data, 2), "Integer", data)
-
 
     # Method of capture
     @formatResponse
@@ -887,9 +862,7 @@ class C7Profile(DlmsClass):
         """
         return self.actionRequest(2, dec_toHexStr(data, 2), "Integer", data)
 
-
-
-    #==================================================================================================#
+    # ==================================================================================================#
 
     @formatResponse
     def get_buffer_by_entry_with_list(self):
@@ -905,7 +878,6 @@ class C7Profile(DlmsClass):
             else:
                 response[index] = self.get_buffer_by_entry(startEntry=1, endEntry=-1, obis=obis)
         return response
-
 
     @formatResponse
     def check_buffer_by_entry_with_list(self, ck_data, obis_dict=None, clock_error_range=0, error_range=None):
@@ -945,7 +917,8 @@ class C7Profile(DlmsClass):
                                 # 根据不同的误差范围进行检查
                                 for subIndex, subValue in enumerate(value):
                                     if re.search(r"\d{4}-\d{2}-\d{2}", str(subValue)):
-                                        time_diff_result = timeDiff(subValue[:19], result[key][subIndex][:19], clock_error_range)
+                                        time_diff_result = timeDiff(subValue[:19], result[key][subIndex][:19],
+                                                                    clock_error_range)
                                         if not time_diff_result.status:
                                             response.append(f"response[{index}][{key}]: {time_diff_result.result}")
                                             break
@@ -954,24 +927,25 @@ class C7Profile(DlmsClass):
                                         if error_value is not None:
                                             if abs(subValue - result[key][subIndex]) > error_value:
                                                 response.append(
-                                                    f"response[{index}][{key}] {subIndex+1} Item: { result[key][subIndex]} not equal to ck_data{subValue}")
+                                                    f"response[{index}][{key}] {subIndex + 1} Item: {result[key][subIndex]} not equal to ck_data{subValue}")
 
                                         else:
                                             if subValue != result[key][subIndex]:
                                                 response.append(
-                                                    f"response[{index}][{key}] {subIndex+1} Item: { result[key][subIndex]} not equal to ck_data{subValue}, error_range={error_value}")
+                                                    f"response[{index}][{key}] {subIndex + 1} Item: {result[key][subIndex]} not equal to ck_data{subValue}, error_range={error_value}")
 
                             else:
                                 for subIndex, subValue in enumerate(value):
                                     if re.search(r"\d{4}-\d{2}-\d{2}", str(subValue)):
-                                        time_diff_result = timeDiff(subValue[:19], result[key][subIndex][:19], clock_error_range)
+                                        time_diff_result = timeDiff(subValue[:19], result[key][subIndex][:19],
+                                                                    clock_error_range)
                                         if not time_diff_result.status:
                                             response.append(f"response[{index}][{key}]: {time_diff_result.result}")
                                             break
                                     else:
                                         if subValue != result[key][subIndex]:
                                             response.append(
-                                                f"response[{index}][{key}] {subIndex+1} Item: { result[key][subIndex]} not equal to ck_data{subValue}")
+                                                f"response[{index}][{key}] {subIndex + 1} Item: {result[key][subIndex]} not equal to ck_data{subValue}")
 
                                 # 检查status的bit位是否正确
                                 if len(value[0]) > 19:
@@ -987,7 +961,8 @@ class C7Profile(DlmsClass):
                         result = self.get_buffer_by_entry(startEntry=-1, endEntry=-1, obis=obis)
 
                     if result != ck_data[index]:
-                        response.append(f"'response[{index}]={result}' not equal to 'ck_data[{index}]={ck_data[index]}'")
+                        response.append(
+                            f"'response[{index}]={result}' not equal to 'ck_data[{index}]={ck_data[index]}'")
 
             if len(response) == 0:
                 return KFResult(True, '')
@@ -996,7 +971,6 @@ class C7Profile(DlmsClass):
 
         except Exception as ex:
             error(ex)
-
 
     @formatResponse
     def get_entries_in_use_with_list(self):
@@ -1009,7 +983,6 @@ class C7Profile(DlmsClass):
         for index, obis in enumerate(self.obisList):
             response.append(self.get_entries_in_use(obis=obis))
         return response
-
 
     @formatResponse
     def check_entries_in_use_with_list(self, ck_data):

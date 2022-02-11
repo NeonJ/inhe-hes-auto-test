@@ -2,8 +2,8 @@
 
 from dlms.DlmsClass import *
 
-class C43MACAddressSetup(DlmsClass):
 
+class C43MACAddressSetup(DlmsClass):
     attr_index_dict = {
         1: "logical_name",
         2: "mac_address"
@@ -11,7 +11,6 @@ class C43MACAddressSetup(DlmsClass):
 
     def __init__(self, conn, obis=None):
         super().__init__(conn, obis, classId=43)
-
 
     # Attribute of logical_name
     @formatResponse
@@ -36,7 +35,6 @@ class C43MACAddressSetup(DlmsClass):
             return hex_toOBIS(ret[0]), ret[1]
         return hex_toOBIS(ret[0])
 
-
     @formatResponse
     def check_logical_name(self, ck_data):
         """
@@ -50,7 +48,6 @@ class C43MACAddressSetup(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_logical_name(self, data):
         """
@@ -60,7 +57,6 @@ class C43MACAddressSetup(DlmsClass):
         :return:             KFResult对象
         """
         return self.setRequest(1, obis_toHex(data), "OctetString", data)
-
 
     # Attribute of MAC_address
     @formatResponse
@@ -80,7 +76,6 @@ class C43MACAddressSetup(DlmsClass):
             return ret
         return ret[0]
 
-
     @formatResponse
     def check_mac_address(self, ck_data):
         """
@@ -90,7 +85,6 @@ class C43MACAddressSetup(DlmsClass):
         :return:              KFResult对象
         """
         return checkResponsValue(self.get_mac_address(), ck_data)
-
 
     @formatResponse
     def set_mac_address(self, data):

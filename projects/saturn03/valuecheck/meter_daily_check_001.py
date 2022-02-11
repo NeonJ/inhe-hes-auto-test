@@ -1,21 +1,17 @@
 # -*- coding:utf-8 -*-
 
-import re
-import os
-import time
 import datetime
 import json
-import requests
-import socket
-from binascii import hexlify, unhexlify
-# from common import *
-import yaml
-from convertdate import persian
-from .comm import *
+import os
+import time
 
-from HESAPI import *
+import requests
 from DB import DB
+from HESAPI import *
 from libs.Singleton import Singleton
+
+
+# from common import *
 
 
 @tag('meter_daily_check1')

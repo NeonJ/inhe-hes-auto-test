@@ -2,8 +2,8 @@
 
 from dlms.DlmsClass import *
 
-class C11SpecialDaysTable(DlmsClass):
 
+class C11SpecialDaysTable(DlmsClass):
     attr_index_dict = {
         1: "logical_name",
         2: "entries"
@@ -16,7 +16,6 @@ class C11SpecialDaysTable(DlmsClass):
 
     def __init__(self, conn, obis=None):
         super().__init__(conn, obis, classId=11)
-
 
     # Attribute of logical_name (No.1)
     @formatResponse
@@ -41,7 +40,6 @@ class C11SpecialDaysTable(DlmsClass):
             return hex_toOBIS(ret[0]), ret[1]
         return hex_toOBIS(ret[0])
 
-
     @formatResponse
     def check_logical_name(self, ck_data):
         """
@@ -55,7 +53,6 @@ class C11SpecialDaysTable(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_logical_name(self, data):
         """
@@ -65,7 +62,6 @@ class C11SpecialDaysTable(DlmsClass):
         :return:            返回一个KFResult对象
         """
         return self.setRequest(1, obis_toHex(data), "OctetString", data)
-
 
     # Attribute of entries (No.2)
     @formatResponse
@@ -95,7 +91,6 @@ class C11SpecialDaysTable(DlmsClass):
             return response
         return response[0]
 
-
     @formatResponse
     def check_entries(self, ck_data):
         """
@@ -111,7 +106,6 @@ class C11SpecialDaysTable(DlmsClass):
         """
 
         return checkResponsValue(self.get_entries(), ck_data)
-
 
     @formatResponse
     def set_entries(self, data):
@@ -139,7 +133,6 @@ class C11SpecialDaysTable(DlmsClass):
                 else:
                     etree.SubElement(struct, "Unsigned").set("Value", dec_toHexStr(subItem, 2))
         return self.setRequest(2, array, "Array", data)
-
 
     # Method of insert (No.1)
     @formatResponse
@@ -171,7 +164,6 @@ class C11SpecialDaysTable(DlmsClass):
                 else:
                     etree.SubElement(struct, "Unsigned").set("Value", dec_toHexStr(subItem, 2))
         return self.actionRequest(1, array, "Array", data)
-
 
     # Method of delete (No.2)
     @formatResponse

@@ -2,8 +2,8 @@
 
 from dlms.DlmsClass import *
 
-class C23IECHDLCSetup(DlmsClass):
 
+class C23IECHDLCSetup(DlmsClass):
     attr_index_dict = {
         1: "logical_name",
         2: "comm_speed",
@@ -18,7 +18,6 @@ class C23IECHDLCSetup(DlmsClass):
 
     def __init__(self, conn, obis=None):
         super().__init__(conn, obis, classId=23)
-
 
     # Attribute of logical_name
     @formatResponse
@@ -43,7 +42,6 @@ class C23IECHDLCSetup(DlmsClass):
             return hex_toOBIS(ret[0]), ret[1]
         return hex_toOBIS(ret[0])
 
-
     @formatResponse
     def check_logical_name(self, ck_data):
         """
@@ -57,7 +55,6 @@ class C23IECHDLCSetup(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_logical_name(self, data):
         """
@@ -67,7 +64,6 @@ class C23IECHDLCSetup(DlmsClass):
         :return:            返回一个KFResult对象
         """
         return self.setRequest(1, obis_toHex(data), "OctetString", data)
-
 
     # Attribute of comm_speed
     @formatResponse
@@ -91,7 +87,6 @@ class C23IECHDLCSetup(DlmsClass):
             return hex_toDec(ret[0]), ret[1]
         return hex_toDec(ret[0])
 
-
     @formatResponse
     def check_comm_speed(self, ck_data):
         """
@@ -105,7 +100,6 @@ class C23IECHDLCSetup(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_comm_speed(self, data):
         """
@@ -115,7 +109,6 @@ class C23IECHDLCSetup(DlmsClass):
         :return:            KFResult 对象
         """
         return self.setRequest(2, dec_toHexStr(data, 2), "Enum", data)
-
 
     # Attribute of window_size_transmit
     @formatResponse
@@ -140,7 +133,6 @@ class C23IECHDLCSetup(DlmsClass):
             return hex_toDec(ret[0]), ret[1]
         return hex_toDec(ret[0])
 
-
     @formatResponse
     def check_window_size_transmit(self, ck_data):
         """
@@ -154,7 +146,6 @@ class C23IECHDLCSetup(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_window_size_transmit(self, data):
         """
@@ -164,7 +155,6 @@ class C23IECHDLCSetup(DlmsClass):
         :return:            KFResult 对象
         """
         return self.setRequest(3, dec_toHexStr(data, 2), "Unsigned", data)
-
 
     # Attribute of window_size_receive
     @formatResponse
@@ -189,7 +179,6 @@ class C23IECHDLCSetup(DlmsClass):
             return hex_toDec(ret[0]), ret[1]
         return hex_toDec(ret[0])
 
-
     @formatResponse
     def check_window_size_receive(self, ck_data):
         """
@@ -203,7 +192,6 @@ class C23IECHDLCSetup(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_window_size_receive(self, data):
         """
@@ -213,7 +201,6 @@ class C23IECHDLCSetup(DlmsClass):
         :return:            KFResult 对象
         """
         return self.setRequest(4, dec_toHexStr(data, 2), "Unsigned", data)
-
 
     # Attribute of max_info_field_length_transmit
     @formatResponse
@@ -238,7 +225,6 @@ class C23IECHDLCSetup(DlmsClass):
             return hex_toDec(ret[0]), ret[1]
         return hex_toDec(ret[0])
 
-
     @formatResponse
     def check_max_info_field_length_transmit(self, ck_data):
         """
@@ -252,7 +238,6 @@ class C23IECHDLCSetup(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_max_info_field_length_transmit(self, data):
         """
@@ -262,7 +247,6 @@ class C23IECHDLCSetup(DlmsClass):
         :return:            KFResult 对象
         """
         return self.setRequest(5, dec_toHexStr(data, 4), "LongUnsigned", data)
-
 
     # Attribute of max_info_field_length_receive
     @formatResponse
@@ -287,7 +271,6 @@ class C23IECHDLCSetup(DlmsClass):
             return hex_toDec(ret[0]), ret[1]
         return hex_toDec(ret[0])
 
-
     @formatResponse
     def check_max_info_field_length_receive(self, ck_data):
         """
@@ -301,7 +284,6 @@ class C23IECHDLCSetup(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_max_info_field_length_receive(self, data):
         """
@@ -311,7 +293,6 @@ class C23IECHDLCSetup(DlmsClass):
         :return:            KFResult 对象
         """
         return self.setRequest(6, dec_toHexStr(data, 4), "LongUnsigned", data)
-
 
     # Attribute of inter_octet_time_out
     @formatResponse
@@ -336,7 +317,6 @@ class C23IECHDLCSetup(DlmsClass):
             return hex_toDec(ret[0]), ret[1]
         return hex_toDec(ret[0])
 
-
     @formatResponse
     def check_inter_octet_time_out(self, ck_data):
         """
@@ -350,7 +330,6 @@ class C23IECHDLCSetup(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_inter_octet_time_out(self, data):
         """
@@ -360,7 +339,6 @@ class C23IECHDLCSetup(DlmsClass):
         :return:            KFResult 对象
         """
         return self.setRequest(7, dec_toHexStr(data, 4), "LongUnsigned", data)
-
 
     # Attribute of inactivity_time_out
     @formatResponse
@@ -385,7 +363,6 @@ class C23IECHDLCSetup(DlmsClass):
             return hex_toDec(ret[0]), ret[1]
         return hex_toDec(ret[0])
 
-
     @formatResponse
     def check_inactivity_time_out(self, ck_data):
         """
@@ -399,7 +376,6 @@ class C23IECHDLCSetup(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_inactivity_time_out(self, data):
         """
@@ -409,7 +385,6 @@ class C23IECHDLCSetup(DlmsClass):
         :return:            KFResult 对象
         """
         return self.setRequest(8, dec_toHexStr(data, 4), "LongUnsigned", data)
-
 
     # Attribute of device_address
     @formatResponse
@@ -434,7 +409,6 @@ class C23IECHDLCSetup(DlmsClass):
             return hex_toDec(ret[0]), ret[1]
         return hex_toDec(ret[0])
 
-
     @formatResponse
     def check_device_address(self, ck_data):
         """
@@ -447,7 +421,6 @@ class C23IECHDLCSetup(DlmsClass):
         if int(ret) == int(ck_data):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
-
 
     @formatResponse
     def set_device_address(self, data):

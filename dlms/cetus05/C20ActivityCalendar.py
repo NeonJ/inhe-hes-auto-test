@@ -2,8 +2,8 @@
 
 from dlms.DlmsClass import *
 
-class C20ActivityCalendar(DlmsClass):
 
+class C20ActivityCalendar(DlmsClass):
     attr_index_dict = {
         1: "logical_name",
         2: "calendar_name_active",
@@ -20,7 +20,6 @@ class C20ActivityCalendar(DlmsClass):
     action_index_dict = {
         1: "activate_passive_calendar"
     }
-
 
     def __init__(self, conn, obis=None):
         super().__init__(conn, obis, classId=20)
@@ -53,7 +52,7 @@ class C20ActivityCalendar(DlmsClass):
                 if index == 0 and len(item) > 0:
                     value[index] = item
                 if index == 1 and len(item) > 0:
-                    #value[index] = hex_toWildcardTimeString(item)[0]
+                    # value[index] = hex_toWildcardTimeString(item)[0]
                     value[index] = hex_toWildcardTimeString(item)
                 if index == 2 and len(item) > 0:
                     value[index] = item
@@ -115,20 +114,20 @@ class C20ActivityCalendar(DlmsClass):
             if dataType:
                 return response
             return response[0]
-        for value in response[0].values():                                         # list: level2
+        for value in response[0].values():  # list: level2
             for index, item in enumerate(value):
                 if isinstance(item, str):
                     value[index] = hex_toDec(item)
                 if isinstance(item, list):
-                    for subIndex, subItem in enumerate(item):                           # list: level2
+                    for subIndex, subItem in enumerate(item):  # list: level2
                         if isinstance(subItem, list):
-                            for sub2Index, sub2Item in enumerate(subItem):              # list: level3
+                            for sub2Index, sub2Item in enumerate(subItem):  # list: level3
                                 if sub2Index == 0 and len(sub2Item) > 0:
-                                    subItem[sub2Index] = hex_toTimeString(sub2Item)     # start_time
+                                    subItem[sub2Index] = hex_toTimeString(sub2Item)  # start_time
                                 if sub2Index == 1 and len(sub2Item) > 0:
-                                    subItem[sub2Index] = hex_toOBIS(sub2Item)           # script_logical_name
+                                    subItem[sub2Index] = hex_toOBIS(sub2Item)  # script_logical_name
                                 if sub2Index == 2 and len(sub2Item) > 0:
-                                    subItem[sub2Index] = hex_toDec(sub2Item)            # script_selector
+                                    subItem[sub2Index] = hex_toDec(sub2Item)  # script_selector
         if dataType:
             return response
         return response[0]
@@ -150,13 +149,13 @@ class C20ActivityCalendar(DlmsClass):
                         subStruct.set("Qty", dec_toHexStr(len(subItem), 4))
                         for sub2Index, sub2Item in enumerate(subItem):
                             if sub2Index == 0:
-                                etree.SubElement(subStruct, "Time").set("Value", dayDateTime_toHex(sub2Item).ljust(8,'0'))
+                                etree.SubElement(subStruct, "Time").set("Value",
+                                                                        dayDateTime_toHex(sub2Item).ljust(8, '0'))
                             if sub2Index == 1:
                                 etree.SubElement(subStruct, "OctetString").set("Value", obis_toHex(sub2Item))
                             if sub2Index == 2:
                                 etree.SubElement(subStruct, "LongUnsigned").set("Value", dec_toHexStr(sub2Item, 4))
         return self.setRequest(attrId, array, 'Array', data)
-
 
     # Attribute of logical_name (No.1)
     @formatResponse
@@ -181,7 +180,6 @@ class C20ActivityCalendar(DlmsClass):
             return hex_toOBIS(ret[0]), ret[1]
         return hex_toOBIS(ret[0])
 
-
     @formatResponse
     def check_logical_name(self, ck_data):
         """
@@ -195,7 +193,6 @@ class C20ActivityCalendar(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_logical_name(self, data):
         """
@@ -205,7 +202,6 @@ class C20ActivityCalendar(DlmsClass):
         :return:            返回一个KFResult对象
         """
         return self.setRequest(1, obis_toHex(data), "OctetString", data)
-
 
     # Attribute of calendar_name_active (No.2)
     @formatResponse
@@ -219,7 +215,6 @@ class C20ActivityCalendar(DlmsClass):
         :return:              字符串
         """
         return self.__get_calendar_name(dataType, response, 2)
-
 
     @formatResponse
     def check_calendar_name_active(self, ck_data):
@@ -235,7 +230,6 @@ class C20ActivityCalendar(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_calendar_name_active(self, data):
         """
@@ -245,7 +239,6 @@ class C20ActivityCalendar(DlmsClass):
         :return:                 KFResult对象
         """
         return self.setRequest(2, ascii_toHex(data), "OctetString", data)
-
 
     # Attribute of season_profile_active (No.3)
     @formatResponse
@@ -258,7 +251,6 @@ class C20ActivityCalendar(DlmsClass):
         :return:                   字典
         """
         return self.__get_season_profile(dataType, response, 3)
-
 
     @formatResponse
     def check_season_profile_active(self, ck_data):
@@ -275,7 +267,6 @@ class C20ActivityCalendar(DlmsClass):
         """
         return checkResponsValue(self.get_season_profile_active(), ck_data)
 
-
     @formatResponse
     def set_season_profile_active(self, data):
         """
@@ -291,7 +282,6 @@ class C20ActivityCalendar(DlmsClass):
         """
         return self.__set_season_profile(data, 3)
 
-
     # Attribute of week_profile_table_active (No.4)
     @formatResponse
     def get_week_profile_table_active(self, dataType=False, response=None):
@@ -303,7 +293,6 @@ class C20ActivityCalendar(DlmsClass):
         :return:                  字典
         """
         return self.__get_week_profile_table(dataType, response, 4)
-
 
     @formatResponse
     def check_week_profile_table_active(self, ck_data):
@@ -321,7 +310,6 @@ class C20ActivityCalendar(DlmsClass):
         """
         return checkResponsValue(self.get_week_profile_table_active(), ck_data)
 
-
     @formatResponse
     def set_week_profile_table_active(self, data):
         """
@@ -338,7 +326,6 @@ class C20ActivityCalendar(DlmsClass):
         """
         return self.__set_week_profile_table(data, 4)
 
-
     # Attribute of day_profile_table_active (No.5)
     @formatResponse
     def get_day_profile_table_active(self, dataType=False, response=None):
@@ -351,7 +338,6 @@ class C20ActivityCalendar(DlmsClass):
         :return:                  字典
         """
         return self.__get_day_profile_table(dataType, response, 5)
-
 
     @formatResponse
     def check_day_profile_table_active(self, ck_data):
@@ -371,7 +357,6 @@ class C20ActivityCalendar(DlmsClass):
         """
         return checkResponsValue(self.get_day_profile_table_active(), ck_data)
 
-
     @formatResponse
     def set_day_profile_table_active(self, data):
         """
@@ -389,7 +374,6 @@ class C20ActivityCalendar(DlmsClass):
         """
         return self.__set_day_profile_table(data, 5)
 
-
     # Attribute of calendar_name_passive (No.6)
     @formatResponse
     def get_calendar_name_passive(self, dataType=False, response=None):
@@ -401,7 +385,6 @@ class C20ActivityCalendar(DlmsClass):
         :return:             字符串
         """
         return self.__get_calendar_name(dataType, response, 6)
-
 
     @formatResponse
     def check_calendar_name_passive(self, ck_data):
@@ -416,7 +399,6 @@ class C20ActivityCalendar(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_calendar_name_passive(self, data):
         """
@@ -426,7 +408,6 @@ class C20ActivityCalendar(DlmsClass):
         :return:          KFResult 对象
         """
         return self.setRequest(6, ascii_toHex(data), "OctetString", data)
-
 
     # Attribute of season_profile_passive (No.7)
     @formatResponse
@@ -439,7 +420,6 @@ class C20ActivityCalendar(DlmsClass):
         :return:                  字典
         """
         return self.__get_season_profile(dataType, response, 7)
-
 
     @formatResponse
     def check_season_profile_passive(self, ck_data):
@@ -457,7 +437,6 @@ class C20ActivityCalendar(DlmsClass):
         """
         return checkResponsValue(self.get_season_profile_passive(), ck_data)
 
-
     @formatResponse
     def set_season_profile_passive(self, data):
         """
@@ -474,7 +453,6 @@ class C20ActivityCalendar(DlmsClass):
         """
         return self.__set_season_profile(data, 7)
 
-
     # Attribute of week_profile_table_passive (No.8)
     @formatResponse
     def get_week_profile_table_passive(self, dataType=False, response=None):
@@ -486,7 +464,6 @@ class C20ActivityCalendar(DlmsClass):
         :return:                  字典
         """
         return self.__get_week_profile_table(dataType, response, 8)
-
 
     @formatResponse
     def check_week_profile_table_passive(self, ck_data):
@@ -504,7 +481,6 @@ class C20ActivityCalendar(DlmsClass):
         """
         return checkResponsValue(self.get_week_profile_table_passive(), ck_data)
 
-
     @formatResponse
     def set_week_profile_table_passive(self, data):
         """
@@ -521,7 +497,6 @@ class C20ActivityCalendar(DlmsClass):
         """
         return self.__set_week_profile_table(data, 8)
 
-
     # Attribute of day_profile_table_passive (No.9)
     @formatResponse
     def get_day_profile_table_passive(self, dataType=False, response=None):
@@ -533,7 +508,6 @@ class C20ActivityCalendar(DlmsClass):
         :return:                  字典
         """
         return self.__set_day_profile_table(dataType, response, 9)
-
 
     @formatResponse
     def check_day_profile_table_passive(self, ck_data):
@@ -551,7 +525,6 @@ class C20ActivityCalendar(DlmsClass):
         """
         return checkResponsValue(self.get_day_profile_table_passive(), ck_data)
 
-
     @formatResponse
     def set_day_profile_table_passive(self, data):
         """
@@ -568,7 +541,6 @@ class C20ActivityCalendar(DlmsClass):
         }
         """
         return self.__set_day_profile_table(data, 9)
-
 
     # Attribute of activate_passive_calendar_time (No.10)
     @formatResponse
@@ -593,7 +565,6 @@ class C20ActivityCalendar(DlmsClass):
             return hex_toDateTimeString(ret[0]), ret[1]
         return hex_toDateTimeString(ret[0])
 
-
     @formatResponse
     def check_activate_passive_calendar_time(self, ck_data):
         """
@@ -607,7 +578,6 @@ class C20ActivityCalendar(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not contains {ck_data}")
 
-
     @formatResponse
     def set_activate_passive_calendar_time(self, data):
         """
@@ -615,7 +585,6 @@ class C20ActivityCalendar(DlmsClass):
         :return:         KFResult对象
         """
         return self.setRequest(10, dateTime_toHex(data), "DateTime", data)
-
 
     # Method of active_passive_calendar (No.1)
     @formatResponse
@@ -627,7 +596,3 @@ class C20ActivityCalendar(DlmsClass):
         :return:            KFResult对象
         """
         return self.actionRequest(1, dec_toHexStr(data, 2), "Integer", data)
-
-
-
-

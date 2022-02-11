@@ -2,8 +2,8 @@
 
 from dlms.DlmsClass import *
 
-class C70DisconnectControl(DlmsClass):
 
+class C70DisconnectControl(DlmsClass):
     attr_index_dict = {
         1: "logical_name",
         2: "output_state",
@@ -18,7 +18,6 @@ class C70DisconnectControl(DlmsClass):
 
     def __init__(self, conn, obis=None):
         super().__init__(conn, obis, classId=70)
-
 
     # Attribute of logical_name
     @formatResponse
@@ -43,7 +42,6 @@ class C70DisconnectControl(DlmsClass):
             return hex_toOBIS(ret[0]), ret[1]
         return hex_toOBIS(ret[0])
 
-
     @formatResponse
     def check_logical_name(self, ck_data):
         """
@@ -57,7 +55,6 @@ class C70DisconnectControl(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_logical_name(self, data):
         """
@@ -67,7 +64,6 @@ class C70DisconnectControl(DlmsClass):
         :return:             KFResult对象
         """
         return self.setRequest(1, obis_toHex(data), "OctetString", data)
-
 
     # Attribute of output_state
     @formatResponse
@@ -92,7 +88,6 @@ class C70DisconnectControl(DlmsClass):
             return hex_toDec(ret[0]), ret[1]
         return hex_toDec(ret[0])
 
-
     @formatResponse
     def check_output_state(self, ck_data):
         """
@@ -106,7 +101,6 @@ class C70DisconnectControl(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_output_state(self, data):
         """
@@ -116,7 +110,6 @@ class C70DisconnectControl(DlmsClass):
         :return:           KFResult对象
         """
         return self.setRequest(2, dec_toHexStr(data, 2), "Bool", data)
-
 
     # Attribute of control_state
     @formatResponse
@@ -141,7 +134,6 @@ class C70DisconnectControl(DlmsClass):
             return hex_toDec(ret[0]), ret[1]
         return hex_toDec(ret[0])
 
-
     @formatResponse
     def check_control_state(self, ck_data):
         """
@@ -155,7 +147,6 @@ class C70DisconnectControl(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_control_state(self, data):
         """
@@ -165,7 +156,6 @@ class C70DisconnectControl(DlmsClass):
         :return:                KFResult对象
         """
         return self.setRequest(3, dec_toHexStr(data, 2), "Enum", data)
-
 
     # Attribute of control_mode
     @formatResponse
@@ -190,7 +180,6 @@ class C70DisconnectControl(DlmsClass):
             return hex_toDec(ret[0]), ret[1]
         return hex_toDec(ret[0])
 
-
     @formatResponse
     def check_control_mode(self, ck_data):
         """
@@ -204,7 +193,6 @@ class C70DisconnectControl(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_control_mode(self, data, isDownloadMode=True):
         """
@@ -214,8 +202,6 @@ class C70DisconnectControl(DlmsClass):
         :return:              KFResult对象
         """
         return self.setRequest(4, dec_toHexStr(data, 2), "Enum", data)
-
-
 
     # Method of remote_disconnect
     @formatResponse
@@ -232,7 +218,6 @@ class C70DisconnectControl(DlmsClass):
 
         return self.actionRequest(1, dec_toHexStr(data, 2), "Integer", data)
 
-
     # Method of remote_disconnect
     @formatResponse
     def act_remote_reconnect(self, data=0):
@@ -245,4 +230,4 @@ class C70DisconnectControl(DlmsClass):
         :param data:     十进制数
         :return:         KFResult对象
         """
-        return self.actionRequest(2,  dec_toHexStr(data, 2), "Integer", data)
+        return self.actionRequest(2, dec_toHexStr(data, 2), "Integer", data)

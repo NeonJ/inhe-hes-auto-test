@@ -2,8 +2,8 @@
 
 from dlms.DlmsClass import *
 
-class C42IPv4Setup(DlmsClass):
 
+class C42IPv4Setup(DlmsClass):
     attr_index_dict = {
         1: "logical_name",
         2: "dl_reference",
@@ -25,7 +25,6 @@ class C42IPv4Setup(DlmsClass):
 
     def __init__(self, conn, obis=None):
         super().__init__(conn, obis, classId=42)
-
 
     # Attribute of logical_name
     @formatResponse
@@ -50,7 +49,6 @@ class C42IPv4Setup(DlmsClass):
             return hex_toOBIS(ret[0]), ret[1]
         return hex_toOBIS(ret[0])
 
-
     @formatResponse
     def check_logical_name(self, ck_data):
         """
@@ -64,7 +62,6 @@ class C42IPv4Setup(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_logical_name(self, data):
         """
@@ -74,7 +71,6 @@ class C42IPv4Setup(DlmsClass):
         :return:             KFResult对象
         """
         return self.setRequest(1, obis_toHex(data), "OctetString", data)
-
 
     # Attribute of DL_reference
     @formatResponse
@@ -99,7 +95,6 @@ class C42IPv4Setup(DlmsClass):
             return hex_toOBIS(ret[0]), ret[1]
         return hex_toOBIS(ret[0])
 
-
     @formatResponse
     def check_dl_reference(self, ck_data):
         """
@@ -113,7 +108,6 @@ class C42IPv4Setup(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_dl_reference(self, data):
         """
@@ -123,7 +117,6 @@ class C42IPv4Setup(DlmsClass):
         :return:              KFResult 对象
         """
         return self.setRequest(2, obis_toHex(data), "OctetString", data)
-
 
     # Attribute of IP_address
     @formatResponse
@@ -148,7 +141,6 @@ class C42IPv4Setup(DlmsClass):
             return hex_toIPv4(ret[0]), ret[1]
         return hex_toIPv4(ret[0])
 
-
     @formatResponse
     def check_ip_address(self, ck_data, attr=3):
         """
@@ -163,7 +155,6 @@ class C42IPv4Setup(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_ip_address(self, data, attr=3):
         """
@@ -174,7 +165,6 @@ class C42IPv4Setup(DlmsClass):
         :return:              KFResult 对象
         """
         return self.setRequest(attr, ipv4_toHex(data), "DoubleLongUnsigned", data)
-
 
     # Attribute of multicast_IP_address
     @formatResponse
@@ -200,7 +190,6 @@ class C42IPv4Setup(DlmsClass):
             return response
         return response[0]
 
-
     @formatResponse
     def check_multicast_ip_address(self, ck_data):
         """
@@ -210,7 +199,6 @@ class C42IPv4Setup(DlmsClass):
         :return:                    KFResult对象
         """
         checkResponsValue(self.get_multicast_ip_address(), ck_data)
-
 
     @formatResponse
     def set_multicast_ip_address(self, data):
@@ -225,7 +213,6 @@ class C42IPv4Setup(DlmsClass):
         for value in data.values():
             etree.SubElement(array, "DoubleLongUnsigned").set("Value", ipv4_toHex(value))
         return self.setRequest(4, array, "Array", data)
-
 
     # Attribute of IP_options
     @formatResponse
@@ -252,7 +239,6 @@ class C42IPv4Setup(DlmsClass):
             return ret
         return ret[0]
 
-
     @formatResponse
     def check_ip_options(self, ck_data):
         """
@@ -269,8 +255,7 @@ class C42IPv4Setup(DlmsClass):
         :return:          KFResult 对象
 
         """
-        return  checkResponsValue(self.get_ip_options(), ck_data)
-
+        return checkResponsValue(self.get_ip_options(), ck_data)
 
     @formatResponse
     def set_ip_options(self, data):
@@ -299,7 +284,6 @@ class C42IPv4Setup(DlmsClass):
                     etree.SubElement(struct, "Unsigned").set("Value", dec_toHexStr(item, 2))
         return self.setRequest(4, array, "Array", data)
 
-
     # Attribute of subnet_mask
     @formatResponse
     def get_subnet_mask(self, dataType=False, response=None):
@@ -312,7 +296,6 @@ class C42IPv4Setup(DlmsClass):
         """
         return self.get_ip_address(dataType=dataType, response=response, attr=6)
 
-
     @formatResponse
     def check_subnet_mask(self, ck_data):
         """
@@ -323,7 +306,6 @@ class C42IPv4Setup(DlmsClass):
         """
         return self.check_ip_address(ck_data, attr=6)
 
-
     @formatResponse
     def set_subnet_mask(self, data):
         """
@@ -333,7 +315,6 @@ class C42IPv4Setup(DlmsClass):
         :return:              KFResult对象
         """
         return self.set_ip_address(data, attr=6)
-
 
     # Attribute of gateway_IP_address
     @formatResponse
@@ -347,7 +328,6 @@ class C42IPv4Setup(DlmsClass):
         """
         return self.get_ip_address(dataType=dataType, response=response, attr=7)
 
-
     @formatResponse
     def check_gateway_ip_address(self, ck_data):
         """
@@ -358,7 +338,6 @@ class C42IPv4Setup(DlmsClass):
         """
         return self.check_ip_address(ck_data, attr=7)
 
-
     @formatResponse
     def set_gateway_ip_address(self, data):
         """
@@ -368,7 +347,6 @@ class C42IPv4Setup(DlmsClass):
         :return:               KFResult对象
         """
         return self.set_ip_address(data, attr=7)
-
 
     # Attribute of use_DHCP_flag
     @formatResponse
@@ -393,7 +371,6 @@ class C42IPv4Setup(DlmsClass):
             return hex_toDec(ret[0]), ret[1]
         return hex_toDec(ret[0])
 
-
     @formatResponse
     def check_use_dhcp_flag(self, ck_data):
         """
@@ -407,7 +384,6 @@ class C42IPv4Setup(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_use_dhcp_flag(self, data):
         """
@@ -417,7 +393,6 @@ class C42IPv4Setup(DlmsClass):
         :return:                KFResult 对象
         """
         return self.setRequest(8, dec_toHexStr(data, 2), "Bool", data)
-
 
     # Attribute of primary_DNS_address
     @formatResponse
@@ -432,7 +407,6 @@ class C42IPv4Setup(DlmsClass):
 
         return self.get_ip_address(dataType=dataType, response=response, attr=9)
 
-
     @formatResponse
     def check_primary_dns_address(self, ck_data):
         """
@@ -443,7 +417,6 @@ class C42IPv4Setup(DlmsClass):
         """
         return self.check_ip_address(ck_data, attr=9)
 
-
     @formatResponse
     def set_primary_dns_address(self, data):
         """
@@ -453,7 +426,6 @@ class C42IPv4Setup(DlmsClass):
         :return:             KFResult 对象
         """
         return self.set_ip_address(data, attr=9)
-
 
     # Attribute of secondary_DNS_address
     @formatResponse
@@ -467,7 +439,6 @@ class C42IPv4Setup(DlmsClass):
         """
         return self.get_ip_address(dataType=dataType, response=response, attr=10)
 
-
     @formatResponse
     def check_secondary_dns_address(self, ck_data):
         """
@@ -478,7 +449,6 @@ class C42IPv4Setup(DlmsClass):
         """
         return self.check_ip_address(ck_data, attr=10)
 
-
     @formatResponse
     def set_secondary_dns_address(self, data):
         """
@@ -488,7 +458,6 @@ class C42IPv4Setup(DlmsClass):
         :return:              KFResult 对象
         """
         return self.set_ip_address(data, attr=10)
-
 
     # Method of act_add_mc_ip_address
     @formatResponse

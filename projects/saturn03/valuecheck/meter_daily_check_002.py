@@ -1,21 +1,17 @@
 # -*- coding:utf-8 -*-
 
-import re
-import os
-import time
 import datetime
 import json
-import requests
-import socket
-from binascii import hexlify, unhexlify
-# from common import *
-import yaml
-from convertdate import persian
-from .comm import *
+import os
+import time
 
-from HESAPI import *
+import requests
 from DB import DB
+from HESAPI import *
 from libs.Singleton import Singleton
+
+# from common import *
+from .comm import *
 
 
 @tag('meter_daily_check1')
@@ -73,7 +69,8 @@ def meter_daily_check_002():
     else:
         # print(json.loads(response.text).get('reply')['replyDesc'])
         info(f"** Read Successfully **")
-        if int(json.loads(response.text).get('payload')[0].get('data')[0].get('resultValue').get('dataItemValue')) == user_config['Profile']['daily_entries']:
+        if int(json.loads(response.text).get('payload')[0].get('data')[0].get('resultValue').get('dataItemValue')) == \
+                user_config['Profile']['daily_entries']:
             info("** Match with Config!")
         else:
             error("** Mismatch with Config!")
@@ -142,7 +139,8 @@ def meter_daily_check_002():
                                   endTime=(datetime.datetime.now() + datetime.timedelta(hours=1)).strftime(
                                       "%y%m%d%H%M%S"),
                                   transactionId=transactionId,
-                                  parameter={"dataFetchMode": 1, "readTarget": 0, "startTime": startTime, "endTime": startTime,
+                                  parameter={"dataFetchMode": 1, "readTarget": 0, "startTime": startTime,
+                                             "endTime": startTime,
                                              "fromEntry": "1", "toEntry": "2", "fromSelectedValue": 1,
                                              "toSelectedValue": 0},
                                   registerId=user_config['Profile']['daily_obis'], jobUniqueFlag="false",

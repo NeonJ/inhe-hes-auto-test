@@ -1,11 +1,13 @@
 # -*- coding: UTF-8 -*-
 
-import threading
-from .KFLog import info
-from .DataFormatAPI import *
-from libs.Singleton import Singleton
-from libs.PowerControlLib import PowerControl
 import subprocess
+import threading
+
+from libs.PowerControlLib import PowerControl
+from libs.Singleton import Singleton
+
+from .DataFormatAPI import *
+from .KFLog import info
 
 
 def waitMeterRegistered(ip, timeout=120):
@@ -29,6 +31,7 @@ def waitMeterRegistered(ip, timeout=120):
                 return KFResult(True, "")
     return KFResult(False, "Wait register to failed")
 
+
 def connectMeter(conn, num=5):
     """
     Wait for meter register to DCU or network after power up
@@ -42,6 +45,7 @@ def connectMeter(conn, num=5):
             break
         except:
             timedWait(10)
+
 
 def checkDataTypeIsNum(dataType):
     """
@@ -64,14 +68,17 @@ def powerOnWithNoActiveEnergy():
     """
     info('Power on via relay (without load)')
     # 通过 2 口控制电表上电和掉电
-    result_1 = PowerControl(Singleton().PowerControlHost, Singleton().PowerControlCircuitIndexList[:2], 'on').controlCircuit()
-    result_2 = PowerControl(Singleton().PowerControlHost, Singleton().PowerControlCircuitIndexList[2], 'off').controlCircuit()
+    result_1 = PowerControl(Singleton().PowerControlHost, Singleton().PowerControlCircuitIndexList[:2],
+                            'on').controlCircuit()
+    result_2 = PowerControl(Singleton().PowerControlHost, Singleton().PowerControlCircuitIndexList[2],
+                            'off').controlCircuit()
     if result_1.status and result_2.status:
         return KFResult(True, "")
     elif not result_1.status:
         return result_1
     elif not result_2.status:
         return result_2
+
 
 def powerOff():
     """
@@ -80,7 +87,9 @@ def powerOff():
     :return            返回KFResult对象（成功返回True, 失败返回False）
     """
     info('Power off via relay ')
-    return PowerControl(Singleton().PowerControlHost, Singleton().PowerControlCircuitIndexList[1], 'off').controlCircuit()
+    return PowerControl(Singleton().PowerControlHost, Singleton().PowerControlCircuitIndexList[1],
+                        'off').controlCircuit()
+
 
 def powerOnWithActiveEnergyImport():
     """
@@ -91,6 +100,7 @@ def powerOnWithActiveEnergyImport():
     info('Power on through relay with (+ A) load ')
     return PowerControl(Singleton().PowerControlHost, Singleton().PowerControlCircuitIndexList, 'on').controlCircuit()
 
+
 #
 def powerOnWithActiveEnergyExport():
     """
@@ -99,8 +109,11 @@ def powerOnWithActiveEnergyExport():
     :return             返回KFResult对象（成功返回True, 失败返回False）
     """
     info('Power on through relay with (-A) load ')
-    result_1 = PowerControl(Singleton().PowerControlHost, Singleton().PowerControlCircuitIndexList[1], 'on').controlCircuit()
-    result_2 = PowerControl(Singleton().PowerControlHost, [Singleton().PowerControlCircuitIndexList[0], Singleton().PowerControlCircuitIndexList[2]], 'off').controlCircuit()
+    result_1 = PowerControl(Singleton().PowerControlHost, Singleton().PowerControlCircuitIndexList[1],
+                            'on').controlCircuit()
+    result_2 = PowerControl(Singleton().PowerControlHost,
+                            [Singleton().PowerControlCircuitIndexList[0], Singleton().PowerControlCircuitIndexList[2]],
+                            'off').controlCircuit()
 
     if result_1.status and result_2.status:
         return KFResult(True, "")
@@ -136,14 +149,14 @@ def checkBit(val, index):
     checkBit(val, '1/^3/5')
     """
     errorList = list()
-    bitValue = '{:040b}'.format(int(val))   # Camel Billing Status 有40位
+    bitValue = '{:040b}'.format(int(val))  # Camel Billing Status 有40位
     indexs = str(index).split("/")
     for idx in indexs:
         if idx.strip().startswith('^'):
-            if bitValue[39-int(idx.strip().replace('^', ''))] != '0':
+            if bitValue[39 - int(idx.strip().replace('^', ''))] != '0':
                 errorList.append(f"bit({idx.strip()}) not equals to 0 in {val} [{bitValue}]")
         else:
-            if bitValue[39-int(idx.strip())] != '1':
+            if bitValue[39 - int(idx.strip())] != '1':
                 errorList.append(f"bit({idx.strip()}) not equals to 1 in {val} [{bitValue}]")
     if len(errorList) == 0:
         return KFResult(True, "")
@@ -226,7 +239,7 @@ def getClassAttributeType(classId, obis, project):
 
     obis = obis.replace("-", ".").replace(":", ".")
     config = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-                             f"conf/C{classId}AttrType/{project}.ini")
+                          f"conf/C{classId}AttrType/{project}.ini")
     with open(config) as f:
         while True:
             line = f.readline()
@@ -250,7 +263,6 @@ class createTimeList(object):
         self.startTime = startTime
         self.interval = interval
         self.deviation = deviation
-
 
     def createDateTime(self, counter):
         """
@@ -323,7 +335,7 @@ def checkPeriod(data, capture_period):
     return KFResult(True, '')
 
 
-#获取靠近最近一个周期的时间
+# 获取靠近最近一个周期的时间
 def get_time_with_period(targetDateTime, period, offset=0):
     """
     获取给定时间的下一个周期时间
@@ -339,7 +351,7 @@ def get_time_with_period(targetDateTime, period, offset=0):
     timeSeconds = currentDateTime.hour * 3600 + currentDateTime.minute * 60 + currentDateTime.second
 
     # 返回下一条曲线的捕获时间
-    return timestamp_toString(targetTimestamp + period*60 - timeSeconds % (period * 60) - offset)
+    return timestamp_toString(targetTimestamp + period * 60 - timeSeconds % (period * 60) - offset)
 
 
 def isXmlOrPdu(s):
@@ -397,6 +409,7 @@ def thread_run(func, **args):
     :param args:
     :return:
     """
+
     class MyThread(threading.Thread):
         def __init__(self):
             threading.Thread.__init__(self)
@@ -513,27 +526,20 @@ def getLogicalNameByObis(obis):
     with open(f'projects/{projectName}/OBIS.py', encoding='utf-8') as f:
         content = f.read()
         if obis in content:
-            match = re.search("(\w*)\s*=\s*'"+obis+"'", content)
+            match = re.search("(\w*)\s*=\s*'" + obis + "'", content)
             if match:
                 return match.group(1).split('_')[1]
 
+# if __name__ == '__main__':
 
+# for item in createTimeList("1990-02-01 12:00:00", 15, ).createDateTime(10):
+#     print(item)
+#
+# # from DataFormatAPI import *
+# # print(dateTime_toHex(getCurrentTime()))
 
+# result = checkBit(32, "1 / ^3 / 4")
+# print(result.status)
+# print(result.result)
 
-
-#if __name__ == '__main__':
-
-    # for item in createTimeList("1990-02-01 12:00:00", 15, ).createDateTime(10):
-    #     print(item)
-    #
-    # # from DataFormatAPI import *
-    # # print(dateTime_toHex(getCurrentTime()))
-
-    # result = checkBit(32, "1 / ^3 / 4")
-    # print(result.status)
-    # print(result.result)
-
- #   getExpectTime("2019-01-01 16:42:41", 163)
-
-
-
+#   getExpectTime("2019-01-01 16:42:41", 163)

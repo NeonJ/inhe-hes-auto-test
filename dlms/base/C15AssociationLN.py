@@ -2,8 +2,8 @@
 
 from dlms.DlmsClass import *
 
-class C15AssociationLN(DlmsClass):
 
+class C15AssociationLN(DlmsClass):
     attr_index_dict = {
         1: "logical_name",
         2: "object_list",
@@ -30,7 +30,6 @@ class C15AssociationLN(DlmsClass):
     def __init__(self, conn, obis=None):
         super().__init__(conn, obis, classId=15)
 
-
     # Attribute of logical_name
     @formatResponse
     def get_logical_name(self, dataType=False, response=None):
@@ -54,7 +53,6 @@ class C15AssociationLN(DlmsClass):
             return hex_toOBIS(ret[0]), ret[1]
         return hex_toOBIS(ret[0])
 
-
     @formatResponse
     def check_logical_name(self, ck_data):
         """
@@ -68,7 +66,6 @@ class C15AssociationLN(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_logical_name(self, data):
         """
@@ -78,7 +75,6 @@ class C15AssociationLN(DlmsClass):
         :return:            返回一个KFResult对象
         """
         return self.setRequest(1, obis_toHex(data), "OctetString", data)
-
 
     # Attribute of object_list
     @formatResponse
@@ -129,7 +125,6 @@ class C15AssociationLN(DlmsClass):
             return response
         return response[0]
 
-
     @formatResponse
     def check_object_list(self, ck_data):
         """
@@ -144,7 +139,6 @@ class C15AssociationLN(DlmsClass):
         }
         """
         return checkResponsValue(self.get_object_list(), ck_data)
-
 
     @formatResponse
     def set_object_list(self, data):
@@ -190,11 +184,11 @@ class C15AssociationLN(DlmsClass):
                                         sub2Array = etree.SubElement(sub2Struct, "Array")
                                         sub2Array.set("Qty", dec_toHexStr(len(subItem), 4))
                                         for sub3Index, sub3Item in enumerate(subItem):
-                                            etree.SubElement(sub2Array, "Integer").set("Value", dec_toHexStr(sub3Item, 2))
+                                            etree.SubElement(sub2Array, "Integer").set("Value",
+                                                                                       dec_toHexStr(sub3Item, 2))
                                     elif sub2Item == "NullData":
                                         etree.SubElement(sub2Struct, "NullData")
         return self.setRequest(2, array, "Array", data)
-
 
     # Attribute of associated_partners_id
     @formatResponse
@@ -222,7 +216,6 @@ class C15AssociationLN(DlmsClass):
             return response
         return response[0]
 
-
     @formatResponse
     def check_associated_partners_id(self, ck_data):
         """
@@ -237,7 +230,6 @@ class C15AssociationLN(DlmsClass):
         }
         """
         return checkResponsValue(self.get_associated_partners_id(), ck_data)
-
 
     @formatResponse
     def set_associated_partners_id(self, data):
@@ -261,7 +253,6 @@ class C15AssociationLN(DlmsClass):
                 etree.SubElement(struct, "LongUnsigned").set("Value", dec_toHexStr(item, 4))
         return self.setRequest(3, struct, "struct", data)
 
-
     # Attribute of application_context_name
     @formatResponse
     def get_application_context_name(self, dataType=False, response=None):
@@ -280,7 +271,6 @@ class C15AssociationLN(DlmsClass):
             return ret
         return ret[0]
 
-
     @formatResponse
     def check_application_context_name(self, ck_data):
         """
@@ -294,7 +284,6 @@ class C15AssociationLN(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_application_context_name(self, data):
         """
@@ -304,7 +293,6 @@ class C15AssociationLN(DlmsClass):
         :return:           KFResult对象
         """
         return self.setRequest(4, data, "OctetString", data)
-
 
     # Attribute of xDLMS_context_info
     @formatResponse
@@ -332,7 +320,6 @@ class C15AssociationLN(DlmsClass):
             return response
         return response[0]
 
-
     @formatResponse
     def check_xdlms_context_info(self, ck_data):
         """
@@ -347,7 +334,6 @@ class C15AssociationLN(DlmsClass):
         }
         """
         return checkResponsValue(self.get_xdlms_context_info(), ck_data)
-
 
     @formatResponse
     def set_xdlms_context_info(self, data):
@@ -377,7 +363,6 @@ class C15AssociationLN(DlmsClass):
                 etree.SubElement(struct, "OctetString").set("Value", item)
         return self.setRequest(5, struct, "struct", data)
 
-
     # Attribute of authentication_mechanism_name
     @formatResponse
     def get_authentication_mechanism_name(self, dataType=False, response=None):
@@ -396,7 +381,6 @@ class C15AssociationLN(DlmsClass):
             return ret
         return ret[0]
 
-
     @formatResponse
     def check_authentication_mechanism_name(self, ck_data):
         """
@@ -410,7 +394,6 @@ class C15AssociationLN(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_authentication_mechanism_name(self, data):
         """
@@ -420,7 +403,6 @@ class C15AssociationLN(DlmsClass):
         :return:           KFResult对象
         """
         return self.setRequest(6, data, "OctetString", data)
-
 
     # Attribute of secret
     @formatResponse
@@ -440,7 +422,6 @@ class C15AssociationLN(DlmsClass):
             return ret
         return ret[0]
 
-
     @formatResponse
     def check_secret(self, ck_data):
         """
@@ -455,7 +436,6 @@ class C15AssociationLN(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_secret(self, data):
         """
@@ -465,7 +445,6 @@ class C15AssociationLN(DlmsClass):
         :return:            KFResult对象
         """
         return self.setRequest(7, ascii_toHex(data), "OctetString", data)
-
 
     # Attribute of association_status
     @formatResponse
@@ -490,7 +469,6 @@ class C15AssociationLN(DlmsClass):
             return hex_toDec(ret[0]), ret[1]
         return hex_toDec(ret[0])
 
-
     @formatResponse
     def check_association_status(self, ck_data):
         """
@@ -505,7 +483,6 @@ class C15AssociationLN(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_association_status(self, data):
         """
@@ -515,7 +492,6 @@ class C15AssociationLN(DlmsClass):
         :return:            KFResult对象
         """
         return self.setRequest(8, dec_toHexStr(data, 2), "Enum", data)
-
 
     # Attribute of security_setup_reference
     @formatResponse
@@ -540,7 +516,6 @@ class C15AssociationLN(DlmsClass):
             return hex_toOBIS(ret[0]), ret[1]
         return hex_toOBIS(ret[0])
 
-
     @formatResponse
     def check_security_setup_reference(self, ck_data):
         """
@@ -554,7 +529,6 @@ class C15AssociationLN(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_security_setup_reference(self, data):
         """
@@ -564,7 +538,6 @@ class C15AssociationLN(DlmsClass):
         :return:            KFResult对象
         """
         return self.setRequest(9, obis_toHex(data), "OctetString", data)
-
 
     # Attribute of user_list
     @formatResponse
@@ -584,7 +557,6 @@ class C15AssociationLN(DlmsClass):
             return ret
         return ret[0]
 
-
     @formatResponse
     def check_user_list(self, ck_data):
         """
@@ -599,7 +571,6 @@ class C15AssociationLN(DlmsClass):
         }
         """
         checkResponsValue(self.get_user_list(), ck_data)
-
 
     @formatResponse
     def set_user_list(self, data):
@@ -626,7 +597,6 @@ class C15AssociationLN(DlmsClass):
                     etree.SubElement(struct, "VisibleString").set("Value", item)
         return self.setRequest(10, array, "Array", data)
 
-
     # Attribute of current_user
     @formatResponse
     def get_current_user(self, dataType=False, response=None):
@@ -645,7 +615,6 @@ class C15AssociationLN(DlmsClass):
             return ret
         return ret[0]
 
-
     @formatResponse
     def check_current_user(self, ck_data):
         """
@@ -660,7 +629,6 @@ class C15AssociationLN(DlmsClass):
         }
         """
         return checkResponsValue(self.get_current_user(), ck_data)
-
 
     @formatResponse
     def set_current_user(self, data):
@@ -685,8 +653,6 @@ class C15AssociationLN(DlmsClass):
                     etree.SubElement(struct, "VisibleString").set("Value", item)
         return self.setRequest(11, struct, "Struct", data)
 
-
-
     # Method of reply_to_HLS_authentication
     @formatResponse
     def act_reply_to_hls_authentication(self, data=""):
@@ -700,7 +666,6 @@ class C15AssociationLN(DlmsClass):
         """
         return self.actionRequest(1, data, "OctetString", data)
 
-
     # Method of change_HLS_secret
     @formatResponse
     def act_change_hls_secret(self, data=""):
@@ -711,7 +676,6 @@ class C15AssociationLN(DlmsClass):
         :return              KFResult 对象
         """
         return self.actionRequest(2, data, "OctetString", data)
-
 
     # Method of add_object
     @formatResponse
@@ -755,7 +719,6 @@ class C15AssociationLN(DlmsClass):
                                 etree.SubElement(subStruct, "NullData")
         return self.actionRequest(3, array, "Array", data)
 
-
     # Method of remove_object
     @formatResponse
     def act_remove_object(self, data=None):
@@ -797,7 +760,6 @@ class C15AssociationLN(DlmsClass):
                                 etree.SubElement(subStruct, "NullData")
         return self.actionRequest(4, array, "Array", data)
 
-
     # Method of add_user
     @formatResponse
     def act_add_user(self, data):
@@ -824,7 +786,6 @@ class C15AssociationLN(DlmsClass):
                     else:
                         etree.SubElement(struct, "VisibleString").set("Value", item)
         return self.actionRequest(5, struct, "structure", data)
-
 
     # Method of remove_user
     @formatResponse

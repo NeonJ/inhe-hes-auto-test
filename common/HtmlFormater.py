@@ -2,8 +2,8 @@
 
 import os
 import re
-from common.KFLog import kfLog
 
+from common.KFLog import kfLog
 
 htmlHead = """
 <html5>
@@ -118,12 +118,14 @@ def logToHtml():
         for line in f:
             # 用标签 XML 标记 XML 文档
             ### start of XML
-            if line.find("<SetRequest>") > -1 or line.find("<SetResponse>") > -1 or line.find("<GetRequest>") > -1 or line.find("<GetResponse>") > -1 or line.find(
+            if line.find("<SetRequest>") > -1 or line.find("<SetResponse>") > -1 or line.find(
+                    "<GetRequest>") > -1 or line.find("<GetResponse>") > -1 or line.find(
                     "<ActionRequest") > -1 or line.find("<ActionResponse") > -1:
                 line = "<xmp>" + line
 
             ### end of XML
-            elif line.find("</SetRequest>") > -1 or line.find("</SetResponse>") > -1 or line.find("</GetRequest>") > -1 or line.find("</GetResponse>") > -1 or line.find(
+            elif line.find("</SetRequest>") > -1 or line.find("</SetResponse>") > -1 or line.find(
+                    "</GetRequest>") > -1 or line.find("</GetResponse>") > -1 or line.find(
                     "</ActionRequest") > -1 or line.find("</ActionResponse") > -1:
                 line = line + "</xmp>"
 
@@ -151,7 +153,8 @@ def logToHtml():
 
                     # failed testcase
                     if re.search('TestCase:.*\\*\\*\\* failed! \\*\\*\\*', line, re.I):
-                        line = line[:prefixLenght] + "<span class='failed'>" + line[prefixLenght:] + '</span>'+ '</div>'
+                        line = line[:prefixLenght] + "<span class='failed'>" + line[
+                                                                               prefixLenght:] + '</span>' + '</div>'
                         if isClearEnviroment:
                             line = '</div><br />' + line
                             isClearEnviroment = False
@@ -162,12 +165,14 @@ def logToHtml():
                             isTestCase = False
 
                         # 统计执行失败的用例数
-                        if not re.search('TestCase:\s+setup', line, re.I) and not  re.search('TestCase:\s+teardown', line, re.I):
+                        if not re.search('TestCase:\s+setup', line, re.I) and not re.search('TestCase:\s+teardown',
+                                                                                            line, re.I):
                             failedNum += 1
 
                     # succeeded testcase
                     elif re.search('TestCase:.*\\*\\*\\* succeeded! \\*\\*\\*', line, re.I):
-                        line = line[:prefixLenght] + "<span class='succeeded'>" + line[prefixLenght:] + '</span>' + '</div>'
+                        line = line[:prefixLenght] + "<span class='succeeded'>" + line[
+                                                                                  prefixLenght:] + '</span>' + '</div>'
                         if isClearEnviroment:
                             line = '</div><br />' + line
                             isClearEnviroment = False
@@ -178,17 +183,19 @@ def logToHtml():
                             isTestCase = False
 
                         # 统计执行成功的用例数
-                        if not re.search('TestCase:\s+setup', line, re.I) and not  re.search('TestCase:\s+teardown', line, re.I):
+                        if not re.search('TestCase:\s+setup', line, re.I) and not re.search('TestCase:\s+teardown',
+                                                                                            line, re.I):
                             succeededNum += 1
 
 
                     # testcase info
                     else:
-                        line = line[:prefixLenght] + f"<span class='testcase' id='testcase{testcaseIndex}' onclick='changeColor(\"testcase{testcaseIndex}\"); displayToggle(\"collapse_testcase{testcaseIndex}\")'>" + line[prefixLenght:] + '</span>'
+                        line = line[
+                               :prefixLenght] + f"<span class='testcase' id='testcase{testcaseIndex}' onclick='changeColor(\"testcase{testcaseIndex}\"); displayToggle(\"collapse_testcase{testcaseIndex}\")'>" + line[
+                                                                                                                                                                                                                  prefixLenght:] + '</span>'
                         line += f'<div id="collapse_testcase{testcaseIndex}" style="display:none">'
                         testcaseIndex += 1
                         isTestCase = True
-
 
                 # teststep
                 if re.search("step\d+", line, re.I):
@@ -199,7 +206,9 @@ def logToHtml():
 
                     # 没有匹配到`Succeeded`和`Failed`时, 则认为是`teststep title`
                     if not re.search('\\*Succeeded!\\*', line, re.I) and not re.search('\\*Failed!\\*', line, re.I):
-                        line = line[:prefixLenght] + f"<span class='teststep' id='teststep{teststepIndex}' onclick='changeColor(\"teststep{teststepIndex}\"); displayToggle(\"collapse_teststep{teststepIndex}\")'>" + line[prefixLenght:] + '</span><br/>'
+                        line = line[
+                               :prefixLenght] + f"<span class='teststep' id='teststep{teststepIndex}' onclick='changeColor(\"teststep{teststepIndex}\"); displayToggle(\"collapse_teststep{teststepIndex}\")'>" + line[
+                                                                                                                                                                                                                  prefixLenght:] + '</span><br/>'
                         line += f'<div id="collapse_teststep{teststepIndex}" style="display:none">'
                         isTestStep = True
                         teststepIndex += 1
@@ -209,14 +218,14 @@ def logToHtml():
                             line = '</div>' + line
                             isTestStep = False
 
-
                 # PDU & XML (start)
                 if re.search('## Request  ##', line):
                     line = re.sub('## Request  ##', '##&nbsp;Request&nbsp;&nbsp;##', line)
-                    line = line[:prefixLenght] + f"<span class='request' id='request{requestIndex}' onclick='changeColor(\"request{requestIndex}\"); displayToggle(\"collapse_request{requestIndex}\")'>" + line[prefixLenght:] + '</span>'
+                    line = line[
+                           :prefixLenght] + f"<span class='request' id='request{requestIndex}' onclick='changeColor(\"request{requestIndex}\"); displayToggle(\"collapse_request{requestIndex}\")'>" + line[
+                                                                                                                                                                                                       prefixLenght:] + '</span>'
                     isXmlPdu = True
                     isRequest = True
-
 
                 # 处理  ## Request ##  Data 数据出现换行的问题
                 if isXmlPdu and re.match('\d{4}-\d{2}-\d{2}', line):
@@ -224,14 +233,11 @@ def logToHtml():
                     requestIndex += 1
                     isXmlPdu = False
 
-
                 # PDU & XML (end)
                 if re.search('## Response ##', line):
                     if isRequest:
                         line = '</div><br />' + line
                         isRequest = False
-
-
 
                 # Clear enviroment
                 if re.search('\*\*\s+Clear Environment\s+\*\*', line, re.I):
@@ -247,12 +253,13 @@ def logToHtml():
                         isTestStep = False
                         indentation += 11
 
-
-                    line = line[:(prefixLenght+indentation)] + f"<span class='clear' id='clear{clearEnvIndex}' onclick='changeColor(\"clear{clearEnvIndex}\"); displayToggle(\"collapse_clear{clearEnvIndex}\")'>" + line[(prefixLenght+indentation):] + '</span>'
+                    line = line[:(
+                                prefixLenght + indentation)] + f"<span class='clear' id='clear{clearEnvIndex}' onclick='changeColor(\"clear{clearEnvIndex}\"); displayToggle(\"collapse_clear{clearEnvIndex}\")'>" + line[
+                                                                                                                                                                                                                     (
+                                                                                                                                                                                                                                 prefixLenght + indentation):] + '</span>'
                     line += f'<div id="collapse_clear{clearEnvIndex}" style="display:none">'
                     clearEnvIndex += 1
                     isClearEnviroment = True
-
 
                 # 忽略log文件中的统计信息
                 if re.search('Test Result', line, re.I) or re.search('Final Result', line, re.I):
@@ -262,10 +269,9 @@ def logToHtml():
                 line = line.strip() + "<br />"
             newfile.write(line)
 
-
     # 输出HTML格式的统计信息
     newfile.write('<br/>--------------------------------------- Statistic ---------------------------------------<br/>')
-    statistic = '&nbsp;'* 28
+    statistic = '&nbsp;' * 28
     statistic += f'Total: {failedNum + succeededNum}, Succeeded: {succeededNum}, Failed: <span style="color: red; font-weight: bold;">{failedNum}</span>'
     statistic += '<br/><br/><br/>'
     newfile.write(statistic)

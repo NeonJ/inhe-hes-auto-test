@@ -1,7 +1,8 @@
 # -*- coding: UTF-8 -*-
 
-from dlms.DlmsClass import *
 from libs.Singleton import Singleton
+
+from dlms.DlmsClass import *
 
 
 class C3Register(DlmsClass):
@@ -17,7 +18,6 @@ class C3Register(DlmsClass):
 
     def __init__(self, conn, obis=None):
         super().__init__(conn, obis, classId=3)
-
 
     # Attribute of logical_name (No.1)
     @formatResponse
@@ -41,7 +41,6 @@ class C3Register(DlmsClass):
             return hex_toOBIS(ret[0]), ret[1]
         return hex_toOBIS(ret[0])
 
-
     @formatResponse
     def check_logical_name(self, ck_data):
         """
@@ -55,7 +54,6 @@ class C3Register(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_logical_name(self, data):
         """
@@ -65,7 +63,6 @@ class C3Register(DlmsClass):
         :return:            返回一个KFResult对象
         """
         return self.setRequest(1, obis_toHex(data), "OctetString", data)
-
 
     # Attribute of value (No.2)
     @formatResponse
@@ -98,7 +95,6 @@ class C3Register(DlmsClass):
                 return ret
             return ret[0]
 
-
     @formatResponse
     def check_value(self, ck_data):
         """
@@ -112,7 +108,6 @@ class C3Register(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_value(self, data):
         """
@@ -122,11 +117,11 @@ class C3Register(DlmsClass):
         :return:            返回一个KFResult对象
         """
         attributeType = getClassAttributeType(self.classId, self.obisList[0], Singleton().Project)
-        if attributeType == "dlu":           # DoubleLongUnsigned
+        if attributeType == "dlu":  # DoubleLongUnsigned
             return self.setRequest(2, dec_toHexStr(data, 8), "DoubleLongUnsigned", data)
-        elif attributeType == "lu":            # LongUnsigned
+        elif attributeType == "lu":  # LongUnsigned
             return self.setRequest(2, dec_toHexStr(data, 4), "LongUnsigned", data)
-        elif attributeType == "u":             # Unsigned
+        elif attributeType == "u":  # Unsigned
             return self.setRequest(2, dec_toHexStr(data, 2), "Unsigned", data)
         elif attributeType == "l":
             return self.setRequest(2, dec_toHexStr(data, 4), "Long", data)
@@ -158,7 +153,6 @@ class C3Register(DlmsClass):
             return response
         return response[0]
 
-
     @formatResponse
     def check_scaler_unit(self, ck_data):
         """
@@ -177,7 +171,6 @@ class C3Register(DlmsClass):
                 if item in [-1, -2, -3]:
                     value[index] = item + 256
         return checkResponsValue(self.get_scaler_unit(), ck_data)
-
 
     @formatResponse
     def set_scaler_unit(self, data):
@@ -207,7 +200,6 @@ class C3Register(DlmsClass):
                     etree.SubElement(struct, "Enum").set("Value", dec_toHexStr(subItem, 2))
         return self.setRequest(3, struct, "Struct", data)
 
-
     # Method of reset
     @formatResponse
     def act_reset(self, data=0):
@@ -220,9 +212,7 @@ class C3Register(DlmsClass):
         """
         return self.actionRequest(1, dec_toHexStr(data, 2), "Integer", data)
 
-
-    #==================================================================================================#
-
+    # ==================================================================================================#
 
     @formatResponse
     def get_value_with_list(self):
@@ -235,7 +225,6 @@ class C3Register(DlmsClass):
         for index, obis in enumerate(self.obisList):
             response[index] = self.get_value(obis=obis)
         return response
-
 
     @formatResponse
     def check_value_with_list(self, ck_data, initial=None):
@@ -271,5 +260,3 @@ class C3Register(DlmsClass):
 
         except Exception as ex:
             error(ex)
-
-

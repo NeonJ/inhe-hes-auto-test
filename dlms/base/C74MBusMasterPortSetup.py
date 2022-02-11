@@ -2,8 +2,8 @@
 
 from dlms.DlmsClass import *
 
-class C74MBusMasterPortSetup(DlmsClass):
 
+class C74MBusMasterPortSetup(DlmsClass):
     attr_index_dict = {
         1: "logical_name",
         2: "comm_speed"
@@ -11,7 +11,6 @@ class C74MBusMasterPortSetup(DlmsClass):
 
     def __init__(self, conn, obis=None):
         super().__init__(conn, obis, classId=74)
-
 
     # Attribute of logical_name
     @formatResponse
@@ -36,7 +35,6 @@ class C74MBusMasterPortSetup(DlmsClass):
             return hex_toOBIS(ret[0]), ret[1]
         return hex_toOBIS(ret[0])
 
-
     @formatResponse
     def check_logical_name(self, ck_data):
         """
@@ -50,7 +48,6 @@ class C74MBusMasterPortSetup(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_logical_name(self, data):
         """
@@ -60,7 +57,6 @@ class C74MBusMasterPortSetup(DlmsClass):
         :return:             KFResult对象
         """
         return self.setRequest(1, obis_toHex(data), "OctetString", data)
-
 
     # Attribute of comm_speed
     @formatResponse
@@ -85,7 +81,6 @@ class C74MBusMasterPortSetup(DlmsClass):
             return hex_toDec(ret[0]), ret[1]
         return hex_toDec(ret[0])
 
-
     @formatResponse
     def check_comm_speed(self, ck_data):
         """
@@ -98,7 +93,6 @@ class C74MBusMasterPortSetup(DlmsClass):
         if int(ret) == int(ck_data):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
-
 
     @formatResponse
     def set_comm_speed(self, data):

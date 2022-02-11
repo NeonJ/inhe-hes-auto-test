@@ -2,8 +2,8 @@
 
 from dlms.DlmsClass import *
 
-class C92G3PLC6LoWPANAdaptationLayerSetup(DlmsClass):
 
+class C92G3PLC6LoWPANAdaptationLayerSetup(DlmsClass):
     attr_index_dict = {
         1: "logical_name",
         2: "adp_max_hops",
@@ -31,7 +31,6 @@ class C92G3PLC6LoWPANAdaptationLayerSetup(DlmsClass):
     def __init__(self, conn, obis=None):
         super().__init__(conn, obis, classId=92)
 
-
     # Common get/set/check method for number type
     def __get_attr(self, attr_id, dataType=False, response=None):
         if response is None:
@@ -47,13 +46,11 @@ class C92G3PLC6LoWPANAdaptationLayerSetup(DlmsClass):
             return hex_toDec(ret[0]), ret[1]
         return hex_toDec(ret[0])
 
-
     def __check_attr(self, ck_data, attr_id):
         ret = self.__get_attr(attr_id)
         if int(ret) == int(ck_data):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
-
 
     def __set_attr(self, data, attr_id, attr_type):
         if attr_type == "Unsigned":
@@ -66,7 +63,6 @@ class C92G3PLC6LoWPANAdaptationLayerSetup(DlmsClass):
             return self.setRequest(attr_id, dec_toHexStr(data, 2), "Bool", data)
         elif attr_type == "Enum":
             return self.setRequest(attr_id, dec_toHexStr(data, 2), "Enum", data)
-
 
     # Attribute of logical_name
     @formatResponse
@@ -91,7 +87,6 @@ class C92G3PLC6LoWPANAdaptationLayerSetup(DlmsClass):
             return hex_toOBIS(ret[0]), ret[1]
         return hex_toOBIS(ret[0])
 
-
     @formatResponse
     def check_logical_name(self, ck_data):
         """
@@ -105,7 +100,6 @@ class C92G3PLC6LoWPANAdaptationLayerSetup(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_logical_name(self, data):
         """
@@ -115,7 +109,6 @@ class C92G3PLC6LoWPANAdaptationLayerSetup(DlmsClass):
         :return:             KFResult对象
         """
         return self.setRequest(1, obis_toHex(data), "OctetString")
-
 
     # Attribute of adp_max_hops
     @formatResponse
@@ -129,7 +122,6 @@ class C92G3PLC6LoWPANAdaptationLayerSetup(DlmsClass):
         """
         return self.__get_attr(2, dataType=dataType, response=response)
 
-
     @formatResponse
     def check_adp_max_hops(self, ck_data):
         """
@@ -140,7 +132,6 @@ class C92G3PLC6LoWPANAdaptationLayerSetup(DlmsClass):
         """
         return self.__check_attr(ck_data, 2)
 
-
     @formatResponse
     def set_adp_max_hops(self, data):
         """
@@ -150,7 +141,6 @@ class C92G3PLC6LoWPANAdaptationLayerSetup(DlmsClass):
         :return:           KFResult对象
         """
         return self.__set_attr(data, 2, "Unsigned")
-
 
     # Attribute of adp_weak_LQI_value
     @formatResponse
@@ -164,7 +154,6 @@ class C92G3PLC6LoWPANAdaptationLayerSetup(DlmsClass):
         """
         return self.__get_attr(3, dataType=dataType, response=response)
 
-
     @formatResponse
     def check_adp_weak_lqi_value(self, ck_data):
         """
@@ -175,7 +164,6 @@ class C92G3PLC6LoWPANAdaptationLayerSetup(DlmsClass):
         """
         return self.__check_attr(ck_data, 3)
 
-
     @formatResponse
     def set_adp_weak_lqi_value(self, data):
         """
@@ -185,7 +173,6 @@ class C92G3PLC6LoWPANAdaptationLayerSetup(DlmsClass):
         :return:           KFResult对象
         """
         return self.__set_attr(data, 3, "Unsigned")
-
 
     # Attribute of adp_security_level
     @formatResponse
@@ -199,7 +186,6 @@ class C92G3PLC6LoWPANAdaptationLayerSetup(DlmsClass):
         """
         return self.__get_attr(4, dataType=dataType, response=response)
 
-
     @formatResponse
     def check_adp_security_level(self, ck_data):
         """
@@ -210,7 +196,6 @@ class C92G3PLC6LoWPANAdaptationLayerSetup(DlmsClass):
         """
         return self.__check_attr(ck_data, 4)
 
-
     @formatResponse
     def set_adp_security_level(self, data):
         """
@@ -220,7 +205,6 @@ class C92G3PLC6LoWPANAdaptationLayerSetup(DlmsClass):
         :return:           KFResult对象
         """
         return self.__set_attr(data, 4, "Unsigned")
-
 
     # Attribute of adp_prefix_table
     @formatResponse
@@ -244,7 +228,6 @@ class C92G3PLC6LoWPANAdaptationLayerSetup(DlmsClass):
             return response
         return response[0]
 
-
     @formatResponse
     def check_adp_prefix_table(self, ck_data):
         """
@@ -254,7 +237,6 @@ class C92G3PLC6LoWPANAdaptationLayerSetup(DlmsClass):
         :return:          KFResult对象
         """
         return checkResponsValue(self.get_adp_prefix_table(), ck_data)
-
 
     @formatResponse
     def set_adp_prefix_table(self, data):
@@ -275,7 +257,6 @@ class C92G3PLC6LoWPANAdaptationLayerSetup(DlmsClass):
         #         else:
         #             etree.SubElement(struct, "OctetString").set("Value", subItem)
         return self.setRequest(5, array, "Array")
-
 
     # Attribute of adp_routing_configuration
     @formatResponse
@@ -302,7 +283,6 @@ class C92G3PLC6LoWPANAdaptationLayerSetup(DlmsClass):
             return response
         return response[0]
 
-
     @formatResponse
     def check_adp_routing_configuration(self, ck_data):
         """
@@ -317,7 +297,6 @@ class C92G3PLC6LoWPANAdaptationLayerSetup(DlmsClass):
         }
         """
         return checkResponsValue(self.get_adp_routing_configuration(), ck_data)
-
 
     @formatResponse
     def set_adp_routing_configuration(self, data):
@@ -346,7 +325,6 @@ class C92G3PLC6LoWPANAdaptationLayerSetup(DlmsClass):
                     etree.SubElement(struct, "Unsigned").set("Value", dec_toHexStr(subItem, 2))
         return self.setRequest(6, array, "Array")
 
-
     # Attribute of adp_broadcast_log_table_entry_TTL
     @formatResponse
     def get_adp_broadcast_log_table_entry_ttl(self, dataType=False, response=None):
@@ -359,7 +337,6 @@ class C92G3PLC6LoWPANAdaptationLayerSetup(DlmsClass):
         """
         return self.__get_attr(7, dataType=dataType, response=response)
 
-
     @formatResponse
     def check_adp_broadcast_log_table_entry_ttl(self, ck_data):
         """
@@ -370,7 +347,6 @@ class C92G3PLC6LoWPANAdaptationLayerSetup(DlmsClass):
         """
         return self.__check_attr(ck_data, 7)
 
-
     @formatResponse
     def set_adp_broadcast_log_table_entry_ttl(self, data):
         """
@@ -380,7 +356,6 @@ class C92G3PLC6LoWPANAdaptationLayerSetup(DlmsClass):
         :return:           KFResult对象
         """
         return self.__set_attr(data, 7, "LongUnsigned")
-
 
     # Attribute of adp_routing_table
     @formatResponse
@@ -407,7 +382,6 @@ class C92G3PLC6LoWPANAdaptationLayerSetup(DlmsClass):
             return response
         return response[0]
 
-
     @formatResponse
     def check_adp_routing_table(self, ck_data):
         """
@@ -422,7 +396,6 @@ class C92G3PLC6LoWPANAdaptationLayerSetup(DlmsClass):
         }
         """
         return checkResponsValue(self.get_adp_routing_table(), ck_data)
-
 
     @formatResponse
     def set_adp_routing_table(self, data):
@@ -448,7 +421,6 @@ class C92G3PLC6LoWPANAdaptationLayerSetup(DlmsClass):
                 else:
                     etree.SubElement(struct, "LongUnsigned").set("Value", dec_toHexStr(subItem, 4))
         return self.setRequest(8, array, "Array")
-
 
     # Attribute of adp_context_information_table
     @formatResponse
@@ -476,7 +448,6 @@ class C92G3PLC6LoWPANAdaptationLayerSetup(DlmsClass):
             return response
         return response[0]
 
-
     @formatResponse
     def check_adp_context_information_table(self, ck_data):
         """
@@ -497,7 +468,6 @@ class C92G3PLC6LoWPANAdaptationLayerSetup(DlmsClass):
         }
         """
         return checkResponsValue(self.get_adp_context_information_table(), ck_data)
-
 
     @formatResponse
     def set_adp_context_information_table(self, data):
@@ -536,7 +506,6 @@ class C92G3PLC6LoWPANAdaptationLayerSetup(DlmsClass):
                     etree.SubElement(struct, "LongUnsigned").set("Value", dec_toHexStr(subItem, 4))
         return self.setRequest(9, array, "Array")
 
-
     # Attribute of adp_blacklist_table
     @formatResponse
     def get_adp_blacklist_table(self, dataType=False, response=None):
@@ -562,7 +531,6 @@ class C92G3PLC6LoWPANAdaptationLayerSetup(DlmsClass):
             return response
         return response[0]
 
-
     @formatResponse
     def check_adp_blacklist_table(self, ck_data):
         """
@@ -577,7 +545,6 @@ class C92G3PLC6LoWPANAdaptationLayerSetup(DlmsClass):
         }
         """
         checkResponsValue(self.get_adp_blacklist_table(), ck_data)
-
 
     @formatResponse
     def set_adp_blacklist_table(self, data):
@@ -600,7 +567,6 @@ class C92G3PLC6LoWPANAdaptationLayerSetup(DlmsClass):
             for subIndex, subItem in enumerate(value):
                 etree.SubElement(struct, "LongUnsigned").set("Value", dec_toHexStr(subItem, 4))
         return self.setRequest(10, array, "Array")
-
 
     # Attribute of adp_broadcast_log_table
     @formatResponse
@@ -627,7 +593,6 @@ class C92G3PLC6LoWPANAdaptationLayerSetup(DlmsClass):
             return response
         return response[0]
 
-
     @formatResponse
     def check_adp_broadcast_log_table(self, ck_data):
         """
@@ -642,7 +607,6 @@ class C92G3PLC6LoWPANAdaptationLayerSetup(DlmsClass):
         }
         """
         return checkResponsValue(self.get_adp_broadcast_log_table(), ck_data)
-
 
     @formatResponse
     def set_adp_broadcast_log_table(self, data):
@@ -669,7 +633,6 @@ class C92G3PLC6LoWPANAdaptationLayerSetup(DlmsClass):
                     etree.SubElement(struct, "Unsigned").set("Value", dec_toHexStr(subItem, 2))
         return self.setRequest(11, array, "Array")
 
-
     # Attribute of adp_group_table
     @formatResponse
     def get_adp_group_table(self, dataType=False, response=None):
@@ -695,7 +658,6 @@ class C92G3PLC6LoWPANAdaptationLayerSetup(DlmsClass):
             return response
         return response[0]
 
-
     @formatResponse
     def check_adp_group_table(self, ck_data):
         """
@@ -710,7 +672,6 @@ class C92G3PLC6LoWPANAdaptationLayerSetup(DlmsClass):
         }
         """
         return checkResponsValue(self.get_adp_group_table(), ck_data)
-
 
     @formatResponse
     def set_adp_group_table(self, data):
@@ -732,7 +693,6 @@ class C92G3PLC6LoWPANAdaptationLayerSetup(DlmsClass):
                 etree.SubElement(array, "LongUnsigned").set("Value", dec_toHexStr(item, 4))
         return self.setRequest(12, array, "Array")
 
-
     # Attribute of adp_max_join_wait_time
     @formatResponse
     def get_adp_max_join_wait_time(self, dataType=False, response=None):
@@ -745,7 +705,6 @@ class C92G3PLC6LoWPANAdaptationLayerSetup(DlmsClass):
         """
         return self.__get_attr(13, dataType=dataType, response=response)
 
-
     @formatResponse
     def check_adp_max_join_wait_time(self, ck_data):
         """
@@ -756,7 +715,6 @@ class C92G3PLC6LoWPANAdaptationLayerSetup(DlmsClass):
         """
         return self.__check_attr(ck_data, 13)
 
-
     @formatResponse
     def set_adp_max_join_wait_time(self, data):
         """
@@ -766,7 +724,6 @@ class C92G3PLC6LoWPANAdaptationLayerSetup(DlmsClass):
         :return:           KFResult对象
         """
         return self.__set_attr(data, 13, "LongUnsigned")
-
 
     # Attribute of adp_path_discovery_time
     @formatResponse
@@ -780,7 +737,6 @@ class C92G3PLC6LoWPANAdaptationLayerSetup(DlmsClass):
         """
         return self.__get_attr(14, dataType=dataType, response=response)
 
-
     @formatResponse
     def check_adp_path_discovery_time(self, ck_data):
         """
@@ -791,7 +747,6 @@ class C92G3PLC6LoWPANAdaptationLayerSetup(DlmsClass):
         """
         return self.__check_attr(ck_data, 14)
 
-
     @formatResponse
     def set_adp_path_discovery_time(self, data):
         """
@@ -801,7 +756,6 @@ class C92G3PLC6LoWPANAdaptationLayerSetup(DlmsClass):
         :return:           KFResult对象
         """
         return self.__set_attr(data, 14, "Unsigned")
-
 
     # Attribute of adp_active_key_index
     @formatResponse
@@ -815,7 +769,6 @@ class C92G3PLC6LoWPANAdaptationLayerSetup(DlmsClass):
         """
         return self.__get_attr(15, dataType=dataType, response=response)
 
-
     @formatResponse
     def check_adp_active_key_index(self, ck_data):
         """
@@ -826,7 +779,6 @@ class C92G3PLC6LoWPANAdaptationLayerSetup(DlmsClass):
         """
         return self.__check_attr(ck_data, 15)
 
-
     @formatResponse
     def set_adp_active_key_index(self, data):
         """
@@ -836,7 +788,6 @@ class C92G3PLC6LoWPANAdaptationLayerSetup(DlmsClass):
         :return:           KFResult对象
         """
         return self.__set_attr(data, 15, "Unsigned")
-
 
     # Attribute of adp_metric_type
     @formatResponse
@@ -850,7 +801,6 @@ class C92G3PLC6LoWPANAdaptationLayerSetup(DlmsClass):
         """
         return self.__get_attr(16, dataType=dataType, response=response)
 
-
     @formatResponse
     def check_adp_metric_type(self, ck_data):
         """
@@ -861,7 +811,6 @@ class C92G3PLC6LoWPANAdaptationLayerSetup(DlmsClass):
         """
         return self.__check_attr(ck_data, 16)
 
-
     @formatResponse
     def set_adp_metric_type(self, data):
         """
@@ -871,7 +820,6 @@ class C92G3PLC6LoWPANAdaptationLayerSetup(DlmsClass):
         :return:           KFResult对象
         """
         return self.__set_attr(data, 16, "Unsigned")
-
 
     # Attribute of adp_coord_short_address
     @formatResponse
@@ -885,7 +833,6 @@ class C92G3PLC6LoWPANAdaptationLayerSetup(DlmsClass):
         """
         return self.__get_attr(17, dataType=dataType, response=response)
 
-
     @formatResponse
     def check_adp_coord_short_address(self, ck_data):
         """
@@ -896,7 +843,6 @@ class C92G3PLC6LoWPANAdaptationLayerSetup(DlmsClass):
         """
         return self.__check_attr(ck_data, 17)
 
-
     @formatResponse
     def set_adp_coord_short_address(self, data):
         """
@@ -906,7 +852,6 @@ class C92G3PLC6LoWPANAdaptationLayerSetup(DlmsClass):
         :return:           KFResult对象
         """
         return self.__set_attr(data, 17, "LongUnsigned")
-
 
     # Attribute of adp_disable_default_routing
     @formatResponse
@@ -920,7 +865,6 @@ class C92G3PLC6LoWPANAdaptationLayerSetup(DlmsClass):
         """
         return self.__get_attr(18, dataType=dataType, response=response)
 
-
     @formatResponse
     def check_adp_disable_default_routing(self, ck_data):
         """
@@ -931,7 +875,6 @@ class C92G3PLC6LoWPANAdaptationLayerSetup(DlmsClass):
         """
         return self.__check_attr(ck_data, 18)
 
-
     @formatResponse
     def set_adp_disable_default_routing(self, data):
         """
@@ -941,7 +884,6 @@ class C92G3PLC6LoWPANAdaptationLayerSetup(DlmsClass):
         :return:           KFResult对象
         """
         return self.__set_attr(data, 18, "Bool")
-
 
     # Attribute of adp_device_type
     @formatResponse
@@ -955,7 +897,6 @@ class C92G3PLC6LoWPANAdaptationLayerSetup(DlmsClass):
         """
         return self.__get_attr(19, dataType=dataType, response=response)
 
-
     @formatResponse
     def check_adp_device_type(self, ck_data):
         """
@@ -966,7 +907,6 @@ class C92G3PLC6LoWPANAdaptationLayerSetup(DlmsClass):
         """
         return self.__check_attr(ck_data, 19)
 
-
     @formatResponse
     def set_adp_device_type(self, data):
         """
@@ -976,7 +916,6 @@ class C92G3PLC6LoWPANAdaptationLayerSetup(DlmsClass):
         :return:           KFResult对象
         """
         return self.__set_attr(data, 19, "Enum")
-
 
     # Attribute of adp_default_coord_route _enabled
     @formatResponse
@@ -990,7 +929,6 @@ class C92G3PLC6LoWPANAdaptationLayerSetup(DlmsClass):
         """
         return self.__get_attr(20, dataType=dataType, response=response)
 
-
     @formatResponse
     def check_adp_device_type(self, ck_data):
         """
@@ -1001,7 +939,6 @@ class C92G3PLC6LoWPANAdaptationLayerSetup(DlmsClass):
         """
         return self.__check_attr(ck_data, 20)
 
-
     @formatResponse
     def set_adp_device_type(self, data):
         """
@@ -1011,7 +948,6 @@ class C92G3PLC6LoWPANAdaptationLayerSetup(DlmsClass):
         :return:           KFResult对象
         """
         return self.__set_attr(data, 20, "Bool")
-
 
     # Attribute of adp_destination_address_set
     @formatResponse
@@ -1038,7 +974,6 @@ class C92G3PLC6LoWPANAdaptationLayerSetup(DlmsClass):
             return response
         return response[0]
 
-
     @formatResponse
     def check_adp_destination_address_set(self, ck_data):
         """
@@ -1048,7 +983,6 @@ class C92G3PLC6LoWPANAdaptationLayerSetup(DlmsClass):
         :return:           KFResult对象
         """
         return checkResponsValue(self.get_adp_group_table(), ck_data)
-
 
     @formatResponse
     def set_adp_destination_address_set(self, data):

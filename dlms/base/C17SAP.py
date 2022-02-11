@@ -2,8 +2,8 @@
 
 from dlms.DlmsClass import *
 
-class C17SAP(DlmsClass):
 
+class C17SAP(DlmsClass):
     attr_index_dict = {
         1: "logical_name",
         2: "sap_assignment_list"
@@ -15,7 +15,6 @@ class C17SAP(DlmsClass):
 
     def __init__(self, conn, obis=None):
         super().__init__(conn, obis, classId=17)
-
 
     # Attribute of logical_name
     @formatResponse
@@ -40,7 +39,6 @@ class C17SAP(DlmsClass):
             return hex_toOBIS(ret[0]), ret[1]
         return hex_toOBIS(ret[0])
 
-
     @formatResponse
     def check_logical_name(self, ck_data):
         """
@@ -54,7 +52,6 @@ class C17SAP(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_logical_name(self, data):
         """
@@ -64,7 +61,6 @@ class C17SAP(DlmsClass):
         :return:            返回一个KFResult对象
         """
         return self.setRequest(1, obis_toHex(data), "OctetString", data)
-
 
     # Attribute of SAP_assignment_list
     @formatResponse
@@ -94,7 +90,6 @@ class C17SAP(DlmsClass):
             return response
         return response[0]
 
-
     @formatResponse
     def check_sap_assignment_list(self, ck_data):
         """
@@ -109,7 +104,6 @@ class C17SAP(DlmsClass):
         }
         """
         return checkResponsValue(self.get_sap_assignment_list(), ck_data)
-
 
     @formatResponse
     def set_sap_assignment_list(self, data):
@@ -135,7 +129,6 @@ class C17SAP(DlmsClass):
                 if subIndex == 1:
                     etree.SubElement(struct, "OctetString").set("Value", ascii_toHex(subItem))
         return self.setRequest(2, array, "Array", data)
-
 
     # Method of connect_logical_device
     @formatResponse
@@ -164,4 +157,3 @@ class C17SAP(DlmsClass):
                     if subIndex == 1:
                         etree.SubElement(struct, "OctetString").set("Value", ascii_toHex(subItem))
         return self.actionRequest(1, struct, "Structure", data)
-

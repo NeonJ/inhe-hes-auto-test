@@ -1,11 +1,11 @@
 # -*- coding: UTF-8 -*-
 
-from dlms.DlmsClass import *
 from libs.Singleton import Singleton
+
+from dlms.DlmsClass import *
 
 
 class C1Data(DlmsClass):
-
     attr_index_dict = {
         1: "logical_name",
         2: "value"
@@ -41,7 +41,6 @@ class C1Data(DlmsClass):
             return hex_toOBIS(response[0]), response[1]
         return hex_toOBIS(response[0])
 
-
     @formatResponse
     def check_logical_name(self, ck_data):
         """
@@ -55,7 +54,6 @@ class C1Data(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_logical_name(self, data):
         """
@@ -65,7 +63,6 @@ class C1Data(DlmsClass):
         :return:            返回一个KFResult对象
         """
         return self.setRequest(1, obis_toHex(data), "OctetString")
-
 
     # Attribute of value (No.2)
     @formatResponse
@@ -93,7 +90,7 @@ class C1Data(DlmsClass):
             return ret[0]
 
         # 有多种格式struct
-        if attributeType.find("st_") != -1 or attributeType.find("a_") != -1:    # Structure / Array
+        if attributeType.find("st_") != -1 or attributeType.find("a_") != -1:  # Structure / Array
             ret = getStrucDataFromGetResp(response)
             if ret[0] in data_access_result:
                 if dataType:
@@ -136,19 +133,19 @@ class C1Data(DlmsClass):
                 return ret
             return ret[0]
 
-        if attributeType == "h":              # Time
+        if attributeType == "h":  # Time
             if dataType:
                 return hex_toTimeString(ret[0]), ret[1]
             return hex_toTimeString(ret[0])
-        elif attributeType == "y":            # Date
+        elif attributeType == "y":  # Date
             if dataType:
                 return hex_toDateString(ret[0]), ret[1]
             return hex_toDateString(ret[0])
-        elif attributeType == "t":            # DateTime
+        elif attributeType == "t":  # DateTime
             if dataType:
                 return hex_toDateTimeString(ret[0]), ret[1]
             return hex_toDateTimeString(ret[0])
-        elif attributeType == "s":            # ASCII
+        elif attributeType == "s":  # ASCII
             if dataType:
                 return hex_toAscii(ret[0]), ret[1]
             return hex_toAscii(ret[0])
@@ -162,7 +159,6 @@ class C1Data(DlmsClass):
             if dataType:
                 return ret
             return ret[0]
-
 
     @formatResponse
     def check_value(self, ck_data):
@@ -178,13 +174,12 @@ class C1Data(DlmsClass):
             if str(ret).lower() == str(ck_data).lower():
                 return KFResult(True, "")
             return KFResult(False, f"{ret} not equal to {ck_data}")
-        elif attributeType.find("st_") != -1 or attributeType.find("a_") != -1:   # Structure/ Array
+        elif attributeType.find("st_") != -1 or attributeType.find("a_") != -1:  # Structure/ Array
             return checkResponsValue(ret, ck_data)
         else:
             if str(ret).lower() == str(ck_data).lower():
                 return KFResult(True, "")
             return KFResult(False, f"{ret} not equal to {ck_data}")
-
 
     @formatResponse
     def set_value(self, data, datatype='OctetString'):
@@ -201,7 +196,7 @@ class C1Data(DlmsClass):
         attributeType = getClassAttributeType(self.classId, self.obis, Singleton().Project)
         if not attributeType:
             return self.setRequest(2, data, "OctetString")
-        if attributeType.find("st_") != -1:                         # Structure
+        if attributeType.find("st_") != -1:  # Structure
             lst = attributeType.split("_")[1:]
             if len(data) > 1:
                 struct = etree.Element("Structure")
@@ -253,7 +248,7 @@ class C1Data(DlmsClass):
                             etree.SubElement(struct, "DoubleLongUnsigned").set("Value", dec_toHexStr(item, 8))
             return self.setRequest(2, struct, "Struct")
 
-        elif attributeType.find("a_") != -1:                         # Array
+        elif attributeType.find("a_") != -1:  # Array
             array = etree.Element("Array")
             array.set("Qty", dec_toHexStr(len(data), 4))
 
@@ -279,7 +274,7 @@ class C1Data(DlmsClass):
 
             return self.setRequest(2, array, "Array")
 
-        elif attributeType.find("as_") != -1:                        #Array Structure
+        elif attributeType.find("as_") != -1:  # Array Structure
             if data is None or len(data) == 0:
                 array = etree.Element("Array")
                 array.set("Qty", "0000")
@@ -304,28 +299,28 @@ class C1Data(DlmsClass):
                             etree.SubElement(struct, "OctetString").set("Value", dec_toHexStr(subItem))
             return self.setRequest(2, array, "Array")
 
-        elif attributeType == "h":              # Time
+        elif attributeType == "h":  # Time
             ret = time_toHex(data)
-        elif attributeType == "y":            # Date
+        elif attributeType == "y":  # Date
             ret = date_toHex(data)
-        elif attributeType == "t":            # DateTime
+        elif attributeType == "t":  # DateTime
             ret = dateTime_toHex(data[:19])
             print(ret)
-        elif attributeType == "s":            # ASCII
+        elif attributeType == "s":  # ASCII
             ret = ascii_toHex(data)
-        elif attributeType == "vs":           # ASCII
+        elif attributeType == "vs":  # ASCII
             return self.setRequest(2, str(data), "VisibleString")
-        elif attributeType == "b":             # Bool
+        elif attributeType == "b":  # Bool
             return self.setRequest(2, dec_toHexStr(data, 2), "Bool")
-        elif attributeType == "e":             # Enum
+        elif attributeType == "e":  # Enum
             return self.setRequest(2, dec_toHexStr(data, 2), "Enum")
-        elif attributeType == "dlu":           # DoubleLongUnsigned
+        elif attributeType == "dlu":  # DoubleLongUnsigned
             return self.setRequest(2, dec_toHexStr(data, 8), "DoubleLongUnsigned")
-        elif attributeType == "lu":            # LongUnsigned
+        elif attributeType == "lu":  # LongUnsigned
             return self.setRequest(2, dec_toHexStr(data, 4), "LongUnsigned")
-        elif attributeType == "u":             # Unsigned
+        elif attributeType == "u":  # Unsigned
             return self.setRequest(2, dec_toHexStr(data, 2), "Unsigned")
-        elif attributeType.find("stl_") != -1:    # Structure
+        elif attributeType.find("stl_") != -1:  # Structure
             lst = attributeType.split("_")[1:]
             struct = etree.Element("Structure")
             struct.set("Qty", dec_toHexStr(len(data), 4))
@@ -341,9 +336,7 @@ class C1Data(DlmsClass):
             ret = str(data)
         return self.setRequest(2, ret, datatype)
 
-
-    #==================================================================================================#
-
+    # ==================================================================================================#
 
     @formatResponse
     def get_value_with_list(self):
@@ -356,7 +349,6 @@ class C1Data(DlmsClass):
         for index, obis in enumerate(self.obisList):
             response[index] = self.get_value(obis)
         return response
-
 
     @formatResponse
     def check_value_with_list(self, ck_data, increment=None):
@@ -375,7 +367,8 @@ class C1Data(DlmsClass):
         try:
             for key, value in ck_data.items():
                 if int(value) + increment[key] != int(result[key]):
-                    response.append(f"'response[{key}]={result[key]}'not equal to 'ck_data[{key}]={value}' + {increment[key]} ")
+                    response.append(
+                        f"'response[{key}]={result[key]}'not equal to 'ck_data[{key}]={value}' + {increment[key]} ")
             if len(response) == 0:
                 return KFResult(True, '')
             else:

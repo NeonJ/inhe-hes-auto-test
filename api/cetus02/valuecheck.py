@@ -34,7 +34,6 @@ class DiamondValueCheck(ValueCheck):
         "PP": 1,
     }
 
-
     def getColumnData(self, clientDict, config, excel_path, meterTypeDict, object_model_sheet_index):
         """
         data.xlsx
@@ -60,7 +59,7 @@ class DiamondValueCheck(ValueCheck):
                                                                                                         client_index,
                                                                                                         attr_name_index,
                                                                                                         device_type_index,
-                                                                                                        data_type_index,])
+                                                                                                        data_type_index, ])
         read_result = read_result.to_dict()
         # Read data from excel file
         device_type_list = list(list(read_result.values())[0].values())
@@ -126,6 +125,7 @@ class DiamondValueCheck(ValueCheck):
             "clientAccessRights": client_access_rights_list,
             "responseValue": get_value_list,
         }
+
 
 readDataByAdmin = DiamondValueCheck().read_data_by_admin
 defaultValueCheck = DiamondValueCheck().default_value_check

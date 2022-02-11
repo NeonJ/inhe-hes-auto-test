@@ -2,8 +2,8 @@
 
 from dlms.DlmsClass import *
 
-class C40PushSetup(DlmsClass):
 
+class C40PushSetup(DlmsClass):
     attr_index_dict = {
         1: "logical_name",
         2: "push_object_list",
@@ -20,7 +20,6 @@ class C40PushSetup(DlmsClass):
 
     def __init__(self, conn, obis=None):
         super().__init__(conn, obis, classId=40)
-
 
     # Attribute of logical_name
     @formatResponse
@@ -45,7 +44,6 @@ class C40PushSetup(DlmsClass):
             return hex_toOBIS(ret[0]), ret[1]
         return hex_toOBIS(ret[0])
 
-
     @formatResponse
     def check_logical_name(self, ck_data):
         """
@@ -59,7 +57,6 @@ class C40PushSetup(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_logical_name(self, data):
         """
@@ -69,7 +66,6 @@ class C40PushSetup(DlmsClass):
         :return:            返回一个KFResult对象
         """
         return self.setRequest(1, obis_toHex(data), "OctetString", data)
-
 
     # Attribute of push_object_list
     @formatResponse
@@ -92,17 +88,16 @@ class C40PushSetup(DlmsClass):
         for value in response[0].values():
             for index, item in enumerate(value):
                 if index == 0:
-                    value[index] = hex_toDec(item)            # class_id
+                    value[index] = hex_toDec(item)  # class_id
                 if index == 1:
-                    value[index] = hex_toOBIS(item)           # logical_name
+                    value[index] = hex_toOBIS(item)  # logical_name
                 if index == 2:
-                    value[index] = hex_toDec(item)            # attribute_index
+                    value[index] = hex_toDec(item)  # attribute_index
                 if index == 3:
-                    value[index] = hex_toDec(item)            # data_index
+                    value[index] = hex_toDec(item)  # data_index
         if dataType:
             return response
         return response[0]
-
 
     @formatResponse
     def check_push_object_list(self, ck_data):
@@ -121,7 +116,6 @@ class C40PushSetup(DlmsClass):
         }
         """
         return checkResponsValue(self.get_push_object_list(), ck_data)
-
 
     @formatResponse
     def set_push_object_list(self, data):
@@ -155,7 +149,6 @@ class C40PushSetup(DlmsClass):
                     etree.SubElement(struct, "LongUnsigned").set("Value", dec_toHexStr(item, 4))
         return self.setRequest(2, array, "Array", data)
 
-
     # Attribute of send_destination_and_method
     @formatResponse
     def get_send_destination_and_method(self, dataType=False, response=None):
@@ -185,7 +178,6 @@ class C40PushSetup(DlmsClass):
         if dataType:
             return response
         return response[0]
-
 
     @formatResponse
     def check_send_destination_and_method(self, ck_data):
@@ -217,7 +209,6 @@ class C40PushSetup(DlmsClass):
             (128...255) manufacturer specific
         """
         return checkResponsValue(self.get_send_destination_and_method(), ck_data)
-
 
     @formatResponse
     def set_send_destination_and_method(self, data):
@@ -262,7 +253,6 @@ class C40PushSetup(DlmsClass):
             struct.set("Qty", dec_toHexStr(0, 4))
         return self.setRequest(3, struct, "Struct", data)
 
-
     # Attribute of communication_window
     @formatResponse
     def get_communication_window(self, dataType=False, response=None):
@@ -288,7 +278,6 @@ class C40PushSetup(DlmsClass):
             return response
         return response[0]
 
-
     @formatResponse
     def check_communication_window(self, ck_data):
         """
@@ -304,7 +293,6 @@ class C40PushSetup(DlmsClass):
         }
         """
         return checkResponsValue(self.get_communication_window(), ck_data)
-
 
     @formatResponse
     def set_communication_window(self, data):
@@ -334,7 +322,6 @@ class C40PushSetup(DlmsClass):
 
         return self.setRequest(4, array, "Array", data)
 
-
     # Attribute of randomisation_start_interval (No.5)
     @formatResponse
     def get_randomisation_start_interval(self, dataType=False, response=None):
@@ -358,7 +345,6 @@ class C40PushSetup(DlmsClass):
             return hex_toDec(ret[0]), ret[1]
         return hex_toDec(ret[0])
 
-
     @formatResponse
     def check_randomisation_start_interval(self, ck_data):
         """
@@ -372,7 +358,6 @@ class C40PushSetup(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_randomisation_start_interval(self, data):
         """
@@ -381,7 +366,6 @@ class C40PushSetup(DlmsClass):
         :return:                    返回一个 KFResult 对象
         """
         return self.setRequest(5, dec_toHexStr(data, 4), "LongUnsigned", data)
-
 
     # Attribute of number_of_retries (No.6)
     @formatResponse
@@ -406,7 +390,6 @@ class C40PushSetup(DlmsClass):
             return hex_toDec(ret[0]), ret[1]
         return hex_toDec(ret[0])
 
-
     @formatResponse
     def check_number_of_retries(self, ck_data):
         """
@@ -420,7 +403,6 @@ class C40PushSetup(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_number_of_retries(self, data):
         """
@@ -430,7 +412,6 @@ class C40PushSetup(DlmsClass):
         :return:                    返回一个 KFResult 对象
         """
         return self.setRequest(6, dec_toHexStr(data, 2), "Unsigned", data)
-
 
     # Attribute of repetition_delay (No.7)
     @formatResponse
@@ -455,7 +436,6 @@ class C40PushSetup(DlmsClass):
             return hex_toDec(ret[0]), ret[1]
         return hex_toDec(ret[0])
 
-
     @formatResponse
     def check_repetition_delay(self, ck_data):
         """
@@ -469,7 +449,6 @@ class C40PushSetup(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_repetition_delay(self, data):
         """
@@ -479,7 +458,6 @@ class C40PushSetup(DlmsClass):
         :return:                    返回一个 KFResult 对象
         """
         return self.setRequest(7, dec_toHexStr(data, 4), "LongUnsigned", data)
-
 
     # Method of push
     @formatResponse
@@ -492,4 +470,3 @@ class C40PushSetup(DlmsClass):
         :return:                   返回一个 KFResult 对象
         """
         return self.actionRequest(1, dec_toHexStr(index, 2), "Integer", index)
-

@@ -11,7 +11,6 @@ ILLEGAL_CHARACTERS_RE = re.compile(r'[\000-\010]|[\013-\014]|[\016-\037]')
 # 过滤不支持的OBIS
 supported_objects = ["", "nan", 'NA']
 
-
 all_data_type = ["null_data", "boolean", "bit_string", "double_long",
                  "double_long_unsigned", "octet_string", "visible_string",
                  "utf8_string", "bcd", "integer", "long", "unsigned",

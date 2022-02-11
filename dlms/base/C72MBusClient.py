@@ -2,8 +2,8 @@
 
 from dlms.DlmsClass import *
 
-class C72MBusClient(DlmsClass):
 
+class C72MBusClient(DlmsClass):
     attr_index_dict = {
         1: "logical_name",
         2: "mbus_port_reference",
@@ -35,7 +35,6 @@ class C72MBusClient(DlmsClass):
     def __init__(self, conn, obis=None):
         super().__init__(conn, obis, classId=72)
 
-
     # Common get/set/check method for number type
     def __get_attr(self, attr_id, dataType=False, response=None):
         if response is None:
@@ -51,13 +50,11 @@ class C72MBusClient(DlmsClass):
             return hex_toDec(ret[0]), ret[1]
         return hex_toDec(ret[0])
 
-
     def __check_attr(self, ck_data, attr_id):
         ret = self.__get_attr(attr_id)
         if int(ret) == int(ck_data):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
-
 
     def __set_attr(self, data, attr_id, attr_type):
         if attr_type == "Unsigned":
@@ -68,7 +65,6 @@ class C72MBusClient(DlmsClass):
             return self.setRequest(attr_id, dec_toHexStr(data, 8), "DoubleLongUnsigned", data)
         elif attr_type == "Enum":
             return self.setRequest(attr_id, dec_toHexStr(data, 2), "Enum", data)
-
 
     # Attribute of logical_name
     @formatResponse
@@ -93,7 +89,6 @@ class C72MBusClient(DlmsClass):
             return hex_toOBIS(ret[0]), ret[1]
         return hex_toOBIS(ret[0])
 
-
     @formatResponse
     def check_logical_name(self, ck_data):
         """
@@ -107,7 +102,6 @@ class C72MBusClient(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_logical_name(self, data):
         """
@@ -117,7 +111,6 @@ class C72MBusClient(DlmsClass):
         :return:             KFResult对象
         """
         return self.setRequest(1, obis_toHex(data), "OctetString")
-
 
     # Attribute of mbus_port_reference
     @formatResponse
@@ -142,7 +135,6 @@ class C72MBusClient(DlmsClass):
             return hex_toOBIS(ret[0]), ret[1]
         return hex_toOBIS(ret[0])
 
-
     @formatResponse
     def check_mbus_port_reference(self, ck_data):
         """
@@ -162,7 +154,6 @@ class C72MBusClient(DlmsClass):
                 return KFResult(True, "")
             return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_mbus_port_reference(self, data):
         """
@@ -174,7 +165,6 @@ class C72MBusClient(DlmsClass):
         if isinstance(data, dict):
             data = data.get(0)
         return self.setRequest(2, obis_toHex(data), "OctetString")
-
 
     # Attribute of capture_definition
     @formatResponse
@@ -201,7 +191,6 @@ class C72MBusClient(DlmsClass):
             return response
         return response[0]
 
-
     @formatResponse
     def check_capture_definition(self, ck_data):
         """
@@ -217,7 +206,6 @@ class C72MBusClient(DlmsClass):
         }
         """
         return checkResponsValue(self.get_capture_definition(), ck_data)
-
 
     @formatResponse
     def set_capture_definition(self, data):
@@ -242,7 +230,6 @@ class C72MBusClient(DlmsClass):
                 etree.SubElement(struct, "OctetString").set("Value", obis_toHex(subItem))
         return self.setRequest(3, array, "Array")
 
-
     # Attribute of capture_period
     @formatResponse
     def get_capture_period(self, dataType=False, response=None):
@@ -255,7 +242,6 @@ class C72MBusClient(DlmsClass):
         """
         return self.__get_attr(4, dataType=dataType, response=response)
 
-
     @formatResponse
     def check_capture_period(self, ck_data):
         """
@@ -266,7 +252,6 @@ class C72MBusClient(DlmsClass):
         """
         return self.__check_attr(ck_data, 4)
 
-
     @formatResponse
     def set_capture_period(self, data):
         """
@@ -276,7 +261,6 @@ class C72MBusClient(DlmsClass):
         :return:         KFResult对象
         """
         return self.__set_attr(data, 4, "DoubleLongUnsigned")
-
 
     # Attribute of primary_address
     @formatResponse
@@ -290,7 +274,6 @@ class C72MBusClient(DlmsClass):
         """
         return self.__get_attr(5, dataType=dataType, response=response)
 
-
     @formatResponse
     def check_primary_address(self, ck_data):
         """
@@ -301,7 +284,6 @@ class C72MBusClient(DlmsClass):
         """
         return self.__check_attr(ck_data, 5)
 
-
     @formatResponse
     def set_primary_address(self, data):
         """
@@ -311,7 +293,6 @@ class C72MBusClient(DlmsClass):
         :return:           KFResult对象
         """
         return self.__set_attr(data, 5, "Unsigned")
-
 
     # Attribute of identification_number
     @formatResponse
@@ -325,7 +306,6 @@ class C72MBusClient(DlmsClass):
         """
         return self.__get_attr(6, dataType=dataType, response=response)
 
-
     @formatResponse
     def check_identification_number(self, ck_data):
         """
@@ -336,7 +316,6 @@ class C72MBusClient(DlmsClass):
         """
         return self.__check_attr(ck_data, 6)
 
-
     @formatResponse
     def set_identification_number(self, data):
         """
@@ -346,7 +325,6 @@ class C72MBusClient(DlmsClass):
         :return:              KFResult对象
         """
         return self.__set_attr(data, 6, "DoubleLongUnsigned")
-
 
     # Attribute of manufacturer_id
     @formatResponse
@@ -360,7 +338,6 @@ class C72MBusClient(DlmsClass):
         """
         return self.__get_attr(7, dataType=dataType, response=response)
 
-
     @formatResponse
     def check_manufacturer_id(self, ck_data):
         """
@@ -371,7 +348,6 @@ class C72MBusClient(DlmsClass):
         """
         return self.__check_attr(ck_data, 7)
 
-
     @formatResponse
     def set_manufacturer_id(self, data):
         """
@@ -381,7 +357,6 @@ class C72MBusClient(DlmsClass):
         :return:       KFResult对象
         """
         return self.__set_attr(data, 7, "LongUnsigned")
-
 
     # Attribute of version
     @formatResponse
@@ -395,7 +370,6 @@ class C72MBusClient(DlmsClass):
         """
         return self.__get_attr(8, dataType=dataType, response=response)
 
-
     @formatResponse
     def check_version(self, ck_data):
         """
@@ -406,7 +380,6 @@ class C72MBusClient(DlmsClass):
         """
         return self.__check_attr(ck_data, 8)
 
-
     @formatResponse
     def set_version(self, data):
         """
@@ -416,7 +389,6 @@ class C72MBusClient(DlmsClass):
         :return:            KFResult对象
         """
         return self.__set_attr(data, 8, "Unsigned")
-
 
     # Attribute of device_type
     @formatResponse
@@ -430,7 +402,6 @@ class C72MBusClient(DlmsClass):
         """
         return self.__get_attr(9, dataType=dataType, response=response)
 
-
     @formatResponse
     def check_device_type(self, ck_data):
         """
@@ -441,7 +412,6 @@ class C72MBusClient(DlmsClass):
         """
         return self.__check_attr(ck_data, 9)
 
-
     @formatResponse
     def set_device_type(self, data):
         """
@@ -451,7 +421,6 @@ class C72MBusClient(DlmsClass):
         :return:        KFResult对象
         """
         return self.__set_attr(data, 9, "Unsigned")
-
 
     # Attribute of access_number
     @formatResponse
@@ -465,7 +434,6 @@ class C72MBusClient(DlmsClass):
         """
         return self.__get_attr(10, dataType=dataType, response=response)
 
-
     @formatResponse
     def check_access_number(self, ck_data):
         """
@@ -476,7 +444,6 @@ class C72MBusClient(DlmsClass):
         """
         return self.__check_attr(ck_data, 10)
 
-
     @formatResponse
     def set_access_number(self, data):
         """
@@ -486,7 +453,6 @@ class C72MBusClient(DlmsClass):
         :return:         KFResult对象
         """
         return self.__set_attr(data, 10, "Unsigned")
-
 
     # Attribute of status
     @formatResponse
@@ -500,7 +466,6 @@ class C72MBusClient(DlmsClass):
         """
         return self.__get_attr(11, dataType=dataType, response=response)
 
-
     @formatResponse
     def check_status(self, ck_data):
         """
@@ -511,7 +476,6 @@ class C72MBusClient(DlmsClass):
         """
         return self.__check_attr(ck_data, 11)
 
-
     @formatResponse
     def set_status(self, data):
         """
@@ -521,7 +485,6 @@ class C72MBusClient(DlmsClass):
         :return:            KFResult对象
         """
         return self.__set_attr(data, 11, "Unsigned")
-
 
     # Attribute of alarm
     @formatResponse
@@ -535,7 +498,6 @@ class C72MBusClient(DlmsClass):
         """
         return self.__get_attr(12, dataType=dataType, response=response)
 
-
     @formatResponse
     def check_alarm(self, ck_data):
         """
@@ -546,7 +508,6 @@ class C72MBusClient(DlmsClass):
         """
         return self.__check_attr(ck_data, 12)
 
-
     @formatResponse
     def set_alarm(self, data):
         """
@@ -556,7 +517,6 @@ class C72MBusClient(DlmsClass):
         :return:          KFResult对象
         """
         return self.__set_attr(data, 12, "Unsigned")
-
 
     # Attribute of configuration
     @formatResponse
@@ -570,7 +530,6 @@ class C72MBusClient(DlmsClass):
         """
         return self.__get_attr(13, dataType=dataType, response=response)
 
-
     @formatResponse
     def check_configuration(self, ck_data):
         """
@@ -581,7 +540,6 @@ class C72MBusClient(DlmsClass):
         """
         return self.__check_attr(ck_data, 13)
 
-
     @formatResponse
     def set_configuration(self, data):
         """
@@ -591,7 +549,6 @@ class C72MBusClient(DlmsClass):
         :return:        KFResult对象
         """
         return self.__set_attr(data, 13, "LongUnsigned")
-
 
     # Attribute of encryption_key_status
     @formatResponse
@@ -605,7 +562,6 @@ class C72MBusClient(DlmsClass):
         """
         return self.__get_attr(14, dataType=dataType, response=response)
 
-
     @formatResponse
     def check_encryption_key_status(self, ck_data):
         """
@@ -615,7 +571,6 @@ class C72MBusClient(DlmsClass):
         :return:          KFResult对象
         """
         return self.__check_attr(ck_data, 14)
-
 
     @formatResponse
     def set_encryption_key_status(self, data):
@@ -627,8 +582,6 @@ class C72MBusClient(DlmsClass):
         """
         return self.__set_attr(data, 14, "Enum")
 
-
-
     # Method of slave_install
     @formatResponse
     def act_slave_install(self, data=0):
@@ -639,7 +592,6 @@ class C72MBusClient(DlmsClass):
         :return:        KFResult对象
         """
         return self.actionRequest(1, dec_toHexStr(data, 2), "Unsigned", data)
-
 
     # Method of slave_deinstall
     @formatResponse
@@ -653,7 +605,6 @@ class C72MBusClient(DlmsClass):
         """
         return self.actionRequest(2, dec_toHexStr(data, 2), "Integer", data)
 
-
     # Method of capture
     @formatResponse
     def act_capture(self, data=0):
@@ -664,7 +615,6 @@ class C72MBusClient(DlmsClass):
         :return:        KFResult对象
         """
         return self.actionRequest(3, dec_toHexStr(data, 2), "Integer", data)
-
 
     # Method of reset_alarm
     @formatResponse
@@ -677,7 +627,6 @@ class C72MBusClient(DlmsClass):
         """
         return self.actionRequest(4, dec_toHexStr(data, 2), "Integer", data)
 
-
     # Method of synchronize_clock
     @formatResponse
     def act_synchronize_clock(self, data=0):
@@ -688,7 +637,6 @@ class C72MBusClient(DlmsClass):
         :return:        KFResult对象
         """
         return self.actionRequest(5, dec_toHexStr(data, 2), "Integer", data)
-
 
     # Method of data_send
     @formatResponse
@@ -719,7 +667,6 @@ class C72MBusClient(DlmsClass):
                     etree.SubElement(struct, "NullData")
         return self.actionRequest(6, array, "Array", data)
 
-
     # Method of set_encryption_key
     @formatResponse
     def act_set_encryption_key(self, data=""):
@@ -731,7 +678,6 @@ class C72MBusClient(DlmsClass):
         :return:        KFResult对象
         """
         return self.actionRequest(7, data, "OctetString", data)
-
 
     # Method of transfer_key
     @formatResponse

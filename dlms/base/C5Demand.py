@@ -25,7 +25,6 @@ class C5Demand(DlmsClass):
     def __init__(self, conn, obis=None):
         super().__init__(conn, obis, classId=5)
 
-
     # Attribute of logical_name (No.1)
     @formatResponse
     def get_logical_name(self, dataType=False, response=None):
@@ -48,7 +47,6 @@ class C5Demand(DlmsClass):
             return hex_toOBIS(ret[0]), ret[1]
         return hex_toOBIS(ret[0])
 
-
     @formatResponse
     def check_logical_name(self, ck_data):
         """
@@ -62,7 +60,6 @@ class C5Demand(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_logical_name(self, data):
         """
@@ -72,7 +69,6 @@ class C5Demand(DlmsClass):
         :return:            返回一个KFResult对象
         """
         return self.setRequest(1, obis_toHex(data), "OctetString", data)
-
 
     # Attribute of current_average_value （No.2）
     @formatResponse
@@ -99,7 +95,6 @@ class C5Demand(DlmsClass):
             return hex_toDec(ret[0]), ret[1]
         return hex_toDec(ret[0])
 
-
     @formatResponse
     def check_current_average_value(self, ck_data):
         """
@@ -113,7 +108,6 @@ class C5Demand(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_current_average_value(self, data):
         """
@@ -123,7 +117,6 @@ class C5Demand(DlmsClass):
         :return:            返回一个KFResult对象
         """
         return self.setRequest(2, dec_toHexStr(data, 8), "DoubleLongUnsigned", data)
-
 
     # Attribute of last_average_value (No.3)
     @formatResponse
@@ -151,7 +144,6 @@ class C5Demand(DlmsClass):
             return hex_toDec(ret[0]), ret[1]
         return hex_toDec(ret[0])
 
-
     @formatResponse
     def check_last_average_value(self, ck_data):
         """
@@ -165,7 +157,6 @@ class C5Demand(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_last_average_value(self, data):
         """
@@ -175,7 +166,6 @@ class C5Demand(DlmsClass):
         :return:            返回一个KFResult对象
         """
         return self.setRequest(3, dec_toHexStr(data, 8), "DoubleLongUnsigned", data)
-
 
     # Attribute of scaler_unit (No.4)
     @formatResponse
@@ -203,7 +193,6 @@ class C5Demand(DlmsClass):
             return response
         return response[0]
 
-
     @formatResponse
     def check_scaler_unit(self, ck_data):
         """
@@ -224,7 +213,6 @@ class C5Demand(DlmsClass):
                     if not re.findall("[a-zA-Z]", str(item)):
                         value[index] = str(UnitsMap.get(int(item), None))
         return checkResponsValue(self.get_scaler_unit(), ck_data)
-
 
     @formatResponse
     def set_scaler_unit(self, data):
@@ -254,7 +242,6 @@ class C5Demand(DlmsClass):
                 etree.SubElement(struct, "Enum").set("Value", dec_toHexStr(
                     str(dict(zip(UnitsMap.values(), UnitsMap.keys()))[item]), 2))
         return self.setRequest(4, struct, "struct", data)
-
 
     # Attribute of Status (No.5)
     @formatResponse
@@ -294,7 +281,6 @@ class C5Demand(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_status(self, data):
         """
@@ -304,7 +290,6 @@ class C5Demand(DlmsClass):
         :return:                 返回一个 KFResult 对象
         """
         return self.setRequest(5, data, "BitString", data)
-
 
     # Attribute of capture_time （No.6）
     @formatResponse
@@ -330,7 +315,6 @@ class C5Demand(DlmsClass):
             return hex_toDateTimeString(response[0]), response[1]
         return hex_toDateTimeString(response[0])
 
-
     @formatResponse
     def check_capture_time(self, ckTime, interval=0):
         """
@@ -341,7 +325,6 @@ class C5Demand(DlmsClass):
         :return:
         """
         return timeDiff(self.get_capture_time(), ckTime, interval)
-
 
     @formatResponse
     def set_capture_time(self, data):
@@ -354,7 +337,6 @@ class C5Demand(DlmsClass):
         if not str(data).startswith("F"):
             data = dateTime_toHex(data)
         return self.setRequest(6, data, "OctetString", data)
-
 
     # Attribute of start_time_current (No.7)
     @formatResponse
@@ -378,7 +360,6 @@ class C5Demand(DlmsClass):
             return hex_toDateTimeString(response[0]), response[1]
         return hex_toDateTimeString(response[0])
 
-
     @formatResponse
     def check_start_time_current(self, ckTime, interval=0):
         """
@@ -389,7 +370,6 @@ class C5Demand(DlmsClass):
         :return:                     返回一个 KFResult 对象
         """
         return timeDiff(self.get_start_time_current(), ckTime, interval)
-
 
     @formatResponse
     def set_start_time_current(self, data):
@@ -402,7 +382,6 @@ class C5Demand(DlmsClass):
         if not str(data).startswith("F"):
             data = dateTime_toHex(data)
         return self.setRequest(7, data, "OctetString", data)
-
 
     # Attribute of period (No.8)
     @formatResponse
@@ -426,7 +405,6 @@ class C5Demand(DlmsClass):
             return hex_toDec(response[0]), response[1]
         return hex_toDec(response[0])
 
-
     @formatResponse
     def check_period(self, ck_data):
         """
@@ -440,7 +418,6 @@ class C5Demand(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_period(self, data):
         """
@@ -450,7 +427,6 @@ class C5Demand(DlmsClass):
         :return:                 返回一个 KFResult 对象
         """
         return self.setRequest(8, dec_toHexStr(data, 8), "DoubleLongUnsigned", data)
-
 
     # Attribute of number_of_periods (No.9)
     @formatResponse
@@ -475,7 +451,6 @@ class C5Demand(DlmsClass):
             return hex_toDec(ret[0]), ret[1]
         return hex_toDec(ret[0])
 
-
     @formatResponse
     def check_number_of_periods(self, ck_data):
         """
@@ -488,7 +463,6 @@ class C5Demand(DlmsClass):
         if int(ret) == int(ck_data):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
-
 
     @formatResponse
     def set_number_of_periods(self, data):
@@ -576,7 +550,6 @@ class C5Demand(DlmsClass):
         except Exception as ex:
             error(ex)
 
-
     @formatResponse
     def get_last_average_value_with_list(self):
         """
@@ -588,7 +561,6 @@ class C5Demand(DlmsClass):
         for index, obis in enumerate(self.obisList):
             response[index] = self.get_last_average_value(obis=obis)
         return response
-
 
     @formatResponse
     def check_last_average_value_with_list(self, ck_data, initial=None):

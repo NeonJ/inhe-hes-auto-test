@@ -5,6 +5,7 @@ import sys
 import traceback
 import xml.etree.ElementTree as ET
 from xml.dom.minidom import parseString
+
 from .DataFormatAPI import *
 from .KFLog import *
 
@@ -51,7 +52,6 @@ def getRequestNormalXml(classId, obis, attr):
     return f'<GetRequest><GetRequestNormal><InvokeIdAndPriority Value="C1" /><AttributeDescriptor><ClassId Value="{classIdHex}" /><InstanceId Value="{obisHex}" /><AttributeId Value="{attrHex}" /></AttributeDescriptor></GetRequestNormal></GetRequest>'
 
 
-
 def getResponseFromSetWithList(xmlStr):
     if len(xmlStr) == 0:
         return ''
@@ -64,8 +64,6 @@ def getResponseFromSetWithList(xmlStr):
     except ET.ParseError as e:
         error(f"Error: '{e}'")
         return
-
-
 
 
 # 从XML响应中提取数据内容
@@ -135,7 +133,7 @@ def getDataFromActionResp(xmlStr):
                 arrayList = list()
                 if array.tag in ("Structure", "Array"):
                     # isArray = True
-                    for struct in array.iter("Array"):              # for class 91 act_mac_get_neighbour_table_entry
+                    for struct in array.iter("Array"):  # for class 91 act_mac_get_neighbour_table_entry
                         subStructList = list()
                         for child in struct:
                             subStructList.append(child.attrib['Value'])
@@ -203,8 +201,6 @@ def getSingleDataFromGetResp(xmlStr):
         return '', ''
 
 
-
-
 def getStrucDataFromGetResp(xmlStr):
     """
     从GetResponse中提取包含structure数据项的内容
@@ -222,10 +218,10 @@ def getStrucDataFromGetResp(xmlStr):
             for result in root.iter("Result"):
                 for child in result:
                     return child.attrib['Value'], child.tag
-        for array in root.iter("Array"):                            # the first array
+        for array in root.iter("Array"):  # the first array
             arrayList = list()
             tagArrayList = list()
-            for struct in array:                                    # all structures under the first array
+            for struct in array:  # all structures under the first array
                 # for class 21 get_thresholds
                 if struct.tag != "Structure" and struct.tag != "Array":
                     structList = list()
@@ -238,7 +234,7 @@ def getStrucDataFromGetResp(xmlStr):
                     structList = list()
                     tagStructList = list()
                     for child in struct:
-                        if child.tag == "Array":                        # array under structure
+                        if child.tag == "Array":  # array under structure
                             subChildList = list()
                             tagSubChildList = list()
                             for subChild in child:
@@ -330,7 +326,7 @@ def getStrucDataFromGetResp(xmlStr):
                                 elif subChild.tag == "Structure":
                                     # sub3StructList = list()
                                     # tagSub3StructList = list()
-                                    for subStruct in subChild.iter("Structure"):    # first structure
+                                    for subStruct in subChild.iter("Structure"):  # first structure
                                         sub4StructList = list()
                                         tagSub4StructList = list()
                                         for sub2Child in subStruct:
@@ -426,8 +422,7 @@ def getStrucDataFromGetResp(xmlStr):
         return '', ''
 
 
-def  __checkSimpleData(respData, ckSimpleData):
-
+def __checkSimpleData(respData, ckSimpleData):
     if isinstance(respData, dict):
         for listValue in respData.values():
             for item in listValue:
@@ -442,7 +437,6 @@ def  __checkSimpleData(respData, ckSimpleData):
 
 
 def __checkComplexData(respData, ckComplexData):
-
     errorList = list()
 
     def checkValue(respons, ckData, ckDataIndex):
@@ -452,11 +446,13 @@ def __checkComplexData(respData, ckComplexData):
             respDataBit = '{:032b}'.format(int(respons))
             for bitInde in bitNums.split("/"):
                 if bitInde.strip().startswith('^'):
-                    if respDataBit[31-int(bitInde.strip().replace('^', ''))] != '0':
-                        errorList.append(f"'{ckDataIndex} = {ckData}' no equal to 0 at Indxe = {bitInde} of '{respons} [{respDataBit}]'")
+                    if respDataBit[31 - int(bitInde.strip().replace('^', ''))] != '0':
+                        errorList.append(
+                            f"'{ckDataIndex} = {ckData}' no equal to 0 at Indxe = {bitInde} of '{respons} [{respDataBit}]'")
                 else:
-                    if respDataBit[31-int(bitInde.strip())] != '1':
-                        errorList.append(f"'{ckDataIndex} = {ckData}' no equal to 1 at Indxe = {bitInde} of '{respons} [{respDataBit}]'")
+                    if respDataBit[31 - int(bitInde.strip())] != '1':
+                        errorList.append(
+                            f"'{ckDataIndex} = {ckData}' no equal to 1 at Indxe = {bitInde} of '{respons} [{respDataBit}]'")
         elif str(ckData).find("*") != -1:
             if len(ckData) != len(respons):
                 errorList.append(f"'{ckDataIndex} = {ckData}' no equal to '{respons}'")
@@ -481,7 +477,7 @@ def __checkComplexData(respData, ckComplexData):
             if cKey < 0:
                 cKey = dictLen + cKey
 
-            if isinstance(cValue, (str, int)):                  # for class 92 check_adp_group_table
+            if isinstance(cValue, (str, int)):  # for class 92 check_adp_group_table
                 checkValue(str(respData[cKey]), str(cValue), "ckData[%s]" % cKey)
 
             elif isinstance(cValue, dict):
@@ -503,18 +499,21 @@ def __checkComplexData(respData, ckComplexData):
                     if isinstance(item, list):
                         for subIndex, subItem in enumerate(item):
                             if isinstance(subItem, int):
-                                checkValue(str(respData[cKey][index][subIndex]), str(subItem), "ckData[%s][%s][%s]" % (cKey, index, subIndex))
+                                checkValue(str(respData[cKey][index][subIndex]), str(subItem),
+                                           "ckData[%s][%s][%s]" % (cKey, index, subIndex))
 
                             if isinstance(subItem, list):
                                 for sub2Index, sub2Item in enumerate(subItem):
-                                    checkValue(str(respData[cKey][index][subIndex][sub2Index]), str(sub2Item), "ckData[%s][%s][%s][%s]" % (cKey, index, subIndex, sub2Index))
+                                    checkValue(str(respData[cKey][index][subIndex][sub2Index]), str(sub2Item),
+                                               "ckData[%s][%s][%s][%s]" % (cKey, index, subIndex, sub2Index))
 
                             if isinstance(subItem, str):
                                 # 忽略 'NA' 或 空值
                                 if subItem.strip().lower() == 'na' or len(subItem.strip()) == 0:
                                     continue
                                 else:
-                                    checkValue(respData[cKey][index][subIndex], subItem, "ckData[%s][%s][%s]" % (cKey, index, subIndex))
+                                    checkValue(respData[cKey][index][subIndex], subItem,
+                                               "ckData[%s][%s][%s]" % (cKey, index, subIndex))
 
         if len(errorList) == 0:
             return KFResult(True, "")
@@ -528,7 +527,6 @@ def __checkComplexData(respData, ckComplexData):
 
 
 def checkResponsValue(respData, ckValue):
-
     """
     检查返回结果
 
@@ -564,7 +562,8 @@ def readFrameCounter(project, clientId):
     :param clientId:        客户端ID
     :return:                frameCounter
     """
-    filename = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "config/FrameCounter/%s.ini" % project.lower())
+    filename = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                            "config/FrameCounter/%s.ini" % project.lower())
     if os.path.exists(filename):
         try:
             with open(filename) as jsonFile:
@@ -583,7 +582,8 @@ def writeFrameCounter(project, clientId, frameCounter):
     :param clientId:
     :param frameCounter:
     """
-    filename = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "config/FrameCounter/%s.ini" % project.lower())
+    filename = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                            "config/FrameCounter/%s.ini" % project.lower())
     data = dict()
     if os.path.exists(filename):
         try:
@@ -594,5 +594,3 @@ def writeFrameCounter(project, clientId, frameCounter):
     with open(filename, 'w') as jsonFile:
         data[str(clientId)] = str(frameCounter)
         json.dump(data, jsonFile)
-
-

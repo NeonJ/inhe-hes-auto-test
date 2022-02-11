@@ -2,8 +2,8 @@
 
 from dlms.DlmsClass import *
 
-class C91G3PLCMACSetup(DlmsClass):
 
+class C91G3PLCMACSetup(DlmsClass):
     attr_index_dict = {
         1: "logical_name",
         2: "mac_short_address",
@@ -39,7 +39,6 @@ class C91G3PLCMACSetup(DlmsClass):
     def __init__(self, conn, obis=None):
         super().__init__(conn, obis, classId=91)
 
-
     # Common get/set/check method for number type
     def __get_attr(self, attr_id, dataType=False, response=None):
         if response is None:
@@ -55,13 +54,11 @@ class C91G3PLCMACSetup(DlmsClass):
             return hex_toDec(ret[0]), ret[1]
         return hex_toDec(ret[0])
 
-
     def __check_attr(self, ck_data, attr_id):
         ret = self.__get_attr(attr_id)
         if int(ret) == int(ck_data):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
-
 
     def __set_attr(self, data, attr_id, attr_type):
         if attr_type == "Unsigned":
@@ -72,7 +69,6 @@ class C91G3PLCMACSetup(DlmsClass):
             return self.setRequest(attr_id, dec_toHexStr(data, 8), "DoubleLongUnsigned", data)
         elif attr_type == "Bool":
             return self.setRequest(attr_id, dec_toHexStr(data, 2), "Bool", data)
-
 
     # Attribute of logical_name
     @formatResponse
@@ -97,7 +93,6 @@ class C91G3PLCMACSetup(DlmsClass):
             return hex_toOBIS(ret[0]), ret[1]
         return hex_toOBIS(ret[0])
 
-
     @formatResponse
     def check_logical_name(self, ck_data):
         """
@@ -111,7 +106,6 @@ class C91G3PLCMACSetup(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_logical_name(self, data):
         """
@@ -121,7 +115,6 @@ class C91G3PLCMACSetup(DlmsClass):
         :return:             KFResult对象
         """
         return self.setRequest(1, obis_toHex(data), "OctetString")
-
 
     # Attribute of mac_short_address
     @formatResponse
@@ -135,7 +128,6 @@ class C91G3PLCMACSetup(DlmsClass):
         """
         return self.__get_attr(2, dataType=dataType, response=response)
 
-
     @formatResponse
     def check_mac_short_address(self, ck_data):
         """
@@ -146,7 +138,6 @@ class C91G3PLCMACSetup(DlmsClass):
         """
         return self.__check_attr(ck_data, 2)
 
-
     @formatResponse
     def set_mac_short_address(self, data):
         """
@@ -156,7 +147,6 @@ class C91G3PLCMACSetup(DlmsClass):
         :return:           KFResult对象
         """
         return self.__set_attr(data, 2, "LongUnsigned")
-
 
     # Attribute of mac_RC_coord
     @formatResponse
@@ -170,7 +160,6 @@ class C91G3PLCMACSetup(DlmsClass):
         """
         return self.__get_attr(3, dataType=dataType, response=response)
 
-
     @formatResponse
     def check_mac_rc_coord(self, ck_data):
         """
@@ -181,7 +170,6 @@ class C91G3PLCMACSetup(DlmsClass):
         """
         return self.__check_attr(ck_data, 3)
 
-
     @formatResponse
     def set_mac_rc_coord(self, data):
         """
@@ -191,7 +179,6 @@ class C91G3PLCMACSetup(DlmsClass):
         :return:           KFResult对象
         """
         return self.__set_attr(data, 3, "LongUnsigned")
-
 
     # Attribute of mac_PAN_id
     @formatResponse
@@ -205,7 +192,6 @@ class C91G3PLCMACSetup(DlmsClass):
         """
         return self.__get_attr(4, dataType=dataType, response=response)
 
-
     @formatResponse
     def check_mac_pan_id(self, ck_data):
         """
@@ -216,7 +202,6 @@ class C91G3PLCMACSetup(DlmsClass):
         """
         return self.__check_attr(ck_data, 4)
 
-
     @formatResponse
     def set_mac_pan_id(self, data):
         """
@@ -226,7 +211,6 @@ class C91G3PLCMACSetup(DlmsClass):
         :return:           KFResult对象
         """
         return self.__set_attr(data, 4, "LongUnsigned")
-
 
     # Attribute of mac_key_table
     @formatResponse
@@ -251,7 +235,6 @@ class C91G3PLCMACSetup(DlmsClass):
             return response
         return response[0]
 
-
     @formatResponse
     def check_mac_key_table(self, ck_data):
         """
@@ -266,7 +249,6 @@ class C91G3PLCMACSetup(DlmsClass):
         }
         """
         return checkResponsValue(self.get_mac_key_table(), ck_data)
-
 
     @formatResponse
     def set_mac_key_table(self, data):
@@ -293,7 +275,6 @@ class C91G3PLCMACSetup(DlmsClass):
                     etree.SubElement(struct, "OctetString").set("Value", subItem)
         return self.setRequest(5, array, "Array")
 
-
     # Attribute of mac_frame_counter
     @formatResponse
     def get_mac_frame_counter(self, dataType=False, response=None):
@@ -306,7 +287,6 @@ class C91G3PLCMACSetup(DlmsClass):
         """
         return self.__get_attr(6, dataType=dataType, response=response)
 
-
     @formatResponse
     def check_mac_frame_counter(self, ck_data):
         """
@@ -316,7 +296,6 @@ class C91G3PLCMACSetup(DlmsClass):
         :return:          KFResult对象
         """
         return self.__check_attr(ck_data, 6)
-
 
     @formatResponse
     def set_mac_frame_counter(self, data):
@@ -351,7 +330,6 @@ class C91G3PLCMACSetup(DlmsClass):
             return bit_toHexStr(ret[0]), ret[1]
         return bit_toHexStr(ret[0])
 
-
     @formatResponse
     def check_mac_tone_mask(self, ck_data):
         """
@@ -369,7 +347,6 @@ class C91G3PLCMACSetup(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_mac_tone_mask(self, data):
         """
@@ -386,7 +363,6 @@ class C91G3PLCMACSetup(DlmsClass):
             data = hex(data)[2:]
         return self.setRequest(7, hex_toBitStr(data), "BitString")
 
-
     # Attribute of mac_TMR_TTL
     @formatResponse
     def get_mac_tmr_ttl(self, dataType=False, response=None):
@@ -399,7 +375,6 @@ class C91G3PLCMACSetup(DlmsClass):
         """
         return self.__get_attr(8, dataType=dataType, response=response)
 
-
     @formatResponse
     def check_mac_tmr_ttl(self, ck_data):
         """
@@ -410,7 +385,6 @@ class C91G3PLCMACSetup(DlmsClass):
         """
         return self.__check_attr(ck_data, 8)
 
-
     @formatResponse
     def set_mac_tmr_ttl(self, data):
         """
@@ -420,7 +394,6 @@ class C91G3PLCMACSetup(DlmsClass):
         :return:         KFResult对象
         """
         return self.__set_attr(data, 8, "Unsigned")
-
 
     # Attribute of mac_max_frame_retries
     @formatResponse
@@ -434,7 +407,6 @@ class C91G3PLCMACSetup(DlmsClass):
         """
         return self.__get_attr(9, dataType=dataType, response=response)
 
-
     @formatResponse
     def check_mac_max_frame_retries(self, ck_data):
         """
@@ -445,7 +417,6 @@ class C91G3PLCMACSetup(DlmsClass):
         """
         return self.__check_attr(ck_data, 9)
 
-
     @formatResponse
     def set_mac_max_frame_retries(self, data):
         """
@@ -455,7 +426,6 @@ class C91G3PLCMACSetup(DlmsClass):
         :return:         KFResult对象
         """
         return self.__set_attr(data, 9, "Unsigned")
-
 
     # Attribute of mac_neighbour_table_entry_TTL
     @formatResponse
@@ -469,7 +439,6 @@ class C91G3PLCMACSetup(DlmsClass):
         """
         return self.__get_attr(10, dataType=dataType, response=response)
 
-
     @formatResponse
     def check_mac_neighbour_table_entry_ttl(self, ck_data):
         """
@@ -480,7 +449,6 @@ class C91G3PLCMACSetup(DlmsClass):
         """
         return self.__check_attr(ck_data, 10)
 
-
     @formatResponse
     def set_mac_neighbour_table_entry_ttl(self, data):
         """
@@ -490,7 +458,6 @@ class C91G3PLCMACSetup(DlmsClass):
         :return:           KFResult对象
         """
         return self.__set_attr(data, 10, "Unsigned")
-
 
     # Attribute of mac_neighbour_table
     @formatResponse
@@ -518,7 +485,6 @@ class C91G3PLCMACSetup(DlmsClass):
             return response
         return response[0]
 
-
     @formatResponse
     def check_mac_neighbour_table(self, ck_data):
         """
@@ -543,7 +509,6 @@ class C91G3PLCMACSetup(DlmsClass):
         }
         """
         return checkResponsValue(self.get_mac_neighbour_table(), ck_data)
-
 
     @formatResponse
     def set_mac_neighbour_table(self, data):
@@ -588,7 +553,6 @@ class C91G3PLCMACSetup(DlmsClass):
                     etree.SubElement(struct, "Unsigned,").set("Value", dec_toHexStr(subItem, 2))
         return self.setRequest(11, array, "Array")
 
-
     # Attribute of mac_high_priority_window_size
     @formatResponse
     def get_mac_high_priority_window_size(self, dataType=False, response=None):
@@ -601,7 +565,6 @@ class C91G3PLCMACSetup(DlmsClass):
         """
         return self.__get_attr(12, dataType=dataType, response=response)
 
-
     @formatResponse
     def check_mac_high_priority_window_size(self, ck_data):
         """
@@ -612,7 +575,6 @@ class C91G3PLCMACSetup(DlmsClass):
         """
         return self.__check_attr(ck_data, 12)
 
-
     @formatResponse
     def set_mac_high_priority_window_size(self, data):
         """
@@ -622,7 +584,6 @@ class C91G3PLCMACSetup(DlmsClass):
         :return:              KFResult对象
         """
         return self.__set_attr(data, 12, "Unsigned")
-
 
     # Attribute of mac_CSMA_fairness_limit
     @formatResponse
@@ -636,7 +597,6 @@ class C91G3PLCMACSetup(DlmsClass):
         """
         return self.__get_attr(13, dataType=dataType, response=response)
 
-
     @formatResponse
     def check_mac_csma_fairness_limit(self, ck_data):
         """
@@ -647,7 +607,6 @@ class C91G3PLCMACSetup(DlmsClass):
         """
         return self.__check_attr(ck_data, 13)
 
-
     @formatResponse
     def set_mac_csma_fairness_limit(self, data):
         """
@@ -657,7 +616,6 @@ class C91G3PLCMACSetup(DlmsClass):
         :return:        KFResult对象
         """
         return self.__set_attr(data, 13, "Unsigned")
-
 
     # Attribute of mac_beacon_randomization_window_length
     @formatResponse
@@ -671,7 +629,6 @@ class C91G3PLCMACSetup(DlmsClass):
         """
         return self.__get_attr(14, dataType=dataType, response=response)
 
-
     @formatResponse
     def check_mac_beacon_randomization_window_length(self, ck_data):
         """
@@ -682,7 +639,6 @@ class C91G3PLCMACSetup(DlmsClass):
         """
         return self.__check_attr(ck_data, 14)
 
-
     @formatResponse
     def set_mac_beacon_randomization_window_length(self, data):
         """
@@ -692,7 +648,6 @@ class C91G3PLCMACSetup(DlmsClass):
         :return:        KFResult对象
         """
         return self.__set_attr(data, 14, "Unsigned")
-
 
     # Attribute of mac_A
     @formatResponse
@@ -706,7 +661,6 @@ class C91G3PLCMACSetup(DlmsClass):
         """
         return self.__get_attr(15, dataType=dataType, response=response)
 
-
     @formatResponse
     def check_mac_a(self, ck_data):
         """
@@ -717,7 +671,6 @@ class C91G3PLCMACSetup(DlmsClass):
         """
         return self.__check_attr(ck_data, 15)
 
-
     @formatResponse
     def set_mac_a(self, data):
         """
@@ -727,7 +680,6 @@ class C91G3PLCMACSetup(DlmsClass):
         :return:        KFResult对象
         """
         return self.__set_attr(data, 15, "Unsigned")
-
 
     # Attribute of mac_K
     @formatResponse
@@ -741,7 +693,6 @@ class C91G3PLCMACSetup(DlmsClass):
         """
         return self.__get_attr(16, dataType=dataType, response=response)
 
-
     @formatResponse
     def check_mac_k(self, ck_data):
         """
@@ -752,7 +703,6 @@ class C91G3PLCMACSetup(DlmsClass):
         """
         return self.__check_attr(ck_data, 16)
 
-
     @formatResponse
     def set_mac_k(self, data):
         """
@@ -762,7 +712,6 @@ class C91G3PLCMACSetup(DlmsClass):
         :return:        KFResult对象
         """
         return self.__set_attr(data, 16, "Unsigned")
-
 
     # Attribute of mac_min_CW_attempts
     @formatResponse
@@ -776,7 +725,6 @@ class C91G3PLCMACSetup(DlmsClass):
         """
         return self.__get_attr(17, dataType=dataType, response=response)
 
-
     @formatResponse
     def check_mac_min_cw_attempts(self, ck_data):
         """
@@ -787,7 +735,6 @@ class C91G3PLCMACSetup(DlmsClass):
         """
         return self.__check_attr(ck_data, 17)
 
-
     @formatResponse
     def set_mac_min_cw_attempts(self, data):
         """
@@ -797,7 +744,6 @@ class C91G3PLCMACSetup(DlmsClass):
         :return:        KFResult对象
         """
         return self.__set_attr(data, 17, "Unsigned")
-
 
     # Attribute of mac_cenelec_legacy_mode
     @formatResponse
@@ -811,7 +757,6 @@ class C91G3PLCMACSetup(DlmsClass):
         """
         return self.__get_attr(18, dataType=dataType, response=response)
 
-
     @formatResponse
     def check_mac_cenelec_legacy_mode(self, ck_data):
         """
@@ -822,7 +767,6 @@ class C91G3PLCMACSetup(DlmsClass):
         """
         return self.__check_attr(ck_data, 18)
 
-
     @formatResponse
     def set_mac_cenelec_legacy_mode(self, data):
         """
@@ -832,7 +776,6 @@ class C91G3PLCMACSetup(DlmsClass):
         :return:        KFResult对象
         """
         return self.__set_attr(data, 18, "Unsigned")
-
 
     # Attribute of mac_FCC_legacy_mode
     @formatResponse
@@ -846,7 +789,6 @@ class C91G3PLCMACSetup(DlmsClass):
         """
         return self.__get_attr(19, dataType=dataType, response=response)
 
-
     @formatResponse
     def check_mac_fcc_legacy_mode(self, ck_data):
         """
@@ -857,7 +799,6 @@ class C91G3PLCMACSetup(DlmsClass):
         """
         return self.__check_attr(ck_data, 19)
 
-
     @formatResponse
     def set_mac_fcc_legacy_mode(self, data):
         """
@@ -867,7 +808,6 @@ class C91G3PLCMACSetup(DlmsClass):
         :return:        KFResult对象
         """
         return self.__set_attr(data, 19, "Unsigned")
-
 
     # Attribute of mac_max_BE
     @formatResponse
@@ -881,7 +821,6 @@ class C91G3PLCMACSetup(DlmsClass):
         """
         return self.__get_attr(20, dataType=dataType, response=response)
 
-
     @formatResponse
     def check_mac_max_be(self, ck_data):
         """
@@ -892,7 +831,6 @@ class C91G3PLCMACSetup(DlmsClass):
         """
         return self.__check_attr(ck_data, 20)
 
-
     @formatResponse
     def set_mac_max_be(self, data):
         """
@@ -902,7 +840,6 @@ class C91G3PLCMACSetup(DlmsClass):
         :return:        KFResult对象
         """
         return self.__set_attr(data, 20, "Unsigned")
-
 
     # Attribute of mac_max_CSMA_backoffs
     @formatResponse
@@ -916,7 +853,6 @@ class C91G3PLCMACSetup(DlmsClass):
         """
         return self.__get_attr(21, dataType=dataType, response=response)
 
-
     @formatResponse
     def check_mac_max_csma_backoffs(self, ck_data):
         """
@@ -927,7 +863,6 @@ class C91G3PLCMACSetup(DlmsClass):
         """
         return self.__check_attr(ck_data, 21)
 
-
     @formatResponse
     def set_mac_max_csma_backoffs(self, data):
         """
@@ -937,7 +872,6 @@ class C91G3PLCMACSetup(DlmsClass):
         :return:        KFResult对象
         """
         return self.__set_attr(data, 21, "Unsigned")
-
 
     # Attribute of mac_min_BE
     @formatResponse
@@ -951,7 +885,6 @@ class C91G3PLCMACSetup(DlmsClass):
         """
         return self.__get_attr(22, dataType=dataType, response=response)
 
-
     @formatResponse
     def check_mac_min_be(self, ck_data):
         """
@@ -962,7 +895,6 @@ class C91G3PLCMACSetup(DlmsClass):
         """
         return self.__check_attr(ck_data, 22)
 
-
     @formatResponse
     def set_mac_min_be(self, data):
         """
@@ -972,7 +904,6 @@ class C91G3PLCMACSetup(DlmsClass):
         :return:        KFResult对象
         """
         return self.__set_attr(data, 22, "Unsigned")
-
 
     # Attribute of mac_broadcast_max_CW_enabled
     @formatResponse
@@ -986,7 +917,6 @@ class C91G3PLCMACSetup(DlmsClass):
         """
         return self.__get_attr(23, dataType=dataType, response=response)
 
-
     @formatResponse
     def check_mac_broadcast_max_CW_enabled(self, ck_data):
         """
@@ -996,7 +926,6 @@ class C91G3PLCMACSetup(DlmsClass):
         :return:           KFResult对象
         """
         return self.__check_attr(ck_data, 23)
-
 
     @formatResponse
     def set_mac_broadcast_max_CW_enabled(self, data):
@@ -1020,7 +949,6 @@ class C91G3PLCMACSetup(DlmsClass):
         """
         return self.__get_attr(24, dataType=dataType, response=response)
 
-
     @formatResponse
     def check_mac_transmit_atten(self, ck_data):
         """
@@ -1030,7 +958,6 @@ class C91G3PLCMACSetup(DlmsClass):
         :return:           KFResult对象
         """
         return self.__check_attr(ck_data, 24)
-
 
     @formatResponse
     def set_mac_transmit_atten(self, data):
@@ -1067,7 +994,6 @@ class C91G3PLCMACSetup(DlmsClass):
             return response
         return response[0]
 
-
     @formatResponse
     def check_mac_POS_table(self, ck_data):
         """
@@ -1082,7 +1008,6 @@ class C91G3PLCMACSetup(DlmsClass):
         }
         """
         return checkResponsValue(self.get_mac_POS_table(), ck_data)
-
 
     @formatResponse
     def set_mac_POS_table(self, data):
@@ -1108,7 +1033,6 @@ class C91G3PLCMACSetup(DlmsClass):
                 else:
                     etree.SubElement(struct, "Unsigned").set("Value", dec_toHexStr(subItem, 2))
         return self.setRequest(25, array, "Array")
-
 
     # Method of mac_get_neighbour_table_entry
     @formatResponse

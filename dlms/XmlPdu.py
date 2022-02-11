@@ -1,7 +1,6 @@
 # -*- coding: UTF-8 -*-
 
 from lxml import etree
-from common import *
 
 
 class Service(object):
@@ -46,7 +45,6 @@ class Service(object):
 
         return invokeId, classId, obis, attrId
 
-
     @staticmethod
     def XmlObjToString(tree, pretty=False):
         """
@@ -62,7 +60,6 @@ class Service(object):
             return str(etree.tostring(tree), encoding="utf-8")
 
 
-
 class GetService(Service):
 
     def __init__(self, **argv):
@@ -76,12 +73,14 @@ class GetService(Service):
         self.obis = argv['obis']
         self.attrId = argv['attrId']
 
-
     def baiscRequestBody(self):
         """
         构造基础的Get请求XML
         """
-        self.invokeId, self.classId, self.obis, self.attrId = super(GetService, self).convertDataFormat(self.invokeId, self.classId, self.obis, self.attrId)
+        self.invokeId, self.classId, self.obis, self.attrId = super(GetService, self).convertDataFormat(self.invokeId,
+                                                                                                        self.classId,
+                                                                                                        self.obis,
+                                                                                                        self.attrId)
         getRequest = etree.Element("GetRequest")
         getRequestNormal = etree.SubElement(getRequest, "GetRequestNormal")
         etree.SubElement(getRequestNormal, "InvokeIdAndPriority").set("Value", self.invokeId.upper())
@@ -90,8 +89,6 @@ class GetService(Service):
         etree.SubElement(attribDesc, "InstanceId").set("Value", self.obis.upper())
         etree.SubElement(attribDesc, "AttributeId").set("Value", self.attrId.upper())
         return getRequest, getRequestNormal
-
-
 
     def getRequestNormal(self):
         """
@@ -105,8 +102,6 @@ class GetService(Service):
 
         getRequest, _ = self.baiscRequestBody()
         return getRequest
-
-
 
     def getRequestByTime(self, startTime, endTime, captureObjects):
         """
@@ -126,7 +121,7 @@ class GetService(Service):
         subStruct = etree.SubElement(struct, "Structure")
         subStruct.set("Qty", "0004")
         etree.SubElement(subStruct, "LongUnsigned").set("Value", "0008")
-        etree.SubElement(subStruct, "OctetString").set("Value", "0000010000FF")     # Clock OBIS
+        etree.SubElement(subStruct, "OctetString").set("Value", "0000010000FF")  # Clock OBIS
         etree.SubElement(subStruct, "Integer").set("Value", "02")
         etree.SubElement(subStruct, "LongUnsigned").set("Value", "0000")
         # start_time
@@ -164,7 +159,6 @@ class GetService(Service):
         getRequestNormal.append(acsSelection)
         return getRequest
 
-
     def getRequestByEntry(self, startEntry, endEntry, startCaptureIndex, endCaptureIndex):
         """
         基于条目数抄表 (索引起始值都为"1")
@@ -196,8 +190,6 @@ class GetService(Service):
         return getRequest
 
 
-
-
 class SetService(Service):
 
     def __init__(self, **argv):
@@ -217,7 +209,10 @@ class SetService(Service):
         构造基础的Set请求XML
         """
         # 数据类型转换
-        self.invokeId, self.classId, self.obis, self.attrId = super(SetService, self).convertDataFormat(self.invokeId, self.classId, self.obis, self.attrId)
+        self.invokeId, self.classId, self.obis, self.attrId = super(SetService, self).convertDataFormat(self.invokeId,
+                                                                                                        self.classId,
+                                                                                                        self.obis,
+                                                                                                        self.attrId)
 
         setRequest = etree.Element("SetRequest")
         setRequestNormal = etree.SubElement(setRequest, "SetRequestNormal")
@@ -228,7 +223,6 @@ class SetService(Service):
         etree.SubElement(attribDesc, "AttributeId").set("Value", self.attrId.upper())
         values = etree.SubElement(setRequestNormal, 'Value')
         return setRequest, values
-
 
 
 class ActionService(Service):
@@ -244,14 +238,14 @@ class ActionService(Service):
         self.obis = argv['obis']
         self.methodId = argv['methodId']
 
-
     # 构造xml结构体
     def actionRequestNormal(self):
         """
         构造基础的Action请求xml
         """
         # 数据类型转换
-        self.invokeId, self.classId, self.obis, self.methodId = super(ActionService, self).convertDataFormat(self.invokeId, self.classId, self.obis, self.methodId)
+        self.invokeId, self.classId, self.obis, self.methodId = super(ActionService, self).convertDataFormat(
+            self.invokeId, self.classId, self.obis, self.methodId)
 
         actionRequest = etree.Element("ActionRequest")
         actionRequestNorml = etree.SubElement(actionRequest, "ActionRequestNormal")
@@ -264,16 +258,11 @@ class ActionService(Service):
         return actionRequest, methodParams
 
 
-
-
 if __name__ == '__main__':
-
-
     # tree, formatTree = GetService(classId=7, obis='1-0:99.1.1.255', attrId=2).getRequestNormal()
     # tree, formatTree = GetService(classId='a', obis='1-0:99.1.1.255', attrId='21', invokeId=193).getRequestNormal()
     # print(tree)
     # print(formatTree)
-
 
     # tree, val = SetService(classId=8, obis='0.0.1.0.0.255', attrId=2).setRequestNormal()
     # etree.SubElement(val, 'OctetString').set("Value", "07E3050FFF0E182DFF800000")
@@ -281,7 +270,6 @@ if __name__ == '__main__':
 
     # action = ActionService(classId="14", obis="00000D0000FF", methodId="01").actionRequestNormal()
     # print(ActionService.XmlObjToString(action[0], True))
-
 
     # req = GetService(classId="0007", obis="0100630100FF", attrId="02").getRequestByTime("2019-05-01 00:00:00", "2019-05-01 23:59:59")
     # print(GetService.XmlObjToString(req, True))

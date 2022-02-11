@@ -5,8 +5,6 @@
 # @Updated  : 2021/08/25
 from datetime import date, time, timedelta
 
-from .comm import *
-
 ILLEGAL_CHARACTERS_RE = re.compile(r'[\000-\010]|[\013-\014]|[\016-\037]')
 
 
@@ -17,7 +15,6 @@ def meter_smoke_by_hes():
     """
 
     try:
-
 
         start_time = time.time()
 

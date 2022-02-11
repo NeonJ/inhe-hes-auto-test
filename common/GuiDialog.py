@@ -2,13 +2,13 @@
 
 import os
 import sys
-from PyQt5.QtWidgets import QApplication, QInputDialog, QMessageBox
+
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap, QKeyEvent
-
-
+from PyQt5.QtWidgets import QApplication, QInputDialog, QMessageBox
 # 弹窗停留时长, 单位:秒
 from libs.Singleton import Singleton
+
 QT_TIMEOUT = Singleton().QT_TIMEOUT
 
 # ICON图标存储目录
@@ -39,10 +39,11 @@ class InputDialog(QInputDialog):
         else:
             return QInputDialog.eventFilter(self, watched, event)
 
-
     @staticmethod
-    def GetInteger(defaultValue=0, minValue=0, maxValue=100, step=1, message='Enter an integer number:', title='KATS', timeout=QT_TIMEOUT):
+    def GetInteger(defaultValue=0, minValue=0, maxValue=100, step=1, message='Enter an integer number:', title='KATS',
+                   timeout=QT_TIMEOUT):
         value = defaultValue
+
         def getValue(val):
             nonlocal value
             value = val
@@ -64,10 +65,11 @@ class InputDialog(QInputDialog):
         if app.exec_() == 0:
             return value
 
-
     @staticmethod
-    def GetDouble(defaultValue=0.0, minValue=0.0, maxValue=100.0, step=1, message='Enter an float number:', title='KATS', timeout=QT_TIMEOUT):
+    def GetDouble(defaultValue=0.0, minValue=0.0, maxValue=100.0, step=1, message='Enter an float number:',
+                  title='KATS', timeout=QT_TIMEOUT):
         value = defaultValue
+
         def getValue(val):
             nonlocal value
             value = val
@@ -91,10 +93,10 @@ class InputDialog(QInputDialog):
         if app.exec_() == 0:
             return value
 
-
     @staticmethod
     def GetChoice(itemList, message='Select an item', title='KATS', timeout=QT_TIMEOUT):
         value = itemList[0]
+
         def getValue(val):
             nonlocal value
             value = val
@@ -115,10 +117,10 @@ class InputDialog(QInputDialog):
         if app.exec_() == 0:
             return value
 
-
     @staticmethod
     def GetText(message='Select an item', title='KATS', timeout=QT_TIMEOUT):
         value = ''
+
         def getValue(val):
             nonlocal value
             value = val
@@ -163,10 +165,10 @@ class MessageBox(QMessageBox):
         else:
             return QMessageBox.eventFilter(self, watched, event)
 
-
     @staticmethod
     def Question(message, icon=None, suffix='png', title='KATS', timeout=QT_TIMEOUT):
         value = 'No'
+
         def getValue(val):
             nonlocal value
             value = val.text().replace("&", "")
@@ -180,7 +182,7 @@ class MessageBox(QMessageBox):
         m.setText(message)
         m.setWindowTitle(title)
         m.setIcon(QMessageBox.Question)
-        m.setStandardButtons(QMessageBox.Yes|QMessageBox.No)
+        m.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
         m.setDefaultButton(QMessageBox.No)
         # 设置图标
         if icon is None:
@@ -193,7 +195,6 @@ class MessageBox(QMessageBox):
         m.show()
         if app.exec_() == 0:
             return value
-
 
     @staticmethod
     def Information(message, title='KATS', timeout=QT_TIMEOUT):
@@ -212,7 +213,6 @@ class MessageBox(QMessageBox):
         app.installEventFilter(m)
         m.show()
         app.exec_()
-
 
     @staticmethod
     def Warning(message, title='KATS', timeout=QT_TIMEOUT):
@@ -233,9 +233,7 @@ class MessageBox(QMessageBox):
         app.exec_()
 
 
-
 if __name__ == '__main__':
-
     # print(InputDialog.GetInteger(message='请输入一个整数'))
     # print(InputDialog.GetDouble(message='请输入一个浮点数'))
     # print(InputDialog.GetChoice(itemList=['Camel', 'Normal16', 'Cetus02'], message='请选择一款电表'))

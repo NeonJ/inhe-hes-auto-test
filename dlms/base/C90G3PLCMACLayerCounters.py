@@ -2,8 +2,8 @@
 
 from dlms.DlmsClass import *
 
-class C90G3PLCMACLayerCounters(DlmsClass):
 
+class C90G3PLCMACLayerCounters(DlmsClass):
     attr_index_dict = {
         1: "logical_name",
         2: "mac_tx_data_packet_count",
@@ -24,7 +24,6 @@ class C90G3PLCMACLayerCounters(DlmsClass):
     def __init__(self, conn, obis=None):
         super().__init__(conn, obis, classId=90)
 
-
     # Common get/set/check method for double-long-unsigned type
     def __get_attr(self, attr_id, dataType=False, response=None):
         if response is None:
@@ -40,17 +39,14 @@ class C90G3PLCMACLayerCounters(DlmsClass):
             return hex_toDec(ret[0]), ret[1]
         return hex_toDec(ret[0])
 
-
     def __check_attr(self, ck_data, attr_id):
         ret = self.__get_attr(attr_id)
         if int(ret) == int(ck_data):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     def __set_attr(self, data, attr_id):
         return self.setRequest(attr_id, dec_toHexStr(data, 8), "DoubleLongUnsigned", data)
-
 
     # Attribute of logical_name (No.1)
     @formatResponse
@@ -75,7 +71,6 @@ class C90G3PLCMACLayerCounters(DlmsClass):
             return hex_toOBIS(ret[0]), ret[1]
         return hex_toOBIS(ret[0])
 
-
     @formatResponse
     def check_logical_name(self, ck_data):
         """
@@ -89,7 +84,6 @@ class C90G3PLCMACLayerCounters(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_logical_name(self, data):
         """
@@ -99,7 +93,6 @@ class C90G3PLCMACLayerCounters(DlmsClass):
         :return:             KFResult对象
         """
         return self.setRequest(1, obis_toHex(data), "OctetString")
-
 
     # Attribute of mac_Tx_data_packet_count (No.2)
     @formatResponse
@@ -113,7 +106,6 @@ class C90G3PLCMACLayerCounters(DlmsClass):
         """
         return self.__get_attr(2, dataType=dataType, response=response)
 
-
     @formatResponse
     def check_mac_tx_data_packet_count(self, ck_data):
         """
@@ -124,7 +116,6 @@ class C90G3PLCMACLayerCounters(DlmsClass):
         """
         return self.__check_attr(ck_data, 2)
 
-
     @formatResponse
     def set_mac_tx_data_packet_count(self, data):
         """
@@ -134,7 +125,6 @@ class C90G3PLCMACLayerCounters(DlmsClass):
         :return:       KFResult对象
         """
         return self.__set_attr(data, 2)
-
 
     # Attribute of mac_Rx_data_packet_count (No.3)
     @formatResponse
@@ -148,7 +138,6 @@ class C90G3PLCMACLayerCounters(DlmsClass):
         """
         return self.__get_attr(3, dataType=dataType, response=response)
 
-
     @formatResponse
     def check_mac_rx_data_packet_count(self, ck_data):
         """
@@ -159,7 +148,6 @@ class C90G3PLCMACLayerCounters(DlmsClass):
         """
         return self.__check_attr(ck_data, 3)
 
-
     @formatResponse
     def set_mac_rx_data_packet_count(self, data):
         """
@@ -169,7 +157,6 @@ class C90G3PLCMACLayerCounters(DlmsClass):
         :return:       KFResult对象
         """
         return self.__set_attr(data, 3)
-
 
     # Attribute of mac_Tx_cmd_packet_count (No.4)
     @formatResponse
@@ -183,7 +170,6 @@ class C90G3PLCMACLayerCounters(DlmsClass):
         """
         return self.__get_attr(4, dataType=dataType, response=response)
 
-
     @formatResponse
     def check_mac_tx_cmd_packet_count(self, ck_data):
         """
@@ -194,7 +180,6 @@ class C90G3PLCMACLayerCounters(DlmsClass):
         """
         return self.__check_attr(ck_data, 4)
 
-
     @formatResponse
     def set_mac_tx_cmd_packet_count(self, data):
         """
@@ -204,7 +189,6 @@ class C90G3PLCMACLayerCounters(DlmsClass):
         :return:        KFResult对象
         """
         return self.__set_attr(data, 4)
-
 
     # Attribute of mac_Rx_cmd_packet_count(No.5)
     @formatResponse
@@ -218,7 +202,6 @@ class C90G3PLCMACLayerCounters(DlmsClass):
         """
         return self.__get_attr(5, dataType=dataType, response=response)
 
-
     @formatResponse
     def check_mac_rx_cmd_packet_count(self, ck_data):
         """
@@ -229,7 +212,6 @@ class C90G3PLCMACLayerCounters(DlmsClass):
         """
         return self.__check_attr(ck_data, 5)
 
-
     @formatResponse
     def set_mac_rx_cmd_packet_count(self, data):
         """
@@ -239,7 +221,6 @@ class C90G3PLCMACLayerCounters(DlmsClass):
         :return:         KFResult对象
         """
         return self.__set_attr(data, 5)
-
 
     # Attribute of mac_CSMA_fail_count(No.6)
     @formatResponse
@@ -253,7 +234,6 @@ class C90G3PLCMACLayerCounters(DlmsClass):
         """
         return self.__get_attr(6, dataType=dataType, response=response)
 
-
     @formatResponse
     def check_mac_csma_fail_count(self, ck_data):
         """
@@ -264,7 +244,6 @@ class C90G3PLCMACLayerCounters(DlmsClass):
         """
         return self.__check_attr(ck_data, 6)
 
-
     @formatResponse
     def set_mac_csma_fail_count(self, data):
         """
@@ -274,7 +253,6 @@ class C90G3PLCMACLayerCounters(DlmsClass):
         :return:        KFResult对象
         """
         return self.__set_attr(data, 6)
-
 
     # Attribute of mac_CSMA_no_ACK_count (No.7)
     @formatResponse
@@ -288,7 +266,6 @@ class C90G3PLCMACLayerCounters(DlmsClass):
         """
         return self.__get_attr(7, dataType=dataType, response=response)
 
-
     @formatResponse
     def check_mac_csma_no_ack_count(self, ck_data):
         """
@@ -299,7 +276,6 @@ class C90G3PLCMACLayerCounters(DlmsClass):
         """
         return self.__check_attr(ck_data, 7)
 
-
     @formatResponse
     def set_mac_csma_no_ack_count(self, data):
         """
@@ -309,7 +285,6 @@ class C90G3PLCMACLayerCounters(DlmsClass):
         :return:      KFResult对象
         """
         return self.__set_attr(data, 7)
-
 
     # Attribute of mac_bad_CRC_count(No.8)
     @formatResponse
@@ -323,7 +298,6 @@ class C90G3PLCMACLayerCounters(DlmsClass):
         """
         return self.__get_attr(8, dataType=dataType, response=response)
 
-
     @formatResponse
     def check_mac_bad_crc_count(self, ck_data):
         """
@@ -334,7 +308,6 @@ class C90G3PLCMACLayerCounters(DlmsClass):
         """
         return self.__check_attr(ck_data, 8)
 
-
     @formatResponse
     def set_mac_bad_crc_count(self, data):
         """
@@ -344,7 +317,6 @@ class C90G3PLCMACLayerCounters(DlmsClass):
         :return:       KFResult对象
         """
         return self.__set_attr(data, 8)
-
 
     # Attribute of mac_Tx_data_broadcast_count (No.9)
     @formatResponse
@@ -358,7 +330,6 @@ class C90G3PLCMACLayerCounters(DlmsClass):
         """
         return self.__get_attr(9, dataType=dataType, response=response)
 
-
     @formatResponse
     def check_mac_tx_data_broadcast_count(self, ck_data):
         """
@@ -369,7 +340,6 @@ class C90G3PLCMACLayerCounters(DlmsClass):
         """
         return self.__check_attr(ck_data, 9)
 
-
     @formatResponse
     def set_mac_tx_data_broadcast_count(self, data):
         """
@@ -379,7 +349,6 @@ class C90G3PLCMACLayerCounters(DlmsClass):
         :return:      KFResult对象
         """
         return self.__set_attr(data, 9)
-
 
     # Attribute of mac_Rx_data_broadcast_count (No.10)
     @formatResponse
@@ -393,7 +362,6 @@ class C90G3PLCMACLayerCounters(DlmsClass):
         """
         return self.__get_attr(10, dataType=dataType, response=response)
 
-
     @formatResponse
     def check_mac_rx_data_broadcast_count(self, ck_data):
         """
@@ -404,7 +372,6 @@ class C90G3PLCMACLayerCounters(DlmsClass):
         """
         return self.__check_attr(ck_data, 10)
 
-
     @formatResponse
     def set_mac_rx_data_broadcast_count(self, data):
         """
@@ -414,7 +381,6 @@ class C90G3PLCMACLayerCounters(DlmsClass):
         :return:       KFResult对象
         """
         return self.__set_attr(data, 10)
-
 
     @formatResponse
     def act_reset(self, data=0):

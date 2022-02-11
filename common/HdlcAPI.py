@@ -46,9 +46,9 @@ def parseHdlcFrame(hexList):
     :return:
     """
 
-    hexList.pop()       # format identifer
-    hexList.pop()       # group identifer
-    hexList.pop()       # group length
+    hexList.pop()  # format identifer
+    hexList.pop()  # group identifer
+    hexList.pop()  # group length
 
     transmitLen = ""
     receiveLen = ""
@@ -98,12 +98,12 @@ def parseControlField(hexStr, clientSend=True):
     if int(binStr[3]) == 1:
         PF = 'P' if clientSend else 'F'
 
-    if int(binStr[-1]) == 0:         # Information Frame
+    if int(binStr[-1]) == 0:  # Information Frame
         RRR = int("".join(binStr[:3]), 2)
         SSS = int("".join(binStr[4:7]), 2)
         return f'"I" Frame N(R)={RRR}, N(S)={SSS}, P/F={PF}'
 
-    elif int(binStr[-2]) == 0:      # Supervisory Frame
+    elif int(binStr[-2]) == 0:  # Supervisory Frame
         RRR = int("".join(binStr[:3]), 2)
         if int(binStr[5]) == 0:
             return f'"RR" Frame N(R)={RRR}, P/F={PF}'
@@ -113,15 +113,14 @@ def parseControlField(hexStr, clientSend=True):
             return f'"S" Frame N(R)={RRR}, P/F={PF}'
 
     else:
-        if binStr == '10010011':     # SNRM Frame (Need response, P=1)
+        if binStr == '10010011':  # SNRM Frame (Need response, P=1)
             return f'"SNRM" Frame, P/F=P'
-        if binStr == '01010011':     # DISC Frame (Need response, P=1)
+        if binStr == '01010011':  # DISC Frame (Need response, P=1)
             return f'"DISC" Frame, P/F=P'
-        if binStr == '01110011':     # UA Frame (Nedd response, F=1)
+        if binStr == '01110011':  # UA Frame (Nedd response, F=1)
             return f'"UA" Frame, P/F=F'
-        if binStr == '00001111':     # DM Frame (Not need response, F=0)
+        if binStr == '00001111':  # DM Frame (Not need response, F=0)
             return f'"DM" Frame, P/F=0'
-
 
 
 def assembleHdlcFrame(**argv):
@@ -147,7 +146,7 @@ def assembleHdlcFrame(**argv):
 
     clientAddrHex = hex((int(clientAddr) << 1) + 1)[2:].rjust(2, '0')
     serverUpperAddrHex = hex(int(serverUpperAddr) << 1)[2:].rjust(2, '0')
-    serverLowerAddrHex = hex((int(serverLowerAddr) << 1)+1)[2:].rjust(2, '0')
+    serverLowerAddrHex = hex((int(serverLowerAddr) << 1) + 1)[2:].rjust(2, '0')
 
     if clientRequest:
         hexList.append(clientAddrHex)
@@ -163,13 +162,13 @@ def assembleHdlcFrame(**argv):
     userInfo = str(userInfo).replace(" ", "")
     infoLen = len(userInfo)
     if infoLen == 0:
-        hdlcLen = hex(len(hexList) + 1 + 2 )[2:].rjust(2, '0')
+        hdlcLen = hex(len(hexList) + 1 + 2)[2:].rjust(2, '0')
         hexList.insert(1, hdlcLen)
         hcs = crc16("".join(hexList))
         hexList.append(hcs)
 
     else:
-        hdlcLen = hex(len(hexList) + infoLen//2 + 1 + 2 + 2)[2:].rjust(2, '0')
+        hdlcLen = hex(len(hexList) + infoLen // 2 + 1 + 2 + 2)[2:].rjust(2, '0')
         hexList.insert(1, hdlcLen)
         hcs = crc16("".join(hexList))
         hexList.append(hcs)

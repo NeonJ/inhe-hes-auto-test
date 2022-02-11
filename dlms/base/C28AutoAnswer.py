@@ -2,8 +2,8 @@
 
 from dlms.DlmsClass import *
 
-class C28AutoAnswer(DlmsClass):
 
+class C28AutoAnswer(DlmsClass):
     attr_index_dict = {
         1: "logical_name",
         2: "mode",
@@ -17,7 +17,6 @@ class C28AutoAnswer(DlmsClass):
 
     def __init__(self, conn, obis=None):
         super().__init__(conn, obis, classId=28)
-
 
     # Attribute of logical_name
     @formatResponse
@@ -42,7 +41,6 @@ class C28AutoAnswer(DlmsClass):
             return hex_toOBIS(ret[0]), ret[1]
         return hex_toOBIS(ret[0])
 
-
     @formatResponse
     def check_logical_name(self, ck_data):
         """
@@ -56,7 +54,6 @@ class C28AutoAnswer(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_logical_name(self, data):
         """
@@ -66,7 +63,6 @@ class C28AutoAnswer(DlmsClass):
         :return:            返回一个KFResult对象
         """
         return self.setRequest(1, obis_toHex(data), "OctetString", data)
-
 
     # Attribute of mode
     @formatResponse
@@ -91,7 +87,6 @@ class C28AutoAnswer(DlmsClass):
             return hex_toDec(ret[0]), ret[1]
         return hex_toDec(ret[0])
 
-
     @formatResponse
     def check_mode(self, ck_data):
         """
@@ -105,7 +100,6 @@ class C28AutoAnswer(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_mode(self, data):
         """
@@ -115,7 +109,6 @@ class C28AutoAnswer(DlmsClass):
         :return:            KFResult 对象
         """
         return self.setRequest(2, dec_toHexStr(data, 2), "Enum", data)
-
 
     # Attribute of listening_window
     @formatResponse
@@ -135,7 +128,6 @@ class C28AutoAnswer(DlmsClass):
             return ret
         return ret[0]
 
-
     @formatResponse
     def check_listening_window(self, ck_data):
         """
@@ -153,7 +145,6 @@ class C28AutoAnswer(DlmsClass):
         }
         """
         return checkResponsValue(self.get_listening_window(), ck_data)
-
 
     @formatResponse
     def set_listening_window(self, data):
@@ -180,7 +171,6 @@ class C28AutoAnswer(DlmsClass):
                 etree.SubElement(struct, "OctetString").set("Value", subItem)
         return self.setRequest(3, array, "Array", data)
 
-
     # Attribute of status
     @formatResponse
     def get_status(self, dataType=False, response=None):
@@ -204,7 +194,6 @@ class C28AutoAnswer(DlmsClass):
             return hex_toDec(ret[0]), ret[1]
         return hex_toDec(ret[0])
 
-
     @formatResponse
     def check_status(self, ck_data):
         """
@@ -218,7 +207,6 @@ class C28AutoAnswer(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_status(self, data):
         """
@@ -228,7 +216,6 @@ class C28AutoAnswer(DlmsClass):
         :return:            KFResult 对象
         """
         return self.setRequest(4, dec_toHexStr(data, 2), "Enum", data)
-
 
     # Attribute of number_of_calls
     @formatResponse
@@ -248,7 +235,6 @@ class C28AutoAnswer(DlmsClass):
             return ret
         return ret[0]
 
-
     @formatResponse
     def check_number_of_calls(self, ck_data):
         """
@@ -263,7 +249,6 @@ class C28AutoAnswer(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_number_of_calls(self, data):
         """
@@ -273,7 +258,6 @@ class C28AutoAnswer(DlmsClass):
         :return:            KFResult 对象
         """
         return self.setRequest(5, dec_toHexStr(data, 2), "Unsigned", data)
-
 
     # Attribute of number_of_rings
     @formatResponse
@@ -307,7 +291,6 @@ class C28AutoAnswer(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_number_of_calls(self, data):
         """
@@ -317,7 +300,6 @@ class C28AutoAnswer(DlmsClass):
         :return:            KFResult 对象
         """
         return self.setRequest(5, dec_toHexStr(data, 2), "Unsigned", data)
-
 
     # Attribute of number_of_rings
     @formatResponse
@@ -354,7 +336,6 @@ class C28AutoAnswer(DlmsClass):
         """
         return checkResponsValue(self.get_number_of_rings(), ck_data)
 
-
     @formatResponse
     def set_number_of_rings(self, data):
         """
@@ -376,7 +357,6 @@ class C28AutoAnswer(DlmsClass):
             for subIndex, subItem in enumerate(value):
                 etree.SubElement(struct, "Unsigned").set("Value", dec_toHexStr(subItem))
         return self.setRequest(6, struct, "struct", data)
-
 
     # Attribute of list_of_allowed_callers
     @formatResponse
@@ -414,7 +394,6 @@ class C28AutoAnswer(DlmsClass):
         """
         return checkResponsValue(self.get_list_of_allowed_callers(), ck_data)
 
-
     @formatResponse
     def set_list_of_allowed_callers(self, data):
         """
@@ -443,8 +422,6 @@ class C28AutoAnswer(DlmsClass):
                     etree.SubElement(struct, "Enum").set("Value", dec_toHexStr(subItem, 2))
         return self.setRequest(7, array, "Array", data)
 
-
-
     # Attribute of list_of_callers_and_actions
     @formatResponse
     def get_list_of_callers_and_actions(self, dataType=False, response=None):
@@ -463,7 +440,6 @@ class C28AutoAnswer(DlmsClass):
             return ret
         return ret[0]
 
-
     @formatResponse
     def check_list_of_callers_and_actions(self, ck_data):
         """
@@ -481,7 +457,6 @@ class C28AutoAnswer(DlmsClass):
         }
         """
         return checkResponsValue(self.get_list_of_callers_and_actions(), ck_data)
-
 
     @formatResponse
     def set_list_of_callers_and_actions(self, data):

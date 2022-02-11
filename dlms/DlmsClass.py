@@ -1,9 +1,8 @@
 # -*- coding: UTF-8 -*-
 
 
-from .XmlPdu import *
-from common import *
 from libs.Constants import *
+from .XmlPdu import *
 
 
 class DlmsClass(object):
@@ -19,7 +18,6 @@ class DlmsClass(object):
             self.obis = obis
             self.obisList = [obis]
 
-
     def getRequest(self, attrId):
         """
         向电表发送Get请求，获取电表返回数据
@@ -34,7 +32,6 @@ class DlmsClass(object):
         # 打印方法调用信息到日志
         self.showMethodInfo('get', self.classId, self.obis, attrId)
         return self.conn.receiveXmlOrPdu(GetService.XmlObjToString(getReq))
-
 
     def getRequestWithObis(self, attrId, obis):
         """
@@ -52,7 +49,6 @@ class DlmsClass(object):
         self.showMethodInfo('get', self.classId, obis, attrId)
         return self.conn.receiveXmlOrPdu(GetService.XmlObjToString(getReq))
 
-
     def getRequestByTime(self, attrId, startTime, endTime, captureObjects):
         """
         使用时间范围抄读电表数据
@@ -65,17 +61,17 @@ class DlmsClass(object):
         """
         # 获取电表响应
         # attrId 指定访问的属性
-        getReq = GetService(classId=self.classId, obis=self.obis, attrId=attrId).getRequestByTime(startTime, endTime, captureObjects)
+        getReq = GetService(classId=self.classId, obis=self.obis, attrId=attrId).getRequestByTime(startTime, endTime,
+                                                                                                  captureObjects)
 
         # 打印方法调用信息到日志
         data = {
-            'startTime' : startTime,
-            'endTime'  : endTime,
-            'captureObjects'  : captureObjects,
+            'startTime': startTime,
+            'endTime': endTime,
+            'captureObjects': captureObjects,
         }
         self.showMethodInfo('get', self.classId, self.obis, attrId, data=data)
         return self.conn.receiveXmlOrPdu(GetService.XmlObjToString(getReq))
-
 
     def getRequestByEntry(self, attrId, startEntry, endEntry, startCaptureIndex, endCaptureIndex):
         """
@@ -90,18 +86,19 @@ class DlmsClass(object):
         """
         # 获取电表响应
         # attrId 指定访问的属性
-        getReq = GetService(classId=self.classId, obis=self.obis, attrId=attrId).getRequestByEntry(startEntry, endEntry, startCaptureIndex, endCaptureIndex)
+        getReq = GetService(classId=self.classId, obis=self.obis, attrId=attrId).getRequestByEntry(startEntry, endEntry,
+                                                                                                   startCaptureIndex,
+                                                                                                   endCaptureIndex)
 
         # 打印方法调用信息到日志
         data = {
-            'startEntry' : startEntry,
-            'endEntry'   : endEntry,
-            'startCaptureIndex'  : startCaptureIndex,
-            'endCaptureIndex'  : endCaptureIndex,
+            'startEntry': startEntry,
+            'endEntry': endEntry,
+            'startCaptureIndex': startCaptureIndex,
+            'endCaptureIndex': endCaptureIndex,
         }
         self.showMethodInfo('get', self.classId, self.obis, attrId, data=data)
         return self.conn.receiveXmlOrPdu(GetService.XmlObjToString(getReq))
-
 
     def getRequestByEntryWithObis(self, attrId, obis, startEntry, endEntry, startCaptureIndex, endCaptureIndex):
         """
@@ -117,19 +114,20 @@ class DlmsClass(object):
         """
         # 获取电表响应
         # attrId 指定访问的属性
-        getReq = GetService(classId=self.classId, obis=obis, attrId=attrId).getRequestByEntry(startEntry, endEntry, startCaptureIndex, endCaptureIndex)
+        getReq = GetService(classId=self.classId, obis=obis, attrId=attrId).getRequestByEntry(startEntry, endEntry,
+                                                                                              startCaptureIndex,
+                                                                                              endCaptureIndex)
 
         # 打印方法调用信息到日志
         data = {
-            'startEntry' : startEntry,
-            'endEntry'   : endEntry,
-            'startCaptureIndex'  : startCaptureIndex,
-            'endCaptureIndex'  : endCaptureIndex,
+            'startEntry': startEntry,
+            'endEntry': endEntry,
+            'startCaptureIndex': startCaptureIndex,
+            'endCaptureIndex': endCaptureIndex,
         }
         self.showMethodInfo('get', self.classId, obis, attrId, data=data)
         # self.showMethodInfo('get', self.classId, obis, attrId, data=f'startEntry: {startEntry}, endEntry: {endEntry}, startCaptureIndex: {startCaptureIndex}, endCaptureIndex: {endCaptureIndex}')
         return self.conn.receiveXmlOrPdu(GetService.XmlObjToString(getReq))
-
 
     def setRequest(self, attrId, data, dataType, originalData=None):
         """
@@ -170,7 +168,6 @@ class DlmsClass(object):
         else:
             return KFResult(False, response)
 
-
     def actionRequest(self, methodId, data, dataType, originalData=None):
         """
         向电表发送Action请求
@@ -188,7 +185,8 @@ class DlmsClass(object):
             return f'<{dataType} Value="{data}" />'
 
         # 连接对象存在时, 下发ActionRequest请求
-        actReq, methodParams = ActionService(classId=self.classId, obis=self.obis, methodId=methodId).actionRequestNormal()
+        actReq, methodParams = ActionService(classId=self.classId, obis=self.obis,
+                                             methodId=methodId).actionRequestNormal()
         if dataType.lower() == "array" or dataType.lower() == "structure":
             methodParams.append(data)
         else:
@@ -211,7 +209,6 @@ class DlmsClass(object):
         else:
             return KFResult(False, result)
 
-
     @staticmethod
     def showMethodInfo(mode, classId, obis, index, data=None):
 
@@ -230,11 +227,8 @@ class DlmsClass(object):
             obis = f'{obis} [{logicalName}]'
 
         if data is None:
-            info(f'## Request  ## : Class: "{interfaceClass}", Service: "{methodName}", Object: "{classId, obis, index}"')
+            info(
+                f'## Request  ## : Class: "{interfaceClass}", Service: "{methodName}", Object: "{classId, obis, index}"')
         else:
-            info(f'## Request  ## : Class: "{interfaceClass}", Service: "{methodName}", Object: "{classId, obis, index}", Data: "{formatDict(data, isInputData=True)}"')
-
-
-
-
-
+            info(
+                f'## Request  ## : Class: "{interfaceClass}", Service: "{methodName}", Object: "{classId, obis, index}", Data: "{formatDict(data, isInputData=True)}"')

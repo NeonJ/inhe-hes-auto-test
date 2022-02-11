@@ -4,13 +4,13 @@
 # Author     : 曹剑南
 # version    : python 3.7
 """
+import datetime
+import json
+
+import cx_Oracle
 import psycopg2
 import psycopg2.extras
-import cx_Oracle
-import os
 import yaml
-import json
-import datetime
 
 
 # import cx_Oracle
@@ -59,7 +59,6 @@ class DB:
             except Exception as e:
                 print("get error: %s" % e)
 
-
     def fetchall(self, sql):
         try:
             con = self.connect()
@@ -88,7 +87,6 @@ class DB:
         finally:
             cur.close()
             con.close()
-
 
     def orcl_fetchall_dict(self, sql):
         try:
@@ -237,7 +235,7 @@ class DB:
             cur.close()
             con.close()
 
-    def orcl_meter_init(self,meter_no):
+    def orcl_meter_init(self, meter_no):
         try:
             con = self.connect()
             cur = con.cursor()
@@ -250,7 +248,7 @@ class DB:
             cur.close()
             con.close()
 
-    def orcl_meter_init_except_1(self,meter_no):
+    def orcl_meter_init_except_1(self, meter_no):
         try:
             con = self.connect()
             cur = con.cursor()
@@ -263,11 +261,12 @@ class DB:
             cur.close()
             con.close()
 
-    def orcl_meter_init_except_2(self,meter_no):
+    def orcl_meter_init_except_2(self, meter_no):
         try:
             con = self.connect()
             cur = con.cursor()
-            sql = "update c_ar_meter set DEV_STATUS=2, CONN_TYPE=13, COMMUNICATION_TYPE=7 where METER_NO='{}'".format(meter_no)
+            sql = "update c_ar_meter set DEV_STATUS=2, CONN_TYPE=13, COMMUNICATION_TYPE=7 where METER_NO='{}'".format(
+                meter_no)
             cur.execute(sql)
             con.commit()
         except Exception as e:
@@ -293,93 +292,93 @@ class DB:
 #         "dataItemValue": "-60"
 #     }, '0.0.1.0.0.255830')
 
-    # class MyOracle:
-    #     SHOW_SQL = True
-    #
-    #     def __init__(self, host='127.0.0.1', port=1521, user='system', password='oracle', sid='cndba'):
-    #         self.host = host
-    #         self.port = port
-    #         self.user = user
-    #         self.password = password
-    #         self.sid = sid
-    #
-    #     def get_con(self):
-    #         try:
-    #             dsn_tns = cx_Oracle.makedsn(self.host, self.port, self.sid)
-    #             # 如果是Oracle 12c 数据库需要替换sid 为service_name
-    #             dsn_tns = dsn_tns.replace('SID', 'SERVICE_NAME')
-    #             conn = cx_Oracle.connect(self.user, self.password, dsn_tns)
-    #             return conn
-    #         except cx_Oracle.Error as e:
-    #             print(e)
-    #
-    #     def select_all(self, sql):
-    #         try:
-    #             con = self.get_con()
-    #             # print con
-    #             cur = con.cursor()
-    #             cur.execute(sql)
-    #             fc = cur.fetchall()
-    #             return fc
-    #         except cx_Oracle.Error as e:
-    #             print(e)
-    #         finally:
-    #             cur.close()
-    #             con.close()
-    #
-    #     def select_by_where(self, sql, data):
-    #         try:
-    #             con = self.get_con()
-    #             # print con
-    #             d = (data,)
-    #             cur = con.cursor()
-    #             cur.execute(sql, d)
-    #             fc = cur.fetchall()
-    #             # if len(fc) > 0:
-    #             #     for e in range(len(fc)):
-    #             #         print(fc[e])
-    #             return fc
-    #         except cx_Oracle.Error as e:
-    #             print(e)
-    #         finally:
-    #             cur.close()
-    #             con.close()
-    #
-    #     def dml_by_where(self, sql, params):
-    #         try:
-    #             con = self.get_con()
-    #             cur = con.cursor()
-    #
-    #             for d in params:
-    #                 if self.SHOW_SQL:
-    #                     print('执行sql:[{}],参数:[{}]'.format(sql, d))
-    #                 cur.execute(sql, d)
-    #             con.commit()
-    #
-    #         except cx_Oracle.Error as e:
-    #             print(e)
-    #         finally:
-    #             cur.close()
-    #             con.close()
-    #
-    #     # 不带参数的更新方法
-    #     def dml_nowhere(self, sql):
-    #         try:
-    #             con = self.get_con()
-    #             cur = con.cursor()
-    #             count = cur.execute(sql)
-    #             con.commit()
-    #             return count
-    #         except cx_Oracle.Error as e:
-    #             print(e)
-    #         finally:
-    #             cur.close()
-    #             con.close()
-    #
-    #
-    # if __name__ == '__main__':
-    #     A(host="***",
-    #       db="***",
-    #       user="***",
-    #       pwd="***",
-    #       port="***")
+# class MyOracle:
+#     SHOW_SQL = True
+#
+#     def __init__(self, host='127.0.0.1', port=1521, user='system', password='oracle', sid='cndba'):
+#         self.host = host
+#         self.port = port
+#         self.user = user
+#         self.password = password
+#         self.sid = sid
+#
+#     def get_con(self):
+#         try:
+#             dsn_tns = cx_Oracle.makedsn(self.host, self.port, self.sid)
+#             # 如果是Oracle 12c 数据库需要替换sid 为service_name
+#             dsn_tns = dsn_tns.replace('SID', 'SERVICE_NAME')
+#             conn = cx_Oracle.connect(self.user, self.password, dsn_tns)
+#             return conn
+#         except cx_Oracle.Error as e:
+#             print(e)
+#
+#     def select_all(self, sql):
+#         try:
+#             con = self.get_con()
+#             # print con
+#             cur = con.cursor()
+#             cur.execute(sql)
+#             fc = cur.fetchall()
+#             return fc
+#         except cx_Oracle.Error as e:
+#             print(e)
+#         finally:
+#             cur.close()
+#             con.close()
+#
+#     def select_by_where(self, sql, data):
+#         try:
+#             con = self.get_con()
+#             # print con
+#             d = (data,)
+#             cur = con.cursor()
+#             cur.execute(sql, d)
+#             fc = cur.fetchall()
+#             # if len(fc) > 0:
+#             #     for e in range(len(fc)):
+#             #         print(fc[e])
+#             return fc
+#         except cx_Oracle.Error as e:
+#             print(e)
+#         finally:
+#             cur.close()
+#             con.close()
+#
+#     def dml_by_where(self, sql, params):
+#         try:
+#             con = self.get_con()
+#             cur = con.cursor()
+#
+#             for d in params:
+#                 if self.SHOW_SQL:
+#                     print('执行sql:[{}],参数:[{}]'.format(sql, d))
+#                 cur.execute(sql, d)
+#             con.commit()
+#
+#         except cx_Oracle.Error as e:
+#             print(e)
+#         finally:
+#             cur.close()
+#             con.close()
+#
+#     # 不带参数的更新方法
+#     def dml_nowhere(self, sql):
+#         try:
+#             con = self.get_con()
+#             cur = con.cursor()
+#             count = cur.execute(sql)
+#             con.commit()
+#             return count
+#         except cx_Oracle.Error as e:
+#             print(e)
+#         finally:
+#             cur.close()
+#             con.close()
+#
+#
+# if __name__ == '__main__':
+#     A(host="***",
+#       db="***",
+#       user="***",
+#       pwd="***",
+#       port="***")

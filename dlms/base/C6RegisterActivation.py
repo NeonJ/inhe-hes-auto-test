@@ -4,7 +4,6 @@ from dlms.DlmsClass import *
 
 
 class C6RegisterActivation(DlmsClass):
-
     attr_index_dict = {
         1: "logical_name",
         2: "register_assignment",
@@ -20,7 +19,6 @@ class C6RegisterActivation(DlmsClass):
 
     def __init__(self, conn, obis=None):
         super().__init__(conn, obis, classId=6)
-
 
     # Attribute of logical_name (No.1)
     @formatResponse
@@ -58,7 +56,6 @@ class C6RegisterActivation(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_logical_name(self, data):
         """
@@ -68,7 +65,6 @@ class C6RegisterActivation(DlmsClass):
         :return:            返回一个KFResult对象
         """
         return self.setRequest(1, obis_toHex(data), "OctetString", data)
-
 
     # Attribute of register_assignment (No.2)
     @formatResponse
@@ -99,7 +95,6 @@ class C6RegisterActivation(DlmsClass):
             return response
         return response[0]
 
-
     @formatResponse
     def check_register_assignment(self, ck_data):
         """
@@ -120,7 +115,6 @@ class C6RegisterActivation(DlmsClass):
         for value in ck_data.values():
             value[1].replace("-", ".").replace(":", ".")
         return checkResponsValue(self.get_register_assignment(), ck_data)
-
 
     @formatResponse
     def set_register_assignment(self, data):
@@ -149,7 +143,6 @@ class C6RegisterActivation(DlmsClass):
                 if subIndex == 1:
                     etree.SubElement(struct, "OctetString").set("Value", obis_toHex(subItem))
         return self.setRequest(2, array, "Array", data)
-
 
     # Attribute of mask_list (No.3)
     @formatResponse
@@ -196,7 +189,6 @@ class C6RegisterActivation(DlmsClass):
         """
         return checkResponsValue(self.get_mask_list(), ck_data)
 
-
     @formatResponse
     def set_mask_list(self, data):
         """
@@ -226,7 +218,6 @@ class C6RegisterActivation(DlmsClass):
                         etree.SubElement(sub_array, "Unsigned").set("Value", dec_toHexStr(ele, 2))
         return self.setRequest(3, array, "Array", data)
 
-
     # Attribute of active_mask (No.4)
     @formatResponse
     def get_active_mask(self, dataType=None, response=None):
@@ -245,7 +236,6 @@ class C6RegisterActivation(DlmsClass):
             return ret
         return ret[0]
 
-
     @formatResponse
     def check_active_mask(self, ck_data):
         """
@@ -259,7 +249,6 @@ class C6RegisterActivation(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_active_mask(self, data):
         """
@@ -269,7 +258,6 @@ class C6RegisterActivation(DlmsClass):
         :return:                  KFResult对象
         """
         return self.setRequest(4, data, "OctetString", data)
-
 
     # Method of add_register
     @formatResponse
@@ -305,7 +293,6 @@ class C6RegisterActivation(DlmsClass):
                     etree.SubElement(struct, "OctetString").set("Value", obis_toHex(subItem))
         return self.actionRequest(1, array, "Array", data)
 
-
     # Method of add_mask
     @formatResponse
     def act_add_mask(self, data=None):
@@ -339,7 +326,6 @@ class C6RegisterActivation(DlmsClass):
                     for ele in subItem:
                         etree.SubElement(sub_array, "Unsigned").set("Value", dec_toHexStr(ele, 2))
         return self.actionRequest(2, array, "Array", data)
-
 
     # Method of delete_mask
     @formatResponse

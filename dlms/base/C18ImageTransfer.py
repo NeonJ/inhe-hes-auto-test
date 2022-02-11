@@ -1,11 +1,11 @@
 # -*- coding: UTF-8 -*-
 
 import random
+
 from dlms.DlmsClass import *
 
 
 class C18ImageTransfer(DlmsClass):
-
     attr_index_dict = {
         1: "logical_name",
         2: "image_block_size",
@@ -37,7 +37,6 @@ class C18ImageTransfer(DlmsClass):
     def __init__(self, conn, obis):
         super().__init__(conn, obis, classId=18)
 
-
     # Attribute of logical_name
     @formatResponse
     def get_logical_name(self, dataType=False, response=None):
@@ -60,7 +59,6 @@ class C18ImageTransfer(DlmsClass):
             return hex_toOBIS(ret[0]), ret[1]
         return hex_toOBIS(ret[0])
 
-
     @formatResponse
     def check_logical_name(self, ck_data):
         """
@@ -74,7 +72,6 @@ class C18ImageTransfer(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_logical_name(self, data):
         """
@@ -84,7 +81,6 @@ class C18ImageTransfer(DlmsClass):
         :return:            返回一个KFResult对象
         """
         return self.setRequest(1, obis_toHex(data), "OctetString", data)
-
 
     # Attribute of image_block_size
     @formatResponse
@@ -108,7 +104,6 @@ class C18ImageTransfer(DlmsClass):
             return hex_toDec(ret[0]), ret[1]
         return hex_toDec(ret[0])
 
-
     @formatResponse
     def check_image_block_size(self, ck_data):
         """
@@ -122,7 +117,6 @@ class C18ImageTransfer(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_image_block_size(self, data):
         """
@@ -132,7 +126,6 @@ class C18ImageTransfer(DlmsClass):
         :return:            KFResult对象
         """
         return self.setRequest(2, dec_toHexStr(data, 8), "DoubleLongUnsigned", data)
-
 
     # Attribute of image_transferred_blocks_status
     @formatResponse
@@ -152,7 +145,6 @@ class C18ImageTransfer(DlmsClass):
             return ret
         return ret[0]
 
-
     @formatResponse
     def check_image_transferred_blocks_status(self, ck_data):
         """
@@ -166,7 +158,6 @@ class C18ImageTransfer(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_image_transferred_blocks_status(self, data):
         """
@@ -176,7 +167,6 @@ class C18ImageTransfer(DlmsClass):
         :return:            KFResult对象
         """
         return self.setRequest(3, data, "BitString", data)
-
 
     # Attribute of image_first_not_transferred_block_number
     @formatResponse
@@ -200,7 +190,6 @@ class C18ImageTransfer(DlmsClass):
             return hex_toDec(ret[0]), ret[1]
         return hex_toDec(ret[0])
 
-
     @formatResponse
     def check_image_first_not_transferred_block_number(self, ck_data):
         """
@@ -214,7 +203,6 @@ class C18ImageTransfer(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_image_first_not_transferred_block_number(self, data):
         """
@@ -224,7 +212,6 @@ class C18ImageTransfer(DlmsClass):
         :return:            KFResult对象
         """
         return self.setRequest(4, dec_toHexStr(data, 8), "DoubleLongUnsigned", data)
-
 
     # Attribute of image_transfer_enabled
     @formatResponse
@@ -248,7 +235,6 @@ class C18ImageTransfer(DlmsClass):
             return hex_toDec(ret[0]), ret[1]
         return hex_toDec(ret[0])
 
-
     @formatResponse
     def check_image_transfer_enabled(self, ck_data):
         """
@@ -262,7 +248,6 @@ class C18ImageTransfer(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_image_transfer_enabled(self, data):
         """
@@ -272,7 +257,6 @@ class C18ImageTransfer(DlmsClass):
         :return:            KFResult对象
         """
         return self.setRequest(5, dec_toHexStr(data, 2), "Bool", data)
-
 
     # Attribute of image_transfer_status
     @formatResponse
@@ -297,7 +281,6 @@ class C18ImageTransfer(DlmsClass):
             return hex_toDec(ret[0]), ret[1]
         return hex_toDec(ret[0])
 
-
     @formatResponse
     def check_image_transfer_status(self, ck_data):
         """
@@ -311,7 +294,6 @@ class C18ImageTransfer(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_image_transfer_status(self, data):
         """
@@ -321,7 +303,6 @@ class C18ImageTransfer(DlmsClass):
         :return:            KFResult对象
         """
         return self.setRequest(6, dec_toHexStr(data, 2), "Enum", data)
-
 
     # Attribute of image_to_activate_info
     @formatResponse
@@ -341,14 +322,13 @@ class C18ImageTransfer(DlmsClass):
             if dataType:
                 return response
             return response[0]
-        for value in response[0].values():                                         # list: level2
+        for value in response[0].values():  # list: level2
             for index, item in enumerate(value):
                 if index == 0:
                     value[index] = hex_toDec(item)
         if dataType:
             return response
         return response[0]
-
 
     @formatResponse
     def check_image_to_activate_info(self, ck_data):
@@ -366,7 +346,6 @@ class C18ImageTransfer(DlmsClass):
         }
         """
         return checkResponsValue(self.get_image_to_activate_info(), ck_data)
-
 
     @formatResponse
     def set_image_to_activate_info(self, data):
@@ -395,8 +374,7 @@ class C18ImageTransfer(DlmsClass):
                     etree.SubElement(struct, "OctetString").set("Value", subItem)
         return self.setRequest(7, array, "Array", data)
 
-
-     # Method of image_transfer_initiate
+    # Method of image_transfer_initiate
     @formatResponse
     def act_image_transfer_initiate(self, imageIdentifier="", imageSize=0, imgPath=""):
         """
@@ -420,8 +398,8 @@ class C18ImageTransfer(DlmsClass):
         struct.set("Qty", dec_toHexStr(2, length=4))
         etree.SubElement(struct, "OctetString").set("Value", ascii_toHex(imageIdentifier))
         etree.SubElement(struct, "DoubleLongUnsigned").set("Value", dec_toHexStr(imageSize, length=8))
-        return self.actionRequest(1, struct, "structure", {'imageIdentifier' : imageIdentifier, 'imageSize' : imageSize, 'imgPath' : imgPath})
-
+        return self.actionRequest(1, struct, "structure",
+                                  {'imageIdentifier': imageIdentifier, 'imageSize': imageSize, 'imgPath': imgPath})
 
     # Method of image_block_transfer
     @formatResponse
@@ -452,7 +430,6 @@ class C18ImageTransfer(DlmsClass):
         # return self.actionRequest(2, struct, "structure", {'imageBlockNumber' : imageBlockNumber, 'imageBlockValue' : imageBlockValue})
         return self.actionRequest(2, struct, "structure")
 
-
     # Method of image_verify
     @formatResponse
     def act_image_verify(self, data=0):
@@ -463,7 +440,6 @@ class C18ImageTransfer(DlmsClass):
         :return:       KFResult对象
         """
         return self.actionRequest(3, dec_toHexStr(data, 2), "Integer", data)
-
 
     # Method of image_activate
     @formatResponse
@@ -476,18 +452,13 @@ class C18ImageTransfer(DlmsClass):
         """
         return self.actionRequest(4, dec_toHexStr(data, 2), "Integer", data)
 
-
-
-    #==================================================================================================#
-
-
+    # ==================================================================================================#
 
     # Business
     @staticmethod
     def __calcBlockNum(fileSize, blockSize):
         mod = fileSize % blockSize
         return int(fileSize / blockSize) if mod == 0 else int(fileSize / blockSize) + 1
-
 
     def __act_image_block_transfer(self, imageBlockNumber, imageBlockValue):
         try:
@@ -556,8 +527,9 @@ class C18ImageTransfer(DlmsClass):
 
         # get_image_transfer_status
         result = self.get_image_transfer_status()
-        if int(result) != 1:            # 1 -> Image transfer initiated
-            return KFResult(False, f"image_transfer_status error: {C18ImageTransfer.ImageTransferStatusMap[int(result)]}")
+        if int(result) != 1:  # 1 -> Image transfer initiated
+            return KFResult(False,
+                            f"image_transfer_status error: {C18ImageTransfer.ImageTransferStatusMap[int(result)]}")
 
         # calculate total block numbers
         blockNum = self.__calcBlockNum(fileSize, blockSize)
@@ -584,7 +556,7 @@ class C18ImageTransfer(DlmsClass):
                     continue
 
                 # 传送 firmware block
-                info(f"transfer {blockIndex} of {blockNum-1} ...")
+                info(f"transfer {blockIndex} of {blockNum - 1} ...")
                 fp.seek(blockIndex * blockSize)
                 blockData = fp.read(blockSize)
                 result = self.__act_image_block_transfer(blockIndex, blockData)
@@ -618,26 +590,26 @@ class C18ImageTransfer(DlmsClass):
             # 对每个一个block尝试重传'retransloop'次, 如果某一个block仍然传送失败, 则直接退出(其余丢失的block也不再重传)
             if int(retransmission) == 1:
                 firstNotTransferredIndex = self.get_image_first_not_transferred_block_number()
-                while firstNotTransferredIndex < blockNum-1:      # firstNotTransferredIndex 从 0 开始
+                while firstNotTransferredIndex < blockNum - 1:  # firstNotTransferredIndex 从 0 开始
                     retransResult = None
                     with open(imgPath, "rb") as fp:
                         fp.seek(firstNotTransferredIndex * blockSize)
                         blockData = fp.read(blockSize)
                         # 最多重传'retransloop'次
                         for loop in range(int(retransloop)):
-                            info(f"retransfer {firstNotTransferredIndex} of {blockNum-1} ...")
+                            info(f"retransfer {firstNotTransferredIndex} of {blockNum - 1} ...")
                             retransResult = self.__act_image_block_transfer(firstNotTransferredIndex, blockData)
                             if retransResult.status:
                                 break
                         if not retransResult.status:
-                            return KFResult(False, f"transfer_missing_blocks failed, blockIndex: {firstNotTransferredIndex}")
+                            return KFResult(False,
+                                            f"transfer_missing_blocks failed, blockIndex: {firstNotTransferredIndex}")
                     # 获取下一个重传block number
                     firstNotTransferredIndex = self.get_image_first_not_transferred_block_number()
 
                 # 经过retransloop次重传后, 仍有部分block传输失败
-                if firstNotTransferredIndex < blockNum-1:
+                if firstNotTransferredIndex < blockNum - 1:
                     return KFResult(False, f"transfer_missing_blocks failed, blockIndex: {firstNotTransferredIndex}")
-
 
             # Retransmission: image_transferred_blocks_status
             if int(retransmission) == 2:
@@ -649,9 +621,9 @@ class C18ImageTransfer(DlmsClass):
                 for loop in range(int(retransloop)):
                     if transferredBlocksStatus.find("0") > -1:
                         with open(imgPath, "rb") as fp:
-                            for blockIndex in range(blockNum+1):
+                            for blockIndex in range(blockNum + 1):
                                 if int(transferredBlocksStatus[blockIndex]) == 0:
-                                    fp.seek((blockIndex-1) * blockSize)
+                                    fp.seek((blockIndex - 1) * blockSize)
                                     info(f"retransfer {blockIndex} of {blockNum} ...")
                                     self.__act_image_block_transfer(blockIndex, fp.read(blockSize))
                     else:
@@ -668,23 +640,24 @@ class C18ImageTransfer(DlmsClass):
             self.act_image_verify(0)
             # get_image_transfer_status
             image_transfer_status = -1
-            for i in range(19):         # 尝试10轮, 每轮间隔15s
+            for i in range(19):  # 尝试10轮, 每轮间隔15s
                 time.sleep(8)
                 image_transfer_status = self.get_image_transfer_status()
-                if image_transfer_status == 3:        # 3 -> Image verification successful
+                if image_transfer_status == 3:  # 3 -> Image verification successful
                     break
                 if image_transfer_status == 4:
-                    return KFResult(False, f"image_transfer_status failed, image_transfer_status: {C18ImageTransfer.ImageTransferStatusMap[4]}")
+                    return KFResult(False,
+                                    f"image_transfer_status failed, image_transfer_status: {C18ImageTransfer.ImageTransferStatusMap[4]}")
 
             if image_transfer_status != 3:
-                return KFResult(False, f"image_transfer_status failed, image_transfer_status: {C18ImageTransfer.ImageTransferStatusMap[image_transfer_status]}")
+                return KFResult(False,
+                                f"image_transfer_status failed, image_transfer_status: {C18ImageTransfer.ImageTransferStatusMap[image_transfer_status]}")
 
         # active_image
         if activate:
             self.act_image_activate(0)
 
         return KFResult(True, '')
-
 
     def imageTransferResume(self, **argv):
         """
@@ -728,7 +701,8 @@ class C18ImageTransfer(DlmsClass):
                         if retransResult.status:
                             break
                     if not retransResult.status:
-                        return KFResult(False, f"transfer_missing_blocks failed, blockIndex: {firstNotTransferredIndex}")
+                        return KFResult(False,
+                                        f"transfer_missing_blocks failed, blockIndex: {firstNotTransferredIndex}")
                 # 获取下一个重传block number
                 firstNotTransferredIndex = self.get_image_first_not_transferred_block_number()
 
@@ -765,23 +739,24 @@ class C18ImageTransfer(DlmsClass):
             self.act_image_verify(0)
             # get_image_transfer_status
             image_transfer_status = -1
-            for i in range(19):         # 尝试10轮, 每轮间隔15s
+            for i in range(19):  # 尝试10轮, 每轮间隔15s
                 time.sleep(8)
                 image_transfer_status = self.get_image_transfer_status()
-                if image_transfer_status == 3:        # 3 -> Image verification successful
+                if image_transfer_status == 3:  # 3 -> Image verification successful
                     break
                 if image_transfer_status == 4:
-                    return KFResult(False, f"image_transfer_status failed, image_transfer_status: {C18ImageTransfer.ImageTransferStatusMap[4]}")
+                    return KFResult(False,
+                                    f"image_transfer_status failed, image_transfer_status: {C18ImageTransfer.ImageTransferStatusMap[4]}")
 
             if image_transfer_status != 3:
-                return KFResult(False, f"image_transfer_status failed, image_transfer_status: {C18ImageTransfer.ImageTransferStatusMap[image_transfer_status]}")
+                return KFResult(False,
+                                f"image_transfer_status failed, image_transfer_status: {C18ImageTransfer.ImageTransferStatusMap[image_transfer_status]}")
 
         # active_image
         if activate:
             self.act_image_activate(0)
 
         return KFResult(True, '')
-
 
     def transferSpecifiedBlocks(self, imgPath, imgId, blockList):
         """

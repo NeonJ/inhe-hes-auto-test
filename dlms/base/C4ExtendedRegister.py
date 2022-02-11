@@ -1,12 +1,12 @@
 # -*- coding: UTF-8 -*-
 
-from dlms.DlmsClass import *
 from libs.Singleton import Singleton
+
+from dlms.DlmsClass import *
 from libs.Constants import *
 
 
 class C4ExtendedRegister(DlmsClass):
-
     attr_index_dict = {
         1: "logical_name",
         2: "value",
@@ -21,7 +21,6 @@ class C4ExtendedRegister(DlmsClass):
 
     def __init__(self, conn, obis=None):
         super().__init__(conn, obis, classId=4)
-
 
     # Attribute of logical_name (No.1)
     @formatResponse
@@ -45,7 +44,6 @@ class C4ExtendedRegister(DlmsClass):
             return hex_toOBIS(ret[0]), ret[1]
         return hex_toOBIS(ret[0])
 
-
     @formatResponse
     def check_logical_name(self, ck_data):
         """
@@ -59,7 +57,6 @@ class C4ExtendedRegister(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_logical_name(self, data):
         """
@@ -69,7 +66,6 @@ class C4ExtendedRegister(DlmsClass):
         :return:            返回一个KFResult对象
         """
         return self.setRequest(1, obis_toHex(data), "OctetString", data)
-
 
     # Attribute of value (No.2)
     @formatResponse
@@ -105,7 +101,6 @@ class C4ExtendedRegister(DlmsClass):
                 return ret
             return ret[0]
 
-
     @formatResponse
     def check_value(self, ck_data):
         """
@@ -119,7 +114,6 @@ class C4ExtendedRegister(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_value(self, data):
         """
@@ -132,7 +126,6 @@ class C4ExtendedRegister(DlmsClass):
         if not attributeType or attributeType == "dlu":
             return self.setRequest(2, dec_toHexStr(data, 8), "DoubleLongUnsigned", data)
         return self.setRequest(2, data, "OctetString", data)
-
 
     # Attribute of scaler_unit (No.3)
     @formatResponse
@@ -159,7 +152,6 @@ class C4ExtendedRegister(DlmsClass):
             return response
         return response[0]
 
-
     @formatResponse
     def check_scaler_unit(self, ck_data):
         """
@@ -174,7 +166,6 @@ class C4ExtendedRegister(DlmsClass):
         }
         """
         return checkResponsValue(self.get_scaler_unit(), ck_data)
-
 
     @formatResponse
     def set_scaler_unit(self, data):
@@ -198,7 +189,6 @@ class C4ExtendedRegister(DlmsClass):
                 else:
                     etree.SubElement(struct, "Enum").set("Value", dec_toHexStr(subItem, 2))
         return self.setRequest(3, struct, "Struct", data)
-
 
     # Attribute of status (No.4)
     @formatResponse
@@ -229,7 +219,6 @@ class C4ExtendedRegister(DlmsClass):
                 return ret
             return ret[0]
 
-
     @formatResponse
     def check_status(self, ck_data):
         """
@@ -243,7 +232,6 @@ class C4ExtendedRegister(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_status(self, data):
         """
@@ -252,7 +240,6 @@ class C4ExtendedRegister(DlmsClass):
         :return:            返回一个KFResult对象
         """
         return self.setRequest(4, data, "BitString", data)
-
 
     # Attribute of capture_time (No.5)
     @formatResponse
@@ -284,7 +271,6 @@ class C4ExtendedRegister(DlmsClass):
             return hex_toWildcardTimeString(ret[0]), ret[1]
         return hex_toWildcardTimeString(ret[0])
 
-
     @formatResponse
     def check_capture_time(self, ck_data):
         """
@@ -298,7 +284,6 @@ class C4ExtendedRegister(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_capture_time(self, data):
         """
@@ -310,7 +295,6 @@ class C4ExtendedRegister(DlmsClass):
         if data.startswith("FFFFFFFF"):
             return self.setRequest(5, data, "OctetString", data)
         return self.setRequest(5, dateTime_toHex(data), "OctetString", data)
-
 
     # Method of reset
     @formatResponse
@@ -324,9 +308,7 @@ class C4ExtendedRegister(DlmsClass):
         """
         return self.actionRequest(1, dec_toHexStr(data, 2), "Integer", data)
 
-
-    #==================================================================================================#
-
+    # ==================================================================================================#
 
     @formatResponse
     def get_value_with_list(self):
@@ -339,7 +321,6 @@ class C4ExtendedRegister(DlmsClass):
         for index, obis in enumerate(self.obisList):
             response[index] = self.get_value(obis=obis)
         return response
-
 
     @formatResponse
     def check_value_with_list(self, ck_data, initial=None):
@@ -376,7 +357,6 @@ class C4ExtendedRegister(DlmsClass):
         except Exception as ex:
             error(ex)
 
-
     @formatResponse
     def get_capture_time_with_list(self):
         """
@@ -388,5 +368,3 @@ class C4ExtendedRegister(DlmsClass):
         for index, obis in enumerate(self.obisList):
             response[index] = self.get_capture_time(obis=obis)
         return response
-
-

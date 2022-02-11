@@ -1,9 +1,9 @@
 # -*- coding:utf-8 -*-
 
 import random
-from .comm import *
-from HESAPI import *
+
 from DB import DB
+from HESAPI import *
 from libs.Singleton import Singleton
 
 
@@ -72,7 +72,7 @@ def meter_register_001():
     end_time = time.time()
     info(f"Total cost {end_time - start_time} seconds")
 
-    if  db_queue[0]['TASK_STATE'] == 3:
+    if db_queue[0]['TASK_STATE'] == 3:
         return 0
     else:
         return -1

@@ -13,7 +13,7 @@ from config.settings import *
 
 class Test_Key_Change:
 
-    @hesAsyncTest1
+    @hesAsyncTest
     def test_key_change_Akey(self, caseData,get_database):
         """
         正常修改GPRS电表key - A key
@@ -47,7 +47,7 @@ class Test_Key_Change:
             count = count + 1
         assert db_queue[0]['TASK_STATE'] == 3
 
-    @hesAsyncTest1
+    @hesAsyncTest
     def test_key_change_Ekey(self, caseData,get_database):
         """
         正常修改GPRS电表key - E key

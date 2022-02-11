@@ -5,10 +5,6 @@
 # @Updated  :0000/00/00
 # @RunTime  :
 
-from projects.library import *
-from .var import *
-from .. import OBIS
-
 
 def read_config(file_path):
     """读取配置文件内容"""

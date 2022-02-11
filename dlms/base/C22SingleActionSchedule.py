@@ -2,8 +2,8 @@
 
 from dlms.DlmsClass import *
 
-class C22SingleActionSchedule(DlmsClass):
 
+class C22SingleActionSchedule(DlmsClass):
     attr_index_dict = {
         1: "logical_name",
         2: "executed_script",
@@ -13,7 +13,6 @@ class C22SingleActionSchedule(DlmsClass):
 
     def __init__(self, conn, obis=None):
         super().__init__(conn, obis, classId=22)
-
 
     # Attribute of logical_name (No.1)
     @formatResponse
@@ -38,7 +37,6 @@ class C22SingleActionSchedule(DlmsClass):
             return hex_toOBIS(ret[0]), ret[1]
         return hex_toOBIS(ret[0])
 
-
     @formatResponse
     def check_logical_name(self, ck_data):
         """
@@ -52,7 +50,6 @@ class C22SingleActionSchedule(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_logical_name(self, data):
         """
@@ -62,7 +59,6 @@ class C22SingleActionSchedule(DlmsClass):
         :return:            返回一个KFResult对象
         """
         return self.setRequest(1, obis_toHex(data), "OctetString", data)
-
 
     # Attribute of executed_script (No.2)
     @formatResponse
@@ -89,7 +85,6 @@ class C22SingleActionSchedule(DlmsClass):
             return response
         return response[0]
 
-
     @formatResponse
     def check_executed_script(self, ck_data):
         """
@@ -104,7 +99,6 @@ class C22SingleActionSchedule(DlmsClass):
         }
         """
         return checkResponsValue(self.get_executed_script(), ck_data)
-
 
     @formatResponse
     def set_executed_script(self, data):
@@ -130,7 +124,6 @@ class C22SingleActionSchedule(DlmsClass):
         etree.SubElement(struct, "LongUnsigned").set("Value", dec_toHexStr(data[0][1], 4))
         return self.setRequest(2, struct, "struct", data)
 
-
     # Attribute of type (No.3)
     @formatResponse
     def get_type(self, dataType=False, response=None):
@@ -153,7 +146,6 @@ class C22SingleActionSchedule(DlmsClass):
             return hex_toDec(ret[0]), ret[1]
         return hex_toDec(ret[0])
 
-
     @formatResponse
     def check_type(self, ck_data):
         """
@@ -167,7 +159,6 @@ class C22SingleActionSchedule(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_type(self, data):
         """
@@ -177,7 +168,6 @@ class C22SingleActionSchedule(DlmsClass):
         :return:            返回一个KFResult对象
         """
         return self.setRequest(3, dec_toHexStr(data, 2), "Enum", data)
-
 
     # Attribute of execution_time (No.4)
     @formatResponse
@@ -204,7 +194,6 @@ class C22SingleActionSchedule(DlmsClass):
             return response
         return response[0]
 
-
     @formatResponse
     def check_execution_time(self, ck_data):
         """
@@ -227,7 +216,6 @@ class C22SingleActionSchedule(DlmsClass):
                 if index == 1 and str(item).find("-") == -1:
                     value[index] = hex_toDateString(item)
         return checkResponsValue(self.get_execution_time(), ck_data)
-
 
     @formatResponse
     def set_execution_time(self, data, isDownloadMode=True):

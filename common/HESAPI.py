@@ -1,13 +1,12 @@
-import re
 import os
-import json
-import requests
+
 import yaml
-path=os.path.join(os.path.dirname(__file__),"../config/ivy.yaml")
 
-f=open(path,encoding='utf-8').read()
+path = os.path.join(os.path.dirname(__file__), "../config/ivy.yaml")
 
-file=yaml.load(f,Loader = yaml.FullLoader)
+f = open(path, encoding='utf-8').read()
+
+file = yaml.load(f, Loader=yaml.FullLoader)
 
 
 class HESAPI(object):
@@ -16,7 +15,7 @@ class HESAPI(object):
         self.HESAPIAddress = argv['Address']
         self.HESRequestMessage = argv.get('RequestMessage', '/api/v1/Request/RequestMessage')
         self.HESCreateTask = argv.get('CreateTask', '/Mdm/CreateTas')
-        self.HESMeterStatus = argv.get('MeterStatus','/Mdm/GetMeterStatus?MeterNo=')
+        self.HESMeterStatus = argv.get('MeterStatus', '/Mdm/GetMeterStatus?MeterNo=')
         # self.HESDLMS = argv.get('', '')
         # OBIS、升级、时间、费率、结算、需量、负荷曲线、质量曲线、状态字、时间、负控、预付费
 
@@ -369,5 +368,3 @@ class ResponseMessage(object):
         self.registerId = argv['registerId']
         self.featurePoint = argv['featurePoint']
         self.parameter = argv['parameter']
-
-

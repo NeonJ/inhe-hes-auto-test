@@ -2,8 +2,8 @@
 
 from dlms.DlmsClass import *
 
-class C45GPRSModemSetup(DlmsClass):
 
+class C45GPRSModemSetup(DlmsClass):
     attr_index_dict = {
         1: "logical_name",
         2: "apn",
@@ -13,7 +13,6 @@ class C45GPRSModemSetup(DlmsClass):
 
     def __init__(self, conn, obis=None):
         super().__init__(conn, obis, classId=45)
-
 
     # Attribute of logical_name
     @formatResponse
@@ -38,7 +37,6 @@ class C45GPRSModemSetup(DlmsClass):
             return hex_toOBIS(ret[0]), ret[1]
         return hex_toOBIS(ret[0])
 
-
     @formatResponse
     def check_logical_name(self, ck_data):
         """
@@ -52,7 +50,6 @@ class C45GPRSModemSetup(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_logical_name(self, data):
         """
@@ -62,7 +59,6 @@ class C45GPRSModemSetup(DlmsClass):
         :return:             KFResult对象
         """
         return self.setRequest(1, obis_toHex(data), "OctetString", data)
-
 
     # Attribute of APN
     @formatResponse
@@ -87,7 +83,6 @@ class C45GPRSModemSetup(DlmsClass):
             return ret
         return hex_toOBIS(ret[0])
 
-
     @formatResponse
     def check_apn(self, ck_data):
         """
@@ -101,7 +96,6 @@ class C45GPRSModemSetup(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_apn(self, data):
         """
@@ -111,7 +105,6 @@ class C45GPRSModemSetup(DlmsClass):
         :return:            KFResult对象
         """
         return self.setRequest(2, obis_toHex(data), "OctetString", data)
-
 
     # Attribute of PIN_code
     @formatResponse
@@ -136,7 +129,6 @@ class C45GPRSModemSetup(DlmsClass):
             return hex_toDec(ret[0]), ret[1]
         return hex_toDec(ret[0])
 
-
     @formatResponse
     def check_pin_code(self, ck_data):
         """
@@ -150,7 +142,6 @@ class C45GPRSModemSetup(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_pin_code(self, data):
         """
@@ -160,7 +151,6 @@ class C45GPRSModemSetup(DlmsClass):
         :return:                  KFResult对象
         """
         return self.setRequest(3, dec_toHexStr(data, 4), "LongUnsigned", data)
-
 
     # Attribute of quality_of_service
     @formatResponse
@@ -187,7 +177,6 @@ class C45GPRSModemSetup(DlmsClass):
             return response
         return response[0]
 
-
     @formatResponse
     def check_quality_of_service(self, ck_data):
         """
@@ -203,7 +192,6 @@ class C45GPRSModemSetup(DlmsClass):
         }
         """
         return checkResponsValue(self.get_quality_of_service(), ck_data)
-
 
     @formatResponse
     def set_quality_of_service(self, data):

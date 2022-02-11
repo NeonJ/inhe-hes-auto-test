@@ -17,9 +17,7 @@ __all__ = [
 ]
 
 
-
 class ValueCheck(object):
-
     ILLEGAL_CHARACTERS_RE = re.compile(r'[\000-\010]|[\013-\014]|[\016-\037]')
 
     supported_objects = ["", "nan", 'NA']
@@ -31,11 +29,10 @@ class ValueCheck(object):
     meterTypeDict = dict()
 
     simple_data_type = ["null_data", "boolean", "bit_string", "double_long",
-                     "double_long_unsigned", "octet_string", "visible_string",
-                     "utf8_string", "bcd", "integer", "long", "unsigned",
-                     "long_unsigned", "long64", "long64_unsigned", "enum",
-                     "float32", "float64", "date_time", "date", "time"]
-
+                        "double_long_unsigned", "octet_string", "visible_string",
+                        "utf8_string", "bcd", "integer", "long", "unsigned",
+                        "long_unsigned", "long64", "long64_unsigned", "enum",
+                        "float32", "float64", "date_time", "date", "time"]
 
     def getAttrType(self, **kwargs):
         """
@@ -50,7 +47,8 @@ class ValueCheck(object):
         conn = kwargs.get("conn")
         excel_path = os.path.abspath(f"projects/{Singleton().Project}/MeterIntegrationCase/data.xlsx")
         # 从 data model 中读取数据
-        read_result = pd.read_excel(excel_path, header=1, sheet_name=1, usecols=[0, 6, 7, 10]) # attr id/数据类型/class id/Obis
+        read_result = pd.read_excel(excel_path, header=1, sheet_name=1,
+                                    usecols=[0, 6, 7, 10])  # attr id/数据类型/class id/Obis
         read_result = read_result.to_dict()
         # Read data from excel file
         attr_name_index_list = list(list(read_result.values())[0].values())
@@ -89,7 +87,7 @@ class ValueCheck(object):
                         print("[" + obis_id.replace("-", ".").replace(":", ".") + "]")
                         print("dataType = Enum % e")
                     else:
-                        print((f"=========================={obis_id}  { data_type_list[i]}"))
+                        print((f"=========================={obis_id}  {data_type_list[i]}"))
 
     def read_data_by_admin(self, **kwargs):
         """
@@ -258,7 +256,8 @@ class ValueCheck(object):
                         match_1 = re.search("(.*)\[(.*)\]", current_data_type)
                         data_type = current_data_type
                         if match_1:
-                            data_type = "".join([e.capitalize() for e in match_1.group(1).split("_")]) + "_" + match_1.group(2)
+                            data_type = "".join(
+                                [e.capitalize() for e in match_1.group(1).split("_")]) + "_" + match_1.group(2)
 
                     else:
                         if result.find("<Data>") != -1:
@@ -300,7 +299,8 @@ class ValueCheck(object):
 
         # 复制一个新的Excel文件， 用于将执行结果输入到里面
         current_time_str = datetime.datetime.strftime(datetime.datetime.now(), "%m%d_%H%M%S")
-        result_excel_name = os.path.abspath(f"projects/{Singleton().Project}/MeterIntegrationCase/{Singleton().Project}_{Singleton().Client}_{current_time_str}.xlsx")
+        result_excel_name = os.path.abspath(
+            f"projects/{Singleton().Project}/MeterIntegrationCase/{Singleton().Project}_{Singleton().Client}_{current_time_str}.xlsx")
         shutil.copyfile(excel_path, result_excel_name)
 
         # 在excel最后面插入两列用于填写执行结果
@@ -443,7 +443,8 @@ class ValueCheck(object):
             assert False, "config file not exist!"
         object_model_sheet_index = config['Config']['object_model_sheet']
         excel_path = os.path.abspath(f"projects/{Singleton().Project}/MeterIntegrationCase/admin_result.xlsx")
-        ret = self.getColumnDataForResponse(self.clientDict, config, excel_path, self.meterTypeDict, object_model_sheet_index)
+        ret = self.getColumnDataForResponse(self.clientDict, config, excel_path, self.meterTypeDict,
+                                            object_model_sheet_index)
         device_type_list = ret["deviceType"]
         attr_name_index_list = ret["attrNameIndex"]
         attr_name_list = ret["attrName"]
@@ -455,7 +456,8 @@ class ValueCheck(object):
 
         # 复制一个新的Excel文件， 用于将执行结果输入到里面
         current_time_str = datetime.datetime.strftime(datetime.datetime.now(), "%m%d_%H%M%S")
-        result_excel_name = os.path.abspath(f"projects/{Singleton().Project}/MeterIntegrationCase/{Singleton().Project}_{Singleton().Client}_{current_time_str}.xlsx")
+        result_excel_name = os.path.abspath(
+            f"projects/{Singleton().Project}/MeterIntegrationCase/{Singleton().Project}_{Singleton().Client}_{current_time_str}.xlsx")
         result_txt_name = result_excel_name.replace(".xlsx", ".txt")
         shutil.copyfile(excel_path, result_excel_name)
 
@@ -764,7 +766,8 @@ class ValueCheck(object):
             assert False, "config file not exist!"
         object_model_sheet_index = config['Config']['object_model_sheet']
         excel_path = os.path.abspath(f"projects/{Singleton().Project}/MeterIntegrationCase/admin_result.xlsx")
-        ret = self.getColumnDataForResponse(self.clientDict, config, excel_path, self.meterTypeDict, object_model_sheet_index)
+        ret = self.getColumnDataForResponse(self.clientDict, config, excel_path, self.meterTypeDict,
+                                            object_model_sheet_index)
         device_type_list = ret["deviceType"]
         attr_name_index_list = ret["attrNameIndex"]
         attr_name_list = ret["attrName"]
@@ -811,7 +814,7 @@ class ValueCheck(object):
                     pass
                 else:
                     if data_type_dict.get(obis_id) is None:
-                         data_type_dict[obis_id] = dict()
+                        data_type_dict[obis_id] = dict()
                     data_type_dict[obis_id][int(attr_name_index_list[i])] = data_type_list[i]
 
                 action_index += 1
@@ -933,7 +936,8 @@ class ValueCheck(object):
 
                                 object_list = list(C7Profile(conn, obis_id).get_capture_objects().values())
                                 ret = self.checkBufferType(response,
-                                                      self.getC7BufferByCaptureObjects(conn, data_type_dict, object_list))
+                                                           self.getC7BufferByCaptureObjects(conn, data_type_dict,
+                                                                                            object_list))
                                 if not ret.status:
                                     is_failed = True
                                     result += str(ret.result)
@@ -1304,7 +1308,6 @@ class ValueCheck(object):
         except (TypeError, SyntaxError, NameError, ValueError) as e:
             return f"Parse Error: {e}"
 
-
     def convertXMLtoDict(self, xml):
 
         result = {}
@@ -1383,7 +1386,8 @@ class ValueCheck(object):
                     data_type = list(d["Array"]["Structure"].keys())
                     for index, value in enumerate(struct):
                         if data_type[index] in ["Array", "Structure"]:
-                            return self.checkDataType(value, {data_type[index]: d["Array"]["Structure"][data_type[index]]})
+                            return self.checkDataType(value,
+                                                      {data_type[index]: d["Array"]["Structure"][data_type[index]]})
                         else:
                             if value.tag not in data_type[index]:
                                 return KFResult(False, f"{value.tag} not equal to {data_type[index]}")
@@ -1430,7 +1434,7 @@ class ValueCheck(object):
                     return KFResult(False, f"{value.tag} not equal to {data_type}")
                 else:
                     if d[data_type] != "":
-                        if d[data_type] != len(value.attrib['Value'])//2:
+                        if d[data_type] != len(value.attrib['Value']) // 2:
                             return KFResult(False, f"{value.tag} length is incorrect")
 
         return KFResult(True, "")
@@ -1485,7 +1489,8 @@ class ValueCheck(object):
                 data_type.append(value)
 
         for index, value in enumerate(data_type):
-            value = "".join([e.capitalize() for e in value.replace("</", "").replace("<", "").replace(">", "").split("-")])
+            value = "".join(
+                [e.capitalize() for e in value.replace("</", "").replace("<", "").replace(">", "").split("-")])
             data_length = None
             match = re.search(r'\((\d+)\)', value)
             if match:
@@ -1498,7 +1503,6 @@ class ValueCheck(object):
             data_type[index] = value
 
         return data_type
-
 
     def checkBufferType(self, xml, lst):
         """
@@ -1541,10 +1545,7 @@ class ValueCheck(object):
         if len(response) > 0:
             return KFResult(False, response)
 
-
         return KFResult(True, "")
-
-
 
 
 readDataByAdmin = ValueCheck().read_data_by_admin

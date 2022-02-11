@@ -1,13 +1,15 @@
 # -*- coding: UTF-8 -*-
 
-import re
-import serial
-import socket
 import binascii
+import re
+import socket
 import xml.etree.ElementTree as ET
+
+import serial
+from common.DataFormatAPI import hex_toDateTimeString
 from libs.DllLoader import *
 from libs.Singleton import Singleton
-from common.DataFormatAPI import hex_toDateTimeString
+
 from common.Decorate import *
 from common.KFLog import *
 
@@ -25,7 +27,6 @@ class P1Push(object):
         self.baudrate = argv.get('baudrate', 2400)
         self.ekey = argv.get('ekey', '101112131415161718191A1B1C1D1E1F')
         self.skipFirstEntry = argv.get('skipFirstEntry', True)
-
 
     def __readFromConsole(self):
         """
@@ -80,7 +81,6 @@ class P1Push(object):
             if ser is not None:
                 ser.close()
 
-
     @staticmethod
     def __parseP1PushXml(xmlData):
 
@@ -113,7 +113,6 @@ class P1Push(object):
         root = ET.fromstring(xmlData)
         return arrayData(root)
 
-
     @formatResponse
     def getPushData(self):
         # 从串口上读取数据
@@ -124,9 +123,9 @@ class P1Push(object):
         mbusPkts = list()
         # 将报文切断
         indexs = [m.span()[0] for m in re.finditer(r"68\s?(\w{2})\s?\1\s?68", hexData)]
-        for i in range(len(indexs)-1):
-            mbusPkts.append(hexData[indexs[i] : indexs[i+1]])
-        mbusPkts.append(hexData[indexs[len(indexs)-1]:])
+        for i in range(len(indexs) - 1):
+            mbusPkts.append(hexData[indexs[i]: indexs[i + 1]])
+        mbusPkts.append(hexData[indexs[len(indexs) - 1]:])
 
         pkts = ""
         for pkt in mbusPkts:
@@ -155,7 +154,7 @@ class P1Push(object):
             pkts += " ".join(hexLst)
 
         info(f"P1 Push Data: {pkts}")
-        result =  decryptGcmData(pkts, self.ekey)
+        result = decryptGcmData(pkts, self.ekey)
         if isinstance(result, tuple):
             pushData = P1Push.__parseP1PushXml(result[1])[0]
             import json
@@ -163,7 +162,6 @@ class P1Push(object):
             return pushData
         else:
             return result
-
 
 
 class GPRSPush(object):
@@ -174,7 +172,6 @@ class GPRSPush(object):
         self.aKey = argv.get('aKey', '')
         self.keySign = argv.get('keySign', '')
         self.timeout = argv.get('timeout', 120)
-
 
     @staticmethod
     def parseGPRSPushXml(xmlData):
@@ -196,7 +193,6 @@ class GPRSPush(object):
 
             return data
 
-
         def structData(node):
             data = dict()
             for index, child in enumerate(node):
@@ -213,12 +209,10 @@ class GPRSPush(object):
                     data[index] = child.attrib['Value']
             return data
 
-
         root = ET.fromstring(xmlData)
         # if root.tag in ['EventNotificationRequest']:
         #     return arrayData(root[1])
         return arrayData(root)
-
 
     @staticmethod
     def parseEventNotificationRequest(xmlData):
@@ -249,13 +243,12 @@ class GPRSPush(object):
 
         return header, response
 
-
-
     def receivePush(self):
         def getIPv4ByPrefix(prefix='10.'):
             for ip in socket.gethostbyname_ex(socket.gethostname())[2]:
                 if ip.startswith(prefix):
                     return ip
+
         try:
             with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 s.settimeout(int(self.timeout))
@@ -273,7 +266,6 @@ class GPRSPush(object):
                 return response
         except socket.timeout:
             return ""
-
 
     def analysisForDeer(self):
         """
@@ -293,7 +285,6 @@ class GPRSPush(object):
 
         info(f"** GPRS Push PDU: 'Not receive data!' **")
         return ''
-
 
     def analysisForNormal16(self):
         """
@@ -340,7 +331,6 @@ class GPRSPush(object):
 
         info(f"** GPRS Push PDU: 'Not receive data!' **")
         return ''
-
 
     # def analysisForCamel(self):
     #     """
@@ -390,7 +380,6 @@ class GPRSPush(object):
     #     info(f"** GPRS Push PDU: 'Not receive data!' **")
     #     return ''
 
-
     def analysisForCamel(self):
         """
         适用于Camel GPRS Push 的数据
@@ -427,7 +416,6 @@ class GPRSPush(object):
 
         info(f"** GPRS Push PDU: 'Not receive data!' **")
         return ''
-
 
     @formatResponse
     def getPushData(self):

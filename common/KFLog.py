@@ -1,10 +1,9 @@
-#-*- coding:utf-8 -*-
+# -*- coding:utf-8 -*-
 
-import os
+import datetime
 import logging
 import logging.handlers
-import datetime
-
+import os
 
 __all__ = [
     'kfLog',
@@ -17,13 +16,12 @@ __all__ = [
 
 
 class LogConstant:
-
     """日志模块常量"""
-    LOG_DIR = 'logs'                                    # 日志路径
-    LOG_DETAIL_NAME = 'detail.log'                      # 用例执行日志
-    LOG_REPORT_NAME = 'report.log'                      # 用例执行日志
-    MAX_LOG_SIZE_BYTES = 1024 * 1024 * 40               # 日志文件大小(20M)
-    MAX_LOG_NUM = 10                                    # 日志文件保存数量
+    LOG_DIR = 'logs'  # 日志路径
+    LOG_DETAIL_NAME = 'detail.log'  # 用例执行日志
+    LOG_REPORT_NAME = 'report.log'  # 用例执行日志
+    MAX_LOG_SIZE_BYTES = 1024 * 1024 * 40  # 日志文件大小(20M)
+    MAX_LOG_NUM = 10  # 日志文件保存数量
 
     # 写入report文件的日志格式
     # LOG_DETAIL_FORMAT = '%(asctime)s [%(filename)-20s lineno:%(lineno)-4d] %(levelname)5s : %(message)s'
@@ -99,8 +97,9 @@ class KFLog(object):
         return self._reportLogger
 
 
-
 kfLog = KFLog()
+
+
 # debug = kfLog.kfLog.debug
 # info = kfLog.kfLog.info
 # warn = kfLog.kfLog.warning
@@ -118,6 +117,7 @@ def debug(msg, *args, **kwargs):
     sendSignal(msg)
     return kfLog.kfLog.debug(msg, *args, **kwargs)
 
+
 def info(msg, *args, **kwargs):
     msg = msg.replace(r"\u", "")
     sendSignal(msg)
@@ -126,12 +126,12 @@ def info(msg, *args, **kwargs):
     except:
         pass
 
+
 def warn(msg, *args, **kwargs):
     sendSignal(msg)
     return kfLog.kfLog.warning(msg, *args, **kwargs)
 
+
 def error(msg, *args, **kwargs):
     sendSignal(msg)
     return kfLog.kfLog.error(msg, *args, **kwargs)
-
-

@@ -2,8 +2,8 @@
 
 from dlms.DlmsClass import *
 
-class C19IECLocalPortSetup(DlmsClass):
 
+class C19IECLocalPortSetup(DlmsClass):
     attr_index_dict = {
         1: "logical_name",
         2: "default_mode",
@@ -16,10 +16,8 @@ class C19IECLocalPortSetup(DlmsClass):
         9: "pass_w5",
     }
 
-
     def __init__(self, conn, obis=None):
         super().__init__(conn, obis, classId=19)
-
 
     # Attribute of logical_name (No.1)
     @formatResponse
@@ -43,7 +41,6 @@ class C19IECLocalPortSetup(DlmsClass):
             return hex_toOBIS(ret[0]), ret[1]
         return hex_toOBIS(ret[0])
 
-
     @formatResponse
     def check_logical_name(self, ck_data):
         """
@@ -57,7 +54,6 @@ class C19IECLocalPortSetup(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_logical_name(self, data):
         """
@@ -67,7 +63,6 @@ class C19IECLocalPortSetup(DlmsClass):
         :return:            返回一个KFResult对象
         """
         return self.setRequest(1, obis_toHex(data), "OctetString", data)
-
 
     # Attribute of default_mode (No.2)
     @formatResponse
@@ -87,7 +82,6 @@ class C19IECLocalPortSetup(DlmsClass):
             return response
         return response[0]
 
-
     @formatResponse
     def check_default_mode(self, ck_data):
         """
@@ -101,7 +95,6 @@ class C19IECLocalPortSetup(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_default_mode(self, data):
         """
@@ -111,7 +104,6 @@ class C19IECLocalPortSetup(DlmsClass):
         :return:           KFResult 对象
         """
         return self.setRequest(2, dec_toHexStr(data, 2), "Enum", data)
-
 
     # Attribute of default_baud (No.3)
     @formatResponse
@@ -131,7 +123,6 @@ class C19IECLocalPortSetup(DlmsClass):
             return response
         return response[0]
 
-
     @formatResponse
     def check_default_baud(self, ck_data):
         """
@@ -145,7 +136,6 @@ class C19IECLocalPortSetup(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_default_baud(self, data):
         """
@@ -155,7 +145,6 @@ class C19IECLocalPortSetup(DlmsClass):
         :return:           KFResult 对象
         """
         return self.setRequest(3, dec_toHexStr(data, 2), "Enum", data)
-
 
     # Attribute of prop_baud (No.4)
     @formatResponse
@@ -175,7 +164,6 @@ class C19IECLocalPortSetup(DlmsClass):
             return response
         return response[0]
 
-
     @formatResponse
     def check_prop_baud(self, ck_data):
         """
@@ -189,7 +177,6 @@ class C19IECLocalPortSetup(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_prop_baud(self, data):
         """
@@ -199,7 +186,6 @@ class C19IECLocalPortSetup(DlmsClass):
         :return:           KFResult 对象
         """
         return self.setRequest(4, dec_toHexStr(data, 2), "Enum", data)
-
 
     # Attribute of response_time (No.5)
     @formatResponse
@@ -219,7 +205,6 @@ class C19IECLocalPortSetup(DlmsClass):
             return response
         return response[0]
 
-
     @formatResponse
     def check_response_time(self, ck_data):
         """
@@ -233,7 +218,6 @@ class C19IECLocalPortSetup(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_response_time(self, data):
         """
@@ -243,7 +227,6 @@ class C19IECLocalPortSetup(DlmsClass):
         :return:           KFResult 对象
         """
         return self.setRequest(5, dec_toHexStr(data, 2), "Enum", data)
-
 
     # Attribute of device_addr (No.6)
     @formatResponse
@@ -263,7 +246,6 @@ class C19IECLocalPortSetup(DlmsClass):
             return response
         return response[0]
 
-
     @formatResponse
     def check_device_addr(self, ck_data):
         """
@@ -278,7 +260,6 @@ class C19IECLocalPortSetup(DlmsClass):
 
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_device_addr(self, data):
         """
@@ -288,7 +269,6 @@ class C19IECLocalPortSetup(DlmsClass):
         :return:           KFResult 对象
         """
         return self.setRequest(6, data, "OctetString", data)
-
 
     # Attribute of pass_p1 (No.7)
     @formatResponse
@@ -308,7 +288,6 @@ class C19IECLocalPortSetup(DlmsClass):
             return response
         return response[0]
 
-
     @formatResponse
     def check_pass_p1(self, ck_data):
         """
@@ -323,7 +302,6 @@ class C19IECLocalPortSetup(DlmsClass):
 
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_pass_p1(self, data):
         """
@@ -333,7 +311,6 @@ class C19IECLocalPortSetup(DlmsClass):
         :return:           KFResult 对象
         """
         return self.setRequest(7, data, "OctetString", data)
-
 
     # Attribute of pass_p2 (No.8)
     @formatResponse
@@ -353,7 +330,6 @@ class C19IECLocalPortSetup(DlmsClass):
             return response
         return response[0]
 
-
     @formatResponse
     def check_pass_p2(self, ck_data):
         """
@@ -368,7 +344,6 @@ class C19IECLocalPortSetup(DlmsClass):
 
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_pass_p2(self, data):
         """
@@ -378,7 +353,6 @@ class C19IECLocalPortSetup(DlmsClass):
         :return:           KFResult 对象
         """
         return self.setRequest(8, data, "OctetString", data)
-
 
     # Attribute of pass_w5 (No.9)
     @formatResponse
@@ -398,7 +372,6 @@ class C19IECLocalPortSetup(DlmsClass):
             return response
         return response[0]
 
-
     @formatResponse
     def check_pass_w5(self, ck_data):
         """
@@ -413,7 +386,6 @@ class C19IECLocalPortSetup(DlmsClass):
 
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_pass_w5(self, data):
         """
@@ -423,4 +395,3 @@ class C19IECLocalPortSetup(DlmsClass):
         :return:           KFResult 对象
         """
         return self.setRequest(9, data, "OctetString", data)
-

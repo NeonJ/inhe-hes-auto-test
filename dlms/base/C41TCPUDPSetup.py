@@ -2,8 +2,8 @@
 
 from dlms.DlmsClass import *
 
-class C41TCPUDPSetup(DlmsClass):
 
+class C41TCPUDPSetup(DlmsClass):
     attr_index_dict = {
         1: "logical_name",
         2: "tcp_udp_port",
@@ -15,7 +15,6 @@ class C41TCPUDPSetup(DlmsClass):
 
     def __init__(self, conn, obis=None):
         super().__init__(conn, obis, classId=41)
-
 
     # Attribute of logical_name
     @formatResponse
@@ -40,7 +39,6 @@ class C41TCPUDPSetup(DlmsClass):
             return hex_toOBIS(ret[0]), ret[1]
         return hex_toOBIS(ret[0])
 
-
     @formatResponse
     def check_logical_name(self, ck_data):
         """
@@ -54,7 +52,6 @@ class C41TCPUDPSetup(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_logical_name(self, data):
         """
@@ -64,7 +61,6 @@ class C41TCPUDPSetup(DlmsClass):
         :return:            返回一个KFResult对象
         """
         return self.setRequest(1, obis_toHex(data), "OctetString", data)
-
 
     # Attribute of TCP-UDP_port
     @formatResponse
@@ -89,7 +85,6 @@ class C41TCPUDPSetup(DlmsClass):
             return hex_toDec(ret[0]), ret[1]
         return hex_toDec(ret[0])
 
-
     @formatResponse
     def check_tcp_udp_port(self, ck_data):
         """
@@ -103,7 +98,6 @@ class C41TCPUDPSetup(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_tcp_udp_port(self, data):
         """
@@ -113,7 +107,6 @@ class C41TCPUDPSetup(DlmsClass):
         :return:           KFResult 对象
         """
         return self.setRequest(2, dec_toHexStr(data, 4), "LongUnsigned", data)
-
 
     # Attribute of IP_reference
     @formatResponse
@@ -138,7 +131,6 @@ class C41TCPUDPSetup(DlmsClass):
             return hex_toOBIS(ret[0]), ret[1]
         return hex_toOBIS(ret[0])
 
-
     @formatResponse
     def check_ip_reference(self, ck_data):
         """
@@ -152,7 +144,6 @@ class C41TCPUDPSetup(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_ip_reference(self, data):
         """
@@ -162,7 +153,6 @@ class C41TCPUDPSetup(DlmsClass):
         :return:            KFResult 对象
         """
         return self.setRequest(3, obis_toHex(data), "OctetString", data)
-
 
     # Attribute of MSS
     @formatResponse
@@ -187,7 +177,6 @@ class C41TCPUDPSetup(DlmsClass):
             return hex_toDec(ret[0]), ret[1]
         return hex_toDec(ret[0])
 
-
     @formatResponse
     def check_mss(self, ck_data):
         """
@@ -201,7 +190,6 @@ class C41TCPUDPSetup(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_mss(self, data):
         """
@@ -211,7 +199,6 @@ class C41TCPUDPSetup(DlmsClass):
         :return:          KFResult 对象
         """
         return self.setRequest(4, dec_toHexStr(data, 4), "LongUnsigned", data)
-
 
     # Attribute of nb_of_sim_conn
     @formatResponse
@@ -236,7 +223,6 @@ class C41TCPUDPSetup(DlmsClass):
             return hex_toDec(ret[0]), ret[1]
         return hex_toDec(ret[0])
 
-
     @formatResponse
     def check_nb_of_sim_conn(self, ck_data):
         """
@@ -250,7 +236,6 @@ class C41TCPUDPSetup(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_nb_of_sim_conn(self, data):
         """
@@ -260,7 +245,6 @@ class C41TCPUDPSetup(DlmsClass):
         :return:                  KFResult对象
         """
         return self.setRequest(5, dec_toHexStr(data, 2), "Unsigned", data)
-
 
     # Attribute of inactivity_time_out
     @formatResponse
@@ -285,7 +269,6 @@ class C41TCPUDPSetup(DlmsClass):
             return hex_toDec(ret[0]), ret[1]
         return hex_toDec(ret[0])
 
-
     @formatResponse
     def check_inactivity_time_out(self, ck_data):
         """
@@ -298,7 +281,6 @@ class C41TCPUDPSetup(DlmsClass):
         if int(ret) == int(ck_data):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
-
 
     @formatResponse
     def set_inactivity_time_out(self, data):

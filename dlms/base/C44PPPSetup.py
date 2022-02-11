@@ -2,8 +2,8 @@
 
 from dlms.DlmsClass import *
 
-class C44PPPSetup(DlmsClass):
 
+class C44PPPSetup(DlmsClass):
     attr_index_dict = {
         1: "logical_name",
         2: "phy_reference",
@@ -14,7 +14,6 @@ class C44PPPSetup(DlmsClass):
 
     def __init__(self, conn, obis=None):
         super().__init__(conn, obis, classId=44)
-
 
     # Attribute of logical_name
     @formatResponse
@@ -38,7 +37,6 @@ class C44PPPSetup(DlmsClass):
             return hex_toOBIS(ret[0]), ret[1]
         return hex_toOBIS(ret[0])
 
-
     @formatResponse
     def check_logical_name(self, ck_data):
         """
@@ -52,7 +50,6 @@ class C44PPPSetup(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_logical_name(self, data):
         """
@@ -62,7 +59,6 @@ class C44PPPSetup(DlmsClass):
         :return:             KFResult对象
         """
         return self.setRequest(1, obis_toHex(data), "OctetString", data)
-
 
     # Attribute of PHY_reference
     @formatResponse
@@ -87,7 +83,6 @@ class C44PPPSetup(DlmsClass):
             return hex_toOBIS(ret[0]), ret[1]
         return hex_toOBIS(ret[0])
 
-
     @formatResponse
     def check_phy_reference(self, ck_data):
         """
@@ -101,7 +96,6 @@ class C44PPPSetup(DlmsClass):
             return KFResult(True, "")
         return KFResult(False, f"{ret} not equal to {ck_data}")
 
-
     @formatResponse
     def set_phy_reference(self, data):
         """
@@ -111,7 +105,6 @@ class C44PPPSetup(DlmsClass):
         :return:             KFResult对象
         """
         return self.setRequest(2, obis_toHex(data), "OctetString", data)
-
 
     # Attribute of LCP_options
     @formatResponse
@@ -138,7 +131,6 @@ class C44PPPSetup(DlmsClass):
             return response
         return response[0]
 
-
     @formatResponse
     def check_lcp_options(self, ck_data):
         """
@@ -153,7 +145,6 @@ class C44PPPSetup(DlmsClass):
         }
         """
         return checkResponsValue(self.get_lcp_options(), ck_data)
-
 
     @formatResponse
     def set_lcp_options(self, data):
@@ -180,7 +171,6 @@ class C44PPPSetup(DlmsClass):
                     etree.SubElement(struct, "LongUnsigned").set("Value", dec_toHexStr(subItem, 4))
         return self.setRequest(3, array, "Array", data)
 
-
     # Attribute of IPCP_options
     @formatResponse
     def get_ipcp_options(self, dataType=False, response=None):
@@ -206,7 +196,6 @@ class C44PPPSetup(DlmsClass):
             return response
         return response[0]
 
-
     @formatResponse
     def check_ipcp_options(self, ck_data):
         """
@@ -221,7 +210,6 @@ class C44PPPSetup(DlmsClass):
         }
         """
         return checkResponsValue(self.get_ipcp_options(), ck_data)
-
 
     @formatResponse
     def set_ipcp_options(self, data):
@@ -248,7 +236,6 @@ class C44PPPSetup(DlmsClass):
                     etree.SubElement(struct, "LongUnsigned").set("Value", dec_toHexStr(subItem, 4))
         return self.setRequest(4, array, "Array", data)
 
-
     # Attribute of PPP_authentication
     @formatResponse
     def get_ppp_authentication(self, dataType=False, response=None):
@@ -274,7 +261,6 @@ class C44PPPSetup(DlmsClass):
             return response
         return response[0]
 
-
     @formatResponse
     def check_ppp_authentication(self, ck_data):
         """
@@ -289,7 +275,6 @@ class C44PPPSetup(DlmsClass):
         }
         """
         return checkResponsValue(self.get_ppp_authentication(), ck_data)
-
 
     @formatResponse
     def set_ppp_authentication(self, data):

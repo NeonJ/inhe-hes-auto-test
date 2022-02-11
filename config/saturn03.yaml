@@ -13,7 +13,7 @@ HESAPI:
   url: http://saturn03.hes-api.kaifa.tst/
 
 TaskData:
-  REG_CHECK_COMM: [{"registerId": "9300"}]
+  REG_CHECK_COMM: [ { "registerId": "9300" } ]
 
 Request:
   deviceNo: 1KFM5600000003

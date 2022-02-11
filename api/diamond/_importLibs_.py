@@ -1,8 +1,5 @@
 # -*- coding: UTF-8 -*-
 
-from api._importLibs_ import *
-
-
 try:
     import dlms.diamond
 except ImportError:
