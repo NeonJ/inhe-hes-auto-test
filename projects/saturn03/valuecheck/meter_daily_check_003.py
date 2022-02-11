@@ -55,13 +55,13 @@ def meter_daily_check_003():
                                   accessSelector=1).request_json()
     response = requests.post(url=HESAPI(Address=user_config['HESAPI']['url']).requestAddress(),
                              headers={"Content-Type": "application/json"},
-                             data=json.dumps(RequestQueue, indent=4), timeout=40)
+                             data=json.dumps(RequestQueue, indent=4), timeout=66)
     if response.status_code == 504:
         print('504 Error and try again')
         time.sleep(5)
         response = requests.post(url=HESAPI(Address=user_config['HESAPI']['url']).requestAddress(),
                                  headers={"Content-Type": "application/json"},
-                                 data=json.dumps(RequestQueue, indent=4), timeout=40)
+                                 data=json.dumps(RequestQueue, indent=4), timeout=66)
     if json.loads(response.text).get('reply')['replyCode'] != 200:
         # print(json.loads(response.text).get('reply')['replyDesc'])
         error(f"** Read Failed **")
@@ -104,13 +104,13 @@ def meter_daily_check_003():
                                   accessSelector=1).request_json()
     response = requests.post(url=HESAPI(Address=user_config['HESAPI']['url']).requestAddress(),
                              headers={"Content-Type": "application/json"},
-                             data=json.dumps(RequestQueue, indent=4), timeout=40)
+                             data=json.dumps(RequestQueue, indent=4), timeout=66)
     if response.status_code == 504:
         print('504 Error and try again')
         time.sleep(5)
         response = requests.post(url=HESAPI(Address=user_config['HESAPI']['url']).requestAddress(),
                                  headers={"Content-Type": "application/json"},
-                                 data=json.dumps(RequestQueue, indent=4), timeout=40)
+                                 data=json.dumps(RequestQueue, indent=4), timeout=66)
     if json.loads(response.text).get('reply')['replyCode'] != 200:
         # print(json.loads(response.text).get('reply')['replyDesc'])
         error(f"** Read Failed **")

@@ -68,7 +68,7 @@ def hes_register_check_001():
             while DeviceBusy == 1:
                 response = requests.post(url=HESAPI(Address=user_config['HESAPI']['url']).requestAddress(),
                                          headers={"Content-Type": "application/json"},
-                                         data=json.dumps(RequestQueue, indent=4), timeout=40)
+                                         data=json.dumps(RequestQueue, indent=4), timeout=66)
                 if response.status_code == 504:
                     print('504 Error and try again')
                     time.sleep(5)
@@ -107,7 +107,7 @@ def hes_register_check_001():
             while DeviceBusy == 1:
                 response = requests.post(url=HESAPI(Address=user_config['HESAPI']['url']).requestAddress(),
                                          headers={"Content-Type": "application/json"},
-                                         data=json.dumps(RequestQueue, indent=4), timeout=40)
+                                         data=json.dumps(RequestQueue, indent=4), timeout=66)
                 if response.status_code == 504:
                     print('504 Error and try again')
                     time.sleep(5)
@@ -146,14 +146,14 @@ def hes_register_check_001():
                                           accessSelector=user_config['Request']['accessSelector']).request_json()
             # response = requests.post(url=HESAPI(Address=user_config['HESAPI']['url']).requestAddress(),
             #                          headers={"Content-Type": "application/json"},
-            #                          data=json.dumps(RequestQueue, indent=4), timeout=40)
+            #                          data=json.dumps(RequestQueue, indent=4), timeout=66)
             # for payload in json.loads(response.text).get('payload'):
             #     for data in payload.get('data'):
             #         print('Read Result: ', data.get('resultDesc'))
             while DeviceBusy == 1:
                 response = requests.post(url=HESAPI(Address=user_config['HESAPI']['url']).requestAddress(),
                                          headers={"Content-Type": "application/json"},
-                                         data=json.dumps(RequestQueue), timeout=40)
+                                         data=json.dumps(RequestQueue), timeout=66)
                 if response.status_code == 504:
                     print('504 Error and try again')
                     time.sleep(5)
@@ -194,7 +194,7 @@ def hes_register_check_001():
             while DeviceBusy == 1:
                 response = requests.post(url=HESAPI(Address=user_config['HESAPI']['url']).requestAddress(),
                                          headers={"Content-Type": "application/json"},
-                                         data=json.dumps(RequestQueue), timeout=40)
+                                         data=json.dumps(RequestQueue), timeout=66)
                 if response.status_code == 504:
                     print('504 Error and try again')
                     time.sleep(5)

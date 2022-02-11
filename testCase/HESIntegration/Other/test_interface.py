@@ -29,7 +29,7 @@ class Test_Meter_Status:
             time.sleep(3)
             response = requests.get(url=setting[Project.name]['api_url'] + data,
                                     headers={"Content-Type": "application/json"},
-                                    timeout=40)
+                                    timeout=66)
         assert json.loads(response.text)['code'] == 200
 
     @hesSyncTest
@@ -40,14 +40,14 @@ class Test_Meter_Status:
         data = "/OnlineDevice/GetOnlineDevice?deviceNo={}".format(setting[Project.name]['meter_no'])
         response = requests.get(url=setting[Project.name]['api_url'] + data,
                                 headers={"Content-Type": "application/json"},
-                                timeout=40)
+                                timeout=66)
         time.sleep(1)
         if response.status_code == 504 or response.status_code == 500:
             print('504 Error and try again')
             time.sleep(3)
             response = requests.get(url=setting[Project.name]['api_url'] + data,
                                     headers={"Content-Type": "application/json"},
-                                    timeout=40)
+                                    timeout=66)
         assert json.loads(response.text)['DeviceNo'] == setting[Project.name]['meter_no']
 
     @hesSyncTest
@@ -58,14 +58,14 @@ class Test_Meter_Status:
         data = "/Mdm/getMeterOnlineStatus?meterNo={}".format(setting[Project.name]['meter_no'])
         response = requests.get(url=setting[Project.name]['api_url'] + data,
                                 headers={"Content-Type": "application/json"},
-                                timeout=40)
+                                timeout=66)
         time.sleep(1)
         if response.status_code == 504 or response.status_code == 500:
             print('504 Error and try again')
             time.sleep(3)
             response = requests.get(url=setting[Project.name]['api_url'] + data,
                                     headers={"Content-Type": "application/json"},
-                                    timeout=40)
+                                    timeout=66)
         assert json.loads(response.text)['desc'] == "Online"
 
     @hesSyncTest
@@ -76,14 +76,14 @@ class Test_Meter_Status:
         data = "/Mdm/getDeviceNoOnlineStatus?deviceNo={}".format(setting[Project.name]['meter_no'])
         response = requests.get(url=setting[Project.name]['api_url'] + data,
                                 headers={"Content-Type": "application/json"},
-                                timeout=40)
+                                timeout=66)
         time.sleep(1)
         if response.status_code == 504 or response.status_code == 500:
             print('504 Error and try again')
             time.sleep(3)
             response = requests.get(url=setting[Project.name]['api_url'] + data,
                                     headers={"Content-Type": "application/json"},
-                                    timeout=40)
+                                    timeout=66)
         assert json.loads(response.text)['desc'] == "Online"
 
     @hesSyncTest
@@ -94,14 +94,14 @@ class Test_Meter_Status:
         data = "/Monitor/GetMasterCoreState"
         response = requests.get(url=setting[Project.name]['api_url'] + data,
                                 headers={"Content-Type": "application/json"},
-                                timeout=40)
+                                timeout=66)
         time.sleep(1)
         if response.status_code == 504 or response.status_code == 500:
             print('504 Error and try again')
             time.sleep(3)
             response = requests.get(url=setting[Project.name]['api_url'] + data,
                                     headers={"Content-Type": "application/json"},
-                                    timeout=40)
+                                    timeout=66)
         assert response.status_code == 200
 
     @hesSyncTest
@@ -112,14 +112,14 @@ class Test_Meter_Status:
         data = "/Monitor/SuspendMasterCoreTask?signal=2"  # 暂停
         response = requests.get(url=setting[Project.name]['api_url'] + data,
                                 headers={"Content-Type": "application/json"},
-                                timeout=40)
+                                timeout=66)
         time.sleep(1)
         if response.status_code == 504 or response.status_code == 500:
             print('504 Error and try again')
             time.sleep(3)
             response = requests.get(url=setting[Project.name]['api_url'] + data,
                                     headers={"Content-Type": "application/json"},
-                                    timeout=40)
+                                    timeout=66)
         assert response.status_code == 200
 
     @hesSyncTest
@@ -130,12 +130,12 @@ class Test_Meter_Status:
         data = "/Monitor/SuspendMasterCoreTask?signal=1"  # 启动
         response = requests.get(url=setting[Project.name]['api_url'] + data,
                                 headers={"Content-Type": "application/json"},
-                                timeout=40)
+                                timeout=66)
         time.sleep(1)
         if response.status_code == 504 or response.status_code == 500:
             print('504 Error and try again')
             time.sleep(3)
             response = requests.get(url=setting[Project.name]['api_url'] + data,
                                     headers={"Content-Type": "application/json"},
-                                    timeout=40)
+                                    timeout=66)
         assert response.status_code == 200

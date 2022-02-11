@@ -30,7 +30,7 @@ class Test_HES_Register_Check:
         while DeviceBusy == 1:
             response = requests.post(url=HESAPI(Address=setting[Project.name]['api_url']).requestAddress(),
                                      headers={"Content-Type": "application/json"},
-                                     json=requestData, timeout=40)
+                                     json=requestData, timeout=66)
             time.sleep(1)
             if response.status_code == 504:
                 print('504 Error and try again')
@@ -68,7 +68,7 @@ class Test_HES_Register_Check:
         while DeviceBusy == 1:
             response = requests.post(url=HESAPI(Address=setting[Project.name]['api_url']).requestAddress(),
                                      headers={"Content-Type": "application/json"},
-                                     json=requestData, timeout=40)
+                                     json=requestData, timeout=66)
             time.sleep(1)
             if response.status_code == 504:
                 print('504 Error and try again')
@@ -105,7 +105,7 @@ class Test_HES_Register_Check:
         while DeviceBusy == 1:
             response = requests.post(url=HESAPI(Address=setting[Project.name]['api_url']).requestAddress(),
                                      headers={"Content-Type": "application/json"},
-                                     json=requestData, timeout=40)
+                                     json=requestData, timeout=66)
             time.sleep(1)
             if response.status_code == 504:
                 print('504 Error and try again')

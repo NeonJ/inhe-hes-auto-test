@@ -26,7 +26,7 @@ class Test_Meter_Profile:
         while DeviceBusy == 1:
             response = requests.post(url=HESAPI(Address=setting[Project.name]['api_url']).requestAddress(),
                                      headers={"Content-Type": "application/json"},
-                                     json=requestData, timeout=40)
+                                     json=requestData, timeout=66)
             time.sleep(1)
             if response.status_code == 504 or json.loads(response.text).get('payload')[0].get(
                     'desc') == 'Device Busying !':
@@ -91,7 +91,7 @@ class Test_Meter_Profile:
         while DeviceBusy == 1:
             response = requests.post(url=HESAPI(Address=setting[Project.name]['api_url']).requestAddress(),
                                      headers={"Content-Type": "application/json"},
-                                     json=requestData, timeout=40)
+                                     json=requestData, timeout=66)
             time.sleep(1)
             if response.status_code == 504 or json.loads(response.text).get('payload')[0].get(
                     'desc') == 'Device Busying !':
@@ -99,7 +99,7 @@ class Test_Meter_Profile:
                 time.sleep(3)
                 response = requests.post(url=HESAPI(Address=setting[Project.name]['api_url']).requestAddress(),
                                          headers={"Content-Type": "application/json"},
-                                         json=requestData, timeout=40)
+                                         json=requestData, timeout=66)
                 continue
             if json.loads(response.text).get('reply')['replyCode'] != 200:
                 assert False
@@ -120,7 +120,7 @@ class Test_Meter_Profile:
         while DeviceBusy == 1:
             response = requests.post(url=HESAPI(Address=setting[Project.name]['api_url']).requestAddress(),
                                      headers={"Content-Type": "application/json"},
-                                     json=requestData, timeout=40)
+                                     json=requestData, timeout=66)
             time.sleep(1)
             if response.status_code == 504 or json.loads(response.text).get('payload')[0].get(
                     'desc') == 'Device Busying !':
@@ -128,7 +128,7 @@ class Test_Meter_Profile:
                 time.sleep(3)
                 response = requests.post(url=HESAPI(Address=setting[Project.name]['api_url']).requestAddress(),
                                          headers={"Content-Type": "application/json"},
-                                         json=requestData, timeout=40)
+                                         json=requestData, timeout=66)
                 continue
             if json.loads(response.text).get('reply')['replyCode'] != 200:
                 assert False
@@ -152,7 +152,7 @@ class Test_Meter_Profile:
         while DeviceBusy == 1:
             response = requests.post(url=HESAPI(Address=setting[Project.name]['api_url']).requestAddress(),
                                      headers={"Content-Type": "application/json"},
-                                     json=requestData, timeout=40)
+                                     json=requestData, timeout=66)
             time.sleep(1)
             if response.status_code == 504 or json.loads(response.text).get('payload')[0].get(
                     'desc') == 'Device Busying !':
@@ -160,7 +160,7 @@ class Test_Meter_Profile:
                 time.sleep(3)
                 response = requests.post(url=HESAPI(Address=setting[Project.name]['api_url']).requestAddress(),
                                          headers={"Content-Type": "application/json"},
-                                         json=requestData, timeout=40)
+                                         json=requestData, timeout=66)
                 continue
             if json.loads(response.text).get('reply')['replyCode'] != 200:
                 assert False
@@ -185,7 +185,7 @@ class Test_Meter_Profile:
         while DeviceBusy == 1:
             response = requests.post(url=HESAPI(Address=setting[Project.name]['api_url']).requestAddress(),
                                      headers={"Content-Type": "application/json"},
-                                     json=requestData, timeout=40)
+                                     json=requestData, timeout=66)
             time.sleep(1)
             if response.status_code == 504 or json.loads(response.text).get('payload')[0].get(
                     'desc') == 'Device Busying !':
@@ -193,7 +193,7 @@ class Test_Meter_Profile:
                 time.sleep(3)
                 response = requests.post(url=HESAPI(Address=setting[Project.name]['api_url']).requestAddress(),
                                          headers={"Content-Type": "application/json"},
-                                         json=requestData, timeout=40)
+                                         json=requestData, timeout=66)
                 continue
             if json.loads(response.text).get('reply')['replyCode'] != 200:
                 assert False
