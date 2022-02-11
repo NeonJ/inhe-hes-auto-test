@@ -32,7 +32,7 @@ class Test_SetMeterTariff:
         #查询生成Core执行的任务的 AUTO_RUN_ID
         sql_running = "select AUTO_RUN_ID from H_TASK_RUNNING where NODE_NO='{}' and JOB_TYPE='SET_TARIFF_CONTENT'".format(setting[Project.name]['meter_no'])
         db_queue = get_database.orcl_fetchall_dict(sql_running)
-        while len(db_queue) == 0 and count < 3:
+        while len(db_queue) == 0 and count < 5:
             time.sleep(5)
             db_queue = get_database.orcl_fetchall_dict(sql_running)
             print(db_queue)

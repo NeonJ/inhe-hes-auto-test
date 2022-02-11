@@ -79,7 +79,7 @@ setting = {
 
 class Project:
     name = 'bamboo01'  # 与下面setting项目key对应
-    tag = 'hesSyncTest1'  # 对应1· comms.marker  hesSyncTest or hesAsyncTest HES-Web
+    tag = 'hesSyncTest or hesAsyncTest'  # 对应1· comms.marker  hesSyncTest or hesAsyncTest HES-Web
     path = '/'  # 对testData目录接口对应
     continue_last_check = False  # 是否断点续测OBIS
 

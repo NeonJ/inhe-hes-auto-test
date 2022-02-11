@@ -5,7 +5,7 @@
 # version    ：python 3.7
 """
 
-import pytest, allure, time, datetime, requests, random
+import pytest, allure, time, datetime, requests, json
 from common.HESAPI import *
 from common.marker import *
 from config.settings import *
