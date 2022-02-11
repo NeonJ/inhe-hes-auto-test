@@ -28,7 +28,7 @@ if Project.name is not None:
     if Project.tag:
         # 指定tag和项目
         os.system(
-            "pytest   --json-report   -v  testCase/%s   -m  \"%s\"    --alluredir  ./result/" % (
+            "pytest --reruns 1 --reruns-delay 2  --json-report   -v  testCase/%s   -m  \"%s\"    --alluredir  ./result/" % (
                 Project.path, Project.tag))
     else:
         # 不指定tag

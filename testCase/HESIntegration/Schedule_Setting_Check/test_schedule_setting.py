@@ -5,7 +5,7 @@
 # Author     ：cao jiann
 # version    ：python 3.7
 """
-import pytest, allure, time, datetime, json, random, urllib
+import pytest, allure, time, datetime, json, random, requests
 from common.marker import *
 from common.HESAPI import *
 from config.settings import *

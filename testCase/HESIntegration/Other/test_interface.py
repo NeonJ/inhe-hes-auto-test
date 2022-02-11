@@ -33,7 +33,7 @@ class Test_Meter_Status:
         assert json.loads(response.text)['code'] == 200
 
     @hesSyncTest
-    def test_get_device_online(self):
+    def test_get_device_online1(self):
         """
         验证接口获取电表和DCU上下线状态 GetOnlineDevice
         """
@@ -69,7 +69,7 @@ class Test_Meter_Status:
         assert json.loads(response.text)['desc'] == "Online"
 
     @hesSyncTest
-    def test_get_device_online2(self):
+    def test_get_device_online3(self):
         """
         验证接口获取电表和DCU上下线状态 getDeviceNoOnlineStatus
         """
