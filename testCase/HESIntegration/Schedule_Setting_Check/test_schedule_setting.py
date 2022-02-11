@@ -508,7 +508,7 @@ class Test_Schedule_Setting:
             assert re.json()['code'] == 200
             assert re.json()['desc'] == 'OK'
 
-    @hesAsyncTest1
+    @hesAsyncTest
     def test_meter_schedule_setting_event(self, get_database, token, get_event_standard):
         """
         验证Schedule Setting生成采集GPRS电表事件采集
@@ -589,7 +589,7 @@ class Test_Schedule_Setting:
                 re = requests.get(url, json=data, headers=token)
                 time.sleep(10)
                 count = count + 1
-            assert re.json()['data']['totalRow'] == len(obis)
+            assert re.json()['data']['totalRow'] == len(obis) * 2
             # assert obis in re.json()['data']['pageData'][0]['remark']  可以添加采集profiel obis的对比
 
         with allure.step('查看任务执行状态'):
