@@ -27,7 +27,7 @@
           "data": [
             {
               "clientId": null,
-              "registerId": "Monthly Billing Profile",
+              "registerId": "Frozen Monthly Data",
               "accessSelector": 0,
               "parameter": {
                 "dataFetchMode": 2,

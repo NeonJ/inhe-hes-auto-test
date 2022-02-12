@@ -27,7 +27,7 @@
           "data": [
             {
               "clientId": null,
-              "registerId": "Load Profile",
+              "registerId": "Energy load profile",
               "accessSelector": 0,
               "parameter": {
                 "dataFetchMode": 2,
@@ -249,7 +249,7 @@
           "data": [
             {
               "clientId": null,
-              "registerId": "Quality Profile",
+              "registerId": "Power Quality Load Profile",
               "accessSelector": 0,
               "parameter": {
                 "dataFetchMode": 2,

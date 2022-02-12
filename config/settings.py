@@ -83,7 +83,7 @@ setting = {
         "db_service": "ami_octopus_prod_qa",
         "db_database": "ami_db",
         "meter_no": "30105184",
-        "api_url": "http://hes-api.octopus02.kaifa.tst",
+        "api_url": "http://10.32.233.31:30018",
         "web_url": "http://10.32.233.31:30530",
         "kafka_url": "10.32.233.31:30553",
         "ami_user": "dmms",
@@ -106,6 +106,7 @@ class Project:
     tag = 'hesSyncTest'  # 对应1· comms.marker  hesSyncTest or hesAsyncTest HES-Web
     path = '/'  # 对testData目录接口对应
     continue_last_check = False  # 是否断点续测OBIS
+
 
     obis_sql1 = "select register_id, class_id, index_id, register_type,data_type_int, rw from "
     obis_sql2 = " where PTL_TYPE = (select PTL_TYPE from c_ar_model where MODEL_CODE = (select model_code from c_ar_meter where meter_no = '{}'))".format(
