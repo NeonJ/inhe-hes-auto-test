@@ -28,7 +28,7 @@ if Project.name is not None:
     if Project.tag:
         # 指定tag和项目
         os.system(
-            "pytest --reruns 1 --reruns-delay 2  --json-report   -v  testCase/%s   -m  \"%s\"    --alluredir  ./result/" % (
+            "pytest  --json-report   -v  testCase/%s   -m  \"%s\"    --alluredir  ./result/" % (
                 Project.path, Project.tag))
     else:
         # 不指定tag
@@ -36,17 +36,20 @@ if Project.name is not None:
 else:
     print('settings文件参数错误，name是必填参数')
 
+
+
 buildOrder, old_data = get_dirname()
 environment()
 # 报告生成
-# if os.listdir('./result') != []:
-#     os.system("allure  generate  ./result/  -o  ./report/%s  --clean" % time.strftime('%Y%m%d%H%M%S',time.localtime()))
-# else:
-#
-#     print('无结果数据，无法生成报告')
+if os.listdir('./result') != []:
+    os.system("allure  generate  ./result/  -o  ./report/%s  --clean" % time.strftime('%Y%m%d%H%M%S',time.localtime()))
+else:
+
+    print('无结果数据，无法生成报告')
 
 if os.listdir('./result') != []:
     os.system("allure  generate  ./result/  -o  ./report/allure_plus/%s  --clean" % buildOrder)
+
     all_data, reportUrl = update_trend_data(buildOrder, old_data)
 else:
 

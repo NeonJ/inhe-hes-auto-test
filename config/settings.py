@@ -73,13 +73,37 @@ setting = {
         "pq_entries": 1440,
         "pq_len": 5,
         "event_entries": 3
+    },
+    "octopus02": {
+        "db_source": "Oracle",
+        "db_host": "10.32.233.209",
+        "db_port": 1521,
+        "db_user": "empower",
+        "db_pwd": "empower",
+        "db_service": "ami_octopus_prod_qa",
+        "db_database": "ami_db",
+        "meter_no": "30105184",
+        "api_url": "http://hes-api.octopus02.kaifa.tst",
+        "web_url": "http://10.32.233.31:30530",
+        "kafka_url": "10.32.233.31:30553",
+        "ami_user": "dmms",
+        "ami_passwd": "kaifa",
+        "daily_entries": 90,
+        "daily_len": 21,
+        "monthly_entries": 15,
+        "monthly_len": 21,
+        "lp_entries": 4320,
+        "lp_len": 10,
+        "pq_entries": 1440,
+        "pq_len": 5,
+        "event_entries": 3
     }
 }
 
 
 class Project:
-    name = 'empower'  # 与下面setting项目key对应
-    tag = 'hesSyncTest or hesAsyncTest'  # 对应1· comms.marker  hesSyncTest or hesAsyncTest HES-Web
+    name = 'octopus02'  # 与下面setting项目key对应
+    tag = 'hesSyncTest'  # 对应1· comms.marker  hesSyncTest or hesAsyncTest HES-Web
     path = '/'  # 对testData目录接口对应
     continue_last_check = False  # 是否断点续测OBIS
 
