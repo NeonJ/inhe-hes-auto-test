@@ -27,7 +27,7 @@
           "data": [
             {
               "clientId": null,
-              "registerId": "Monthly Billing Profile",
+              "registerId": "Contract Monthly Billing Profile",
               "accessSelector": 0,
               "parameter": {
                 "dataFetchMode": 2,
