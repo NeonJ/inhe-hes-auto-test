@@ -27,7 +27,7 @@
           "data": [
             {
               "clientId": null,
-              "registerId": "Daily Billing Profile",
+              "registerId": "Contract Daily Billing Profile",
               "accessSelector": 0,
               "parameter": {
                 "dataFetchMode": 2,
