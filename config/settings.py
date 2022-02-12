@@ -89,13 +89,13 @@ setting = {
         "ami_user": "dmms",
         "ami_passwd": "kaifa",
         "daily_entries": 90,
-        "daily_len": 21,
+        "daily_len": 9,
         "monthly_entries": 15,
-        "monthly_len": 21,
+        "monthly_len": 108,
         "lp_entries": 4320,
-        "lp_len": 10,
+        "lp_len": 6,
         "pq_entries": 1440,
-        "pq_len": 5,
+        "pq_len": 10,
         "event_entries": 3
     }
 }
