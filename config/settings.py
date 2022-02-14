@@ -85,7 +85,7 @@ setting = {
         "meter_no": "30105184",
         "api_url": "http://10.32.233.31:30018",
         "web_url": "http://10.32.233.31:30530",
-        "kafka_url": "10.32.233.31:30553",
+        "kafka_url": "10.32.233.31:30012",
         "ami_user": "dmms",
         "ami_passwd": "kaifa",
         "daily_entries": 90,

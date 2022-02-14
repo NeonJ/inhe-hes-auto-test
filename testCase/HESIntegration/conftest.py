@@ -10,6 +10,12 @@ from common.DB import *
 from config.settings import *
 from common.HESAPI import *
 
+# 用例执行间隔
+@pytest.fixture(scope='function', autouse=True)
+def slow_down_tests():
+    yield
+    time.sleep(1)
+
 
 @pytest.fixture(scope='function')
 def meter_init(project):

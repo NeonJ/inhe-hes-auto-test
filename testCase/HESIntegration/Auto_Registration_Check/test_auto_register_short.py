@@ -1,6 +1,6 @@
 # -*-coding:utf-8-*-
 """
-# File       : test_hes_regsiter_check.py
+# File       : test_hes_regsiter_check_short.py
 # Time       ：2021/5/12 14:18
 # Author     ：cao jiann
 # version    ：python 3.7
@@ -12,15 +12,15 @@ from config.settings import *
 from common.UtilTools import *
 
 
-class Test_Auto_Register:
+class Test_Auto_Register_Short:
 
-    @hesAsyncTest
-    def test_meter_register(self, get_database, caseData, meter_init):
+    # @hesAsyncTest
+    def test_meter_register_short(self, get_database, caseData, meter_init):
         """
-        验证GPRS电表正常自动注册流程
+        验证GPRS服务端短连接电表正常自动注册流程
         """
         count = 1
-        data = caseData('testData/{}/AutoRegistration/register-event-process.json'.format(Project.name))['gprs_meter']
+        data = caseData('testData/{}/AutoRegistration/register-event-process.json'.format(Project.name))['short_meter']
         requestData = data['pl']
         requestData[0]['dn'] = setting[Project.name]['meter_no']
         producer = KafkaProducer(bootstrap_servers=setting[Project.name]['kafka_url'])
@@ -52,13 +52,13 @@ class Test_Auto_Register:
         print(db_queue)
         assert db_queue[0]['DEV_STATUS'] == 4
 
-    @hesAsyncTest
-    def test_meter_register_exception_1(self, get_database, caseData, meter_init_except_1):
+    # @hesAsyncTest
+    def test_meter_register_short_exception_1(self, get_database, caseData, meter_init_except_1):
         """
         验证GPRS电表未安装不会自动注册
         """
         count = 1
-        data = caseData('testData/{}/AutoRegistration/register-event-process.json'.format(Project.name))['gprs_meter']
+        data = caseData('testData/{}/AutoRegistration/register-event-process.json'.format(Project.name))['short_meter']
         requestData = data['pl']
         requestData[0]['dn'] = setting[Project.name]['meter_no']
         producer = KafkaProducer(bootstrap_servers=setting[Project.name]['kafka_url'])
@@ -89,14 +89,14 @@ class Test_Auto_Register:
             fetch_data_list.append(fetch_data_dict)
         assert 'AR_UNINSTALLED_REG_DEVICE' in fetch_data_list.__str__()
 
-    @hesAsyncTest
-    def test_meter_register_exception_2(self, get_database, caseData, meter_init_except_2):
+    # @hesAsyncTest
+    def test_meter_register_short_exception_2(self, get_database, caseData, meter_init_except_2):
         """
         验证系统档案中电表档案不是GPRS电表但是通过了FEP请求注册,会将设备档案修改conn_type=1, communication_type=2后进行自动注册
         如果之前是已经注册到DCU下的电表还会生成REG_DEL_ARCHIVES删除集中器内档案任务和修改master_no=null,meter_seq=null
         """
         count = 1
-        data = caseData('testData/{}/AutoRegistration/register-event-process.json'.format(Project.name))['gprs_meter']
+        data = caseData('testData/{}/AutoRegistration/register-event-process.json'.format(Project.name))['short_meter']
         requestData = data['pl']
         requestData[0]['dn'] = setting[Project.name]['meter_no']
         producer = KafkaProducer(bootstrap_servers=setting[Project.name]['kafka_url'])

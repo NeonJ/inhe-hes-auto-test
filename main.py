@@ -6,7 +6,6 @@
 """
 
 import logging
-import shutil
 
 from common.AllureReport import *
 from config.settings import *
@@ -37,9 +36,6 @@ else:
     print('settings文件参数错误，name是必填参数')
 
 
-
-buildOrder, old_data = get_dirname()
-environment()
 # 报告生成
 # if os.listdir('./result') != []:
 #     os.system("allure  generate  ./result/  -o  ./report/%s  --clean" % time.strftime('%Y%m%d%H%M%S',time.localtime()))
@@ -48,9 +44,11 @@ environment()
 #     print('无结果数据，无法生成报告')
 
 if os.listdir('./result') != []:
-    os.system("allure  generate  ./result/  -o  ./report/allure_plus/%s  --clean" % buildOrder)
-
+    if not os.path.exists('./report/{}'.format(Project.name)):
+        os.mkdir('./report/{}'.format(Project.name))
+    buildOrder, old_data = get_dirname()
+    environment()
+    os.system("allure  generate  ./result/  -o  ./report/{}/{}  --clean".format(Project.name, buildOrder))
     all_data, reportUrl = update_trend_data(buildOrder, old_data)
 else:
-
     print('无结果数据，无法生成报告')

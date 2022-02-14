@@ -19,7 +19,7 @@ class Test_HES_Register_Check:
 
 
     # @pytest.mark.skip
-    @OBISTest
+    # @OBISTest
     def test_register_get(self, register_get, get_database, get_result_table, caseData):
         DeviceBusy = 1
         print("Register_ID:{}".format(register_get))
