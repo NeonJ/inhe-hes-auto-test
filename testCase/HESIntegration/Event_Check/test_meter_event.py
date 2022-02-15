@@ -27,7 +27,7 @@ class Test_Meter_Event:
                                      headers={"Content-Type": "application/json"},
                                      json=requestData, timeout=66)
             time.sleep(1)
-            print(response)
+            print(response.json)
             if response.status_code == 504 or json.loads(response.text).get('payload')[0].get(
                     'desc') == 'Device Busying !':
                 print('504 Error and try again')
@@ -58,7 +58,7 @@ class Test_Meter_Event:
                                      headers={"Content-Type": "application/json"},
                                      json=requestData, timeout=66)
             time.sleep(1)
-            print(response)
+            print(response.json)
             if response.status_code == 504 or json.loads(response.text).get('payload')[0].get(
                     'desc') == 'Device Busying !':
                 print('504 Error and try again')
@@ -92,7 +92,7 @@ class Test_Meter_Event:
                                      headers={"Content-Type": "application/json"},
                                      json=requestData, timeout=66)
             time.sleep(1)
-            print(response)
+            print(response.json)
             if response.status_code == 504 or json.loads(response.text).get('payload')[0].get(
                     'desc') == 'Device Busying !':
                 print('504 Error and try again')

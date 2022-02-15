@@ -24,7 +24,6 @@ class Test_RelayControlChange:
         response = requests.post(url=url,json=requestData)
         print(response.json())
         assert response.status_code == 200
-        assert '"resultCode": 200' in response.text
         # assert AssertIn().checkIn(expectResJson, response.json()) is True
 
 
@@ -41,7 +40,6 @@ class Test_RelayControlChange:
         print(response.json())
 
         assert response.status_code == 200
-        assert '"resultCode": 200' in response.text
         # assert AssertIn().checkIn(expectResJson, response.json()) is True
 
     @hesSyncTest
@@ -72,7 +70,6 @@ class Test_RelayControlChange:
         print(response.json())
 
         assert response.status_code == 200
-        assert '"resultCode": 200' in response.text
         # assert "DISCONNECTED" in response.json()
         # assert AssertIn().checkIn(expectResJson, response.json()) is True
 

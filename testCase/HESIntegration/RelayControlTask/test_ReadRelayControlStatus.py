@@ -22,7 +22,7 @@ class Test_ReadRelayControlStatus:
         requestData = data['request']
         requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
         response = requests.post(url=testUrl, json=requestData)
-        print(response)
+        print(response.json)
         assert response.status_code == 200
 
     @hesAsyncTest

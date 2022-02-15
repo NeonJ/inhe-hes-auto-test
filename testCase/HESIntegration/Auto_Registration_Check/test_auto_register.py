@@ -14,7 +14,7 @@ from common.UtilTools import *
 
 class Test_Auto_Register:
 
-    @hesAsyncTest
+    # @hesAsyncTest
     def test_meter_register(self, get_database, caseData, meter_init):
         """
         验证GPRS电表正常自动注册流程
@@ -52,7 +52,7 @@ class Test_Auto_Register:
         print(db_queue)
         assert db_queue[0]['DEV_STATUS'] == 4
 
-    @hesAsyncTest
+    # @hesAsyncTest
     def test_meter_register_exception_1(self, get_database, caseData, meter_init_except_1):
         """
         验证GPRS电表未安装不会自动注册
@@ -89,7 +89,7 @@ class Test_Auto_Register:
             fetch_data_list.append(fetch_data_dict)
         assert 'AR_UNINSTALLED_REG_DEVICE' in fetch_data_list.__str__()
 
-    @hesAsyncTest
+    # @hesAsyncTest
     def test_meter_register_exception_2(self, get_database, caseData, meter_init_except_2):
         """
         验证系统档案中电表档案不是GPRS电表但是通过了FEP请求注册,会将设备档案修改conn_type=1, communication_type=2后进行自动注册
