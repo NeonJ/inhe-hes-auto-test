@@ -102,7 +102,7 @@ setting = {
 
 
 class Project:
-    name = 'octopus02'  # 与下面setting项目key对应
+    name = 'empower'  # 与下面setting项目key对应
     tag = 'hesSyncTest'  # 对应1· comms.marker  hesSyncTest or hesAsyncTest HES-Web
     path = '/'  # 对testData目录接口对应
     continue_last_check = False  # 是否断点续测OBIS

@@ -26,10 +26,8 @@ class Test_Meter_Daily:
         response = TestRequest().post(url=HESAPI(Address=setting[Project.name]['api_url']).requestAddress(),
                                       params=requestData)
         print(response)
-        if response.get('reply')['replyCode'] != 200:
-            assert False
-        else:
-            assert int(response.get('payload')[0].get('data')[0].get('resultValue').get(
+        assert response.get('reply')['replyCode'] == 200
+        assert int(response.get('payload')[0].get('data')[0].get('resultValue').get(
                 'dataItemValue')) == setting[Project.name]['daily_entries']
 
     @hesSyncTest
@@ -49,6 +47,7 @@ class Test_Meter_Daily:
                                      headers={"Content-Type": "application/json"},
                                      json=requestData, timeout=66)
             time.sleep(1)
+            print(response)
             if response.status_code == 504 or json.loads(response.text).get('payload')[0].get(
                     'desc') == 'Device Busying !':
                 print('504 Error and try again')
@@ -80,6 +79,7 @@ class Test_Meter_Daily:
                                      headers={"Content-Type": "application/json"},
                                      json=requestData,timeout=66)
             time.sleep(1)
+            print(response)
             if response.status_code == 504 or json.loads(response.text).get('payload')[0].get(
                     'desc') == 'Device Busying !':
                 print('504 Error and try again')

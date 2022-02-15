@@ -28,6 +28,7 @@ class Test_Meter_Profile:
                                      headers={"Content-Type": "application/json"},
                                      json=requestData, timeout=66)
             time.sleep(1)
+            print(response)
             if response.status_code == 504 or json.loads(response.text).get('payload')[0].get(
                     'desc') == 'Device Busying !':
                 print('504 Error and try again')
@@ -60,6 +61,7 @@ class Test_Meter_Profile:
                                      headers={"Content-Type": "application/json"},
                                      json=requestData, timeout=66)
             time.sleep(1)
+            print(response)
             if response.status_code == 504 or json.loads(response.text).get('payload')[0].get(
                     'desc') == 'Device Busying !':
                 print('504 Error and try again')
@@ -122,6 +124,7 @@ class Test_Meter_Profile:
                                      headers={"Content-Type": "application/json"},
                                      json=requestData, timeout=66)
             time.sleep(1)
+            print(response)
             if response.status_code == 504 or json.loads(response.text).get('payload')[0].get(
                     'desc') == 'Device Busying !':
                 print('504 Error and try again')
@@ -154,6 +157,7 @@ class Test_Meter_Profile:
                                      headers={"Content-Type": "application/json"},
                                      json=requestData, timeout=66)
             time.sleep(1)
+            print(response)
             if response.status_code == 504 or json.loads(response.text).get('payload')[0].get(
                     'desc') == 'Device Busying !':
                 print('504 Error and try again')
@@ -187,6 +191,7 @@ class Test_Meter_Profile:
                                      headers={"Content-Type": "application/json"},
                                      json=requestData, timeout=66)
             time.sleep(1)
+            print(response)
             if response.status_code == 504 or json.loads(response.text).get('payload')[0].get(
                     'desc') == 'Device Busying !':
                 print('504 Error and try again')
