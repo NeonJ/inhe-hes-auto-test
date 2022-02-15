@@ -24,7 +24,7 @@ class Test_Meter_Status:
                                 headers={"Content-Type": "application/json"},
                                 timeout=66)
         time.sleep(1)
-        print(response.json)
+        print(response.text)
         if response.status_code == 504 or response.status_code == 500:
             print('504 Error and try again')
             time.sleep(3)
@@ -43,7 +43,7 @@ class Test_Meter_Status:
                                 headers={"Content-Type": "application/json"},
                                 timeout=66)
         time.sleep(1)
-        print(response.json)
+        print(response.text)
         if response.status_code == 504 or response.status_code == 500:
             print('504 Error and try again')
             time.sleep(3)
@@ -62,7 +62,7 @@ class Test_Meter_Status:
                                 headers={"Content-Type": "application/json"},
                                 timeout=66)
         time.sleep(1)
-        print(response.json)
+        print(response.text)
         if response.status_code == 504 or response.status_code == 500:
             print('504 Error and try again')
             time.sleep(3)
@@ -81,7 +81,7 @@ class Test_Meter_Status:
                                 headers={"Content-Type": "application/json"},
                                 timeout=66)
         time.sleep(1)
-        print(response.json)
+        print(response.text)
         if response.status_code == 504 or response.status_code == 500:
             print('504 Error and try again')
             time.sleep(3)
@@ -100,7 +100,7 @@ class Test_Meter_Status:
                                 headers={"Content-Type": "application/json"},
                                 timeout=66)
         time.sleep(1)
-        print(response.json)
+        print(response.text)
         if response.status_code == 504 or response.status_code == 500:
             print('504 Error and try again')
             time.sleep(3)
@@ -119,7 +119,7 @@ class Test_Meter_Status:
                                 headers={"Content-Type": "application/json"},
                                 timeout=66)
         time.sleep(1)
-        print(response.json)
+        print(response.text)
         if response.status_code == 504 or response.status_code == 500:
             print('504 Error and try again')
             time.sleep(3)
@@ -138,7 +138,7 @@ class Test_Meter_Status:
                                 headers={"Content-Type": "application/json"},
                                 timeout=66)
         time.sleep(1)
-        print(response.json)
+        print(response.text)
         if response.status_code == 504 or response.status_code == 500:
             print('504 Error and try again')
             time.sleep(3)

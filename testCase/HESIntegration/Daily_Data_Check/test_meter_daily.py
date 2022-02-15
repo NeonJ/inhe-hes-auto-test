@@ -23,12 +23,13 @@ class Test_Meter_Daily:
         data = caseData('testData/{}/MeterFrozenData/meter_daily_data.json'.format(Project.name))['meter_daily_entries']
         requestData = data['request']
         requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
-        response = TestRequest().post(url=HESAPI(Address=setting[Project.name]['api_url']).requestAddress(),
-                                      params=requestData)
-        print(response.json)
-        assert response.get('reply')['replyCode'] == 200
-        assert int(response.get('payload')[0].get('data')[0].get('resultValue').get(
-                'dataItemValue')) == setting[Project.name]['daily_entries']
+        response = requests.post(url=HESAPI(Address=setting[Project.name]['api_url']).requestAddress(),
+                                 headers={"Content-Type": "application/json"},
+                                 json=requestData, timeout=66)
+        print(response.text)
+        assert json.loads(response.text).get('reply')['replyCode'] == 200
+        assert int(json.loads(response.text).get('payload')[0].get('data')[0].get('resultValue').get(
+                    'dataItemValue')) == setting[Project.name]['daily_entries']
 
     @hesSyncTest
     def test_get_daily_date(self, caseData):
@@ -47,7 +48,7 @@ class Test_Meter_Daily:
                                      headers={"Content-Type": "application/json"},
                                      json=requestData, timeout=66)
             time.sleep(1)
-            print(response.json)
+            print(response.text)
             if response.status_code == 504 or json.loads(response.text).get('payload')[0].get(
                     'desc') == 'Device Busying !':
                 print('504 Error and try again')
@@ -79,7 +80,7 @@ class Test_Meter_Daily:
                                      headers={"Content-Type": "application/json"},
                                      json=requestData,timeout=66)
             time.sleep(1)
-            print(response.json)
+            print(response.text)
             if response.status_code == 504 or json.loads(response.text).get('payload')[0].get(
                     'desc') == 'Device Busying !':
                 print('504 Error and try again')

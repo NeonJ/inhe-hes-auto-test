@@ -58,7 +58,7 @@ setting = {
         "db_pwd": "empower",
         "db_service": "ami_bamboo01",
         "db_database": "ami_db",
-        "meter_no": "KFM3210700000004",
+        "meter_no": "202201240000",
         "api_url": "http://bamboo01.hes-api.kaifa.tst",
         "web_url": "http://10.32.233.31:30530",
         "kafka_url": "10.32.233.31:30553",
@@ -102,7 +102,7 @@ setting = {
 
 
 class Project:
-    name = 'empower'  # 与下面setting项目key对应
+    name = 'bamboo01'  # 与下面setting项目key对应
     tag = 'hesSyncTest'  # 对应1· comms.marker  hesSyncTest or hesAsyncTest HES-Web
     path = '/'  # 对testData目录接口对应
     continue_last_check = False  # 是否断点续测OBIS
