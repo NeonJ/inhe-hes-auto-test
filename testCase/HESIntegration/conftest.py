@@ -163,24 +163,24 @@ def get_daily_date(caseData):
     requestData = data['request']
     requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
     while DeviceBusy == 1:
-        response = requests.post(url=HESAPI(Address=setting[Project.name]['api_url']).requestAddress(),
+        response = requests.post(url=Project.request_url,
                                  headers={"Content-Type": "application/json"},
                                  json=requestData, timeout=66)
         time.sleep(1)
         if response.status_code == 504:
             print('504 Error and try again')
             time.sleep(3)
-            response = requests.post(url=HESAPI(Address=setting[Project.name]['api_url']).requestAddress(),
+            response = requests.post(url=Project.request_url,
                                      headers={"Content-Type": "application/json"},
                                      json=requestData, timeout=66)
-        if json.loads(response.text).get('reply')['replyCode'] != 200:
-            print(json.loads(response.text).get('payload')[0]['desc'])
+        if response.get('reply')['replyCode'] != 200:
+            print(response.get('payload')[0]['desc'])
             assert False
         else:
             DeviceBusy = 0
-            assert len(json.loads(response.text).get('payload')[0].get('data')) == setting[Project.name][
+            assert len(response.get('payload')[0].get('data')) == setting[Project.name][
                 'daily_len']
-            startTime = json.loads(response.text).get('payload')[0].get('data')[0].get('dataTime')
+            startTime = response.get('payload')[0].get('data')[0].get('dataTime')
     return startTime
 
 
@@ -192,24 +192,24 @@ def get_monthly_date(caseData):
     requestData = data['request']
     requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
     while DeviceBusy == 1:
-        response = requests.post(url=HESAPI(Address=setting[Project.name]['api_url']).requestAddress(),
+        response = requests.post(url=Project.request_url,
                                  headers={"Content-Type": "application/json"},
                                  json=requestData, timeout=66)
         time.sleep(1)
         if response.status_code == 504:
             print('504 Error and try again')
             time.sleep(3)
-            response = requests.post(url=HESAPI(Address=setting[Project.name]['api_url']).requestAddress(),
+            response = requests.post(url=Project.request_url,
                                      headers={"Content-Type": "application/json"},
                                      json=requestData, timeout=66)
-        if json.loads(response.text).get('reply')['replyCode'] != 200:
-            print(json.loads(response.text).get('payload')[0]['desc'])
+        if response.get('reply')['replyCode'] != 200:
+            print(response.get('payload')[0]['desc'])
             assert False
         else:
             DeviceBusy = 0
-            assert len(json.loads(response.text).get('payload')[0].get('data')) == setting[Project.name][
+            assert len(response.get('payload')[0].get('data')) == setting[Project.name][
                 'monthly_len']
-            startTime = json.loads(response.text).get('payload')[0].get('data')[0].get('dataTime')
+            startTime = response.get('payload')[0].get('data')[0].get('dataTime')
     return startTime
 
 
@@ -224,24 +224,24 @@ def get_lp_date(caseData):
     requestData = data['request']
     requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
     while DeviceBusy == 1:
-        response = requests.post(url=HESAPI(Address=setting[Project.name]['api_url']).requestAddress(),
+        response = requests.post(url=Project.request_url,
                                  headers={"Content-Type": "application/json"},
                                  json=requestData, timeout=66)
         time.sleep(1)
         if response.status_code == 504:
             print('504 Error and try again')
             time.sleep(3)
-            response = requests.post(url=HESAPI(Address=setting[Project.name]['api_url']).requestAddress(),
+            response = requests.post(url=Project.request_url,
                                      headers={"Content-Type": "application/json"},
                                      json=requestData, timeout=66)
-        if json.loads(response.text).get('reply')['replyCode'] != 200:
-            print(json.loads(response.text).get('payload')[0]['desc'])
+        if response.get('reply')['replyCode'] != 200:
+            print(response.get('payload')[0]['desc'])
             assert False
         else:
             DeviceBusy = 0
-            assert len(json.loads(response.text).get('payload')[0].get('data')) == setting[Project.name][
+            assert len(response.get('payload')[0].get('data')) == setting[Project.name][
                 'lp_len']
-            startTime = json.loads(response.text).get('payload')[0].get('data')[0].get('dataTime')
+            startTime = response.get('payload')[0].get('data')[0].get('dataTime')
     return startTime
 
 
@@ -256,23 +256,23 @@ def get_daily_event(caseData):
     requestData = data['request']
     requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
     while DeviceBusy == 1:
-        response = requests.post(url=HESAPI(Address=setting[Project.name]['api_url']).requestAddress(),
+        response = requests.post(url=Project.request_url,
                                  headers={"Content-Type": "application/json"},
                                  json=requestData, timeout=66)
         time.sleep(1)
         if response.status_code == 504:
             print('504 Error and try again')
             time.sleep(3)
-            response = requests.post(url=HESAPI(Address=setting[Project.name]['api_url']).requestAddress(),
+            response = requests.post(url=Project.request_url,
                                      headers={"Content-Type": "application/json"},
                                      json=requestData, timeout=66)
-        if json.loads(response.text).get('reply')['replyCode'] != 200:
-            print(json.loads(response.text).get('payload')[0]['desc'])
+        if response.get('reply')['replyCode'] != 200:
+            print(response.get('payload')[0]['desc'])
             assert False
         else:
             DeviceBusy = 0
-            assert len(json.loads(response.text).get('payload')[0].get('data')) == 64
-            startTime = json.loads(response.text).get('payload')[0].get('data')[0].get('dataTime')
+            assert len(response.get('payload')[0].get('data')) == 64
+            startTime = response.get('payload')[0].get('data')[0].get('dataTime')
     return startTime
 
 
@@ -287,23 +287,23 @@ def get_event_standard(caseData):
     requestData = data['request']
     requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
     while DeviceBusy == 1:
-        response = requests.post(url=HESAPI(Address=setting[Project.name]['api_url']).requestAddress(),
+        response = requests.post(url=Project.request_url,
                                  headers={"Content-Type": "application/json"},
                                  json=requestData, timeout=66)
         time.sleep(1)
         if response.status_code == 504:
             print('504 Error and try again')
             time.sleep(3)
-            response = requests.post(url=HESAPI(Address=setting[Project.name]['api_url']).requestAddress(),
+            response = requests.post(url=Project.request_url,
                                      headers={"Content-Type": "application/json"},
                                      json=requestData, timeout=66)
-        if json.loads(response.text).get('reply')['replyCode'] != 200:
-            print(json.loads(response.text).get('payload')[0]['desc'])
+        if response.get('reply')['replyCode'] != 200:
+            print(response.get('payload')[0]['desc'])
             assert False
         else:
             DeviceBusy = 0
-            assert len(json.loads(response.text).get('payload')[0].get('data')) != 64
-            startTime = json.loads(response.text).get('payload')[0].get('data')[0].get('dataTime')
+            assert len(response.get('payload')[0].get('data')) != 64
+            startTime = response.get('payload')[0].get('data')[0].get('dataTime')
     return startTime
 # @pytest.fixture(scope="session",autouse=True)
 # def   tmp_dir():

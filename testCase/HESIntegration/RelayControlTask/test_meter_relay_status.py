@@ -1,35 +1,39 @@
-# -*- coding: utf-8 -*-
-# @Time : 2021/12/29 14:48
-# @Author : JingYang
-# @File : test_ReadRelayControlStatus.py
+# -*-coding:utf-8-*-
+"""
+# File       : test_meter_profile.py
+# Time       ：2021/12/21 14:18
+# Author     ：cao jiann
+# version    ：python 3.7
+"""
 
-import allure, pytest, requests, logging, time, datetime
+import datetime
+
 from common.marker import *
 from config.settings import *
 
 
-class Test_ReadRelayControlStatus:
+class Test_Meter_Relay_Status:
 
-    # Step1. 调用/api/v1/Request/RequestMessage接口，生成running任务
-    # Step2. 待Core执行完毕，a)生成running s任务， b)Topic: relay-status-sync-task
-    # Step3. 检查run_his表，这个任务执行成功
     @hesSyncTest
-    def test_ReadRelayControlStatusSync(self, url, caseData):
-        testUrl = url + '/api/v1/Request/RequestMessage'
-        # Step1 生成异步操作读取任务，hes-api同步执行
+    def test_read_relay_status_sync(self, url, caseData):
+        """
+        使用同步读取的方式去对电表进行读取闸状态
+         """
         data = caseData('testData/{}/RelayControlTask/read_RelayControlStatus.json'.format(Project.name))[
             'ReadRelayControlStatusSync']
         requestData = data['request']
         requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
-        response = requests.post(url=testUrl, json=requestData)
-        print(response.text)
-        assert response.status_code == 200
+        response = HESRequest().post(url=Project.request_url, params=requestData)
+        assert '636F6E6E6563746564' in str(response) or '646973636F6E6E6563746564' in str(response)
 
     @hesAsyncTest
-    def test_ReadRelayControlStatusAsync(self, url, get_database, caseData):
+    def test_read_relay_status_async(self, url, get_database, caseData):
+        """
+        使用异步读取的方式去对电表进行读取闸状态
+         """
         testUrl = url + '/api/v1/Request/RequestMessage'
         count = 0
-        # Step1 生成异步操作读取任务，hes-api异步执行，生成running表
+        print("Step 1 : 生成异步操作读取任务，hes-api异步执行，生成running表")
         data = caseData('testData/{}/RelayControlTask/read_RelayControlStatus.json'.format(Project.name))[
             'ReadRelayControlStatusAsync']
         requestData = data['request']
@@ -43,7 +47,7 @@ class Test_ReadRelayControlStatus:
         response = requests.post(url=testUrl, json=requestData)
         assert response.status_code == 200
 
-        # Step2 生成异步任务后，任务正常执行完毕进入his，进入his表，则认为任务结束
+        print("Step 2 : 生成异步任务后，任务正常执行完毕进入his，进入his表，则认为任务结束")
         # 过期时间到，也会进入his表，这里暂不考虑
         time.sleep(3)
         # 查询生成Core执行的任务的 AUTO_RUN_ID
@@ -57,7 +61,7 @@ class Test_ReadRelayControlStatus:
             print('Waiting for read relay_control Tasks to Create...')
             count = count + 1
 
-        # Step3 验证读任务执行结束，task正常移入his表
+        print("Step 3 : 验证读任务执行结束，task正常移入his表")
         # 查询生成Core执行结束后，his表任务状态
         sql_his = "select TASK_STATE from H_TASK_RUN_HIS where AUTO_RUN_ID='{}'".format(db_queue[0]['AUTO_RUN_ID'])
         db_queue = get_database.orcl_fetchall_dict(sql_his)

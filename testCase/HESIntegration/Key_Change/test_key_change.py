@@ -6,8 +6,6 @@
 # version    ：python 3.7
 """
 import pytest, allure, time, datetime, requests, random
-from common.HESAPI import *
-from common.marker import *
 from config.settings import *
 
 
@@ -23,7 +21,7 @@ class Test_Key_Change:
         requestData = data['request']
         requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
         print(requestData)
-        response = requests.post(url=HESAPI(Address=setting[Project.name]['api_url']).requestAddress(), json=requestData)
+        response = HESRequest().post(url=Project.request_url, params=requestData)
         assert response.status_code == 200
 
         time.sleep(3)
@@ -58,7 +56,7 @@ class Test_Key_Change:
         requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
         requestData['payload'][0]['data'][0]['parameter']['KeyType'] = 0
         print(requestData)
-        response = requests.post(url=HESAPI(Address=setting[Project.name]['api_url']).requestAddress(), json=requestData)
+        response = HESRequest().post(url=Project.request_url, params=requestData)
         assert response.status_code == 200
 
         time.sleep(3)

@@ -1,0 +1,27 @@
+{
+  "install_meter_request": {
+    "regionNo": "1234567910",
+    "deviceNo": "1234567891",
+    "deviceType": 2,
+    "installDate": "2021-11-16 18:00:00",
+    "installOperatorName": "ZhangSan",
+    "totalUsage": 13,
+    "unit": "kWh"
+  },
+  "install_response": {
+    "code": 200,
+    "desc": "OK"
+  },
+  "uninstall_meter_request": {
+    "deviceNo": "1234567891",
+    "deviceType": 1,
+    "removeDate": "2021-11-16 18:00:00",
+    "removeOperatorName": "ZhangSan",
+    "totalUsage": 13,
+    "unit": "kWh"
+  },
+  "uninstall_response": {
+    "code": 200,
+    "desc": "OK"
+  }
+}

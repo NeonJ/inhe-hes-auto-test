@@ -20,3 +20,7 @@ OBISTest = pytest.mark.OBISTest  # HES接口检查电表OBIS
 hesSyncTest1 = pytest.mark.hesSyncTest1
 
 hesAsyncTest1 = pytest.mark.hesAsyncTest1
+
+RoseIECWebService = pytest.mark.RoseIECWebService
+
+interfaceTest = pytest.mark.interfaceTest

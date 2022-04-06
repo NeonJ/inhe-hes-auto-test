@@ -18,7 +18,6 @@ def caseData():
         filepath = os.path.join(os.path.dirname(os.path.dirname(__file__)), path)
         with open(filepath, 'r', encoding='utf-8') as f:
             return json.load(f)
-
     return loadData
 
 

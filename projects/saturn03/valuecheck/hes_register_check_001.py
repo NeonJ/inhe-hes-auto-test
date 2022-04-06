@@ -73,7 +73,7 @@ def hes_register_check_001():
                     print('504 Error and try again')
                     time.sleep(5)
                     continue
-                for payload in json.loads(response.text).get('payload'):
+                for payload in response.get('payload'):
                     for data in payload.get('data'):
                         print('Read Result: ', data.get('resultDesc'))
                         if data.get('resultDesc') == 'Device Busying !':
@@ -82,7 +82,7 @@ def hes_register_check_001():
                         else:
                             DeviceBusy = 0
 
-            for payload in json.loads(response.text).get('payload'):
+            for payload in response.get('payload'):
                 for data in payload.get('data'):
                     print('Get Value: ', data.get('resultValue'))
                     database.save_result(table_name, 'get_result', data.get('resultDesc'),
@@ -112,7 +112,7 @@ def hes_register_check_001():
                     print('504 Error and try again')
                     time.sleep(5)
                     continue
-                for payload in json.loads(response.text).get('payload'):
+                for payload in response.get('payload'):
                     for data in payload.get('data'):
                         print('Action Result: ', data.get('resultDesc'))
                         if data.get('resultDesc') == 'Device Busying !':
@@ -122,7 +122,7 @@ def hes_register_check_001():
                             DeviceBusy = 0
                 print(response.json())
 
-            for payload in json.loads(response.text).get('payload'):
+            for payload in response.get('payload'):
                 for data in payload.get('data'):
                     print('Action Value: ', data.get('resultValue'))
                     database.save_result(table_name, 'action_result', data.get('resultDesc'),
@@ -147,7 +147,7 @@ def hes_register_check_001():
             # response = requests.post(url=HESAPI(Address=user_config['HESAPI']['url']).requestAddress(),
             #                          headers={"Content-Type": "application/json"},
             #                          data=json.dumps(RequestQueue, indent=4), timeout=66)
-            # for payload in json.loads(response.text).get('payload'):
+            # for payload in response.get('payload'):
             #     for data in payload.get('data'):
             #         print('Read Result: ', data.get('resultDesc'))
             while DeviceBusy == 1:
@@ -158,7 +158,7 @@ def hes_register_check_001():
                     print('504 Error and try again')
                     time.sleep(5)
                     continue
-                for payload in json.loads(response.text).get('payload'):
+                for payload in response.get('payload'):
                     for data in payload.get('data'):
                         print('Read Result: ', data.get('resultDesc'))
                         if data.get('resultDesc') == 'Device Busying !':
@@ -167,7 +167,7 @@ def hes_register_check_001():
                         else:
                             DeviceBusy = 0
 
-            for payload in json.loads(response.text).get('payload'):
+            for payload in response.get('payload'):
                 for data in payload.get('data'):
                     print('Get Value: ', data.get('resultValue'))
                     parameter = data.get('resultValue')
@@ -199,7 +199,7 @@ def hes_register_check_001():
                     print('504 Error and try again')
                     time.sleep(5)
                     continue
-                for payload in json.loads(response.text).get('payload'):
+                for payload in response.get('payload'):
                     for data in payload.get('data'):
                         print('Set Result: ', data.get('resultDesc'))
                         if data.get('resultDesc') == 'Device Busying !':
@@ -207,7 +207,7 @@ def hes_register_check_001():
                             print('Device Busy and try again')
                         else:
                             DeviceBusy = 0
-            for payload in json.loads(response.text).get('payload'):
+            for payload in response.get('payload'):
                 for data in payload.get('data'):
                     print('Set Value: ', data.get('resultValue'))
                     database.save_result(table_name, 'set_result', data.get('resultDesc'),

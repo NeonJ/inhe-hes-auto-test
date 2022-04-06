@@ -3,8 +3,7 @@ import time
 
 import requests
 
-
-class TestRequest():
+class HESRequest():
 
     def __init__(self):
 
@@ -15,11 +14,11 @@ class TestRequest():
         try:
             DeviceBusy = 1
             while DeviceBusy == 1:
-                r = requests.get(url=url, params=params, headers=self.headers)
+                r = requests.get(url=url, params=params, headers=self.headers, timeout=66)
                 response = json.loads(r.text)
                 time.sleep(1)
                 if r.status_code == 504:
-                    print('504 Busying and try again')
+                    print('504 and try again')
                     time.sleep(1)
                     continue
                 elif 'Device Busying !' in json.dumps(response):
@@ -41,11 +40,11 @@ class TestRequest():
         try:
             DeviceBusy = 1
             while DeviceBusy == 1:
-                r = requests.post(url=url, json=params, headers=self.headers)
+                r = requests.post(url=url, json=params, headers=self.headers, timeout=66)
                 response = json.loads(r.text)
                 time.sleep(1)
                 if r.status_code == 504:
-                    print('504 Busying and try again')
+                    print('504 and try again')
                     time.sleep(1)
                     continue
                 elif 'Device Busying !' in json.dumps(response):
@@ -60,7 +59,14 @@ class TestRequest():
             print("post请求错误，错误原因：%s" % e)
 
 
+
 if __name__ == '__main__':
-    a = TestRequest().get(url='http://empower.hes-api.kaifa.tst/Mdm/getTime',
-                          params='deviceNo=M202009040003&deviceType=1&taskType=0')
-    print(a)
+    pass
+    # data = loadData('testData/{}/MeterFrozenData/meter_daily_data.json'.format(Project.name))['meter_daily_entries']
+    # requestData = data['request']
+    # requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
+    # response = HESRequest().post(url=Project.request_url,
+    #                      params=requestData)
+    # print(response)
+    # print(type(response))
+    # assert response.get('reply')['replyCode'] == 201

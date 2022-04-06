@@ -4,6 +4,8 @@
 # Author     : 曹剑南
 # version    : python 3.7
 """
+from common.HESAPI import *
+from common.Request import *
 
 # 所有项目配置
 setting = {
@@ -97,16 +99,40 @@ setting = {
         "pq_entries": 1440,
         "pq_len": 10,
         "event_entries": 3
-    }
+    },
+    "smartpark": {
+        "db_source": "Oracle",
+        "db_host": "10.32.233.209",
+        "db_port": 1521,
+        "db_user": "empower",
+        "db_pwd": "empower",
+        "db_service": "ami_octopus_prod_qa",
+        "db_database": "ami_db",
+        "meter_no": "92619001805",
+        "api_url": "http://10.32.233.31:30351",
+        "web_url": "http://10.32.233.31:30351",
+        "kafka_url": "10.32.233.31:30012",
+        "ami_user": "dmms",
+        "ami_passwd": "sa",
+        "daily_entries": 90,
+        "daily_len": 9,
+        "monthly_entries": 15,
+        "monthly_len": 108,
+        "lp_entries": 4320,
+        "lp_len": 6,
+        "pq_entries": 1440,
+        "pq_len": 10,
+        "event_entries": 3
+    },
 }
 
 
 class Project:
-    name = 'bamboo01'  # 与下面setting项目key对应
-    tag = 'hesSyncTest'  # 对应1· comms.marker  hesSyncTest or hesAsyncTest HES-Web
+    name = 'empower'  # 与下面setting项目key对应
+    tag = 'OBISTest'  # 对应1· comms.marker  hesSyncTest or hesAsyncTest HES-Web
     path = '/'  # 对testData目录接口对应
     continue_last_check = False  # 是否断点续测OBIS
-
+    request_url = HESAPI(Address=setting[name]['api_url']).requestAddress()
 
     obis_sql1 = "select register_id, class_id, index_id, register_type,data_type_int, rw from "
     obis_sql2 = " where PTL_TYPE = (select PTL_TYPE from c_ar_model where MODEL_CODE = (select model_code from c_ar_meter where meter_no = '{}'))".format(
