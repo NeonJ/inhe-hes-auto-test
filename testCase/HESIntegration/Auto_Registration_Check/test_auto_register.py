@@ -14,6 +14,7 @@ from common.UtilTools import *
 
 class Test_Auto_Register:
 
+
     @hesAsyncTest
     def test_meter_register(self, get_database, caseData, meter_init):
         """

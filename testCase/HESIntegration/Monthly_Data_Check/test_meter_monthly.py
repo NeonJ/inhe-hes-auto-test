@@ -21,6 +21,7 @@ class Test_Meter_Monthly:
         requestData = data['request']
         requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
         response = HESRequest().post(url=Project.request_url, params=requestData)
+        print(response)
         if response.get('reply')['replyCode'] != 200:
             assert False
         else:
@@ -39,6 +40,7 @@ class Test_Meter_Monthly:
         requestData = data['request']
         requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
         response = HESRequest().post(url=Project.request_url, params=requestData)
+        print(response)
         if response.get('reply')['replyCode'] != 200:
             assert False
         else:
@@ -57,6 +59,7 @@ class Test_Meter_Monthly:
         requestData['payload'][0]['data'][0]['parameter']['startTime'] = startTime
         requestData['payload'][0]['data'][0]['parameter']['endTime'] = startTime
         response = HESRequest().post(url=Project.request_url, params=requestData)
+        print(response)
         if response.get('reply')['replyCode'] != 200:
             assert False
         else:

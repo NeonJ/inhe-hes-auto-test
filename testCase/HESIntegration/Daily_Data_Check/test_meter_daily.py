@@ -22,6 +22,7 @@ class Test_Meter_Daily:
         requestData = data['request']
         requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
         response = HESRequest().post(url=Project.request_url, params=requestData)
+        print(response)
         assert response.get('reply')['replyCode'] == 200
         assert int(response.get('payload')[0].get('data')[0].get('resultValue').get(
             'dataItemValue')) == setting[Project.name]['daily_entries']
@@ -53,5 +54,5 @@ class Test_Meter_Daily:
         requestData['payload'][0]['data'][0]['parameter']['startTime'] = startTime
         requestData['payload'][0]['data'][0]['parameter']['endTime'] = startTime
 
-        response = HESRequest.post(url=Project.request_url, params=requestData)
+        response = HESRequest().post(url=Project.request_url, params=requestData)
         assert len(response.get('payload')[0].get('data')) == setting[Project.name]['daily_len']
