@@ -5,10 +5,12 @@
 # version    ：python 3.7
 """
 
-import requests, pytest, allure, os, time
+import pytest,time
+
 from common.DB import *
 from config.settings import *
-from common.HESAPI import *
+from common.HESRequest import HESRequest
+
 
 # 用例执行间隔
 @pytest.fixture(scope='function', autouse=True)
@@ -84,61 +86,36 @@ def get_daily_date(caseData):
     """
     使用同步读取的方式去对电表进行日结读取 - 按照Entry+Date方式进行并进行数据项对比
      """
-
     print("获取当前电表第一条日结数据")
     startTime = None
-    DeviceBusy = 1
     data = caseData('testData/{}/MeterFrozenData/meter_daily_data.json'.format(Project.name))['meter_daily_data']
     requestData = data['request']
     requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
-    while DeviceBusy == 1:
-        response = requests.post(url=Project.request_url,
-                                 headers={"Content-Type": "application/json"},
-                                 json=requestData, timeout=66)
-        time.sleep(1)
-        if response.status_code == 504:
-            print('504 Error and try again')
-            time.sleep(3)
-            response = requests.post(url=Project.request_url,
-                                     headers={"Content-Type": "application/json"},
-                                     json=requestData, timeout=66)
-        if response.get('reply')['replyCode'] != 200:
-            print(response.get('payload')[0]['desc'])
-            assert False
-        else:
-            DeviceBusy = 0
-            assert len(response.get('payload')[0].get('data')) == setting[Project.name][
-                'daily_len']
-            startTime = response.get('payload')[0].get('data')[0].get('dataTime')
+    response = HESRequest().post(url=Project.request_url, params=requestData)
+    if response.get('reply')['replyCode'] != 200:
+        print(response.get('payload')[0]['desc'])
+        assert False
+    else:
+        assert len(response.get('payload')[0].get('data')) == setting[Project.name][
+            'daily_len']
+        startTime = response.get('payload')[0].get('data')[0].get('dataTime')
     return startTime
 
 
 @pytest.fixture(scope='function')
 def get_monthly_date(caseData):
     print("Step 1 : 获取当前电表第一条月结数据")
-    DeviceBusy = 1
     data = caseData('testData/{}/MeterFrozenData/meter_monthly_data.json'.format(Project.name))['meter_monthly_data']
     requestData = data['request']
     requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
-    while DeviceBusy == 1:
-        response = requests.post(url=Project.request_url,
-                                 headers={"Content-Type": "application/json"},
-                                 json=requestData, timeout=66)
-        time.sleep(1)
-        if response.status_code == 504:
-            print('504 Error and try again')
-            time.sleep(3)
-            response = requests.post(url=Project.request_url,
-                                     headers={"Content-Type": "application/json"},
-                                     json=requestData, timeout=66)
-        if response.get('reply')['replyCode'] != 200:
-            print(response.get('payload')[0]['desc'])
-            assert False
-        else:
-            DeviceBusy = 0
-            assert len(response.get('payload')[0].get('data')) == setting[Project.name][
-                'monthly_len']
-            startTime = response.get('payload')[0].get('data')[0].get('dataTime')
+    response = HESRequest().post(url=Project.request_url, params=requestData)
+    if response.get('reply')['replyCode'] != 200:
+        print(response.get('payload')[0]['desc'])
+        assert False
+    else:
+        assert len(response.get('payload')[0].get('data')) == setting[Project.name][
+            'monthly_len']
+        startTime = response.get('payload')[0].get('data')[0].get('dataTime')
     return startTime
 
 
@@ -148,29 +125,17 @@ def get_lp_date(caseData):
     使用同步读取的方式去对电表进行lp读取 - 按照Entry+Date方式进行并进行数据项对比
      """
     print("Step 1 : 获取当前电表第一条lp数据")
-    DeviceBusy = 1
     data = caseData('testData/{}/MeterFrozenData/meter_profile_data.json'.format(Project.name))['meter_lp_data']
     requestData = data['request']
     requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
-    while DeviceBusy == 1:
-        response = requests.post(url=Project.request_url,
-                                 headers={"Content-Type": "application/json"},
-                                 json=requestData, timeout=66)
-        time.sleep(1)
-        if response.status_code == 504:
-            print('504 Error and try again')
-            time.sleep(3)
-            response = requests.post(url=Project.request_url,
-                                     headers={"Content-Type": "application/json"},
-                                     json=requestData, timeout=66)
-        if response.get('reply')['replyCode'] != 200:
-            print(response.get('payload')[0]['desc'])
-            assert False
-        else:
-            DeviceBusy = 0
-            assert len(response.get('payload')[0].get('data')) == setting[Project.name][
-                'lp_len']
-            startTime = response.get('payload')[0].get('data')[0].get('dataTime')
+    response = HESRequest().post(url=Project.request_url, params=requestData)
+    if response.get('reply')['replyCode'] != 200:
+        print(response.get('payload')[0]['desc'])
+        assert False
+    else:
+        assert len(response.get('payload')[0].get('data')) == setting[Project.name][
+            'lp_len']
+        startTime = response.get('payload')[0].get('data')[0].get('dataTime')
     return startTime
 
 
@@ -180,28 +145,16 @@ def get_daily_event(caseData):
     使用同步读取的方式去对电表进行daily event读取 - 按照Entry+Date方式进行并进行数据项对比
      """
     print("Step 1 : 获取当前电表第一条daily event数据")
-    DeviceBusy = 1
     data = caseData('testData/{}/MeterFrozenData/meter_event_data.json'.format(Project.name))['meter_daily_event']
     requestData = data['request']
     requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
-    while DeviceBusy == 1:
-        response = requests.post(url=Project.request_url,
-                                 headers={"Content-Type": "application/json"},
-                                 json=requestData, timeout=66)
-        time.sleep(1)
-        if response.status_code == 504:
-            print('504 Error and try again')
-            time.sleep(3)
-            response = requests.post(url=Project.request_url,
-                                     headers={"Content-Type": "application/json"},
-                                     json=requestData, timeout=66)
-        if response.get('reply')['replyCode'] != 200:
-            print(response.get('payload')[0]['desc'])
-            assert False
-        else:
-            DeviceBusy = 0
-            assert len(response.get('payload')[0].get('data')) == 64
-            startTime = response.get('payload')[0].get('data')[0].get('dataTime')
+    response = HESRequest().post(url=Project.request_url, params=requestData)
+    if response.get('reply')['replyCode'] != 200:
+        print(response.get('payload')[0]['desc'])
+        assert False
+    else:
+        # assert len(response.get('payload')[0].get('data')) == 2   判断日结事件内容条数
+        startTime = response.get('payload')[0].get('data')[0].get('dataTime')
     return startTime
 
 
@@ -211,28 +164,17 @@ def get_event_standard(caseData):
     使用同步读取的方式去对电表进行daily event读取 - 按照Entry+Date方式进行并进行数据项对比
      """
     print("Step 1 : 获取当前电表第一条daily event数据")
-    DeviceBusy = 1
-    data = caseData('testData/{}/MeterFrozenData/meter_event_data.json'.format(Project.name))['meter_daily_event_standard']
+    data = caseData('testData/{}/MeterFrozenData/meter_event_data.json'.format(Project.name))[
+        'meter_standard_event']
     requestData = data['request']
     requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
-    while DeviceBusy == 1:
-        response = requests.post(url=Project.request_url,
-                                 headers={"Content-Type": "application/json"},
-                                 json=requestData, timeout=66)
-        time.sleep(1)
-        if response.status_code == 504:
-            print('504 Error and try again')
-            time.sleep(3)
-            response = requests.post(url=Project.request_url,
-                                     headers={"Content-Type": "application/json"},
-                                     json=requestData, timeout=66)
-        if response.get('reply')['replyCode'] != 200:
-            print(response.get('payload')[0]['desc'])
-            assert False
-        else:
-            DeviceBusy = 0
-            assert len(response.get('payload')[0].get('data')) != 64
-            startTime = response.get('payload')[0].get('data')[0].get('dataTime')
+    response = HESRequest().post(url=Project.request_url, params=requestData)
+    if response.get('reply')['replyCode'] != 200:
+        print(response.get('payload')[0]['desc'])
+        assert False
+    else:
+        # assert len(response.get('payload')[0].get('data')) != 64
+        startTime = response.get('payload')[0].get('data')[0].get('dataTime')
     return startTime
 # @pytest.fixture(scope="session",autouse=True)
 # def   tmp_dir():

@@ -5,7 +5,7 @@
 # Author     ：cao jiann
 # version    ：python 3.7
 """
-
+from common.HESRequest import HESRequest
 from common.marker import *
 from config.settings import *
 
@@ -32,7 +32,6 @@ class Test_Meter_Profile:
         """
         使用同步读取的方式去对电表进行lp读取 - 按照Entry+Date方式进行并进行数据项对比
          """
-
         print("Step 1 : 获取当前电表第一条lp数据")
         startTime = None
         data = caseData('testData/{}/MeterFrozenData/meter_profile_data.json'.format(Project.name))['meter_lp_data']
@@ -50,7 +49,6 @@ class Test_Meter_Profile:
         """
         使用同步读取的方式去对电表进行lp读取 - 按照Entry+Date方式进行并进行数据项对比
          """
-        DeviceBusy = 1
         data = caseData('testData/{}/MeterFrozenData/meter_profile_data.json'.format(Project.name))['meter_lp_data']
         requestData = data['request']
         requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
@@ -61,7 +59,6 @@ class Test_Meter_Profile:
         if response.get('reply')['replyCode'] != 200:
             assert False
         else:
-            DeviceBusy = 0
             assert len(response.get('payload')[0].get('data')) == setting[Project.name][
                 'lp_len']
 
@@ -92,6 +89,7 @@ class Test_Meter_Profile:
         requestData = data['request']
         requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
         response = HESRequest().post(url=Project.request_url, params=requestData)
+        print(response)
         if response.get('reply')['replyCode'] != 200:
             assert False
         else:

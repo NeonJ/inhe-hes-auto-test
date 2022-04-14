@@ -5,12 +5,14 @@
 # Author     ：cao jiann
 # version    ：python 3.7
 """
-import pytest, allure, time, datetime, json, random, requests
-from common.marker import *
-from common.HESAPI import *
-from config.settings import *
-from common.DB import *
+import allure
+import requests
+import time
 from faker import Faker
+
+from common.DB import *
+from common.marker import *
+from config.settings import *
 
 faker = Faker(locale='en_US')
 
@@ -67,7 +69,6 @@ class Test_Schedule_Setting:
                 setting[Project.name]['meter_no'])
             object_id = get_database.orcl_fetchall_dict(sql)[0]['METER_ID']
             meter_no = get_database.orcl_fetchall_dict(sql)[0]['INSTALL_METER_NO']
-            print(object_id, meter_no)
 
         with allure.step('添加设备到Task'):
             url = setting[Project.name]['web_url'] + '/api/hes-service/schedule/object/{}'.format(schedule_id)
@@ -113,6 +114,7 @@ class Test_Schedule_Setting:
                 count = count + 1
             assert re.status_code == 200
             assert re.json()['code'] == 200
+            print(re.json())
             assert re.json()['data']['pageData'][0]['taskStatus'] == 'SUCCESS'
 
     @hesAsyncTest

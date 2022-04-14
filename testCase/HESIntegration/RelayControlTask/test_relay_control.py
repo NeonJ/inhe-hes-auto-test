@@ -7,7 +7,9 @@
 """
 
 import datetime
-
+import time
+import requests
+from common.HESRequest import HESRequest
 from common.marker import *
 from config.settings import *
 
@@ -107,11 +109,10 @@ class Test_Relay_Control:
         response = HESRequest().post(url=Project.request_url, params=requestData)
         assert "DISCONNECTED" in str(response)
 
-
     @hesAsyncTest
     def test_relay_on_task(self, url, get_database, caseData):
         """
-        调用Relay Control Task
+        调用异步Relay Control
          """
         testUrl = url + '/api/v1/Request/RequestMessage'
         count = 0
@@ -158,7 +159,7 @@ class Test_Relay_Control:
     @hesAsyncTest
     def test_relay_off_task(self, url, get_database, caseData):
         """
-        调用Relay Control Task
+        调用异步Relay Control
          """
         testUrl = url + '/api/v1/Request/RequestMessage'
         count = 0
@@ -205,7 +206,7 @@ class Test_Relay_Control:
     @hesAsyncTest
     def test_relay_on_task_billing(self, url, get_database, caseData):
         """
-        调用Relay Control Task
+        调用异步Relay Control
          """
         testUrl = url + '/api/v1/Request/RequestMessage'
         count = 0
@@ -252,7 +253,7 @@ class Test_Relay_Control:
     @hesAsyncTest
     def test_relay_off_task_billing(self, url, get_database, caseData):
         """
-        调用Relay Control Task
+        调用异步Relay Control
          """
         testUrl = url + '/api/v1/Request/RequestMessage'
         count = 0

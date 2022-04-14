@@ -1,8 +1,9 @@
 import allure
-import pytest, json, os, requests
+import pytest
+import requests
 
-from config.settings import *
 from common.DB import *
+from config.settings import *
 
 
 @allure.step("获取服务端网关地址")

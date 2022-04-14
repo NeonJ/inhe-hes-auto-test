@@ -5,8 +5,6 @@
 # @Updated  : 2019/11/19
 from datetime import date, timedelta
 
-from .comm import *
-
 ILLEGAL_CHARACTERS_RE = re.compile(r'[\000-\010]|[\013-\014]|[\016-\037]')
 
 

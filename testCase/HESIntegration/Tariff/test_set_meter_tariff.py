@@ -2,14 +2,19 @@
 # @Time : 2021/12/23 11:09
 # @Author : JingYang
 # @File : test_SetMeterTariff.py
+import datetime
+import time
+
+import requests
+
 from common.marker import *
 from config.settings import *
-import allure, pytest, requests, logging, time, datetime
 
-class Test_SetMeterTariff:
+
+class Test_Set_Meter_Tariff:
 
     @hesAsyncTest
-    def test_SetMeterTariff(self,url,get_database,caseData):
+    def test_SetMeterTariff(self, url, get_database, caseData):
 
         testUrl = url + '/api/v1/Request/RequestMessage'
         count = 0
@@ -29,8 +34,9 @@ class Test_SetMeterTariff:
         # Step2 生成异步任务后，任务正常执行完毕进入his，进入his表，则认为任务结束
         # 过期时间到，也会进入his表，这里暂不考虑
         time.sleep(3)
-        #查询生成Core执行的任务的 AUTO_RUN_ID
-        sql_running = "select AUTO_RUN_ID from H_TASK_RUNNING where NODE_NO='{}' and JOB_TYPE='SET_TARIFF_CONTENT'".format(setting[Project.name]['meter_no'])
+        # 查询生成Core执行的任务的 AUTO_RUN_ID
+        sql_running = "select AUTO_RUN_ID from H_TASK_RUNNING where NODE_NO='{}' and JOB_TYPE='SET_TARIFF_CONTENT'".format(
+            setting[Project.name]['meter_no'])
         db_queue = get_database.orcl_fetchall_dict(sql_running)
         while len(db_queue) == 0 and count < 5:
             time.sleep(5)

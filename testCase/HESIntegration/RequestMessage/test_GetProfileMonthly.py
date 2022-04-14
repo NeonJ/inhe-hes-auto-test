@@ -4,8 +4,8 @@
 # @File : test_GetProfileMonthly.py
 
 
-import allure, pytest, requests,logging
-from common.UtilTools import *
+import requests
+
 
 class Test_GetProfileMonthly:
 

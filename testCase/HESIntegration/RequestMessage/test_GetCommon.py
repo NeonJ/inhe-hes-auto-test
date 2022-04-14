@@ -2,10 +2,9 @@
 # @Time : 2021/12/9 9:21
 # @Author : JingYang
 # @File : test_GetCommon.py
-import sys
 
-import allure, pytest, requests,logging
-from common.UtilTools import *
+import requests
+
 
 class Test_GetCommon:
 

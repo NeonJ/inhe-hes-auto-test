@@ -9,8 +9,3 @@ def count_time(func):
         print(f"{func.__name__} execution took up time:{took_up_time}")
         return ret
     return took_up_time
-
-@count_time
-def get_projects_lang_code_lines():
-    for i in range(100000):
-        print(i)

@@ -4,11 +4,10 @@
  Author     : 曹剑南
  version    : python 3.7
 """
-import json
-import os
 import shutil
-
+import json
 from config.settings import *
+
 
 
 def get_dirname():

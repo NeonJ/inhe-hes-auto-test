@@ -5,7 +5,7 @@
 # version    ：python 3.7
 """
 
-from common.Request import *
+from common.HESRequest import *
 from common.marker import *
 from config.settings import *
 
@@ -22,6 +22,7 @@ class Test_Meter_Event:
         requestData = data['request']
         requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
         response = HESRequest().post(url=Project.request_url, params=requestData)
+        print(response)
         assert int(
             response.get('payload')[0].get('data')[0].get('resultValue').get('dataItemValue')) == setting[Project.name][
                    'event_entries']
@@ -40,7 +41,7 @@ class Test_Meter_Event:
             print(response.get('payload')[0]['desc'])
             assert False
         else:
-            assert len(response.get('payload')[0].get('data')) == 64
+            # assert len(response.get('payload')[0].get('data')) == 64
             startTime = response.get('payload')[0].get('data')[0].get('dataTime')
 
         print(f"Step 2 : 按照时间获取冻结事件数据")

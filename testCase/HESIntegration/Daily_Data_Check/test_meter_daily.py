@@ -5,7 +5,7 @@
 # Author     ：cao jiann
 # version    ：python 3.7
 """
-
+from common.HESRequest import HESRequest
 from common.marker import *
 from config.settings import *
 

@@ -7,9 +7,9 @@
 
 ###目录说明
 
-    ./comms                      公共函数，第三方插件(webdriver,allure)
+    ./common                      公共函数，第三方插件(webdriver,allure)
     ./config/settings.py         配置文件，项目启动必须配置
-    ./projects                   测试用例，子目录对应不同project
+    ./testCase                   测试用例，子目录对应不同project
     ./testData                   测试数据，目录结构与projects对应
     ./result                     运行后的结果文件
     ./report                     HTML格式的测试报告，allure生成

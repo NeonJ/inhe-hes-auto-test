@@ -3,14 +3,7 @@
 # @Author    : Jiannan Cao
 # @FileName  : UsagePointConfig.py
 
-import json
-import time
-
-import requests
-
-from common.HESAPI import *
 from common.marker import *
-from config.settings import *
 
 
 @RoseIECWebService

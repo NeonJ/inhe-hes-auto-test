@@ -3,6 +3,7 @@ import time
 
 import requests
 
+
 class HESRequest():
 
     def __init__(self):
@@ -60,13 +61,13 @@ class HESRequest():
 
 
 
-if __name__ == '__main__':
-    pass
-    # data = loadData('testData/{}/MeterFrozenData/meter_daily_data.json'.format(Project.name))['meter_daily_entries']
-    # requestData = data['request']
-    # requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
-    # response = HESRequest().post(url=Project.request_url,
-    #                      params=requestData)
-    # print(response)
-    # print(type(response))
-    # assert response.get('reply')['replyCode'] == 201
+# if __name__ == '__main__':
+#     pass
+#     # data = loadData('testData/{}/MeterFrozenData/meter_daily_data.json'.format(Project.name))['meter_daily_entries']
+#     # requestData = data['request']
+#     # requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
+#     # response = HESRequest().post(url=Project.request_url,
+#     #                      params=requestData)
+#     # print(response)
+#     # print(type(response))
+#     # assert response.get('reply')['replyCode'] == 201

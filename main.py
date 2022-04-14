@@ -21,11 +21,11 @@ if os.path.exists('./result/'):
 else:
     print('清楚历史执行明细')
 
-logging.info('Testing  Start..............................................')
+logging.info('Testing  Start....................................................')
 
 if Project.name is not None:
     if Project.tag:
-        # 指定tag和项目
+        # 指定tag和项目 --reruns 1 --reruns-delay 1
         os.system(
             "pytest  --json-report   -v  testCase/%s   -m  \"%s\"    --alluredir  ./result/" % (
                 Project.path, Project.tag))

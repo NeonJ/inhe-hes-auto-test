@@ -1,19 +1,5 @@
 # -*- coding: UTF-8 -*-
 
-import traceback
-from openpyxl import load_workbook
-from datetime import datetime
-import pandas as pd
-import time
-import shutil
-
-
-from common import *
-from libs import *
-from dlms import *
-from api import *
-
-
 
 # 根据项目名动态加载dlms库
 from libs.Singleton import Singleton

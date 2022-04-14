@@ -6,9 +6,11 @@
 # version    ：python 3.7
 """
 
+import requests,time
+
+from common.HESRequest import HESRequest
 from common.marker import *
 from config.settings import *
-import requests
 
 
 class Test_Meter_Status:
@@ -20,6 +22,32 @@ class Test_Meter_Status:
         """
         data = "/Mdm/GetMeterStatus?MeterNo={}".format(setting[Project.name]['meter_no'])
         response = HESRequest().get(url=setting[Project.name]['api_url'] + data, params=None)
+        assert response['code'] == 200
+
+    @hesSyncTest
+    def test_get_meter_time(self):
+        """
+        同步读取时间，同步修改时间
+        """
+        data = "/Mdm/getTime?deviceNo={}&deviceType=1&taskType=0".format(setting[Project.name]['meter_no'])
+        response = HESRequest().get(url=setting[Project.name]['api_url'] + data, params=None)
+        assert response['code'] == 200
+        assert response['data']['year'] == int(time.strftime("%Y"))
+        assert response['data']['month'] == int(time.strftime("%m"))
+        assert response['data']['day'] == int(time.strftime("%d"))
+        assert response['data']['hour'] == int(time.strftime("%H"))
+        # assert response['data']['minute'] == int(time.strftime("%M"))
+
+        params = {
+            'deviceNo': '{}'.format(setting[Project.name]['meter_no']),
+            'transactionId': 'string',
+            'deviceType': 1,
+            'taskType': 0
+        }
+        params.update(response['data'])
+        print(params)
+        data = "/Mdm/setTime"
+        response = HESRequest().post(url=setting[Project.name]['api_url'] + data, params=params)
         assert response['code'] == 200
 
     @hesSyncTest
@@ -76,4 +104,3 @@ class Test_Meter_Status:
         data = "/Monitor/SuspendMasterCoreTask?signal=1"  # 启动
         response = requests.get(url=setting[Project.name]['api_url'] + data)
         assert 'Start' in response.text
-

@@ -7,6 +7,7 @@
 """
 
 from common.DB import *
+from common.HESRequest import HESRequest
 from common.marker import *
 from config.settings import *
 
@@ -31,7 +32,7 @@ class Test_HES_Register_Check:
                 register_list.append(queue.get('REGISTER_ID'))
         return register_list
 
-    # @OBISTest
+    @OBISTest
     @pytest.mark.parametrize('register_get', get_db_register(Project.name, 'r'))
     def test_register_get(self, register_get, get_database, get_result_table, caseData):
         print("Register_ID:{}".format(register_get))

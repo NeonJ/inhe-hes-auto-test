@@ -5,14 +5,14 @@
 # Author     ：cao jiann
 # version    ：python 3.7
 """
-
+from common.HESRequest import HESRequest
 from common.marker import *
 from config.settings import *
 
 
 class Test_Meter_Monthly:
 
-    @hesSyncTest1
+    @hesSyncTest
     def test_get_monthly_entries(self, caseData):
         """
         使用同步读取的方式去对电表进行月结entries数据对比
@@ -28,7 +28,7 @@ class Test_Meter_Monthly:
             assert int(response.get('payload')[0].get('data')[0].get('resultValue').get(
                 'dataItemValue')) == setting[Project.name]['monthly_entries']
 
-    @hesSyncTest1
+    @hesSyncTest
     def test_get_monthly_date(self, caseData):
         """
         使用同步读取的方式去对电表进行月结读取 - 按照Entry+Date方式进行并进行数据项对比

@@ -9,7 +9,6 @@ import time
 
 import requests
 
-from common.HESAPI import *
 from common.UtilTools import compareJson
 from common.marker import *
 from config.settings import *

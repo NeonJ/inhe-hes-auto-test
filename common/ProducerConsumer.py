@@ -19,7 +19,7 @@ class Kafka_Producer():
         self.kafkatopic = kafkatopic
         self.producer = KafkaProducer(bootstrap_servers='{kafka_host}:{kafka_port}'.format(
             kafka_host=self.kafkaHost,
-            kafka_port=self.kafkaPort)
+            kafka_port=self.kafkaPort, ack=0)
         )
 
     def sendjsondata(self, params):
