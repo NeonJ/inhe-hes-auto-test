@@ -145,8 +145,7 @@ if __name__ == "__main__":
         'bootstrap.servers': '10.32.233.63:30359',
         'client.id': 'Neon',
         'queue.buffering.max.messages': '1000000',
-        'linger.ms' : 100,
-        'acks' : -1
+        'linger.ms' : 100
 
     }
     # conf = {'bootstrap.servers': '10.x.x.x:19092',
@@ -162,7 +161,7 @@ if __name__ == "__main__":
     # print(py_kafka(dailytopic,hdatadaily(10000, 20000, 2, 220329000000)))
 
     # print('Daily Push: Meter No.100000~200000, Date 220301000000~220305000000')
-    print(c_kafka(dailytopic, hdatadaily(100000, 200000, 1, 220329000000), sleep_time, **conf))
+    print(c_kafka(dailytopic, hdatadaily(100000, 200000, 10, 220329000000), sleep_time, **conf))
     # print('Monthly Push: Meter No.100000~20000, Date 220301000000~220701000000')
     # print(c_kafka(monthlytopic, hdatamonthly(100000, 200000, 5, 220301000000), sleep_time, **conf))
     # print('LP Push: Meter No.100000~20000, Date 220301000000~220701000000')
@@ -191,17 +190,17 @@ if __name__ == "__main__":
     #     else:
     #         print(msg)
 
-    consumer1 = KafkaConsumer(
-        bootstrap_servers=brokerlist,
-        # auto_offset_reset='earliest' , # 'earliest',
-        # enable_auto_commit= False ,
-        group_id='Neon',
-        value_deserializer=lambda x: json.loads(x.decode('utf-8')))
-    consumer1.subscribe("RELAY-CONFIG")
-    while True:
-        msg = consumer1.poll(timeout_ms=5)
-        print(msg)
-        time.sleep(1)
+    # consumer1 = KafkaConsumer(
+    #     bootstrap_servers=brokerlist,
+    #     # auto_offset_reset='earliest' , # 'earliest',
+    #     # enable_auto_commit= False ,
+    #     group_id='Neon',
+    #     value_deserializer=lambda x: json.loads(x.decode('utf-8')))
+    # consumer1.subscribe("RELAY-CONFIG")
+    # while True:
+    #     msg = consumer1.poll(timeout_ms=5)
+    #     print(msg)
+    #     time.sleep(1)
 
 
     # 指定通道指定partition消费
