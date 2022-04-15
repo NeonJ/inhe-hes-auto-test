@@ -22,7 +22,7 @@ class Test_Schedule_Setting:
     @hesAsyncTest
     def test_meter_schedule_setting_daily(self, get_database, token, get_daily_date):
         """
-        验证Schedule Setting生成采集GPRS电表日结
+        验证GPSchedule Setting生成采集RS电表日结
         """
         count = 1
         with allure.step('添加电表日结采集任务'):
