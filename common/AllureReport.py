@@ -40,9 +40,9 @@ def update_trend_data(dirname, old_data: list):
     for i in range(1, dirname + 1):
         with open(os.path.join(f"./report/{Project.name}", f"{str(i)}/widgets/history-trend.json"), "w+") as f:
             f.write(json.dumps(old_data))
-    hostory_file = os.path.join(f"./report/{Project.name}", "history.json")
+    history_file = os.path.join(f"./report/{Project.name}", "history.json")
 
-    with open(hostory_file, "w+") as f:
+    with open(history_file, "w+") as f:
         f.write(json.dumps(old_data))
     return old_data, new_data[0]["reportUrl"]
 
