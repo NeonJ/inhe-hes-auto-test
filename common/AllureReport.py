@@ -11,14 +11,14 @@ from config.settings import *
 
 
 def get_dirname():
-    hostory_file = os.path.join(f"./report/{Project.name}", "history.json")
-    if os.path.exists(hostory_file):
-        with open(hostory_file) as f:
+    history_file = os.path.join(f"./report/{Project.name}", "history.json")
+    if os.path.exists(history_file):
+        with open(history_file) as f:
             li = eval(f.read())
         li.sort(key=lambda x: x['buildOrder'], reverse=True)
         return li[0]["buildOrder"] + 1, li
     else:
-        with open(hostory_file, "w") as f:
+        with open(history_file, "w") as f:
             pass
         return 1, None
 

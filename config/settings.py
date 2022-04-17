@@ -128,7 +128,7 @@ setting = {
 
 class Project:
     name = 'empower'  # 与下面setting项目key对应
-    tag = 'hesSyncTest'  # 对应1· comms.marker  hesSyncTest or hesAsyncTest HES-Web
+    tag = 'hesSyncTest1'  # 对应1· comms.marker  hesSyncTest or hesAsyncTest HES-Web
     path = '/'  # 对testData目录接口对应
     continue_last_check = False  # 是否断点续测OBIS
     request_url = HESAPI(Address=setting[name]['api_url']).requestAddress()
