@@ -1,11 +1,5 @@
-"""
- File       : main.py
- Time       : 2021/11/2 16:37
- Author     : 黄大彬
- version    : python 3.7
-"""
-
-import logging
+import logging,time
+from pexpect import *
 
 from common.AllureReport import *
 from config.settings import *
@@ -36,11 +30,12 @@ else:
     print('settings文件参数错误，name是必填参数')
 
 
-# 报告生成
+# 报告生成 按照时间生成报告
 # if os.listdir('./result') != []:
-#     os.system("allure  generate  ./result/  -o  ./report/%s  --clean" % time.strftime('%Y%m%d%H%M%S',time.localtime()))
+#     report_date = time.strftime('%y%m%d%H%M%S',time.localtime())
+#     report_path = './report/{}/{}'.format(Project().name, Project().name + '-' + report_date)
+#     os.system("allure  generate  ./result/  -o  {}  --clean".format(report_path))
 # else:
-#
 #     print('无结果数据，无法生成报告')
 
 if os.listdir('./result') != []:
@@ -50,5 +45,30 @@ if os.listdir('./result') != []:
     environment()
     os.system("allure  generate  ./result/  -o  ./report/{}/{}  --clean".format(Project.name, buildOrder))
     all_data, reportUrl = update_trend_data(buildOrder, old_data)
+    if not os.path.exists('./report/report_history'):
+        os.mkdir('./report/report_history')
+    shutil.copytree('./report/{}/{}'.format(Project.name, buildOrder), './report/report_history/{}'.format(buildOrder))
+    report_date = time.strftime('%y%m%d%H%M%S', time.localtime())
+    report_path = './report/report_history/{}'.format(Project.name + '-' + report_date)
+    os.rename('./report/report_history/{}'.format(buildOrder),
+              './report/report_history/{}'.format(Project.name + '-' + report_date))
+    # Linux环境推送测试报告到Tomcat
+    # child = spawn("scp -r {} root@10.32.233.164:/opt/tomcat/webapps".format(report_path))
+    # child.expect ("password")
+    # child.sendline ("kaifa123")
+    # child.read()
+    print('Report URL == http://10.32.233.164:9090/{}/'.format(Project.name + '-' + report_date))
 else:
     print('无结果数据，无法生成报告')
+
+# 报告生成 按照项目＋执行次数生成报告
+# if os.listdir('./result') != []:
+#     if not os.path.exists('./report/{}'.format(Project.name)):
+#         os.mkdir('./report/{}'.format(Project.name))
+#     buildOrder, old_data = get_dirname()
+#     environment()
+#     os.system("allure  generate  ./result/  -o  ./report/{}/{}  --clean".format(Project.name, buildOrder))
+#     time.sleep(3)
+#     all_data, reportUrl = update_trend_data(buildOrder, old_data)
+# else:
+#     print('无结果数据，无法生成报告')
