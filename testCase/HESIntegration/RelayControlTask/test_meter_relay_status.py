@@ -25,7 +25,7 @@ class Test_Meter_Relay_Status:
          """
         data, user_config = caseData('testData/empower/RelayControlTask/read_RelayControlStatus.json')
         requestData = data['ReadRelayControlStatusSync']['request']
-        requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
+        requestData['payload'][0]['deviceNo'] = user_config['Device']['device_number']
         response = HESRequest().post(url=Project.request_url, params=requestData)
         assert '636F6E6E6563746564' in str(response) or '646973636F6E6E6563746564' in str(response)
 
@@ -45,7 +45,7 @@ class Test_Meter_Relay_Status:
 
         requestData['payload'][0]['startTime'] = currentTime
         requestData['payload'][0]['endTime'] = endTime
-        requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
+        requestData['payload'][0]['deviceNo'] = user_config['Device']['device_number']
         response = requests.post(url=testUrl, json=requestData)
         assert response.status_code == 200
 
@@ -54,7 +54,7 @@ class Test_Meter_Relay_Status:
         time.sleep(3)
         # 查询生成Core执行的任务的 AUTO_RUN_ID
         sql_running = "select AUTO_RUN_ID from H_TASK_RUNNING where NODE_NO='{}' and JOB_TYPE='GET_COMMON_PARAM'".format(
-            setting[Project.name]['meter_no'])
+            user_config['Device']['device_number'])
         db_queue = get_database.orcl_fetchall_dict(sql_running)
         while len(db_queue) == 0 and count < 2:
             time.sleep(3)

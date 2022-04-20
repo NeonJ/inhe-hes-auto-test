@@ -1,3 +1,10 @@
+Device:
+  device_number: 202009043000
+  device_type: Meter   # Meter,DCU
+  sub_type: Single   # Single,Three,CT
+  communication_type: GPRS # GPRS,PLC,RF,485
+  connect_type: Long # Long,Short
+
 Daily:
   register_id: Contract Daily Billing Profile
   entries_register_id: Daily Billing Entries

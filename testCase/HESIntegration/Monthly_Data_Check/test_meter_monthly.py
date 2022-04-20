@@ -19,7 +19,7 @@ class Test_Meter_Monthly:
         """
         data, user_config = caseData('testData/empower/MeterFrozenData/meter_monthly_data.json')
         requestData = data['meter_monthly_entries']['request']
-        requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
+        requestData['payload'][0]['deviceNo'] = user_config['Device']['device_number']
         requestData['payload'][0]['data'][0]['registerId'] = user_config['Monthly']['entries_register_id']
         response = HESRequest().post(url=Project.request_url, params=requestData)
         print(response)
@@ -38,7 +38,7 @@ class Test_Meter_Monthly:
         print("Step 1 : 获取当前电表第一条月结数据")
         data, user_config = caseData('testData/empower/MeterFrozenData/meter_monthly_data.json')
         requestData = data['meter_monthly_data']['request']
-        requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
+        requestData['payload'][0]['deviceNo'] = user_config['Device']['device_number']
         requestData['payload'][0]['data'][0]['registerId'] = user_config['Monthly']['register_id']
         response = HESRequest().post(url=Project.request_url, params=requestData)
         print(response)

@@ -24,13 +24,13 @@ class Test_Auto_Register_Short:
         count = 1
         data, user_config = caseData('testData/empower/AutoRegistration/register-event-process.json'.format(Project.name))['short_meter']
         requestData = data['pl']
-        requestData[0]['dn'] = setting[Project.name]['meter_no']
+        requestData[0]['dn'] = user_config['Device']['device_number']
         producer = KafkaProducer(bootstrap_servers=setting[Project.name]['kafka_url'])
         producer.send('register-event-process', key=b'KafkaBatchPush', value=json.dumps(data).encode())
         producer.close()
         time.sleep(5)
         sql1 = "select AUTO_RUN_ID from H_TASK_RUNNING where NODE_NO='{}' and JOB_TYPE='DeviceRegist'".format(
-            setting[Project.name]['meter_no'])
+            user_config['Device']['device_number'])
         db_queue = get_database.orcl_fetchall_dict(sql1)
         while len(db_queue) == 0 and count < 10:
             time.sleep(6)
@@ -49,7 +49,7 @@ class Test_Auto_Register_Short:
             count = count + 1
         assert db_queue[0]['TASK_STATE'] == 3
 
-        sql3 = "select DEV_STATUS from c_ar_meter where METER_NO='{}'".format(setting[Project.name]['meter_no'])
+        sql3 = "select DEV_STATUS from c_ar_meter where METER_NO='{}'".format(user_config['Device']['device_number'])
         db_queue = get_database.orcl_fetchall_dict(sql3)
         print(db_queue)
         assert db_queue[0]['DEV_STATUS'] == 4
@@ -62,12 +62,12 @@ class Test_Auto_Register_Short:
         count = 1
         data, user_config = caseData('testData/empower/AutoRegistration/register-event-process.json'.format(Project.name))['short_meter']
         requestData = data['pl']
-        requestData[0]['dn'] = setting[Project.name]['meter_no']
+        requestData[0]['dn'] = user_config['Device']['device_number']
         producer = KafkaProducer(bootstrap_servers=setting[Project.name]['kafka_url'])
         producer.send('register-event-process', key=b'KafkaBatchPush', value=json.dumps(data).encode())
         producer.close()
         sql1 = "select AUTO_RUN_ID from H_TASK_RUNNING where NODE_NO='{}' and JOB_TYPE='DeviceRegist'".format(
-            setting[Project.name]['meter_no'])
+            user_config['Device']['device_number'])
         db_queue = get_database.orcl_fetchall_dict(sql1)
         while len(db_queue) == 0 and count < 2:
             time.sleep(5)
@@ -100,12 +100,12 @@ class Test_Auto_Register_Short:
         count = 1
         data, user_config = caseData('testData/empower/AutoRegistration/register-event-process.json'.format(Project.name))['short_meter']
         requestData = data['pl']
-        requestData[0]['dn'] = setting[Project.name]['meter_no']
+        requestData[0]['dn'] = user_config['Device']['device_number']
         producer = KafkaProducer(bootstrap_servers=setting[Project.name]['kafka_url'])
         producer.send('register-event-process', key=b'KafkaBatchPush', value=json.dumps(data).encode())
         producer.close()
         sql1 = "select AUTO_RUN_ID from H_TASK_RUNNING where NODE_NO='{}' and JOB_TYPE='DeviceRegist'".format(
-            setting[Project.name]['meter_no'])
+            user_config['Device']['device_number'])
         db_queue = get_database.orcl_fetchall_dict(sql1)
         while len(db_queue) == 0 and count < 10:
             time.sleep(6)
@@ -125,7 +125,7 @@ class Test_Auto_Register_Short:
         assert db_queue[0]['TASK_STATE'] == 3
 
         sql3 = "select DEV_STATUS,CONN_TYPE,COMMUNICATION_TYPE,MASTER_NO,METER_SEQ from c_ar_meter where METER_NO='{}'".format(
-            setting[Project.name]['meter_no'])
+            user_config['Device']['device_number'])
         db_queue = get_database.orcl_fetchall_dict(sql3)
 
         assert db_queue[0]['DEV_STATUS'] == 4

@@ -39,7 +39,7 @@ class Test_HES_Register_Check:
         data, user_config = caseData('testData/empower/OBISCheck/register_get.json'.format(Project.name))['register_get']
         requestData = data['request']
         requestData['payload'][0]['data'][0]['registerId'] = register_get
-        requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
+        requestData['payload'][0]['deviceNo'] = user_config['Device']['device_number']
         response = HESRequest().post(url=Project.request_url, params=requestData)
         for payload in response.get('payload'):
             if payload.get('data') == []:
@@ -61,7 +61,7 @@ class Test_HES_Register_Check:
         data,user_cofnig = caseData('testData/empower/OBISCheck/register_get.json')
         requestData = data['register_get']['request']
         requestData['payload'][0]['data'][0]['registerId'] = register_set
-        requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
+        requestData['payload'][0]['deviceNo'] = user_config['Device']['device_number']
         response = HESRequest().post(url=Project.request_url, params=requestData)
         for payload in response.get('payload'):
             if payload.get('data') == []:
@@ -82,7 +82,7 @@ class Test_HES_Register_Check:
         requestData = data['register_set']['request']
         requestData['payload'][0]['data'][0]['registerId'] = register_set
         requestData['payload'][0]['data'][0]['parameter'] = parameter
-        requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
+        requestData['payload'][0]['deviceNo'] = user_config['Device']['device_number']
         response = HESRequest().post(url=Project.request_url, params=requestData)
         for payload in response.get('payload'):
             for data in payload.get('data'):

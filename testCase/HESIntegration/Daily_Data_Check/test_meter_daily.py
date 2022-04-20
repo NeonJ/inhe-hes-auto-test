@@ -19,7 +19,7 @@ class Test_Meter_Daily:
         """
         data, user_config = caseData('testData/empower/MeterFrozenData/meter_daily_data.json')
         requestData = data['meter_daily_entries']['request']
-        requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
+        requestData['payload'][0]['deviceNo'] = user_config['Device']['device_number']
         requestData['payload'][0]['data'][0]['registerId'] = user_config['Daily']['entries_register_id']
         response = HESRequest().post(url=Project.request_url, params=requestData)
         print(response)
@@ -35,7 +35,7 @@ class Test_Meter_Daily:
         print("Step 1 : 获取当前电表第一条日结数据")
         data, user_config = caseData('testData/empower/MeterFrozenData/meter_daily_data.json')
         requestData = data['meter_daily_data']['request']
-        requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
+        requestData['payload'][0]['deviceNo'] = user_config['Device']['device_number']
         requestData['payload'][0]['data'][0]['registerId'] = user_config['Daily']['register_id']
         response = HESRequest().post(url=Project.request_url, params=requestData)
         print(response)

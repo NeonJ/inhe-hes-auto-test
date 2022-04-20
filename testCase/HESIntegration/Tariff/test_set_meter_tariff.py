@@ -27,7 +27,7 @@ class Test_Set_Meter_Tariff:
 
         requestData['payload'][0]['startTime'] = currentTime
         requestData['payload'][0]['endTime'] = endTime
-        requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
+        requestData['payload'][0]['deviceNo'] = user_config['Device']['device_number']
         response = requests.post(url=testUrl, json=requestData)
         assert response.status_code == 200
 
@@ -36,7 +36,7 @@ class Test_Set_Meter_Tariff:
         time.sleep(3)
         # 查询生成Core执行的任务的 AUTO_RUN_ID
         sql_running = "select AUTO_RUN_ID from H_TASK_RUNNING where NODE_NO='{}' and JOB_TYPE='SET_TARIFF_CONTENT'".format(
-            setting[Project.name]['meter_no'])
+            user_config['Device']['device_number'])
         db_queue = get_database.orcl_fetchall_dict(sql_running)
         while len(db_queue) == 0 and count < 5:
             time.sleep(5)

@@ -19,7 +19,7 @@ class Test_Meter_Event:
         """
         data, user_config = caseData('testData/empower/MeterFrozenData/meter_event_data.json')
         requestData = data['meter_daily_event_entries']['request']
-        requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
+        requestData['payload'][0]['deviceNo'] = user_config['Device']['device_number']
         requestData['payload'][0]['data'][0]['registerId'] = user_config['DailyEvent']['entries_register_id']
         response = HESRequest().post(url=Project.request_url, params=requestData)
         print(response)
@@ -35,7 +35,7 @@ class Test_Meter_Event:
         print("Step 1 : 获取当前电表第一条daily event数据")
         data, user_config = caseData('testData/empower/MeterFrozenData/meter_event_data.json')
         requestData = data['meter_daily_event']['request']
-        requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
+        requestData['payload'][0]['deviceNo'] = user_config['Device']['device_number']
         requestData['payload'][0]['data'][0]['registerId'] = user_config['DailyEvent']['daily_event_register_id']
         response = HESRequest().post(url=Project.request_url, params=requestData)
         if response.get('reply')['replyCode'] != 200:

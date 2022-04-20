@@ -16,7 +16,7 @@ class Test_Get_Meter_Tariff:
         # active request parameter
         data, user_config = caseData('testData/empower/Tariff/getMeterTariff.json')
         requestData = data['test_GetMeterTariff_Active']
-        requestData['meterNo'] = setting[Project.name]['meter_no']
+        requestData['meterNo'] = user_config['Device']['device_number']
 
         expectResJson = data['response']
         response = HESRequest().get(url=url, params=requestData)
@@ -31,7 +31,7 @@ class Test_Get_Meter_Tariff:
         # passive request parameter
         data, user_config = caseData('testData/empower/Tariff/getMeterTariff.json')
         requestData = data['test_GetMeterTariff_Passive']
-        requestData['meterNo'] = setting[Project.name]['meter_no']
+        requestData['meterNo'] = user_config['Device']['device_number']
 
         response = HESRequest().get(url=url, params=requestData)
         print(response)
@@ -46,7 +46,7 @@ class Test_Get_Meter_Tariff:
         # request parameter:get all tariff
         data, user_config = caseData('testData/empower/Tariff/getMeterTariff.json')
         requestData = data['test_GetMeterTariff_All']
-        requestData['meterNo'] = setting[Project.name]['meter_no']
+        requestData['meterNo'] = user_config['Device']['device_number']
 
         response = HESRequest().get(url=url, params=requestData)
         print(response)

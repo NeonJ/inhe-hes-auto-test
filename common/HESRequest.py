@@ -65,7 +65,7 @@ class HESRequest():
 #     pass
 #     # data = loadData('testData/empower/MeterFrozenData/meter_daily_data.json'.format(Project.name))['meter_daily_entries']
 #     # requestData = data['request']
-#     # requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
+#     # requestData['payload'][0]['deviceNo'] = user_config['Device']['device_number']
 #     # response = HESRequest().post(url=Project.request_url,
 #     #                      params=requestData)
 #     # print(response)

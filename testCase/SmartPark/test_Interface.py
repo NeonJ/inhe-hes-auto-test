@@ -23,8 +23,8 @@ class Test_Interface:
         """
         data, user_config = caseData('testData/empower/InstallUninstallMeter.json'.format(Project.name))['install_meter_request']
         resp_data, user_config = caseData('testData/empower/InstallUninstallMeter.json'.format(Project.name))['install_response']
-        data['regionNo'] = setting[Project.name]['meter_no']
-        data['deviceNo'] = setting[Project.name]['meter_no']
+        data['regionNo'] = user_config['Device']['device_number']
+        data['deviceNo'] = user_config['Device']['device_number']
         data['deviceType'] = 1
         data['installDate'] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         data['installOperatorName'] = "AutoTest"
@@ -46,7 +46,7 @@ class Test_Interface:
         """
         data, user_config = caseData('testData/empower/InstallUninstallMeter.json'.format(Project.name))['uninstall_meter_request']
         resp_data, user_config = caseData('testData/empower/InstallUninstallMeter.json'.format(Project.name))['uninstall_response']
-        data['deviceNo'] = setting[Project.name]['meter_no']
+        data['deviceNo'] = user_config['Device']['device_number']
         data['deviceType'] = 1
         data['removeDate'] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         data['removeOperatorName'] = "AutoTest"
@@ -101,7 +101,7 @@ class Test_Interface:
     #     """
     #     data, user_config = caseData('testData/empower/InstallUninstallMeter.json'.format(Project.name))['uninstall_meter_request']
     #     resp_data, user_config = caseData('testData/empower/InstallUninstallMeter.json'.format(Project.name))['uninstall_response']
-    #     data['deviceNo'] = setting[Project.name]['meter_no']
+    #     data['deviceNo'] = user_config['Device']['device_number']
     #     data['deviceType'] = 1
     #     data['removeDate'] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
     #     data['removeOperatorName'] = "AutoTest"

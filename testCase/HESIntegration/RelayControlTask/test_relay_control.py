@@ -23,7 +23,7 @@ class Test_Relay_Control:
          """
         data, user_config = caseData('testData/empower/RelayControlTask/relayControl.json')
         requestData = data['test_RELAY_CONTROL_RELAYON']['request']
-        requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
+        requestData['payload'][0]['deviceNo'] = user_config['Device']['device_number']
         response = HESRequest().post(url=Project.request_url, params=requestData)
         assert 'CONNECTED' in str(response)
         response = HESRequest().post(url=Project.request_url, params=requestData)
@@ -37,12 +37,12 @@ class Test_Relay_Control:
          """
         data, user_config = caseData('testData/empower/RelayControlTask/relayControl.json')
         requestData = data['test_RELAY_CONTROL_RELAYOFF']['request']
-        requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
+        requestData['payload'][0]['deviceNo'] = user_config['Device']['device_number']
         response = HESRequest().post(url=Project.request_url, params=requestData)
         assert 'DISCONNECTED' in str(response)
         data, user_config = caseData('testData/empower/RelayControlTask/relayControl.json')
         requestData = data['test_RELAY_CONTROL_RELAYON']['request']
-        requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
+        requestData['payload'][0]['deviceNo'] = user_config['Device']['device_number']
         response = HESRequest().post(url=Project.request_url, params=requestData)
         print(response)
         assert 'CONNECTED' in str(response)
@@ -54,12 +54,12 @@ class Test_Relay_Control:
          """
         data, user_config = caseData('testData/empower/RelayControlTask/relayControl.json')
         requestData = data['test_RELAY_CONTROL_RELAYON']['request']
-        requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
+        requestData['payload'][0]['deviceNo'] = user_config['Device']['device_number']
         response = HESRequest().post(url=Project.request_url, params=requestData)
         assert 'CONNECTED' in str(response)
         data, user_config = caseData('testData/empower/RelayControlTask/relayControl.json')
         requestData = data['test_RELAY_CONTROL_RELAYOFF']['request']
-        requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
+        requestData['payload'][0]['deviceNo'] = user_config['Device']['device_number']
         response = HESRequest().post(url=Project.request_url, params=requestData)
         print(response)
         assert 'DISCONNECTED' in str(response)
@@ -71,7 +71,7 @@ class Test_Relay_Control:
          """
         data, user_config = caseData('testData/empower/RelayControlTask/relayControl.json')
         requestData = data['test_RELAY_CONTROL_RELAYOFF']['request']
-        requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
+        requestData['payload'][0]['deviceNo'] = user_config['Device']['device_number']
         response = HESRequest().post(url=Project.request_url, params=requestData)
         assert 'DISCONNECTED' in str(response)
         response = HESRequest().post(url=Project.request_url, params=requestData)
@@ -86,8 +86,9 @@ class Test_Relay_Control:
          """
         data, user_config = caseData('testData/empower/RelayControlTask/relayControl.json')
         requestData = data['test_relay_on_home_sync']['request']
-        requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
+        requestData['payload'][0]['deviceNo'] = user_config['Device']['device_number']
         response = HESRequest().post(url=Project.request_url, params=requestData)
+        print(response)
         assert "CONNECTED" in str(response)
 
     @smokeTest
@@ -97,8 +98,9 @@ class Test_Relay_Control:
          """
         data, user_config = caseData('testData/empower/RelayControlTask/relayControl.json')
         requestData = data['test_relay_off_home_sync']['request']
-        requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
+        requestData['payload'][0]['deviceNo'] = user_config['Device']['device_number']
         response = HESRequest().post(url=Project.request_url, params=requestData)
+        print(response)
         assert "DISCONNECTED" in str(response)
 
     @hesAsyncTest
@@ -117,7 +119,7 @@ class Test_Relay_Control:
 
         requestData['payload'][0]['startTime'] = currentTime
         requestData['payload'][0]['endTime'] = endTime
-        requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
+        requestData['payload'][0]['deviceNo'] = user_config['Device']['device_number']
         response = requests.post(url=testUrl, json=requestData)
         assert response.status_code == 200
 
@@ -126,7 +128,7 @@ class Test_Relay_Control:
         time.sleep(5)
         # 查询生成Core执行的任务的 AUTO_RUN_ID
         sql_running = "select AUTO_RUN_ID from H_TASK_RUNNING where NODE_NO='{}' and JOB_TYPE='RELAY_CONTROL'".format(
-            setting[Project.name]['meter_no'])
+            user_config['Device']['device_number'])
         db_queue = get_database.orcl_fetchall_dict(sql_running)
         while len(db_queue) == 0 and count < 2:
             time.sleep(5)
@@ -163,7 +165,7 @@ class Test_Relay_Control:
 
         requestData['payload'][0]['startTime'] = currentTime
         requestData['payload'][0]['endTime'] = endTime
-        requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
+        requestData['payload'][0]['deviceNo'] = user_config['Device']['device_number']
         response = requests.post(url=testUrl, json=requestData)
         assert response.status_code == 200
 
@@ -172,7 +174,7 @@ class Test_Relay_Control:
         time.sleep(5)
         # 查询生成Core执行的任务的 AUTO_RUN_ID
         sql_running = "select AUTO_RUN_ID from H_TASK_RUNNING where NODE_NO='{}' and JOB_TYPE='RELAY_CONTROL'".format(
-            setting[Project.name]['meter_no'])
+            user_config['Device']['device_number'])
         db_queue = get_database.orcl_fetchall_dict(sql_running)
         while len(db_queue) == 0 and count < 2:
             time.sleep(5)
@@ -209,7 +211,7 @@ class Test_Relay_Control:
 
         requestData['payload'][0]['startTime'] = currentTime
         requestData['payload'][0]['endTime'] = endTime
-        requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
+        requestData['payload'][0]['deviceNo'] = user_config['Device']['device_number']
         response = requests.post(url=testUrl, json=requestData)
         assert response.status_code == 200
 
@@ -218,7 +220,7 @@ class Test_Relay_Control:
         time.sleep(5)
         # 查询生成Core执行的任务的 AUTO_RUN_ID
         sql_running = "select AUTO_RUN_ID from H_TASK_RUNNING where NODE_NO='{}' and JOB_TYPE='RELAY_CONTROL'".format(
-            setting[Project.name]['meter_no'])
+            user_config['Device']['device_number'])
         db_queue = get_database.orcl_fetchall_dict(sql_running)
         while len(db_queue) == 0 and count < 2:
             time.sleep(5)
@@ -255,7 +257,7 @@ class Test_Relay_Control:
 
         requestData['payload'][0]['startTime'] = currentTime
         requestData['payload'][0]['endTime'] = endTime
-        requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
+        requestData['payload'][0]['deviceNo'] = user_config['Device']['device_number']
         response = requests.post(url=testUrl, json=requestData)
         assert response.status_code == 200
 
@@ -264,7 +266,7 @@ class Test_Relay_Control:
         time.sleep(5)
         # 查询生成Core执行的任务的 AUTO_RUN_ID
         sql_running = "select AUTO_RUN_ID from H_TASK_RUNNING where NODE_NO='{}' and JOB_TYPE='RELAY_CONTROL'".format(
-            setting[Project.name]['meter_no'])
+            user_config['Device']['device_number'])
         db_queue = get_database.orcl_fetchall_dict(sql_running)
         while len(db_queue) == 0 and count < 2:
             time.sleep(5)

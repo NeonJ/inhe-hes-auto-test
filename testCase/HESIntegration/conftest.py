@@ -90,7 +90,7 @@ def get_daily_date(caseData):
     startTime = None
     data, user_config = caseData('testData/empower/MeterFrozenData/meter_daily_data.json'.format(Project.name))['meter_daily_data']
     requestData = data['request']
-    requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
+    requestData['payload'][0]['deviceNo'] = user_config['Device']['device_number']
     response = HESRequest().post(url=Project.request_url, params=requestData)
     if response.get('reply')['replyCode'] != 200:
         print(response.get('payload')[0]['desc'])
@@ -107,7 +107,7 @@ def get_monthly_date(caseData):
     print("Step 1 : 获取当前电表第一条月结数据")
     data, user_config = caseData('testData/empower/MeterFrozenData/meter_monthly_data.json'.format(Project.name))['meter_monthly_data']
     requestData = data['request']
-    requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
+    requestData['payload'][0]['deviceNo'] = user_config['Device']['device_number']
     response = HESRequest().post(url=Project.request_url, params=requestData)
     if response.get('reply')['replyCode'] != 200:
         print(response.get('payload')[0]['desc'])
@@ -127,7 +127,7 @@ def get_lp_date(caseData):
     print("Step 1 : 获取当前电表第一条lp数据")
     data, user_config = caseData('testData/empower/MeterFrozenData/meter_profile_data.json'.format(Project.name))['meter_lp_data']
     requestData = data['request']
-    requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
+    requestData['payload'][0]['deviceNo'] = user_config['Device']['device_number']
     response = HESRequest().post(url=Project.request_url, params=requestData)
     if response.get('reply')['replyCode'] != 200:
         print(response.get('payload')[0]['desc'])
@@ -147,7 +147,7 @@ def get_daily_event(caseData):
     print("Step 1 : 获取当前电表第一条daily event数据")
     data, user_config = caseData('testData/empower/MeterFrozenData/meter_event_data.json'.format(Project.name))['meter_daily_event']
     requestData = data['request']
-    requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
+    requestData['payload'][0]['deviceNo'] = user_config['Device']['device_number']
     response = HESRequest().post(url=Project.request_url, params=requestData)
     if response.get('reply')['replyCode'] != 200:
         print(response.get('payload')[0]['desc'])
@@ -167,7 +167,7 @@ def get_event_standard(caseData):
     data, user_config = caseData('testData/empower/MeterFrozenData/meter_event_data.json'.format(Project.name))[
         'meter_standard_event']
     requestData = data['request']
-    requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
+    requestData['payload'][0]['deviceNo'] = user_config['Device']['device_number']
     response = HESRequest().post(url=Project.request_url, params=requestData)
     if response.get('reply')['replyCode'] != 200:
         print(response.get('payload')[0]['desc'])

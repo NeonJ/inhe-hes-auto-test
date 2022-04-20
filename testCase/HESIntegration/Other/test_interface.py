@@ -20,7 +20,7 @@ class Test_Meter_Status:
         """
         验证接口获取电表状态字
         """
-        data = "/Mdm/GetMeterStatus?MeterNo={}".format(setting[Project.name]['meter_no'])
+        data = "/Mdm/GetMeterStatus?MeterNo={}".format(user_config['Device']['device_number'])
         response = HESRequest().get(url=setting[Project.name]['api_url'] + data, params=None)
         assert response['code'] == 200
 
@@ -29,7 +29,7 @@ class Test_Meter_Status:
         """
         同步读取时间，同步修改时间
         """
-        data = "/Mdm/getTime?deviceNo={}&deviceType=1&taskType=0".format(setting[Project.name]['meter_no'])
+        data = "/Mdm/getTime?deviceNo={}&deviceType=1&taskType=0".format(user_config['Device']['device_number'])
         response = HESRequest().get(url=setting[Project.name]['api_url'] + data, params=None)
         assert response['code'] == 200
         assert response['data']['year'] == int(time.strftime("%Y"))
@@ -39,7 +39,7 @@ class Test_Meter_Status:
         # assert response['data']['minute'] == int(time.strftime("%M"))
 
         params = {
-            'deviceNo': '{}'.format(setting[Project.name]['meter_no']),
+            'deviceNo': '{}'.format(user_config['Device']['device_number']),
             'transactionId': 'string',
             'deviceType': 1,
             'taskType': 0
@@ -55,16 +55,16 @@ class Test_Meter_Status:
         """
         验证接口获取电表和DCU上下线状态 GetOnlineDevice
         """
-        data = "/OnlineDevice/GetOnlineDevice?deviceNo={}".format(setting[Project.name]['meter_no'])
+        data = "/OnlineDevice/GetOnlineDevice?deviceNo={}".format(user_config['Device']['device_number'])
         response = HESRequest().get(url=setting[Project.name]['api_url'] + data, params=None)
-        assert response['DeviceNo'] == setting[Project.name]['meter_no']
+        assert response['DeviceNo'] == user_config['Device']['device_number']
 
     @smokeTest
     def test_get_device_online2(self):
         """
         验证接口获取电表和DCU上下线状态 getMeterOnlineStatus
         """
-        data = "/Mdm/getMeterOnlineStatus?meterNo={}".format(setting[Project.name]['meter_no'])
+        data = "/Mdm/getMeterOnlineStatus?meterNo={}".format(user_config['Device']['device_number'])
         response = HESRequest().get(url=setting[Project.name]['api_url'] + data, params=None)
         assert response['desc'] == "Online"
 
@@ -73,7 +73,7 @@ class Test_Meter_Status:
         """
         验证接口获取电表和DCU上下线状态 getDeviceNoOnlineStatus
         """
-        data = "/Mdm/getDeviceNoOnlineStatus?deviceNo={}".format(setting[Project.name]['meter_no'])
+        data = "/Mdm/getDeviceNoOnlineStatus?deviceNo={}".format(user_config['Device']['device_number'])
         response = HESRequest().get(url=setting[Project.name]['api_url'] + data, params=None)
         assert response['desc'] == "Online"
 
@@ -94,7 +94,7 @@ class Test_Meter_Status:
         """
         data = "/Monitor/SuspendMasterCoreTask?signal=2"  # 暂停
         response = requests.get(url=setting[Project.name]['api_url'] + data)
-        assert 'Suspend' in response.text
+        assert 'Error' not in response.text
 
     @smokeTest
     def test_SuspendMasterCoreTask2(self):

@@ -1,0 +1,88 @@
+{
+  "vector": {
+    "request": {
+      "header": {
+        "correlationId": "ab71594e-7842-4b52-83b0-397b5649e5bb",
+        "messageId": "ae225f79-cddd-4a29-85fb-3fae6578372e",
+        "serviceType": "READ_PHASE_ANGLE",
+        "businessType": "READ_PHASE_ANGLE",
+        "source": "MDM",
+        "createTime": "220420132335",
+        "replyAddress": null,
+        "replyType": null,
+        "messageType": "REQUEST",
+        "asyncReplyFlag": false
+      },
+      "payload": [
+        {
+          "deviceNo": "0CHM2221000001",
+          "deviceType": "METER",
+          "retryCount": 0,
+          "retryInterval": 0,
+          "priority": 0,
+          "endTime": null,
+          "startTime": null,
+          "transactionId": "56733333-6898-440e-a067-473ccb5cb06a",
+          "jobUniqueFlag": false,
+          "data": [
+            {
+              "clientId": null,
+              "registerId": null,
+              "accessSelector": 0,
+              "parameter": null,
+              "featurePoint": "fp.readAngle.read.AMIHOME"
+            }
+          ]
+        }
+      ]
+    },
+    "response": {
+      "header": {
+        "correlationId": "ab71594e-7842-4b52-83b0-397b5649e5bb",
+        "messageId": "4fda7d26-dd1e-46d0-bd86-3c97ca647b61",
+        "serviceType": "READ_PHASE_ANGLE",
+        "businessType": "READ_PHASE_ANGLE",
+        "source": "HES",
+        "createTime": "220420132335",
+        "messageType": "RESPONSE"
+      },
+      "payload": [
+        {
+          "code": 200,
+          "desc": "OK",
+          "deviceNo": "0CHM2221000001",
+          "deviceType": "METER",
+          "executeStartTime": "220420132335",
+          "executeEndTime": "220420132340",
+          "transactionId": "56733333-6898-440e-a067-473ccb5cb06a",
+          "data": [
+            {
+              "METER_NO": "0CHM2221000001",
+              "CURRENT_A": 0.0,
+              "CURRENT_B": 0.0,
+              "CURRENT_C": 0.0,
+              "VOLTAGE_A": 352.5,
+              "VOLTAGE_B": 0.0,
+              "VOLTAGE_C": 0.0,
+              "ANGLE_UA": 270.0,
+              "ANGLE_UB": 270.0,
+              "ANGLE_UC": 0.0,
+              "ANGLE_IUA": 0.0,
+              "ANGLE_IUB": 0.0,
+              "ANGLE_IUC": 0.0,
+              "PF_A": 1.0,
+              "PF_B": 1.0,
+              "PF_C": 1.0,
+              "UPDATE_TIME": "20/04/2022 13:23:40",
+              "FREQUENCY": 50
+            }
+          ]
+        }
+      ],
+      "reply": {
+        "replyCode": 200,
+        "replyDesc": "OK"
+      }
+    }
+  }
+}
