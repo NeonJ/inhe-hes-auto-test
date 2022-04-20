@@ -103,10 +103,12 @@ setting = {
 class Project:
     name = 'empower'  # 与下面setting项目key对应
     tag = 'smokeTest'  # 对应1· comms.marker  smokeTest or hesAsyncTest HES-Web
+    retry = 0  # 用例失败自动重试次数
+
     path = '/'  # 对testData目录接口对应
     continue_last_check = False  # 是否断点续测OBIS
-    request_url = HESAPI(Address=setting[name]['api_url']).requestAddress()
 
+    request_url = HESAPI(Address=setting[name]['api_url']).requestAddress()
 
     obis_sql1 = "select register_id, class_id, index_id, register_type,data_type_int, rw from "
     obis_sql2 = " where PTL_TYPE = (select PTL_TYPE from c_ar_model where MODEL_CODE = (select model_code from c_ar_meter where meter_no = '{}'))".format(

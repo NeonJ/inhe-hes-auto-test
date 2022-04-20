@@ -1,8 +1,10 @@
-import logging,time
-# from pexpect import *
+import logging
+import time
 
 from common.AllureReport import *
 from config.settings import *
+
+# from pexpect import *
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -18,16 +20,14 @@ logging.info('Testing  Start....................................................
 
 if Project.name is not None:
     if Project.tag:
-        # 指定tag和项目 --reruns 1 --reruns-delay 1
         os.system(
-            "pytest  --json-report   -v  testCase/%s   -m  \"%s\"    --alluredir  ./result/" % (
-                Project.path, Project.tag))
+            "pytest  --reruns %s --reruns-delay 1 --json-report   -v  testCase/%s   -m  \"%s\"    --alluredir  ./result/" % (
+                Project.retry, Project.path, Project.tag))
     else:
         # 不指定tag
         os.system('pytest  --json-report     -v  testCase/%s     --alluredir  ./result/' % Project.path)
 else:
     print('settings文件参数错误，name是必填参数')
-
 
 # 报告生成 按照时间生成报告
 # if os.listdir('./result') != []:
