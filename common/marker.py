@@ -11,13 +11,13 @@ smokeTest = pytest.mark.smokeTest  # 版本发布冒烟测试
 
 fullTest = pytest.mark.fullTest  # 全量测试
 
-hesSyncTest = pytest.mark.hesSyncTest  # HES同步功能测试
+smokeTest = pytest.mark.smokeTest  # HES同步功能测试
 
 hesAsyncTest = pytest.mark.hesAsyncTest  # HES异步功能测试
 
 OBISTest = pytest.mark.OBISTest  # HES接口检查电表OBIS
 
-hesSyncTest1 = pytest.mark.hesSyncTest1
+smokeTest1 = pytest.mark.smokeTest1
 
 hesAsyncTest1 = pytest.mark.hesAsyncTest1
 

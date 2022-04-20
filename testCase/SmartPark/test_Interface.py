@@ -21,8 +21,8 @@ class Test_Interface:
         """
         正常接口安装电表
         """
-        data = caseData('testData/{}/InstallUninstallMeter.json'.format(Project.name))['install_meter_request']
-        resp_data = caseData('testData/{}/InstallUninstallMeter.json'.format(Project.name))['install_response']
+        data, user_config = caseData('testData/empower/InstallUninstallMeter.json'.format(Project.name))['install_meter_request']
+        resp_data, user_config = caseData('testData/empower/InstallUninstallMeter.json'.format(Project.name))['install_response']
         data['regionNo'] = setting[Project.name]['meter_no']
         data['deviceNo'] = setting[Project.name]['meter_no']
         data['deviceType'] = 1
@@ -44,8 +44,8 @@ class Test_Interface:
         """
         正常接口卸载电表
         """
-        data = caseData('testData/{}/InstallUninstallMeter.json'.format(Project.name))['uninstall_meter_request']
-        resp_data = caseData('testData/{}/InstallUninstallMeter.json'.format(Project.name))['uninstall_response']
+        data, user_config = caseData('testData/empower/InstallUninstallMeter.json'.format(Project.name))['uninstall_meter_request']
+        resp_data, user_config = caseData('testData/empower/InstallUninstallMeter.json'.format(Project.name))['uninstall_response']
         data['deviceNo'] = setting[Project.name]['meter_no']
         data['deviceType'] = 1
         data['removeDate'] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
@@ -72,8 +72,8 @@ class Test_Interface:
     #     """
     #     异常请求安装电表
     #     """
-    #     data = caseData('testData/{}/InstallUninstallMeter.json'.format(Project.name))['install_meter_request']
-    #     resp_data = caseData('testData/{}/InstallUninstallMeter.json'.format(Project.name))['install_response']
+    #     data, user_config = caseData('testData/empower/InstallUninstallMeter.json'.format(Project.name))['install_meter_request']
+    #     resp_data, user_config = caseData('testData/empower/InstallUninstallMeter.json'.format(Project.name))['install_response']
     #     data['regionNo'] = regionNo
     #     data['deviceNo'] = deviceNo
     #     data['deviceType'] = deviceType
@@ -99,8 +99,8 @@ class Test_Interface:
     #     """
     #     正常接口卸载电表
     #     """
-    #     data = caseData('testData/{}/InstallUninstallMeter.json'.format(Project.name))['uninstall_meter_request']
-    #     resp_data = caseData('testData/{}/InstallUninstallMeter.json'.format(Project.name))['uninstall_response']
+    #     data, user_config = caseData('testData/empower/InstallUninstallMeter.json'.format(Project.name))['uninstall_meter_request']
+    #     resp_data, user_config = caseData('testData/empower/InstallUninstallMeter.json'.format(Project.name))['uninstall_response']
     #     data['deviceNo'] = setting[Project.name]['meter_no']
     #     data['deviceType'] = 1
     #     data['removeDate'] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())

@@ -23,7 +23,7 @@ class Test_Auto_Register:
         验证GPRS电表正常自动注册流程
         """
         count = 1
-        data = caseData('testData/{}/AutoRegistration/register-event-process.json'.format(Project.name))['gprs_meter']
+        data, user_config = caseData('testData/empower/AutoRegistration/register-event-process.json')['gprs_meter']
         requestData = data['pl']
         requestData[0]['dn'] = setting[Project.name]['meter_no']
         producer = KafkaProducer(bootstrap_servers=setting[Project.name]['kafka_url'])
@@ -61,7 +61,7 @@ class Test_Auto_Register:
         验证GPRS电表未安装不会自动注册
         """
         count = 1
-        data = caseData('testData/{}/AutoRegistration/register-event-process.json'.format(Project.name))['gprs_meter']
+        data, user_config = caseData('testData/empower/AutoRegistration/register-event-process.json'.format(Project.name))['gprs_meter']
         requestData = data['pl']
         requestData[0]['dn'] = setting[Project.name]['meter_no']
         producer = KafkaProducer(bootstrap_servers=setting[Project.name]['kafka_url'])
@@ -99,7 +99,7 @@ class Test_Auto_Register:
         如果之前是已经注册到DCU下的电表还会生成REG_DEL_ARCHIVES删除集中器内档案任务和修改master_no=null,meter_seq=null
         """
         count = 1
-        data = caseData('testData/{}/AutoRegistration/register-event-process.json'.format(Project.name))['gprs_meter']
+        data, user_config = caseData('testData/empower/AutoRegistration/register-event-process.json'.format(Project.name))['gprs_meter']
         requestData = data['pl']
         requestData[0]['dn'] = setting[Project.name]['meter_no']
         producer = KafkaProducer(bootstrap_servers=setting[Project.name]['kafka_url'])

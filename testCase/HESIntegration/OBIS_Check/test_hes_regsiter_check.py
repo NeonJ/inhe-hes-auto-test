@@ -36,7 +36,7 @@ class Test_HES_Register_Check:
     @pytest.mark.parametrize('register_get', get_db_register(Project.name, 'r'))
     def test_register_get(self, register_get, get_database, get_result_table, caseData):
         print("Register_ID:{}".format(register_get))
-        data = caseData('testData/{}/OBISCheck/register_get.json'.format(Project.name))['register_get']
+        data, user_config = caseData('testData/empower/OBISCheck/register_get.json'.format(Project.name))['register_get']
         requestData = data['request']
         requestData['payload'][0]['data'][0]['registerId'] = register_get
         requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
@@ -58,8 +58,8 @@ class Test_HES_Register_Check:
     @pytest.mark.parametrize('register_set', get_db_register(Project.name, 'rw'))
     def test_register_set(self, register_set, get_database, get_result_table, caseData):
         print("Register_ID:{}".format(register_set))
-        data = caseData('testData/{}/OBISCheck/register_get.json'.format(Project.name))['register_get']
-        requestData = data['request']
+        data,user_cofnig = caseData('testData/empower/OBISCheck/register_get.json')
+        requestData = data['register_get']['request']
         requestData['payload'][0]['data'][0]['registerId'] = register_set
         requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
         response = HESRequest().post(url=Project.request_url, params=requestData)
@@ -78,8 +78,8 @@ class Test_HES_Register_Check:
                 get_database.save_result(get_result_table, 'get_value', data.get('resultValue'),
                                          register_set)
 
-        data = caseData('testData/{}/OBISCheck/register_set.json'.format(Project.name))['register_set']
-        requestData = data['request']
+        data, user_config = caseData('testData/empower/OBISCheck/register_set.json')
+        requestData = data['register_set']['request']
         requestData['payload'][0]['data'][0]['registerId'] = register_set
         requestData['payload'][0]['data'][0]['parameter'] = parameter
         requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']

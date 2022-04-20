@@ -1,5 +1,5 @@
 import logging,time
-from pexpect import *
+# from pexpect import *
 
 from common.AllureReport import *
 from config.settings import *
@@ -9,7 +9,6 @@ logging.basicConfig(level=logging.DEBUG)
 logging.info('''测试前准备，清理历史数据..............................................''')
 
 # 创建result目录
-
 if os.path.exists('./result/'):
     shutil.rmtree('./result/')  # 清空历史数据,系统自动创建resulthe report路径
 else:

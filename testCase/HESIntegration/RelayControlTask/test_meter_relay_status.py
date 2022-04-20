@@ -8,7 +8,9 @@
 
 import datetime
 import time
+
 import requests
+
 from common.HESRequest import HESRequest
 from common.marker import *
 from config.settings import *
@@ -16,14 +18,13 @@ from config.settings import *
 
 class Test_Meter_Relay_Status:
 
-    @hesSyncTest
+    @smokeTest
     def test_read_relay_status_sync(self, url, caseData):
         """
         使用同步读取的方式去对电表进行读取闸状态
          """
-        data = caseData('testData/{}/RelayControlTask/read_RelayControlStatus.json'.format(Project.name))[
-            'ReadRelayControlStatusSync']
-        requestData = data['request']
+        data, user_config = caseData('testData/empower/RelayControlTask/read_RelayControlStatus.json')
+        requestData = data['ReadRelayControlStatusSync']['request']
         requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
         response = HESRequest().post(url=Project.request_url, params=requestData)
         assert '636F6E6E6563746564' in str(response) or '646973636F6E6E6563746564' in str(response)
@@ -36,9 +37,8 @@ class Test_Meter_Relay_Status:
         testUrl = url + '/api/v1/Request/RequestMessage'
         count = 0
         print("Step 1 : 生成异步操作读取任务，hes-api异步执行，生成running表")
-        data = caseData('testData/{}/RelayControlTask/read_RelayControlStatus.json'.format(Project.name))[
-            'ReadRelayControlStatusAsync']
-        requestData = data['request']
+        data, user_config = caseData('testData/empower/RelayControlTask/read_RelayControlStatus.json')
+        requestData = data['ReadRelayControlStatusAsync']['request']
         # 设定三分钟异步任务，三分钟后失效
         currentTime = datetime.datetime.now().strftime('%y%m%d%H%M%S')
         endTime = (datetime.datetime.now() + datetime.timedelta(minutes=3)).strftime('%y%m%d%H%M%S')

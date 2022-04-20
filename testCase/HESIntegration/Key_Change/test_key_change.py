@@ -14,13 +14,13 @@ from config.settings import *
 class Test_Key_Change:
 
     @hesAsyncTest
-    def test_key_change_Akey(self, caseData,get_database):
+    def test_key_change_Akey(self, caseData, get_database):
         """
         正常修改GPRS电表key - A key
         """
         count = 0
-        data = caseData('testData/{}/KeyChange/key_change_task.json'.format(Project.name))['ChangeKey']
-        requestData = data['request']
+        data, user_config = caseData('testData/empower/KeyChange/key_change_task.json')
+        requestData = data['ChangeKey']['request']
         requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
         print(requestData)
         response = HESRequest().post(url=Project.request_url, params=requestData)
@@ -53,8 +53,8 @@ class Test_Key_Change:
         正常修改GPRS电表key - E key
         """
         count = 0
-        data = caseData('testData/{}/KeyChange/key_change_task.json'.format(Project.name))['ChangeKey']
-        requestData = data['request']
+        data,user_config = caseData('testData/empower/KeyChange/key_change_task.json')
+        requestData = data['ChangeKey']['request']
         requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
         requestData['payload'][0]['data'][0]['parameter']['KeyType'] = 0
         print(requestData)

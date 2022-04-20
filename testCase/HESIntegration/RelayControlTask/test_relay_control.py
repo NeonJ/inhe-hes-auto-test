@@ -16,14 +16,13 @@ from config.settings import *
 
 class Test_Relay_Control:
 
-    @hesSyncTest
+    @smokeTest
     def test_relay_on_standard_1(self, url, caseData):
         """
         同步标准合闸 - 合闸状态去合闸
          """
-        data = caseData('testData/{}/RelayControlTask/relayControl.json'.format(Project.name))[
-            'test_RELAY_CONTROL_RELAYON']
-        requestData = data['request']
+        data, user_config = caseData('testData/empower/RelayControlTask/relayControl.json')
+        requestData = data['test_RELAY_CONTROL_RELAYON']['request']
         requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
         response = HESRequest().post(url=Project.request_url, params=requestData)
         assert 'CONNECTED' in str(response)
@@ -31,52 +30,47 @@ class Test_Relay_Control:
         print(response)
         assert 'CONNECTED' in str(response)
 
-    @hesSyncTest
+    @smokeTest
     def test_relay_on_standard_2(self, url, caseData):
         """
         同步标准合闸 - 拉闸状态去合闸
          """
-        data = caseData('testData/{}/RelayControlTask/relayControl.json'.format(Project.name))[
-            'test_RELAY_CONTROL_RELAYOFF']
-        requestData = data['request']
+        data, user_config = caseData('testData/empower/RelayControlTask/relayControl.json')
+        requestData = data['test_RELAY_CONTROL_RELAYOFF']['request']
         requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
         response = HESRequest().post(url=Project.request_url, params=requestData)
         assert 'DISCONNECTED' in str(response)
-        data = caseData('testData/{}/RelayControlTask/relayControl.json'.format(Project.name))[
-            'test_RELAY_CONTROL_RELAYON']
-        requestData = data['request']
+        data, user_config = caseData('testData/empower/RelayControlTask/relayControl.json')
+        requestData = data['test_RELAY_CONTROL_RELAYON']['request']
         requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
         response = HESRequest().post(url=Project.request_url, params=requestData)
         print(response)
         assert 'CONNECTED' in str(response)
 
-    @hesSyncTest
+    @smokeTest
     def test_relay_off_standard_1(self, url, caseData):
         """
         同步标准拉闸 - 合闸状态去拉闸
          """
-        data = caseData('testData/{}/RelayControlTask/relayControl.json'.format(Project.name))[
-            'test_RELAY_CONTROL_RELAYON']
-        requestData = data['request']
+        data, user_config = caseData('testData/empower/RelayControlTask/relayControl.json')
+        requestData = data['test_RELAY_CONTROL_RELAYON']['request']
         requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
         response = HESRequest().post(url=Project.request_url, params=requestData)
         assert 'CONNECTED' in str(response)
-        data = caseData('testData/{}/RelayControlTask/relayControl.json'.format(Project.name))[
-            'test_RELAY_CONTROL_RELAYOFF']
-        requestData = data['request']
+        data, user_config = caseData('testData/empower/RelayControlTask/relayControl.json')
+        requestData = data['test_RELAY_CONTROL_RELAYOFF']['request']
         requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
         response = HESRequest().post(url=Project.request_url, params=requestData)
         print(response)
         assert 'DISCONNECTED' in str(response)
 
-    @hesSyncTest
+    @smokeTest
     def test_relay_off_standard_2(self, url, caseData):
         """
         同步标准拉闸 - 拉闸状态去拉闸
          """
-        data = caseData('testData/{}/RelayControlTask/relayControl.json'.format(Project.name))[
-            'test_RELAY_CONTROL_RELAYOFF']
-        requestData = data['request']
+        data, user_config = caseData('testData/empower/RelayControlTask/relayControl.json')
+        requestData = data['test_RELAY_CONTROL_RELAYOFF']['request']
         requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
         response = HESRequest().post(url=Project.request_url, params=requestData)
         assert 'DISCONNECTED' in str(response)
@@ -85,26 +79,24 @@ class Test_Relay_Control:
         assert 'DISCONNECTED' in str(response)
         # assert AssertIn().checkIn(expectResJson, response.json()) is True
 
-    @hesSyncTest
+    @smokeTest
     def test_relay_on_home(self, url, caseData):
         """
         调用Home界面合闸接口
          """
-        data = caseData('testData/{}/RelayControlTask/relayControl.json'.format(Project.name))[
-            'test_relay_on_home_sync']
-        requestData = data['request']
+        data, user_config = caseData('testData/empower/RelayControlTask/relayControl.json')
+        requestData = data['test_relay_on_home_sync']['request']
         requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
         response = HESRequest().post(url=Project.request_url, params=requestData)
         assert "CONNECTED" in str(response)
 
-    @hesSyncTest
+    @smokeTest
     def test_relay_off_home(self, url, caseData):
         """
         调用Home界面拉闸接口
          """
-        data = caseData('testData/{}/RelayControlTask/relayControl.json'.format(Project.name))[
-            'test_relay_off_home_sync']
-        requestData = data['request']
+        data, user_config = caseData('testData/empower/RelayControlTask/relayControl.json')
+        requestData = data['test_relay_off_home_sync']['request']
         requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
         response = HESRequest().post(url=Project.request_url, params=requestData)
         assert "DISCONNECTED" in str(response)
@@ -117,9 +109,8 @@ class Test_Relay_Control:
         testUrl = url + '/api/v1/Request/RequestMessage'
         count = 0
         # Step1 生成异步操作读取任务，hes-api异步执行，生成running表
-        data = caseData('testData/{}/RelayControlTask/relayControl.json'.format(Project.name))[
-            'test_RelayControl_OnTask']
-        requestData = data['request']
+        data, user_config = caseData('testData/empower/RelayControlTask/relayControl.json')
+        requestData = data['test_RelayControl_OnTask']['request']
         # 设定三分钟异步任务，三分钟后失效
         currentTime = datetime.datetime.now().strftime('%y%m%d%H%M%S')
         endTime = (datetime.datetime.now() + datetime.timedelta(minutes=3)).strftime('%y%m%d%H%M%S')
@@ -164,9 +155,8 @@ class Test_Relay_Control:
         testUrl = url + '/api/v1/Request/RequestMessage'
         count = 0
         # Step1 生成异步操作读取任务，hes-api异步执行，生成running表
-        data = caseData('testData/{}/RelayControlTask/relayControl.json'.format(Project.name))[
-            'test_RelayControl_OffTask']
-        requestData = data['request']
+        data, user_config = caseData('testData/empower/RelayControlTask/relayControl.json')
+        requestData = data['test_RelayControl_OffTask']['request']
         # 设定三分钟异步任务，三分钟后失效
         currentTime = datetime.datetime.now().strftime('%y%m%d%H%M%S')
         endTime = (datetime.datetime.now() + datetime.timedelta(minutes=3)).strftime('%y%m%d%H%M%S')
@@ -211,9 +201,8 @@ class Test_Relay_Control:
         testUrl = url + '/api/v1/Request/RequestMessage'
         count = 0
         # Step1 生成异步操作读取任务，hes-api异步执行，生成running表
-        data = caseData('testData/{}/RelayControlTask/relayControl.json'.format(Project.name))[
-            'test_RelayControl_OnTask']
-        requestData = data['request']
+        data, user_config = caseData('testData/empower/RelayControlTask/relayControl.json')
+        requestData = data['test_RelayControl_OnTask']['request']
         # 设定三分钟异步任务，三分钟后失效
         currentTime = datetime.datetime.now().strftime('%y%m%d%H%M%S')
         endTime = (datetime.datetime.now() + datetime.timedelta(minutes=3)).strftime('%y%m%d%H%M%S')
@@ -258,9 +247,8 @@ class Test_Relay_Control:
         testUrl = url + '/api/v1/Request/RequestMessage'
         count = 0
         # Step1 生成异步操作读取任务，hes-api异步执行，生成running表
-        data = caseData('testData/{}/RelayControlTask/relayControl.json'.format(Project.name))[
-            'test_RelayControl_OffTask']
-        requestData = data['request']
+        data, user_config = caseData('testData/empower/RelayControlTask/relayControl.json')
+        requestData = data['test_RelayControl_OffTask']['request']
         # 设定三分钟异步任务，三分钟后失效
         currentTime = datetime.datetime.now().strftime('%y%m%d%H%M%S')
         endTime = (datetime.datetime.now() + datetime.timedelta(minutes=3)).strftime('%y%m%d%H%M%S')

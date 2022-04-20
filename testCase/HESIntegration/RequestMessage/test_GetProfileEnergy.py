@@ -11,7 +11,7 @@ class Test_GetProfileEnergy:
 
     def test_GetProfileEnergy(self, url, caseData):
         testUrl = url + '/api/v1/Request/RequestMessage'
-        data = caseData('testData/HESAPI/RequestMessage/getProfile_Energy.json')['test_GetProfileEnergy']
+        data, user_config = caseData('testData/HESAPI/RequestMessage/getProfile_Energy.json')['test_GetProfileEnergy']
         requestData = data['request']
         expectResJson = data['response']
         response = requests.post(url=testUrl, json=requestData)

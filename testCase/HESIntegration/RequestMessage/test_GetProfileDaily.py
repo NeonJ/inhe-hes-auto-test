@@ -11,7 +11,7 @@ class Test_GetProfileDaily:
 
     def test_GetProfileDaily(self, url, caseData):
         testUrl = url + '/api/v1/Request/RequestMessage'
-        data = caseData('testData/HESAPI/RequestMessage/getProfile_Daily.json')['test_GetProfileDaily']
+        data, user_config = caseData('testData/HESAPI/RequestMessage/getProfile_Daily.json')['test_GetProfileDaily']
         requestData = data['request']
         expectResJson = data['response']
         response = requests.post(url=testUrl, json=requestData)

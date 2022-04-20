@@ -18,7 +18,10 @@ def caseData():
     def loadData(path):
         filepath = os.path.join(os.path.dirname(os.path.dirname(__file__)), path)
         with open(filepath, 'r', encoding='utf-8') as f:
-            return json.load(f)
+            file =  json.load(f)
+        with open("config/hesCase.yaml", encoding="utf-8") as f:
+            config = yaml.load(f, Loader=yaml.FullLoader)
+        return file, config
     return loadData
 
 
@@ -37,4 +40,3 @@ def token():
     access_token = re.json()['data']['access_token']
 
     yield {'Access-Token': access_token, 'Application-Id': 'AMI_WEB'}
-

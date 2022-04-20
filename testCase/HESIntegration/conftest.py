@@ -88,7 +88,7 @@ def get_daily_date(caseData):
      """
     print("获取当前电表第一条日结数据")
     startTime = None
-    data = caseData('testData/{}/MeterFrozenData/meter_daily_data.json'.format(Project.name))['meter_daily_data']
+    data, user_config = caseData('testData/empower/MeterFrozenData/meter_daily_data.json'.format(Project.name))['meter_daily_data']
     requestData = data['request']
     requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
     response = HESRequest().post(url=Project.request_url, params=requestData)
@@ -105,7 +105,7 @@ def get_daily_date(caseData):
 @pytest.fixture(scope='function')
 def get_monthly_date(caseData):
     print("Step 1 : 获取当前电表第一条月结数据")
-    data = caseData('testData/{}/MeterFrozenData/meter_monthly_data.json'.format(Project.name))['meter_monthly_data']
+    data, user_config = caseData('testData/empower/MeterFrozenData/meter_monthly_data.json'.format(Project.name))['meter_monthly_data']
     requestData = data['request']
     requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
     response = HESRequest().post(url=Project.request_url, params=requestData)
@@ -125,7 +125,7 @@ def get_lp_date(caseData):
     使用同步读取的方式去对电表进行lp读取 - 按照Entry+Date方式进行并进行数据项对比
      """
     print("Step 1 : 获取当前电表第一条lp数据")
-    data = caseData('testData/{}/MeterFrozenData/meter_profile_data.json'.format(Project.name))['meter_lp_data']
+    data, user_config = caseData('testData/empower/MeterFrozenData/meter_profile_data.json'.format(Project.name))['meter_lp_data']
     requestData = data['request']
     requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
     response = HESRequest().post(url=Project.request_url, params=requestData)
@@ -145,7 +145,7 @@ def get_daily_event(caseData):
     使用同步读取的方式去对电表进行daily event读取 - 按照Entry+Date方式进行并进行数据项对比
      """
     print("Step 1 : 获取当前电表第一条daily event数据")
-    data = caseData('testData/{}/MeterFrozenData/meter_event_data.json'.format(Project.name))['meter_daily_event']
+    data, user_config = caseData('testData/empower/MeterFrozenData/meter_event_data.json'.format(Project.name))['meter_daily_event']
     requestData = data['request']
     requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']
     response = HESRequest().post(url=Project.request_url, params=requestData)
@@ -164,7 +164,7 @@ def get_event_standard(caseData):
     使用同步读取的方式去对电表进行daily event读取 - 按照Entry+Date方式进行并进行数据项对比
      """
     print("Step 1 : 获取当前电表第一条daily event数据")
-    data = caseData('testData/{}/MeterFrozenData/meter_event_data.json'.format(Project.name))[
+    data, user_config = caseData('testData/empower/MeterFrozenData/meter_event_data.json'.format(Project.name))[
         'meter_standard_event']
     requestData = data['request']
     requestData['payload'][0]['deviceNo'] = setting[Project.name]['meter_no']

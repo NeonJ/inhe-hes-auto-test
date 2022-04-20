@@ -19,8 +19,8 @@ class Test_Set_Meter_Tariff:
         testUrl = url + '/api/v1/Request/RequestMessage'
         count = 0
         # Step1 生成异步操作读取任务，hes-api，生成running表
-        data = caseData('testData/{}/Tariff/setMeterTariff.json'.format(Project.name))['test_SetMeterTariff']
-        requestData = data['request']
+        data, user_config = caseData('testData/empower/Tariff/setMeterTariff.json')
+        requestData = data['test_SetMeterTariff']['request']
         # 设定三分钟异步任务，三分钟后失效
         currentTime = datetime.datetime.now().strftime('%y%m%d%H%M%S')
         endTime = (datetime.datetime.now() + datetime.timedelta(minutes=20)).strftime('%y%m%d%H%M%S')

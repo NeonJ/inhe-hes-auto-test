@@ -15,7 +15,7 @@ from config.settings import *
 
 class Test_Meter_Status:
 
-    @hesSyncTest
+    @smokeTest
     def test_get_meter_status(self):
         """
         验证接口获取电表状态字
@@ -24,7 +24,7 @@ class Test_Meter_Status:
         response = HESRequest().get(url=setting[Project.name]['api_url'] + data, params=None)
         assert response['code'] == 200
 
-    @hesSyncTest
+    @smokeTest
     def test_get_meter_time(self):
         """
         同步读取时间，同步修改时间
@@ -50,7 +50,7 @@ class Test_Meter_Status:
         response = HESRequest().post(url=setting[Project.name]['api_url'] + data, params=params)
         assert response['code'] == 200
 
-    @hesSyncTest
+    @smokeTest
     def test_get_device_online1(self):
         """
         验证接口获取电表和DCU上下线状态 GetOnlineDevice
@@ -59,7 +59,7 @@ class Test_Meter_Status:
         response = HESRequest().get(url=setting[Project.name]['api_url'] + data, params=None)
         assert response['DeviceNo'] == setting[Project.name]['meter_no']
 
-    @hesSyncTest
+    @smokeTest
     def test_get_device_online2(self):
         """
         验证接口获取电表和DCU上下线状态 getMeterOnlineStatus
@@ -68,7 +68,7 @@ class Test_Meter_Status:
         response = HESRequest().get(url=setting[Project.name]['api_url'] + data, params=None)
         assert response['desc'] == "Online"
 
-    @hesSyncTest
+    @smokeTest
     def test_get_device_online3(self):
         """
         验证接口获取电表和DCU上下线状态 getDeviceNoOnlineStatus
@@ -77,7 +77,7 @@ class Test_Meter_Status:
         response = HESRequest().get(url=setting[Project.name]['api_url'] + data, params=None)
         assert response['desc'] == "Online"
 
-    @hesSyncTest
+    @smokeTest
     def test_MasterCoreState(self):
         """
         验证接口获取MasterCore任务状态
@@ -87,7 +87,7 @@ class Test_Meter_Status:
         print(response)
         assert response['CurrentTime'] != ''
 
-    @hesSyncTest
+    @smokeTest
     def test_SuspendMasterCoreTask1(self):
         """
         验证接口暂停和启动MasterCore任务生成，加载，分发
@@ -96,7 +96,7 @@ class Test_Meter_Status:
         response = requests.get(url=setting[Project.name]['api_url'] + data)
         assert 'Suspend' in response.text
 
-    @hesSyncTest
+    @smokeTest
     def test_SuspendMasterCoreTask2(self):
         """
         验证接口暂停和启动MasterCore任务生成，加载，分发
