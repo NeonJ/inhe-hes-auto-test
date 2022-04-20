@@ -83,14 +83,14 @@ class Test_Meter_Status:
         验证接口获取MasterCore任务状态
         """
         data = "/Monitor/GetMasterCoreState"
-        response = HESRequest().get(url=setting[Project.name]['api_url'] + data, params=None)
+        response = requests.get(url=setting[Project.name]['api_url'] + data)
         print(response)
         assert response['CurrentTime'] != ''
 
     @smokeTest
     def test_SuspendMasterCoreTask1(self):
         """
-        验证接口暂停和启动MasterCore任务生成，加载，分发
+        验证接口暂停MasterCore任务生成，加载，分发
         """
         data = "/Monitor/SuspendMasterCoreTask?signal=2"  # 暂停
         response = requests.get(url=setting[Project.name]['api_url'] + data)
@@ -99,7 +99,7 @@ class Test_Meter_Status:
     @smokeTest
     def test_SuspendMasterCoreTask2(self):
         """
-        验证接口暂停和启动MasterCore任务生成，加载，分发
+        验证接口启动MasterCore任务生成，加载，分发
         """
         data = "/Monitor/SuspendMasterCoreTask?signal=1"  # 启动
         response = requests.get(url=setting[Project.name]['api_url'] + data)
