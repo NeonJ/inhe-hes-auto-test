@@ -7,8 +7,9 @@
 
 **目录说明**
 
-    ./common                      公共函数，第三方插件(webdriver,allure)
-    ./config/settings.py         配置文件，项目启动必须配置
+    ./common                     公共函数，第三方插件(webdriver,allure)
+    ./config/settings.py         配置文件，项目环境配置
+    ./config/hesCase.py          配置文件，HES用例相关变量配置
     ./testCase                   测试用例，子目录对应不同project
     ./testData                   测试数据，目录结构与projects对应
     ./result                     运行后的结果文件
