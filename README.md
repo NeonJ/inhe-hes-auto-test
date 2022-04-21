@@ -27,16 +27,16 @@
 
     用例规范
 
-            1.所有用例py文件名格式: test_*.py
-            2.类命名: class Test_*
-            3.用例名: test_*
-            4.所有py文件头信息: 文件名、时间、作者、version
+        1.所有用例py文件名格式: test_*.py
+        2.类命名: class Test_*
+        3.用例名: test_*
+        4.所有py文件头信息: 文件名、时间、作者、version
 
     项目结构
 
-            1.多个项目通过路径区分：projects/{moduletname}/test_*.py
-            2.测试数据目录结构与case路径对应：testData/{projectname}/file
-            3.所有测试数据文件建议采用json文件
+        1.多个项目通过路径区分：projects/{moduletname}/test_*.py
+        2.测试数据目录结构与case路径对应：testData/{projectname}/file
+        3.所有测试数据文件建议采用json文件
  
 
     项目管理
