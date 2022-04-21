@@ -38,6 +38,8 @@ else:
 #     print('无结果数据，无法生成报告')
 
 if os.listdir('./result') != []:
+    if not os.path.exists('./report/'):
+        os.mkdir('./report/')
     if not os.path.exists('./report/{}'.format(Project.name)):
         os.mkdir('./report/{}'.format(Project.name))
     buildOrder, old_data = get_dirname()
