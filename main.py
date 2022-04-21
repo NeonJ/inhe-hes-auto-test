@@ -4,7 +4,7 @@ import time
 from common.AllureReport import *
 from config.settings import *
 
-from pexpect import *
+# from pexpect import *
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -52,10 +52,10 @@ if os.listdir('./result') != []:
     os.rename('./report/report_history/{}'.format(buildOrder),
               './report/report_history/{}'.format(Project.name + '-' + report_date))
     # Linux环境推送测试报告到Tomcat
-    child = spawn("scp -r {} root@10.32.233.164:/opt/tomcat/webapps".format(report_path))
-    child.expect ("password")
-    child.sendline ("kaifa123")
-    child.read()
+    # child = spawn("scp -r {} root@10.32.233.164:/opt/tomcat/webapps".format(report_path))
+    # child.expect ("password")
+    # child.sendline ("kaifa123")
+    # child.read()
     print('Report URL == http://10.32.233.164:9090/{}/'.format(Project.name + '-' + report_date))
 else:
     print('无结果数据，无法生成报告')
