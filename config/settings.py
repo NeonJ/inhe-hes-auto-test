@@ -103,7 +103,3 @@ class Project:
     continue_last_check = False  # 是否断点续测OBIS
 
     request_url = HESAPI(Address=setting[name]['api_url']).requestAddress()
-
-    obis_sql1 = "select register_id, class_id, index_id, register_type,data_type_int, rw from "
-    obis_sql2 = " where PTL_TYPE = (select PTL_TYPE from c_ar_model where MODEL_CODE = (select model_code from c_ar_meter where meter_no = '{}'))".format(
-        setting[name]['meter_no'])
