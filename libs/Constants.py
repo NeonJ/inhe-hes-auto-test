@@ -80,34 +80,6 @@ ConformanceMap = {
     "23": "action",
 }
 
-# ConformanceMap = {
-#     "0"  : "Reserved0",
-#     "1"  : "GeneralProtection",
-#     "2"  : "GeneralBlockTransfer",
-#     "3"  : "Read",
-#     "4"  : "Write",
-#     "5"  : "UnconfirmedWrite",
-#     "6"  : "Reserved-six",
-#     "7"  : "Reserved-seven",
-#     "8"  : "Attribute0SupportedWithSet",
-#     "9"  : "PriorityMgmtSupported",
-#     "10" : "Attribute0SupportedWithGet",
-#     "11" : "block-transfer-with-get-or-read",
-#     "12" : "block-transfer-with-set-or-write",
-#     "13" : "block-transfer-with-action",
-#     "14" : "MultipleReferences",
-#     "15" : "InformationReport",
-#     "16" : "DataNotification",
-#     "17" : "Access",
-#     "18" : "ParameterizedAccess",
-#     "19" : "Get",
-#     "20" : "Set",
-#     "21" : "SelectiveAccess",
-#     "22" : "EventNotification",
-#     "23" : "Action",
-# }
-
-
 PduMap = {
     # with no ciphering
     "1": "initiateRequest",

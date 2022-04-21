@@ -90,7 +90,7 @@ setting = {
         "web_url": "http://10.32.233.31:30351",
         "kafka_url": "10.32.233.31:30012",
         "ami_user": "dmms"
-    },
+    }
 }
 
 

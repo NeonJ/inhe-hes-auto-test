@@ -69,7 +69,7 @@ class Test_HES_Register_Check:
     @pytest.mark.parametrize('register_set', get_db_register(Project.name, 'rw'))
     def test_register_set(self, register_set, get_database, get_result_table, caseData):
         print("Register_ID:{}".format(register_set))
-        data, user_cofnig = caseData('testData/empower/OBISCheck/register_get.json')
+        data, user_config = caseData('testData/empower/OBISCheck/register_get.json')
         requestData = data['register_get']['request']
         requestData['payload'][0]['data'][0]['registerId'] = register_set
         requestData['payload'][0]['deviceNo'] = user_config['Device']['device_number']
