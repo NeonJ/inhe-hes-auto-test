@@ -1,4 +1,4 @@
-#环境准备
+环境准备
 
     1.Python3.7.4
     2.安装依赖库：pip install -r requirements.txt
