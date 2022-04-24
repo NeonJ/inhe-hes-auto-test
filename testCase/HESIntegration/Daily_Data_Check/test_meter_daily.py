@@ -12,7 +12,7 @@ from config.settings import *
 
 class Test_Meter_Daily:
 
-    @smokeTest
+    @smokeTest1
     def test_get_daily_entries(self, caseData):
         """
         使用同步读取的方式去对电表进行日结entries数据对比
