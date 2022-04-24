@@ -96,7 +96,7 @@ setting = {
 
 class Project:
     name = 'octopus02'  # 与下面setting项目key对应
-    tag = 'smokeTest1'  # 对应common.marker  smokeTest or hesAsyncTest
+    tag = 'smokeTest'  # 对应common.marker  smokeTest or hesAsyncTest
     retry = 0  # 用例失败自动重试次数
 
     path = '/'  # 对testData目录接口对应

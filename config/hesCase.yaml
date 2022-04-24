@@ -2,25 +2,25 @@ Device:
   device_number: 42010018754
   device_type: Meter   # Meter,DCU
   sub_type: Single   # Single,Three,CT
-  communication_type: GPRS # GPRS,PLC,RF,485
+  communication_type: RF # GPRS,PLC,RF,485
   connect_type: Long # Long,Short
 
 Daily:
-  register_id: Contract Daily Billing Profile
+  register_id: Daily Billing Profile
   entries_register_id: Daily Billing Entries
   entries_inuse_register_id: Contract Daily Billing Profile Inuse
-  len: 22
+  len: 11
   entries: 93
 
 Monthly:
-  register_id: Contract Monthly Billing Profile
+  register_id: Monthly Billing Profile
   entries_register_id: Monthly Billing Entries
   entries_inuse_register_id: Contract Monthly Billing Profile Inuse
-  len: 33
+  len: 17
   entries: 12
 
 LP:
-  register_id: Energy Load Profile
+  register_id: Load Profile
   entries_register_id: Energy Load Profile Entries
   entries_inuse_register_id: Energy Load Profile Entries Inuse
   len: 9
@@ -34,7 +34,7 @@ PQ:
   entries: 1440
 
 Event:
-  standard_register_id: Standard event log
+  standard_register_id: Standard Event Log
   entries_register_id: Standard event log entries
   entries_inuse_register_id: Standard event log inuse
 
