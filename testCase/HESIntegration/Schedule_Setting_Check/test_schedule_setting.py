@@ -5,12 +5,14 @@
 # Author     ：cao jiann
 # version    ：python 3.7
 """
-import pytest, allure, time, datetime, json, random, requests
-from common.marker import *
-from common.HESAPI import *
-from config.settings import *
-from common.DB import *
+import allure
+import requests
+import time
 from faker import Faker
+
+from common.DB import *
+from common.marker import *
+from config.settings import *
 
 faker = Faker(locale='en_US')
 
@@ -20,7 +22,7 @@ class Test_Schedule_Setting:
     @hesAsyncTest
     def test_meter_schedule_setting_daily(self, get_database, token, get_daily_date):
         """
-        验证Schedule Setting生成采集GPRS电表日结
+        验证GPSchedule Setting生成采集RS电表日结
         """
         count = 1
         with allure.step('添加电表日结采集任务'):
@@ -64,10 +66,9 @@ class Test_Schedule_Setting:
 
         with allure.step('获取电表object ID'):
             sql = "select  METER_ID,INSTALL_METER_NO from C_AR_METER_PNT where  DEV_STATUS=4 and FULL_AREA_ID is not null  and COMMUNICATION_TYPE !=0 and  INSTALL_METER_NO='{}'".format(
-                setting[Project.name]['meter_no'])
+                user_config['Device']['device_number'])
             object_id = get_database.orcl_fetchall_dict(sql)[0]['METER_ID']
             meter_no = get_database.orcl_fetchall_dict(sql)[0]['INSTALL_METER_NO']
-            print(object_id, meter_no)
 
         with allure.step('添加设备到Task'):
             url = setting[Project.name]['web_url'] + '/api/hes-service/schedule/object/{}'.format(schedule_id)
@@ -91,7 +92,7 @@ class Test_Schedule_Setting:
             url = setting[Project.name]['web_url'] + '/api/hes-service/schedule/task/{}.json'.format(schedule_id)
             data = 'taskStatus=&pageNo=1&pageSize=20&deviceType=METER&scheduleFilterDeviceType='
             sql1 = "select * from H_CONFIG_PRODUCT_PROFILE where PROFILE_TYPE=1 and PRODUCT_CODE=(select PRODUCT_CODE from c_ar_meter where METER_NO='{}')".format(
-                setting[Project.name]['meter_no'])
+                user_config['Device']['device_number'])
             obis = get_database.orcl_fetchall_dict(sql1)
             re = requests.get(url, json=data, headers=token)
             while re.json()['data']['pageData'] == [] and count < 20:
@@ -113,6 +114,7 @@ class Test_Schedule_Setting:
                 count = count + 1
             assert re.status_code == 200
             assert re.json()['code'] == 200
+            print(re.json())
             assert re.json()['data']['pageData'][0]['taskStatus'] == 'SUCCESS'
 
     @hesAsyncTest
@@ -164,7 +166,7 @@ class Test_Schedule_Setting:
 
         with allure.step('获取电表object ID'):
             sql = "select  METER_ID,INSTALL_METER_NO from C_AR_METER_PNT where  DEV_STATUS=4 and FULL_AREA_ID is not null  and COMMUNICATION_TYPE !=0 and  INSTALL_METER_NO='{}'".format(
-                setting[Project.name]['meter_no'])
+                user_config['Device']['device_number'])
             object_id = get_database.orcl_fetchall_dict(sql)[0]['METER_ID']
             meter_no = get_database.orcl_fetchall_dict(sql)[0]['INSTALL_METER_NO']
             print(object_id, meter_no)
@@ -191,7 +193,7 @@ class Test_Schedule_Setting:
             url = setting[Project.name]['web_url'] + '/api/hes-service/schedule/task/{}.json'.format(schedule_id)
             data = 'taskStatus=&pageNo=1&pageSize=20&deviceType=METER&scheduleFilterDeviceType='
             sql1 = "select * from H_CONFIG_PRODUCT_PROFILE where PROFILE_TYPE=2 and PRODUCT_CODE=(select PRODUCT_CODE from c_ar_meter where METER_NO='{}')".format(
-                setting[Project.name]['meter_no'])
+                user_config['Device']['device_number'])
             obis = get_database.orcl_fetchall_dict(sql1)
             re = requests.get(url, json=data, headers=token)
             while re.json()['data']['pageData'] == [] and count < 30:
@@ -262,7 +264,7 @@ class Test_Schedule_Setting:
 
         with allure.step('获取电表object ID'):
             sql = "select  METER_ID,INSTALL_METER_NO from C_AR_METER_PNT where  DEV_STATUS=4 and FULL_AREA_ID is not null  and COMMUNICATION_TYPE !=0 and  INSTALL_METER_NO='{}'".format(
-                setting[Project.name]['meter_no'])
+                user_config['Device']['device_number'])
             object_id = get_database.orcl_fetchall_dict(sql)[0]['METER_ID']
             meter_no = get_database.orcl_fetchall_dict(sql)[0]['INSTALL_METER_NO']
             print(object_id, meter_no)
@@ -289,7 +291,7 @@ class Test_Schedule_Setting:
             url = setting[Project.name]['web_url'] + '/api/hes-service/schedule/task/{}.json'.format(schedule_id)
             data = 'taskStatus=&pageNo=1&pageSize=20&deviceType=METER&scheduleFilterDeviceType='
             sql1 = "select * from H_CONFIG_PRODUCT_PROFILE where PROFILE_TYPE=3 and PRODUCT_CODE=(select PRODUCT_CODE from c_ar_meter where METER_NO='{}')".format(
-                setting[Project.name]['meter_no'])
+                user_config['Device']['device_number'])
             obis = get_database.orcl_fetchall_dict(sql1)
             re = requests.get(url, json=data, headers=token)
             while re.json()['data']['pageData'] == [] and count < 20:
@@ -360,7 +362,7 @@ class Test_Schedule_Setting:
 
         with allure.step('获取电表object ID'):
             sql = "select  METER_ID,INSTALL_METER_NO from C_AR_METER_PNT where  DEV_STATUS=4 and FULL_AREA_ID is not null  and COMMUNICATION_TYPE !=0 and  INSTALL_METER_NO='{}'".format(
-                setting[Project.name]['meter_no'])
+                user_config['Device']['device_number'])
             object_id = get_database.orcl_fetchall_dict(sql)[0]['METER_ID']
             meter_no = get_database.orcl_fetchall_dict(sql)[0]['INSTALL_METER_NO']
             print(object_id, meter_no)
@@ -387,7 +389,7 @@ class Test_Schedule_Setting:
             url = setting[Project.name]['web_url'] + '/api/hes-service/schedule/task/{}.json'.format(schedule_id)
             data = 'taskStatus=&pageNo=1&pageSize=20&deviceType=METER&scheduleFilterDeviceType='
             sql1 = "select * from H_CONFIG_PRODUCT_PROFILE where PROFILE_TYPE=5 and PRODUCT_CODE=(select PRODUCT_CODE from c_ar_meter where METER_NO='{}')".format(
-                setting[Project.name]['meter_no'])
+                user_config['Device']['device_number'])
             obis = get_database.orcl_fetchall_dict(sql1)
             re = requests.get(url, json=data, headers=token)
             while re.json()['data']['pageData'] == [] and count < 20:
@@ -458,7 +460,7 @@ class Test_Schedule_Setting:
 
         with allure.step('获取区域TR object ID'):
             sql = "select FUNC_GET_TR_REGION_ID(FULL_AREA_ID) ID from c_ar_meter_pnt where INSTALL_METER_NO='{}'".format(
-                setting[Project.name]['meter_no'])
+                user_config['Device']['device_number'])
             object_id = get_database.orcl_fetchall_dict(sql)[0]['ID']
 
         with allure.step('添加TR到Task'):
@@ -481,7 +483,7 @@ class Test_Schedule_Setting:
 
         with allure.step('查看生成任务和执行结果'):
             sql1 = "select AUTO_RUN_ID from H_TASK_RUNNING where NODE_NO='{}' and JOB_TYPE='SetTime'".format(
-                setting[Project.name]['meter_no'])
+                user_config['Device']['device_number'])
             db_queue = get_database.orcl_fetchall_dict(sql1)
             while len(db_queue) == 0 and count < 20:
                 time.sleep(10)
@@ -555,7 +557,7 @@ class Test_Schedule_Setting:
 
         with allure.step('获取电表object ID'):
             sql = "select  METER_ID,INSTALL_METER_NO from C_AR_METER_PNT where  DEV_STATUS=4 and FULL_AREA_ID is not null  and COMMUNICATION_TYPE !=0 and  INSTALL_METER_NO='{}'".format(
-                setting[Project.name]['meter_no'])
+                user_config['Device']['device_number'])
             object_id = get_database.orcl_fetchall_dict(sql)[0]['METER_ID']
             meter_no = get_database.orcl_fetchall_dict(sql)[0]['INSTALL_METER_NO']
             print(object_id, meter_no)
@@ -582,7 +584,7 @@ class Test_Schedule_Setting:
             url = setting[Project.name]['web_url'] + '/api/hes-service/schedule/task/{}.json'.format(schedule_id)
             data = 'taskStatus=&pageNo=1&pageSize=20&deviceType=METER&scheduleFilterDeviceType='
             sql1 = "select * from H_CONFIG_PRODUCT_PROFILE where PROFILE_TYPE=4 and PRODUCT_CODE=(select PRODUCT_CODE from c_ar_meter where METER_NO='{}')".format(
-                setting[Project.name]['meter_no'])
+                user_config['Device']['device_number'])
             obis = get_database.orcl_fetchall_dict(sql1)
             re = requests.get(url, json=data, headers=token)
             while re.json()['data']['pageData'] == [] and count < 30:

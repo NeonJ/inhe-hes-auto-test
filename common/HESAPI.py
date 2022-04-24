@@ -16,6 +16,7 @@ class HESAPI(object):
         self.HESRequestMessage = argv.get('RequestMessage', '/api/v1/Request/RequestMessage')
         self.HESCreateTask = argv.get('CreateTask', '/Mdm/CreateTas')
         self.HESMeterStatus = argv.get('MeterStatus', '/Mdm/GetMeterStatus?MeterNo=')
+        self.SmartPark = argv.get('Install','/hes/api/device')
         # self.HESDLMS = argv.get('', '')
         # OBIS、升级、时间、费率、结算、需量、负荷曲线、质量曲线、状态字、时间、负控、预付费
 
@@ -25,6 +26,8 @@ class HESAPI(object):
     def taskAddress(self):
         return self.HESAPIAddress + self.HESCreateTask
 
+    def installAddress(self):
+        return self.HESAPIAddress + self.SmartPark
 
 class RequestMessage(object):
 
@@ -221,11 +224,11 @@ def read_config(file_path):
 #             response = requests.post(url=HESAPI(Address=user_config['HESAPI']['url']).requestAddress(),
 #                                      headers={"Content-Type": "application/json-patch+json"},
 #                                      data=json.dumps(RequestQueue, indent=4))
-#             # print( for payload in json.loads(response.text).get('payload'): return payload )
-#             for payload in json.loads(response.text).get('payload'):
+#             # print( for payload in response.get('payload'): return payload )
+#             for payload in response.get('payload'):
 #                 for data in payload.get('data'):
 #                     print('Read Result: ', data.get('resultDesc'))
-#             for payload in json.loads(response.text).get('payload'):
+#             for payload in response.get('payload'):
 #                 for data in payload.get('data'):
 #                     print(data.get('resultValue'))
 #         elif queue.get('rw') == 'w':
@@ -265,11 +268,11 @@ def read_config(file_path):
 #             response = requests.post(url=HESAPI(Address=user_config['HESAPI']['url']).requestAddress(),
 #                                      headers={"Content-Type": "application/json-patch+json"},
 #                                      data=json.dumps(RequestQueue, indent=4))
-#             # print( for payload in json.loads(response.text).get('payload'): return payload )
-#             for payload in json.loads(response.text).get('payload'):
+#             # print( for payload in response.get('payload'): return payload )
+#             for payload in response.get('payload'):
 #                 for data in payload.get('data'):
 #                     print('Read Result: ', data.get('resultDesc'))
-#             for payload in json.loads(response.text).get('payload'):
+#             for payload in response.get('payload'):
 #                 for data in payload.get('data'):
 #                     print(data.get('resultValue'))
 #                     parameter = data.get('resultValue')
@@ -296,8 +299,8 @@ def read_config(file_path):
 #             response = requests.post(url=HESAPI(Address=user_config['HESAPI']['url']).requestAddress(),
 #                                      headers={"Content-Type": "application/json-patch+json"},
 #                                      data=json.dumps(RequestQueue, indent=4))
-#             # print( for payload in json.loads(response.text).get('payload'): return payload )
-#             for payload in json.loads(response.text).get('payload'):
+#             # print( for payload in response.get('payload'): return payload )
+#             for payload in response.get('payload'):
 #                 for data in payload.get('data'):
 #                     print('Set Result: ', data.get('resultDesc'))
 #                     DB(source=user_config['Database']['source'], host=user_config['Database']['host'],
@@ -305,7 +308,7 @@ def read_config(file_path):
 #                        passwd=user_config['Database']['passwd'], port=user_config['Database']['port'],
 #                        sid=user_config['Database']['sid']).save_result('set_result', data.get('resultDesc'),
 #                                                                        queue.get('register_id'))
-#             for payload in json.loads(response.text).get('payload'):
+#             for payload in response.get('payload'):
 #                 for data in payload.get('data'):
 #                     print(data.get('resultValue'))
 

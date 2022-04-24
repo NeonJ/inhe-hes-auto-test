@@ -62,15 +62,15 @@ def meter_daily_check_001():
         response = requests.post(url=HESAPI(Address=user_config['HESAPI']['url']).requestAddress(),
                                  headers={"Content-Type": "application/json"},
                                  data=json.dumps(RequestQueue, indent=4), timeout=66)
-    if json.loads(response.text).get('reply')['replyCode'] != 200:
-        # print(json.loads(response.text).get('reply')['replyDesc'])
+    if response.get('reply')['replyCode'] != 200:
+        # print(response.get('reply')['replyDesc'])
         error(f"** Read Daily Data Failed **")
         return -1
     else:
-        # print(json.loads(response.text).get('reply')['replyDesc'])
+        # print(response.get('reply')['replyDesc'])
         info(f"** Read Daily Data Successfully **")
         return 0
-        # if check_len(json.loads(response.text).get('payload')[0].get('data'), profile_len):
+        # if check_len(response.get('payload')[0].get('data'), profile_len):
         #     info(f"** Profile length matches with config successfully {profile_len} **")
         #     return 0
         # else:

@@ -65,17 +65,17 @@ def meter_daily_check_004():
         response = requests.post(url=HESAPI(Address=user_config['HESAPI']['url']).requestAddress(),
                                  headers={"Content-Type": "application/json"},
                                  data=json.dumps(RequestQueue, indent=4), timeout=66)
-    if json.loads(response.text).get('reply')['replyCode'] != 200:
-        # print(json.loads(response.text).get('reply')['replyDesc'])
+    if response.get('reply')['replyCode'] != 200:
+        # print(response.get('reply')['replyDesc'])
         error(f"** Read Failed **")
         return -1
     else:
-        # print(json.loads(response.text).get('reply')['replyDesc'])
+        # print(response.get('reply')['replyDesc'])
         info(f"** Read Successfully **")
-        if check_len(json.loads(response.text).get('payload')[0].get('data'), profile_len):
+        if check_len(response.get('payload')[0].get('data'), profile_len):
             info(f"** Profile length matches with config successfully {profile_len} **")
-            startTime = json.loads(response.text).get('payload')[0].get('data')[0].get('dataTime')
-        elif len(json.loads(response.text).get('payload')[0].get('data')) == 0:
+            startTime = response.get('payload')[0].get('data')[0].get('dataTime')
+        elif len(response.get('payload')[0].get('data')) == 0:
             info("No Profile Data!")
         else:
             error(f"Profile length matches with config failed {profile_len} **")
@@ -112,12 +112,12 @@ def meter_daily_check_004():
         response = requests.post(url=HESAPI(Address=user_config['HESAPI']['url']).requestAddress(),
                                  headers={"Content-Type": "application/json"},
                                  data=json.dumps(RequestQueue, indent=4), timeout=66)
-    if json.loads(response.text).get('code') != '200':
-        # print(json.loads(response.text).get('reply')['replyDesc'])
+    if response.get('code') != '200':
+        # print(response.get('reply')['replyDesc'])
         error(f"** Create Task Failed **")
         return -1
     else:
-        # print(json.loads(response.text).get('reply')['replyDesc'])
+        # print(response.get('reply')['replyDesc'])
         info(f"** Create Task Successfully **")
         sql = "select TASK_STATE from h_task_run_his where INSTANCE_ID='{}'".format(transactionId)
         db_queue = database.orcl_fetchall_dict(sql)

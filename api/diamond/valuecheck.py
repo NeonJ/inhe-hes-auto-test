@@ -5,8 +5,6 @@
 # @Updated  :0000/00/00
 # @RunTime  :
 
-from api._importLibs_ import *
-
 __all__ = [
     "readDataByAdmin",
     "defaultValueCheck",

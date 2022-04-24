@@ -57,8 +57,8 @@ def meter_register_001():
     if response.status_code == 504:
         print('504 Error and try again')
         time.sleep(5)
-    if json.loads(response.text).get('reply')['replyCode'] != 200:
-        print(json.loads(response.text).get('reply')['replyDesc'])
+    if response.get('reply')['replyCode'] != 200:
+        print(response.get('reply')['replyDesc'])
         error(f"** Create Task Failed **")
         return -1
 

@@ -111,3 +111,4 @@ venv.bak/
 logs/*
 .idea
 /projects/cetus02/.idea
+/allure/plugins/README.txt
