@@ -99,7 +99,7 @@ class Project:
     tag = 'smokeTest'  # 对应common.marker  smokeTest or hesAsyncTest
     retry = 0  # 用例失败自动重试次数
 
-    path = '/'  # 对testData目录接口对应
+    path = ''  # 对testData目录接口对应
     continue_last_check = False  # 是否断点续测OBIS
 
     request_url = HESAPI(Address=setting[name]['api_url']).requestAddress()
