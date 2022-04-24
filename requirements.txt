@@ -1,5 +1,6 @@
 allure-pytest
 allure-python-commons
+pytest-rerunfailure
 altgraph
 atomicwrites
 attrs

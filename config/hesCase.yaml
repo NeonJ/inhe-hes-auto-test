@@ -1,5 +1,5 @@
 Device:
-  device_number: 202009043000
+  device_number: 42010018754
   device_type: Meter   # Meter,DCU
   sub_type: Single   # Single,Three,CT
   communication_type: GPRS # GPRS,PLC,RF,485
