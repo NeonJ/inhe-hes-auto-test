@@ -82,12 +82,36 @@ setting = {
         "db_pwd": "empower",
         "db_service": "ami_octopus_prod_qa",
         "db_database": "ami_db",
-        "meter_no": "30105184",
+        "meter_no": "98760003",
         "api_url": "http://10.32.233.31:30018",
-        "web_url": "http://10.32.233.31:30530",
+        "web_url": "http://10.32.233.31:30016",
         "kafka_url": "10.32.233.31:30553",
         "ami_user": "dmms",
         "ami_passwd": "kaifa",
+        "daily_entries": 90,
+        "daily_len": 9,
+        "monthly_entries": 15,
+        "monthly_len": 108,
+        "lp_entries": 4320,
+        "lp_len": 6,
+        "pq_entries": 1440,
+        "pq_len": 10,
+        "event_entries": 3
+    },
+    "sprat08": {
+        "db_source": "Oracle",
+        "db_host": "10.32.233.204",
+        "db_port": 1521,
+        "db_user": "ami",
+        "db_pwd": "ami",
+        "db_service": "ami_sprat08",
+        "db_database": "ami_sprat08",
+        "meter_no": "KFM3202203140002",
+        "api_url": "http://10.32.233.12:30409",
+        "web_url": "http://10.32.233.12:30409",
+        "kafka_url": "10.32.233.31:30553",
+        "ami_user": "dmms",
+        "ami_passwd": "sa",
         "daily_entries": 90,
         "daily_len": 9,
         "monthly_entries": 15,
@@ -102,7 +126,7 @@ setting = {
 
 
 class Project:
-    name = 'octopus02'  # 与下面setting项目key对应
+    name = 'sprat08'  # 与下面setting项目key对应
     tag = 'hesSyncTest'  # 对应1· comms.marker  hesSyncTest or hesAsyncTest HES-Web
     path = '/'  # 对testData目录接口对应
     continue_last_check = False  # 是否断点续测OBIS

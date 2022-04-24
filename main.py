@@ -38,19 +38,19 @@ else:
 
 
 
-buildOrder, old_data = get_dirname()
-environment()
+# buildOrder, old_data = get_dirname()
+# environment()
 # 报告生成
 # if os.listdir('./result') != []:
-#     os.system("allure  generate  ./result/  -o  ./report/%s  --clean" % time.strftime('%Y%m%d%H%M%S',time.localtime()))
+#     os.system("allure  generate  ./result/  -o  ./rtest_get_daily_entrieseport/%s  --clean" % time.strftime('%Y%m%d%H%M%S',time.localtime()))
 # else:
 #
 #     print('无结果数据，无法生成报告')
 
 if os.listdir('./result') != []:
-    os.system("allure  generate  ./result/  -o  ./report/allure_plus/%s  --clean" % buildOrder)
+    os.system("allure  generate  ./result/  -o  ./report  --clean")
 
-    all_data, reportUrl = update_trend_data(buildOrder, old_data)
+    # all_data, reportUrl = update_trend_data(buildOrder, old_data)
 else:
 
     print('无结果数据，无法生成报告')
