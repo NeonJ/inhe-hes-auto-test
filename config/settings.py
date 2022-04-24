@@ -95,7 +95,7 @@ setting = {
 
 
 class Project:
-    name = 'octopus02'  # 与下面setting项目key对应
+    name = 'empower'  # 与下面setting项目key对应
     tag = 'smokeTest'  # 对应common.marker  smokeTest or hesAsyncTest
     retry = 0  # 用例失败自动重试次数
 
