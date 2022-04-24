@@ -72,7 +72,7 @@ setting = {
         "db_pwd": "empower",
         "db_service": "ami_empower",
         "db_database": "ami_db",
-        "api_url": "http://empower.hes-api.kaifa.tst",
+        "api_url": "http://10.32.233.31:30018",
         "web_url": "http://10.32.233.31:30071",
         "kafka_url": "10.32.233.63:30077",
         "ami_user": "dmms",
@@ -95,7 +95,7 @@ setting = {
 
 
 class Project:
-    name = 'empower'  # 与下面setting项目key对应
+    name = 'octopus02'  # 与下面setting项目key对应
     tag = 'smokeTest'  # 对应common.marker  smokeTest or hesAsyncTest
     retry = 0  # 用例失败自动重试次数
 

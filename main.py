@@ -20,8 +20,9 @@ logging.info('Testing  Start....................................................
 
 if Project.name is not None:
     if Project.tag:
+
         os.system(
-            "pytest  --reruns %s --reruns-delay 1 --json-report   -v  testCase/%s   -m  \"%s\"    --alluredir  ./result/" % (
+            "pytest  --reruns %s --reruns-delay 1 --json-report   -v  testCase/%s   -m  %s    --alluredir  ./result/" % (
                 Project.retry, Project.path, Project.tag))
     else:
         # 不指定tag
@@ -36,6 +37,7 @@ else:
 #     os.system("allure  generate  ./result/  -o  {}  --clean".format(report_path))
 # else:
 #     print('无结果数据，无法生成报告')
+
 
 if os.listdir('./result') != []:
     if not os.path.exists('./report/'):
