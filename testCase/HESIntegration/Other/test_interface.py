@@ -16,20 +16,21 @@ from config.settings import *
 class Test_Meter_Status:
 
     @smokeTest
-    def test_get_meter_status(self):
+    def test_get_meter_status(self,device,hesURL):
         """
         验证接口获取电表状态字
         """
-        data = "/Mdm/GetMeterStatus?MeterNo={}".format(user_config['Device']['device_number'])
-        response = HESRequest().get(url=setting[Project.name]['api_url'] + data, params=None)
+        data = "/Mdm/GetMeterStatus?MeterNo={}".format(device['device_number'])
+        response = HESRequest().get(url=hesURL + data, params=None)
+        print(response)
         assert response['code'] == 200
 
     @smokeTest
-    def test_get_meter_time(self):
+    def test_get_meter_time(self,device,hesURL):
         """
         同步读取时间，同步修改时间
         """
-        data = "/Mdm/getTime?deviceNo={}&deviceType=1&taskType=0".format(user_config['Device']['device_number'])
+        data = "/Mdm/getTime?deviceNo={}&deviceType=1&taskType=0".format(device['device_number'])
         response = HESRequest().get(url=setting[Project.name]['api_url'] + data, params=None)
         assert response['code'] == 200
         assert response['data']['year'] == int(time.strftime("%Y"))
@@ -39,62 +40,62 @@ class Test_Meter_Status:
         # assert response['data']['minute'] == int(time.strftime("%M"))
 
         params = {
-            'deviceNo': '{}'.format(user_config['Device']['device_number']),
+            'deviceNo': '{}'.format(device['device_number']),
             'transactionId': 'string',
             'deviceType': 1,
             'taskType': 0
         }
         params.update(response['data'])
-        print(params)
         data = "/Mdm/setTime"
-        response = HESRequest().post(url=setting[Project.name]['api_url'] + data, params=params)
+        response = HESRequest().post(url=hesURL + data, params=params)
         assert response['code'] == 200
 
     @smokeTest
-    def test_get_device_online1(self):
+    def test_get_device_online1(self,device,hesURL):
         """
         验证接口获取电表和DCU上下线状态 GetOnlineDevice
         """
-        data = "/OnlineDevice/GetOnlineDevice?deviceNo={}".format(user_config['Device']['device_number'])
-        response = HESRequest().get(url=setting[Project.name]['api_url'] + data, params=None)
-        assert response['DeviceNo'] == user_config['Device']['device_number']
+        data = "/OnlineDevice/GetOnlineDevice?deviceNo={}".format(device['device_number'])
+        response = requests.get(url=hesURL + data, params=None)
+        assert str(device['device_number']) in response.text
 
     @smokeTest
-    def test_get_device_online2(self):
+    def test_get_device_online2(self,device,hesURL):
         """
         验证接口获取电表和DCU上下线状态 getMeterOnlineStatus
         """
-        data = "/Mdm/getMeterOnlineStatus?meterNo={}".format(user_config['Device']['device_number'])
-        response = HESRequest().get(url=setting[Project.name]['api_url'] + data, params=None)
-        assert response['desc'] == "Online"
+        data = "/Mdm/getMeterOnlineStatus?meterNo={}".format(device['device_number'])
+        response = requests.get(url=hesURL + data, params=None)
+        assert  "Online" in response.text
 
     @smokeTest
-    def test_get_device_online3(self):
+    def test_get_device_online3(self,device,hesURL):
         """
         验证接口获取电表和DCU上下线状态 getDeviceNoOnlineStatus
         """
-        data = "/Mdm/getDeviceNoOnlineStatus?deviceNo={}".format(user_config['Device']['device_number'])
-        response = HESRequest().get(url=setting[Project.name]['api_url'] + data, params=None)
-        assert response['desc'] == "Online"
+        data = "/Mdm/getDeviceNoOnlineStatus?deviceNo={}".format(device['device_number'])
+        response = requests.get(url=hesURL + data, params=None)
+        assert "Online" in response.text
 
     @smokeTest
-    def test_MasterCoreState(self):
+    def test_MasterCoreState(self,hesURL):
         """
         验证接口获取MasterCore任务状态
         """
         data = "/Monitor/GetMasterCoreState"
-        response = requests.get(url=setting[Project.name]['api_url'] + data)
-        print(response)
-        assert response['CurrentTime'] != ''
+        response = requests.get(url=hesURL + data)
+        print('Response --- ',response.json())
+        assert response.json()['CurrentTime'] != ''
 
     @smokeTest
-    def test_SuspendMasterCoreTask1(self):
+    def test_SuspendMasterCoreTask1(self,hesURL):
         """
         验证接口暂停MasterCore任务生成，加载，分发
         """
         data = "/Monitor/SuspendMasterCoreTask?signal=2"  # 暂停
-        response = requests.get(url=setting[Project.name]['api_url'] + data)
-        assert 'Error' not in response.text
+        response = requests.get(url=hesURL + data)
+        print('Response --- ',response.text)
+        assert 'Suspend' in response.text
 
     @smokeTest
     def test_SuspendMasterCoreTask2(self):
@@ -103,4 +104,5 @@ class Test_Meter_Status:
         """
         data = "/Monitor/SuspendMasterCoreTask?signal=1"  # 启动
         response = requests.get(url=setting[Project.name]['api_url'] + data)
+        print('Response --- ',response.text)
         assert 'Start' in response.text

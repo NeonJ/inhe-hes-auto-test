@@ -11,14 +11,14 @@ from config.settings import *
 class Test_Phase_Vector:
 
     @smokeTest
-    def test_get_vector(self, caseData):
+    def test_get_vector(self, caseData, requestMessage, device):
         """
         使用同步读取三相表或者CT表相位夹角
         """
-        data, user_config = caseData('testData/empower/PhaseVector/phase_vector.json')
+        data = caseData('testData/PhaseVector/phase_vector.json')
         requestData = data['vector']['request']
-        requestData['payload'][0]['deviceNo'] = user_config['Device']['device_number']
-        response = HESRequest().post(url=Project.request_url, params=requestData)
-        print(response)
+        requestData['payload'][0]['deviceNo'] = device['device_number']
+        response = HESRequest().post(url=requestMessage, params=requestData)
+        print('Response --- ',response)
         assert response.get('reply')['replyCode'] == 200
         assert len(response.get('payload')[0].get('data')[0]) == 18

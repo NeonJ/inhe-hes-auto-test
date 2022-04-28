@@ -22,15 +22,15 @@ class Test_Auto_Register_Short:
         验证GPRS服务端短连接电表正常自动注册流程
         """
         count = 1
-        data, user_config = caseData('testData/empower/AutoRegistration/register-event-process.json'.format(Project.name))['short_meter']
+        data = caseData('testData/AutoRegistration/register-event-process.json'.format(Project.name))['short_meter']
         requestData = data['pl']
-        requestData[0]['dn'] = user_config['Device']['device_number']
+        requestData[0]['dn'] = device['device_number']
         producer = KafkaProducer(bootstrap_servers=setting[Project.name]['kafka_url'])
         producer.send('register-event-process', key=b'KafkaBatchPush', value=json.dumps(data).encode())
         producer.close()
         time.sleep(5)
         sql1 = "select AUTO_RUN_ID from H_TASK_RUNNING where NODE_NO='{}' and JOB_TYPE='DeviceRegist'".format(
-            user_config['Device']['device_number'])
+            device['device_number'])
         db_queue = get_database.orcl_fetchall_dict(sql1)
         while len(db_queue) == 0 and count < 10:
             time.sleep(6)
@@ -49,7 +49,7 @@ class Test_Auto_Register_Short:
             count = count + 1
         assert db_queue[0]['TASK_STATE'] == 3
 
-        sql3 = "select DEV_STATUS from c_ar_meter where METER_NO='{}'".format(user_config['Device']['device_number'])
+        sql3 = "select DEV_STATUS from c_ar_meter where METER_NO='{}'".format(device['device_number'])
         db_queue = get_database.orcl_fetchall_dict(sql3)
         print(db_queue)
         assert db_queue[0]['DEV_STATUS'] == 4
@@ -60,14 +60,14 @@ class Test_Auto_Register_Short:
         验证GPRS电表未安装不会自动注册
         """
         count = 1
-        data, user_config = caseData('testData/empower/AutoRegistration/register-event-process.json'.format(Project.name))['short_meter']
+        data = caseData('testData/AutoRegistration/register-event-process.json'.format(Project.name))['short_meter']
         requestData = data['pl']
-        requestData[0]['dn'] = user_config['Device']['device_number']
+        requestData[0]['dn'] = device['device_number']
         producer = KafkaProducer(bootstrap_servers=setting[Project.name]['kafka_url'])
         producer.send('register-event-process', key=b'KafkaBatchPush', value=json.dumps(data).encode())
         producer.close()
         sql1 = "select AUTO_RUN_ID from H_TASK_RUNNING where NODE_NO='{}' and JOB_TYPE='DeviceRegist'".format(
-            user_config['Device']['device_number'])
+            device['device_number'])
         db_queue = get_database.orcl_fetchall_dict(sql1)
         while len(db_queue) == 0 and count < 2:
             time.sleep(5)
@@ -98,14 +98,14 @@ class Test_Auto_Register_Short:
         如果之前是已经注册到DCU下的电表还会生成REG_DEL_ARCHIVES删除集中器内档案任务和修改master_no=null,meter_seq=null
         """
         count = 1
-        data, user_config = caseData('testData/empower/AutoRegistration/register-event-process.json'.format(Project.name))['short_meter']
+        data = caseData('testData/AutoRegistration/register-event-process.json'.format(Project.name))['short_meter']
         requestData = data['pl']
-        requestData[0]['dn'] = user_config['Device']['device_number']
+        requestData[0]['dn'] = device['device_number']
         producer = KafkaProducer(bootstrap_servers=setting[Project.name]['kafka_url'])
         producer.send('register-event-process', key=b'KafkaBatchPush', value=json.dumps(data).encode())
         producer.close()
         sql1 = "select AUTO_RUN_ID from H_TASK_RUNNING where NODE_NO='{}' and JOB_TYPE='DeviceRegist'".format(
-            user_config['Device']['device_number'])
+            device['device_number'])
         db_queue = get_database.orcl_fetchall_dict(sql1)
         while len(db_queue) == 0 and count < 10:
             time.sleep(6)
@@ -125,7 +125,7 @@ class Test_Auto_Register_Short:
         assert db_queue[0]['TASK_STATE'] == 3
 
         sql3 = "select DEV_STATUS,CONN_TYPE,COMMUNICATION_TYPE,MASTER_NO,METER_SEQ from c_ar_meter where METER_NO='{}'".format(
-            user_config['Device']['device_number'])
+            device['device_number'])
         db_queue = get_database.orcl_fetchall_dict(sql3)
 
         assert db_queue[0]['DEV_STATUS'] == 4

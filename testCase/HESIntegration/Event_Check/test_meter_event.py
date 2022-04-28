@@ -7,37 +7,36 @@
 
 from common.HESRequest import *
 from common.marker import *
-from config.settings import *
 
 
 class Test_Meter_Event:
 
     @smokeTest
-    def test_get_daily_event_entries(self, caseData):
+    def test_get_standard_event_entries(self, caseData, requestMessage, device, event):
         """
         使用同步读取的方式去对电表进行日事件entries数据对比
         """
-        data, user_config = caseData('testData/empower/MeterFrozenData/meter_event_data.json')
+        data = caseData('testData/MeterFrozenData/meter_event_data.json')
         requestData = data['meter_daily_event_entries']['request']
-        requestData['payload'][0]['deviceNo'] = user_config['Device']['device_number']
-        requestData['payload'][0]['data'][0]['registerId'] = user_config['DailyEvent']['entries_register_id']
-        response = HESRequest().post(url=Project.request_url, params=requestData)
-        print(response)
+        requestData['payload'][0]['deviceNo'] = device['device_number']
+        requestData['payload'][0]['data'][0]['registerId'] = event['entries_register_id']
+        response = HESRequest().post(url=requestMessage, params=requestData)
+        print('Response --- ', response)
         assert int(
-            response.get('payload')[0].get('data')[0].get('resultValue').get('dataItemValue')) != len(user_config['DailyEvent'][
-                   'entries_register_id'])
+            response.get('payload')[0].get('data')[0].get('resultValue').get('dataItemValue')) != len(
+            event['entries_register_id'])
 
     @smokeTest
-    def test_get_daily_event(self, caseData):
+    def test_get_standard_event(self, caseData, requestMessage, device, event):
         """
-        使用同步读取的方式去对电表进行daily event读取 - 按照Entry+Date方式进行并进行数据项对比
+        使用同步读取的方式去对电表进行standard event读取 - 按照Entry+Date方式进行并进行数据项对比
          """
-        print("Step 1 : 获取当前电表第一条daily event数据")
-        data, user_config = caseData('testData/empower/MeterFrozenData/meter_event_data.json')
-        requestData = data['meter_daily_event']['request']
-        requestData['payload'][0]['deviceNo'] = user_config['Device']['device_number']
-        requestData['payload'][0]['data'][0]['registerId'] = user_config['DailyEvent']['daily_event_register_id']
-        response = HESRequest().post(url=Project.request_url, params=requestData)
+        print("Step 1 : 获取当前电表第一条standard event数据")
+        data = caseData('testData/MeterFrozenData/meter_event_data.json')
+        requestData = data['meter_standard_event']['request']
+        requestData['payload'][0]['deviceNo'] = device['device_number']
+        requestData['payload'][0]['data'][0]['registerId'] = event['standard_register_id']
+        response = HESRequest().post(url=requestMessage, params=requestData)
         if response.get('reply')['replyCode'] != 200:
             print(response.get('payload')[0]['desc'])
             assert False
@@ -49,8 +48,8 @@ class Test_Meter_Event:
         requestData['payload'][0]['data'][0]['parameter']['dataFetchMode'] = 1
         requestData['payload'][0]['data'][0]['parameter']['startTime'] = startTime
         requestData['payload'][0]['data'][0]['parameter']['endTime'] = startTime
-        response = HESRequest().post(url=Project.request_url, params=requestData)
+        response = HESRequest().post(url=requestMessage, params=requestData)
         if response.get('reply')['replyCode'] != 200:
             assert False
         else:
-            assert len(response.get('payload')[0].get('data')) == 0
+            assert len(response.get('payload')[0].get('data')) == event['len']

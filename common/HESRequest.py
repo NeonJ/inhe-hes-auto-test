@@ -37,7 +37,7 @@ class HESRequest():
 
         # data = json.dumps(params)
         print(url)
-        print(params)
+        print('Request --- ',params)
         try:
             DeviceBusy = 1
             while DeviceBusy == 1:
@@ -63,11 +63,11 @@ class HESRequest():
 
 # if __name__ == '__main__':
 #     pass
-#     # data = loadData('testData/empower/MeterFrozenData/meter_daily_data.json'.format(Project.name))['meter_daily_entries']
+#     # data = loadData('testData/MeterFrozenData/meter_daily_data.json'.format(Project.name))['meter_daily_entries']
 #     # requestData = data['request']
-#     # requestData['payload'][0]['deviceNo'] = user_config['Device']['device_number']
-#     # response = HESRequest().post(url=Project.request_url,
+#     # requestData['payload'][0]['deviceNo'] = device['device_number']
+#     # response = HESRequest().post(url=requestMessage,
 #     #                      params=requestData)
-#     # print(response)
+#     # print('Response --- ',response)
 #     # print(type(response))
 #     # assert response.get('reply')['replyCode'] == 201

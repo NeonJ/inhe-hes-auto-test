@@ -19,16 +19,16 @@ class Test_Key_Change:
         正常修改GPRS电表key - A key
         """
         count = 0
-        data, user_config = caseData('testData/empower/KeyChange/key_change_task.json')
+        data = caseData('testData/KeyChange/key_change_task.json')
         requestData = data['ChangeKey']['request']
-        requestData['payload'][0]['deviceNo'] = user_config['Device']['device_number']
+        requestData['payload'][0]['deviceNo'] = device['device_number']
         print(requestData)
-        response = HESRequest().post(url=Project.request_url, params=requestData)
+        response = HESRequest().post(url=requestMessage, params=requestData)
         assert response.status_code == 200
 
         time.sleep(3)
         sql_running = "select AUTO_RUN_ID from H_TASK_RUNNING where NODE_NO='{}' and JOB_TYPE='CHANGE_KEY'".format(
-            user_config['Device']['device_number'])
+            device['device_number'])
         db_queue = get_database.orcl_fetchall_dict(sql_running)
         while len(db_queue) == 0 and count < 3:
             time.sleep(5)
@@ -53,17 +53,17 @@ class Test_Key_Change:
         正常修改GPRS电表key - E key
         """
         count = 0
-        data,user_config = caseData('testData/empower/KeyChange/key_change_task.json')
+        data,user_config = caseData('testData/KeyChange/key_change_task.json')
         requestData = data['ChangeKey']['request']
-        requestData['payload'][0]['deviceNo'] = user_config['Device']['device_number']
+        requestData['payload'][0]['deviceNo'] = device['device_number']
         requestData['payload'][0]['data'][0]['parameter']['KeyType'] = 0
         print(requestData)
-        response = HESRequest().post(url=Project.request_url, params=requestData)
+        response = HESRequest().post(url=requestMessage, params=requestData)
         assert response.status_code == 200
 
         time.sleep(3)
         sql_running = "select AUTO_RUN_ID from H_TASK_RUNNING where NODE_NO='{}' and JOB_TYPE='CHANGE_KEY'".format(
-            user_config['Device']['device_number'])
+            device['device_number'])
         db_queue = get_database.orcl_fetchall_dict(sql_running)
         while len(db_queue) == 0 and count < 3:
             time.sleep(5)

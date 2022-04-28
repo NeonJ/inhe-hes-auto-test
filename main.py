@@ -1,8 +1,10 @@
+import argparse
 import logging
 import time
 
 from common.AllureReport import *
 from config.settings import *
+import paramiko
 
 # from pexpect import *
 
@@ -18,27 +20,31 @@ else:
 
 logging.info('Testing  Start....................................................')
 
-if Project.name is not None:
-    if Project.tag:
+# 设置参数
+parser = argparse.ArgumentParser()
+parser.add_argument('-p', "--project", help="project", default='empower')  # 服务名称
+parser.add_argument('-t', "--tag", help="case tag", default='smokeTest1',
+                    choices=['smokeTest', 'fullTest', 'asyncTest','OBISCheck'])  # marker，用例标签
+parser.add_argument('-pa', "--path", help="report  path", default='/')
+parser.add_argument('-c', "--continue", help="continue last obis check", default='False', choices=['False', 'True'])
+parser.add_argument('-r', "--retry", help='failed retries', default='0')
+parser.add_argument('-g', "--groug", help='nacos group', default='QA', choices=['QA', 'DEV'])
 
-        os.system(
-            "pytest  --reruns %s --reruns-delay 1 --json-report   -v  testCase/%s   -m  %s    --alluredir  ./result/" % (
-                Project.retry, Project.path, Project.tag))
-    else:
-        # 不指定tag
-        os.system('pytest  --json-report     -v  testCase/%s     --alluredir  ./result/' % Project.path)
+args = parser.parse_args()
+
+
+if args.tag != 'fullTest':
+
+    os.system(
+        'pytest  --reruns %s --reruns-delay 1 --json-report  -v  testCase/   -m  %s    --alluredir  ./result/' % (
+            args.retry, args.tag))  # 按模块指定标签测试
+
 else:
-    print('settings文件参数错误，name是必填参数')
 
-# 报告生成 按照时间生成报告
-# if os.listdir('./result') != []:
-#     report_date = time.strftime('%y%m%d%H%M%S',time.localtime())
-#     report_path = './report/{}/{}'.format(Project().name, Project().name + '-' + report_date)
-#     os.system("allure  generate  ./result/  -o  {}  --clean".format(report_path))
-# else:
-#     print('无结果数据，无法生成报告')
+    os.system(
+        'pytest --reruns %s --reruns-delay 1 --json-report  -v  testCase/   --alluredir  ./result/' % args.retry)  # 模块全量测试
 
-
+# Allure报告
 if os.listdir('./result') != []:
     if not os.path.exists('./report/'):
         os.mkdir('./report/')
@@ -63,15 +69,3 @@ if os.listdir('./result') != []:
     print('Report URL == http://10.32.233.164:9090/{}/'.format(Project.name + '-' + report_date))
 else:
     print('无结果数据，无法生成报告')
-
-# 报告生成 按照项目＋执行次数生成报告
-# if os.listdir('./result') != []:
-#     if not os.path.exists('./report/{}'.format(Project.name)):
-#         os.mkdir('./report/{}'.format(Project.name))
-#     buildOrder, old_data = get_dirname()
-#     environment()
-#     os.system("allure  generate  ./result/  -o  ./report/{}/{}  --clean".format(Project.name, buildOrder))
-#     time.sleep(3)
-#     all_data, reportUrl = update_trend_data(buildOrder, old_data)
-# else:
-#     print('无结果数据，无法生成报告')

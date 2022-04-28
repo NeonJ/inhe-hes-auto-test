@@ -9,70 +9,78 @@ import time
 
 from kafka import KafkaProducer, KafkaConsumer
 
-from common.UtilTools import *
+from common.DB import *
 from common.marker import *
 from config.settings import *
 
 
 class Test_Auto_Register:
 
-
     @hesAsyncTest
-    def test_meter_register(self, get_database, caseData, meter_init):
+    def test_meter_register(self, caseData, device, dbConnect, kafkaURL):
         """
         验证GPRS电表正常自动注册流程
         """
+
+        dbConnect.meter_init(device['device_number'])
+
         count = 1
-        data, user_config = caseData('testData/empower/AutoRegistration/register-event-process.json')['gprs_meter']
+        data = caseData('testData/AutoRegistration/register-event-process.json')['gprs_meter']
         requestData = data['pl']
-        requestData[0]['dn'] = user_config['Device']['device_number']
-        producer = KafkaProducer(bootstrap_servers=setting[Project.name]['kafka_url'])
+        requestData[0]['dn'] = device['device_number']
+        producer = KafkaProducer(bootstrap_servers=kafkaURL)
         producer.send('register-event-process', key=b'KafkaBatchPush', value=json.dumps(data).encode())
         producer.close()
         time.sleep(5)
         sql1 = "select AUTO_RUN_ID from H_TASK_RUNNING where NODE_NO='{}' and JOB_TYPE='DeviceRegist'".format(
-            user_config['Device']['device_number'])
-        db_queue = get_database.orcl_fetchall_dict(sql1)
+            device['device_number'])
+        db_queue = dbConnect.fetchall_dict(sql1)
         while len(db_queue) == 0 and count < 10:
             time.sleep(6)
-            db_queue = get_database.orcl_fetchall_dict(sql1)
+            db_queue = dbConnect.fetchall_dict(sql1)
             print(db_queue)
             print('Waiting for Reg Tasks to Create...')
             count = count + 1
 
         sql2 = "select TASK_STATE from h_task_run_his where AUTO_RUN_ID='{}'".format(db_queue[0]['AUTO_RUN_ID'])
-        db_queue = get_database.orcl_fetchall_dict(sql2)
+        db_queue = dbConnect.fetchall_dict(sql2)
         while len(db_queue) == 0 and count < 20:
             time.sleep(8)
-            db_queue = get_database.orcl_fetchall_dict(sql2)
+            db_queue = dbConnect.fetchall_dict(sql2)
             print(db_queue)
             print('Waiting for Reg Tasks to finish...')
             count = count + 1
         assert db_queue[0]['TASK_STATE'] == 3
 
-        sql3 = "select DEV_STATUS from c_ar_meter where METER_NO='{}'".format(user_config['Device']['device_number'])
-        db_queue = get_database.orcl_fetchall_dict(sql3)
+        sql3 = "select DEV_STATUS from c_ar_meter where METER_NO='{}'".format(device['device_number'])
+        db_queue = dbConnect.fetchall_dict(sql3)
         print(db_queue)
         assert db_queue[0]['DEV_STATUS'] == 4
 
     @hesAsyncTest
-    def test_meter_register_exception_1(self, get_database, caseData, meter_init_except_1):
+    def test_meter_register_exception_1(self, caseData, device, databaseConfig, kafkaURL):
         """
         验证GPRS电表未安装不会自动注册
         """
+        database = DB(source=databaseConfig['db_source'], host=databaseConfig['db_host'],
+                      database=databaseConfig['db_database'], username=databaseConfig['db_user'],
+                      passwd=databaseConfig['db_pwd'], port=databaseConfig['db_port'],
+                      sid=databaseConfig['db_service'])
+        database.meter_init_except_1(device['meter_no'])
+
         count = 1
-        data, user_config = caseData('testData/empower/AutoRegistration/register-event-process.json'.format(Project.name))['gprs_meter']
+        data = caseData('testData/AutoRegistration/register-event-process.json'.format(Project.name))['gprs_meter']
         requestData = data['pl']
-        requestData[0]['dn'] = user_config['Device']['device_number']
+        requestData[0]['dn'] = device['device_number']
         producer = KafkaProducer(bootstrap_servers=setting[Project.name]['kafka_url'])
         producer.send('register-event-process', key=b'KafkaBatchPush', value=json.dumps(data).encode())
         producer.close()
         sql1 = "select AUTO_RUN_ID from H_TASK_RUNNING where NODE_NO='{}' and JOB_TYPE='DeviceRegist'".format(
-            user_config['Device']['device_number'])
-        db_queue = get_database.orcl_fetchall_dict(sql1)
+            device['device_number'])
+        db_queue = database.orcl_fetchall_dict(sql1)
         while len(db_queue) == 0 and count < 2:
             time.sleep(5)
-            db_queue = get_database.orcl_fetchall_dict(sql1)
+            db_queue = database.orcl_fetchall_dict(sql1)
             print(db_queue)
             print('Waiting for Reg Tasks to Create...')
             count = count + 1
@@ -93,41 +101,47 @@ class Test_Auto_Register:
         assert 'AR_UNINSTALLED_REG_DEVICE' in fetch_data_list.__str__()
 
     @hesAsyncTest
-    def test_meter_register_exception_2(self, get_database, caseData, meter_init_except_2):
+    def test_meter_register_exception_2(self, caseData, device, databaseConfig, kafkaURL):
         """
         验证系统档案中电表档案不是GPRS电表但是通过了FEP请求注册,会将设备档案修改conn_type=1, communication_type=2后进行自动注册
         如果之前是已经注册到DCU下的电表还会生成REG_DEL_ARCHIVES删除集中器内档案任务和修改master_no=null,meter_seq=null
         """
+        database = DB(source=databaseConfig['db_source'], host=databaseConfig['db_host'],
+                          database=databaseConfig['db_database'], username=databaseConfig['db_user'],
+                          passwd=databaseConfig['db_pwd'], port=databaseConfig['db_port'],
+                          sid=databaseConfig['db_service'])
+        database.meter_init_except_2(device['meter_no'])
+        
         count = 1
-        data, user_config = caseData('testData/empower/AutoRegistration/register-event-process.json'.format(Project.name))['gprs_meter']
+        data = caseData('testData/AutoRegistration/register-event-process.json'.format(Project.name))['gprs_meter']
         requestData = data['pl']
-        requestData[0]['dn'] = user_config['Device']['device_number']
+        requestData[0]['dn'] = device['device_number']
         producer = KafkaProducer(bootstrap_servers=setting[Project.name]['kafka_url'])
         producer.send('register-event-process', key=b'KafkaBatchPush', value=json.dumps(data).encode())
         producer.close()
         sql1 = "select AUTO_RUN_ID from H_TASK_RUNNING where NODE_NO='{}' and JOB_TYPE='DeviceRegist'".format(
-            user_config['Device']['device_number'])
-        db_queue = get_database.orcl_fetchall_dict(sql1)
+            device['device_number'])
+        db_queue = database.orcl_fetchall_dict(sql1)
         while len(db_queue) == 0 and count < 10:
             time.sleep(6)
-            db_queue = get_database.orcl_fetchall_dict(sql1)
+            db_queue = database.orcl_fetchall_dict(sql1)
             print(db_queue)
             print('Waiting for Reg Tasks to Create...')
             count = count + 1
 
         sql2 = "select TASK_STATE from h_task_run_his where AUTO_RUN_ID='{}'".format(db_queue[0]['AUTO_RUN_ID'])
-        db_queue = get_database.orcl_fetchall_dict(sql2)
+        db_queue = database.orcl_fetchall_dict(sql2)
         while len(db_queue) == 0 and count < 20:
             time.sleep(8)
-            db_queue = get_database.orcl_fetchall_dict(sql2)
+            db_queue = database.orcl_fetchall_dict(sql2)
             print(db_queue)
             print('Waiting for Reg Tasks to finish...')
             count = count + 1
         assert db_queue[0]['TASK_STATE'] == 3
 
         sql3 = "select DEV_STATUS,CONN_TYPE,COMMUNICATION_TYPE,MASTER_NO,METER_SEQ from c_ar_meter where METER_NO='{}'".format(
-            user_config['Device']['device_number'])
-        db_queue = get_database.orcl_fetchall_dict(sql3)
+            device['device_number'])
+        db_queue = database.orcl_fetchall_dict(sql3)
 
         assert db_queue[0]['DEV_STATUS'] == 4
         assert db_queue[0]['CONN_TYPE'] == 1
