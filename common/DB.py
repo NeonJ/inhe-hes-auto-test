@@ -10,7 +10,6 @@ import json
 import cx_Oracle
 import psycopg2
 import psycopg2.extras
-import yaml
 
 
 # import cx_Oracle
@@ -61,7 +60,7 @@ class DB:
         else:
             print("数据库类型不支持")
 
-    def fetchall_dict(self,sql):
+    def fetchall_dict(self, sql):
         if self.source == 'Postgre':
             try:
                 con = self.connect()
@@ -97,7 +96,6 @@ class DB:
                 con.close()
         else:
             print("数据库类型不支持")
-
 
     def fetchone(self, sql):
         try:
@@ -147,7 +145,7 @@ class DB:
             cur.close()
             con.close()
 
-    def update(self,sql):
+    def update(self, sql):
         try:
             con = self.connect()
             cur = con.cursor()
@@ -159,11 +157,11 @@ class DB:
             cur.close()
             con.close()
 
-
     def initial_result(self, meter_no):
         """初始化OBIS Check结果表"""
-        table_name = 'h_config_register_check_' + datetime.datetime.now().strftime('%Y%m%d')
+        table_name = 'H_CONFIG_REGISTER_CHECK_' + datetime.datetime.now().strftime('%Y%m%d')
         try:
+            print('112313',table_name)
             con = self.connect()
             cur = con.cursor()
             cur.execute(
@@ -182,7 +180,6 @@ class DB:
         finally:
             cur.close()
             con.close()
-
 
     def last_result(self):
         if self.source == 'Postgre':

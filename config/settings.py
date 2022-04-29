@@ -104,5 +104,3 @@ class Project:
     nacos_url = 'http://10.32.234.198:8848'
     data_id = "empower"
     group = "QA"
-
-    request_url = HESAPI(Address=setting[name]['api_url']).requestAddress()

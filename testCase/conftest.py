@@ -7,36 +7,58 @@ from common.DB import *
 from config.settings import *
 
 
-def nacosData():
+def pytest_addoption(parser):  # 定义命令行参数,参数必须保持两个--
+    parser.addoption("--project", action="store", help="project")  # 服务名称
+    parser.addoption("--tag", action="store", help="case tag")  # marker，用例标签
+    parser.addoption("--path", action="store", help="report  path")
+    parser.addoption("--resume", action="store", help="continue last obis check")
+    parser.addoption("--retry", action="store", help='failed retries')
+    parser.addoption("--group", action="store", help='nacos group')
+
+
+@pytest.fixture(scope='session', autouse=True)
+def config(request):  # 获取参数值,与上述添加对应
+    config_dict = {}
+    config_dict['project'] = request.config.getoption("--project")
+    config_dict['tag'] = request.config.getoption("--tag")
+    config_dict['path'] = request.config.getoption("--path")
+    config_dict['resume'] = request.config.getoption("--resume")
+    config_dict['retry'] = request.config.getoption("--retry")
+    config_dict['group'] = request.config.getoption("--group")
+    return config_dict
+
+
+@pytest.fixture(scope='session', autouse=True)
+def nacosData(config):
     client = nacos.NacosClient(server_addresses=Project.nacos_url, namespace='HES', username="nacos", password="nacos")
-    data_id = Project.name
-    group = Project.group
+    data_id = config['project']
+    group = config['group']
     config = yaml.load(client.get_config(data_id, group), Loader=yaml.FullLoader)
     return config
 
 
 @allure.step("获取hes-api地址")
 @pytest.fixture(scope='session')
-def hesURL():
-    yield nacosData()['URL']['hes_url']
+def hesURL(nacosData):
+    yield nacosData['URL']['hes_url']
 
 
 @allure.step("RequestMessage")
 @pytest.fixture(scope='session')
-def requestMessage():
-    yield nacosData()['URL']['hes_url'] + '/api/v1/Request/RequestMessage'
+def requestMessage(nacosData):
+    yield nacosData['URL']['hes_url'] + '/api/v1/Request/RequestMessage'
 
 
 @allure.step("获取web网关地址")
 @pytest.fixture(scope='session')
-def gatewayURL():
-    yield nacosData()['URL']['gateway_url']
+def gatewayURL(nacosData):
+    yield nacosData['URL']['gateway_url']
 
 
 @allure.step("获取kafka地址")
 @pytest.fixture(scope='session')
-def kafkaURL():
-    yield nacosData()['URL']['kafka_url']
+def kafkaURL(nacosData):
+    yield nacosData['URL']['kafka_url']
 
 
 @allure.step("获取请求体")
@@ -53,61 +75,60 @@ def caseData():
 
 @allure.step("获取数据库信息")
 @pytest.fixture(scope='session')
-def databaseConfig():
-    return nacosData()['DATABASE']
-
+def databaseConfig(nacosData):
+    return nacosData['DATABASE']
 
 
 @allure.step("获取数据库对象")
 @pytest.fixture(scope='session')
-def dbConnect():
-    database = DB(source=nacosData()['DATABASE']['db_source'], host=nacosData()['DATABASE']['db_host'],
-                  database=nacosData()['DATABASE']['db_database'], username=nacosData()['DATABASE']['db_user'],
-                  passwd=nacosData()['DATABASE']['db_pwd'], port=nacosData()['DATABASE']['db_port'],
-                  sid=nacosData()['DATABASE']['db_service'])
+def dbConnect(nacosData):
+    database = DB(source=nacosData['DATABASE']['db_source'], host=nacosData['DATABASE']['db_host'],
+                  database=nacosData['DATABASE']['db_database'], username=nacosData['DATABASE']['db_user'],
+                  passwd=nacosData['DATABASE']['db_pwd'], port=nacosData['DATABASE']['db_port'],
+                  sid=nacosData['DATABASE']['db_service'])
     return database
 
 
 @allure.step("获取测试设备信息")
 @pytest.fixture(scope='session')
-def device():
-    return nacosData()['Device']
+def device(nacosData):
+    return nacosData['Device']
 
 
 @allure.step("获取日结操作信息")
 @pytest.fixture(scope='session')
-def daily():
-    return nacosData()['Daily']
+def daily(nacosData):
+    return nacosData['Daily']
 
 
 @allure.step("获取月结操作信息")
 @pytest.fixture(scope='session')
-def monthly():
-    return nacosData()['Monthly']
+def monthly(nacosData):
+    return nacosData['Monthly']
 
 
 @allure.step("获取能量曲线操作信息")
 @pytest.fixture(scope='session')
-def lp():
-    return nacosData()['LP']
+def lp(nacosData):
+    return nacosData['LP']
 
 
 @allure.step("获取质量曲线操作信息")
 @pytest.fixture(scope='session')
-def pq():
-    return nacosData()['PQ']
+def pq(nacosData):
+    return nacosData['PQ']
 
 
 @allure.step("获取事件操作信息")
 @pytest.fixture(scope='session')
-def event():
-    return nacosData()['Event']
+def event(nacosData):
+    return nacosData['Event']
 
 
 @allure.step("获取拉合闸操作信息")
 @pytest.fixture()
-def relay():
-    return nacosData()['Relay']
+def relay(nacosData):
+    return nacosData['Relay']
 
 
 @allure.step("项目名称")
@@ -118,10 +139,10 @@ def project():
 
 @allure.step("获取Web Token")
 @pytest.fixture(scope='session')
-def token():
-    re = requests.post(url=nacosData()['URL']['gateway_url'] + '/api/gateway-service/tokens.json',
-                       json={"language": "en", "username": nacosData()['URL']['ami_user'],
-                             "password": nacosData()['URL']['ami_passwd']})
+def token(nacosData):
+    re = requests.post(url=nacosData['URL']['gateway_url'] + '/api/gateway-service/tokens.json',
+                       json={"language": "en", "username": nacosData['URL']['ami_user'],
+                             "password": nacosData['URL']['ami_passwd']})
     access_token = re.json()['data']['access_token']
     yield {'Access-Token': access_token, 'Application-Id': 'AMI_WEB'}
 

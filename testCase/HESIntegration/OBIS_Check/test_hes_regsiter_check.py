@@ -18,6 +18,7 @@ class Test_HES_Register_Check:
     """
     根据转化后的Register进行OBIS Check,并将结果输出到数据库结果表
     """
+
     def get_db_register(action):
         register_list = []
         client = nacos.NacosClient(server_addresses=Project.nacos_url, namespace='HES', username="nacos",
@@ -29,20 +30,20 @@ class Test_HES_Register_Check:
                       database=config['DATABASE']['db_database'], username=config['DATABASE']['db_user'],
                       passwd=config['DATABASE']['db_pwd'], port=config['DATABASE']['db_port'],
                       sid=config['DATABASE']['db_service'])
-        if Project.continue_last_check:
+        if Project().continue_last_check:
             table_name = database.last_result()[0]
         else:
             try:
-                table_name = database.initial_result(meter_no=config['Device']['meter_no'])
-            except:
-                print("The OBIS inspection result table already exists on the day: ",
-                      database.last_result()[0])
+                table_name = database.initial_result(meter_no=config['Device']['device_number'])
                 table_name = database.last_result()[0]
+            except:
+                print("The OBIS inspection result table already exists on the day: ", database.last_result()[0])
         print('Result Table Name: ', table_name)
         obis_sql1 = "select register_id, class_id, index_id, register_type,data_type_int, rw from "
         obis_sql2 = " where PTL_TYPE = (select PTL_TYPE from c_ar_model where MODEL_CODE = (select model_code from c_ar_meter where meter_no = '{}'))".format(
             config['Device']['device_number'])
         sql = obis_sql1 + '{}'.format(table_name) + obis_sql2.format()
+        print(sql)
         db_queue = database.fetchall_dict(sql)
         for queue in db_queue:
             if queue.get('RW') == action:

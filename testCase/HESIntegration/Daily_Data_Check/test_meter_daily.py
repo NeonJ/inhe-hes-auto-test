@@ -11,7 +11,23 @@ from common.marker import *
 
 class Test_Meter_Daily:
 
+
     @smokeTest1
+    def test_get_daily_entries1(self, caseData, requestMessage, device, daily):
+        """
+        使用同步读取的方式去对电表进行日结entries数据对比
+        """
+        data = caseData('testData/MeterFrozenData/meter_daily_data.json')
+        requestData = data['meter_daily_entries']['request']
+        requestData['payload'][0]['deviceNo'] = device['device_number']
+        requestData['payload'][0]['data'][0]['registerId'] = daily['entries_register_id']
+        response = HESRequest().post(url=requestMessage, params=requestData)
+        print('Response --- ', response)
+        assert response.get('reply')['replyCode'] == 200
+        assert int(response.get('payload')[0].get('data')[0].get('resultValue').get(
+            'dataItemValue')) == daily['entries']
+
+    @smokeTest
     def test_get_daily_entries(self, caseData, requestMessage, device, daily):
         """
         使用同步读取的方式去对电表进行日结entries数据对比
