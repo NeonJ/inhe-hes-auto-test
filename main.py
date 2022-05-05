@@ -1,13 +1,10 @@
 import argparse
 import logging
 import time
+import yaml
 
 from common.AllureReport import *
-from config.settings import *
-
-# import paramiko
-
-# from pexpect import *
+from common.WinSFTP import *
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -24,8 +21,8 @@ logging.info('Testing  Start....................................................
 # 设置参数
 parser = argparse.ArgumentParser()
 parser.add_argument("--project", help="project", required=True)  # 服务名称
-parser.add_argument("--tag", help="case tag", default='smokeTest1',
-                    choices=['smokeTest1', 'fullTest', 'asyncTest', 'OBISTest'])  # marker，用例标签
+parser.add_argument("--tag", help="case tag", default='smokeTest',
+                    choices=['smokeTest', 'fullTest', 'asyncTest', 'OBISTest', 'smokeTest1'])  # marker，用例标签
 parser.add_argument("--path", help="report  path", default='/')
 parser.add_argument("--resume", help="continue last obis check", default='False', choices=['False', 'True'])
 parser.add_argument("--retry", help='failed retries', default='0')
@@ -33,8 +30,32 @@ parser.add_argument("--group", help='nacos group', default='QA', choices=['QA', 
 
 args = parser.parse_args()
 
-var = '--project {} --tag {} --path {} --resume {} --retry {} --group {}'.format(args.project, args.tag, args.path, args.resume, args.retry, args.group)
+
+def config():
+    config_dict = {}
+    config_dict['nacos_url'] = 'http://10.32.234.198:8848'
+    config_dict['project'] = args.project
+    config_dict['tag'] = args.tag
+    config_dict['path'] = args.path
+    config_dict['resume'] = args.resume
+    config_dict['retry'] = args.retry
+    config_dict['group'] = args.group
+    return config_dict
+
+
+def writeConfig():
+    current_path = os.path.abspath(__file__)
+    config_file_path = os.path.join(
+        os.path.abspath(os.path.dirname(current_path) + os.path.sep + "." + os.path.sep + 'config'),
+        'settings.yaml')
+    with open(config_file_path, 'w') as f:
+        yaml.dump(data=config(), stream=f, allow_unicode=True)
+
+
+var = '--project {} --tag {} --path {} --resume {} --retry {} --group {}'.format(args.project, args.tag, args.path,
+                                                                                 args.resume, args.retry, args.group)
 print(var)
+writeConfig()
 
 if args.tag != 'fullTest':
 
@@ -70,6 +91,12 @@ if os.listdir('./result') != []:
     # child.expect ("password")
     # child.sendline ("kaifa123")
     # child.read()
+
+    # Win环境推送测试报告到Tomcat
+    warehouse_dir = r'/opt/tomcat/webapps'
+    local_report_dir = r'./report/report_history/{}'.format(args.project + '-' + report_date)
+    host = Linux('10.32.233.164', 'root', 'kaifa123')
+    host.sftp_put_dir(local_report_dir, warehouse_dir)
     print('Report URL == http://10.32.233.164:9090/{}/'.format(args.project + '-' + report_date))
 else:
     print('无结果数据，无法生成报告')

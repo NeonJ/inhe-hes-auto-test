@@ -10,8 +10,8 @@ import time
 from kafka import KafkaProducer, KafkaConsumer
 
 from common.DB import *
+from common.YamlConfig import readConfig
 from common.marker import *
-from config.settings import *
 
 
 class Test_Auto_Register:
@@ -66,27 +66,27 @@ class Test_Auto_Register:
                       database=databaseConfig['db_database'], username=databaseConfig['db_user'],
                       passwd=databaseConfig['db_pwd'], port=databaseConfig['db_port'],
                       sid=databaseConfig['db_service'])
-        database.meter_init_except_1(device['meter_no'])
+        database.meter_init_except_1(device['device_number'])
 
         count = 1
-        data = caseData('testData/AutoRegistration/register-event-process.json'.format(Project.name))['gprs_meter']
+        data = caseData('testData/AutoRegistration/register-event-process.json'.format(readConfig()['project']))['gprs_meter']
         requestData = data['pl']
         requestData[0]['dn'] = device['device_number']
-        producer = KafkaProducer(bootstrap_servers=setting[Project.name]['kafka_url'])
+        producer = KafkaProducer(bootstrap_servers=kafkaURL)
         producer.send('register-event-process', key=b'KafkaBatchPush', value=json.dumps(data).encode())
         producer.close()
         sql1 = "select AUTO_RUN_ID from H_TASK_RUNNING where NODE_NO='{}' and JOB_TYPE='DeviceRegist'".format(
             device['device_number'])
-        db_queue = database.orcl_fetchall_dict(sql1)
+        db_queue = database.fetchall_dict(sql1)
         while len(db_queue) == 0 and count < 2:
             time.sleep(5)
-            db_queue = database.orcl_fetchall_dict(sql1)
+            db_queue = database.fetchall_dict(sql1)
             print(db_queue)
             print('Waiting for Reg Tasks to Create...')
             count = count + 1
         fetch_data_list = []
         consumer = KafkaConsumer('comm-event-process', group_id='tester',
-                                 bootstrap_servers=setting[Project.name]['kafka_url'])
+                                 bootstrap_servers=kafkaURL)
         while count < 10:
             fetch_data_dict = consumer.poll(timeout_ms=2000, max_records=20)
             for keys, values in fetch_data_dict.items():
@@ -110,30 +110,30 @@ class Test_Auto_Register:
                           database=databaseConfig['db_database'], username=databaseConfig['db_user'],
                           passwd=databaseConfig['db_pwd'], port=databaseConfig['db_port'],
                           sid=databaseConfig['db_service'])
-        database.meter_init_except_2(device['meter_no'])
+        database.meter_init_except_2(device['device_number'])
         
         count = 1
-        data = caseData('testData/AutoRegistration/register-event-process.json'.format(Project.name))['gprs_meter']
+        data = caseData('testData/AutoRegistration/register-event-process.json'.format(readConfig()['project']))['gprs_meter']
         requestData = data['pl']
         requestData[0]['dn'] = device['device_number']
-        producer = KafkaProducer(bootstrap_servers=setting[Project.name]['kafka_url'])
+        producer = KafkaProducer(bootstrap_servers=kafkaURL)
         producer.send('register-event-process', key=b'KafkaBatchPush', value=json.dumps(data).encode())
         producer.close()
         sql1 = "select AUTO_RUN_ID from H_TASK_RUNNING where NODE_NO='{}' and JOB_TYPE='DeviceRegist'".format(
             device['device_number'])
-        db_queue = database.orcl_fetchall_dict(sql1)
+        db_queue = database.fetchall_dict(sql1)
         while len(db_queue) == 0 and count < 10:
             time.sleep(6)
-            db_queue = database.orcl_fetchall_dict(sql1)
+            db_queue = database.fetchall_dict(sql1)
             print(db_queue)
             print('Waiting for Reg Tasks to Create...')
             count = count + 1
 
         sql2 = "select TASK_STATE from h_task_run_his where AUTO_RUN_ID='{}'".format(db_queue[0]['AUTO_RUN_ID'])
-        db_queue = database.orcl_fetchall_dict(sql2)
+        db_queue = database.fetchall_dict(sql2)
         while len(db_queue) == 0 and count < 20:
             time.sleep(8)
-            db_queue = database.orcl_fetchall_dict(sql2)
+            db_queue = database.fetchall_dict(sql2)
             print(db_queue)
             print('Waiting for Reg Tasks to finish...')
             count = count + 1
@@ -141,7 +141,7 @@ class Test_Auto_Register:
 
         sql3 = "select DEV_STATUS,CONN_TYPE,COMMUNICATION_TYPE,MASTER_NO,METER_SEQ from c_ar_meter where METER_NO='{}'".format(
             device['device_number'])
-        db_queue = database.orcl_fetchall_dict(sql3)
+        db_queue = database.fetchall_dict(sql3)
 
         assert db_queue[0]['DEV_STATUS'] == 4
         assert db_queue[0]['CONN_TYPE'] == 1

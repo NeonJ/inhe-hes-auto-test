@@ -19,6 +19,7 @@ def slow_down_tests():
     yield
     time.sleep(1)
 
+
 @pytest.fixture(scope='function')
 def get_daily_date(caseData, device, requestMessage, daily):
     """

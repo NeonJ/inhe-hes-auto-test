@@ -31,7 +31,7 @@ class Test_Meter_Status:
         同步读取时间，同步修改时间
         """
         data = "/Mdm/getTime?deviceNo={}&deviceType=1&taskType=0".format(device['device_number'])
-        response = HESRequest().get(url=setting[Project.name]['api_url'] + data, params=None)
+        response = HESRequest().get(url=hesURL + data, params=None)
         assert response['code'] == 200
         assert response['data']['year'] == int(time.strftime("%Y"))
         assert response['data']['month'] == int(time.strftime("%m"))
@@ -98,11 +98,11 @@ class Test_Meter_Status:
         assert 'Suspend' in response.text
 
     @smokeTest
-    def test_SuspendMasterCoreTask2(self):
+    def test_SuspendMasterCoreTask2(self,hesURL):
         """
         验证接口启动MasterCore任务生成，加载，分发
         """
         data = "/Monitor/SuspendMasterCoreTask?signal=1"  # 启动
-        response = requests.get(url=setting[Project.name]['api_url'] + data)
+        response = requests.get(url=hesURL + data)
         print('Response --- ',response.text)
         assert 'Start' in response.text

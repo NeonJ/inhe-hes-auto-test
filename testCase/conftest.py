@@ -2,9 +2,9 @@ import allure
 import nacos
 import pytest
 import requests
+import os,yaml
 
 from common.DB import *
-from config.settings import *
 
 
 def pytest_addoption(parser):  # 定义命令行参数,参数必须保持两个--
@@ -19,6 +19,7 @@ def pytest_addoption(parser):  # 定义命令行参数,参数必须保持两个-
 @pytest.fixture(scope='session', autouse=True)
 def config(request):  # 获取参数值,与上述添加对应
     config_dict = {}
+    config_dict['nacos_url'] = 'http://10.32.234.198:8848'
     config_dict['project'] = request.config.getoption("--project")
     config_dict['tag'] = request.config.getoption("--tag")
     config_dict['path'] = request.config.getoption("--path")
@@ -29,10 +30,21 @@ def config(request):  # 获取参数值,与上述添加对应
 
 
 @pytest.fixture(scope='session', autouse=True)
-def nacosData(config):
-    client = nacos.NacosClient(server_addresses=Project.nacos_url, namespace='HES', username="nacos", password="nacos")
-    data_id = config['project']
-    group = config['group']
+def readConfig():
+    current_path = os.path.abspath(__file__)
+    config_file_path = os.path.join(os.path.abspath(os.path.dirname(current_path) + os.path.sep + ".." + os.path.sep + 'config'),
+                                    'settings.yaml')
+    with open(config_file_path, 'r') as f:
+        result = yaml.load(f.read(), Loader=yaml.FullLoader)
+    return result
+
+
+@pytest.fixture(scope='session', autouse=True)
+def nacosData(readConfig):
+    client = nacos.NacosClient(server_addresses=readConfig['nacos_url'], namespace='HES', username="nacos",
+                               password="nacos")
+    data_id = readConfig['project']
+    group = readConfig['group']
     config = yaml.load(client.get_config(data_id, group), Loader=yaml.FullLoader)
     return config
 
@@ -129,12 +141,6 @@ def event(nacosData):
 @pytest.fixture()
 def relay(nacosData):
     return nacosData['Relay']
-
-
-@allure.step("项目名称")
-@pytest.fixture(scope='session')
-def project():
-    yield Project.name
 
 
 @allure.step("获取Web Token")

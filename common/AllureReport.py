@@ -6,12 +6,14 @@
 """
 import shutil
 import json
-from config.settings import *
+import os
+
+from common.YamlConfig import readConfig
 
 
 
 def get_dirname():
-    history_file = os.path.join(f"./report/{Project.name}", "history.json")
+    history_file = os.path.join(f"./report/{readConfig()['project']}", "history.json")
     if os.path.exists(history_file):
         with open(history_file) as f:
             li = eval(f.read())
@@ -24,7 +26,7 @@ def get_dirname():
 
 
 def update_trend_data(dirname, old_data: list):
-    WIDGETS_DIR = os.path.join(f"./report/{Project.name}", f"{str(dirname)}/widgets")
+    WIDGETS_DIR = os.path.join(f"./report/{readConfig()['project']}", f"{str(dirname)}/widgets")
     with open(os.path.join(WIDGETS_DIR, "history-trend.json")) as f:
         data = f.read()
 
@@ -38,9 +40,9 @@ def update_trend_data(dirname, old_data: list):
     new_data[0]["duration"] = f""
     old_data.insert(0, new_data[0])
     for i in range(1, dirname + 1):
-        with open(os.path.join(f"./report/{Project.name}", f"{str(i)}/widgets/history-trend.json"), "w+") as f:
+        with open(os.path.join(f"./report/{readConfig()['project']}", f"{str(i)}/widgets/history-trend.json"), "w+") as f:
             f.write(json.dumps(old_data))
-    history_file = os.path.join(f"./report/{Project.name}", "history.json")
+    history_file = os.path.join(f"./report/{readConfig()['project']}", "history.json")
 
     with open(history_file, "w+") as f:
         f.write(json.dumps(old_data))
@@ -50,4 +52,9 @@ def update_trend_data(dirname, old_data: list):
 def environment():
     shutil.copyfile("./categories.json", "./result/categories.json")
     file = open("./result/environment.properties", "w")
-    file.write(setting[Project.name].__str__().replace("{", '').replace("}", '').replace("': '","'='").replace(",","\n").replace("'",''))
+    env = open("./nacos-data/snapshot/{}+{}+HES".format(readConfig()['project'],readConfig()['group']),encoding="utf-8")
+    # file.write(setting[Project.name].__str__().replace("{", '').replace("}", '').replace("': '","'='").replace(",","\n").replace("'",''))
+    file.write(env.readlines().__str__())
+
+if __name__ == '__main__':
+    environment()

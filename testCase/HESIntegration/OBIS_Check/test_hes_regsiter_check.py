@@ -10,6 +10,7 @@ import nacos
 
 from common.DB import *
 from common.HESRequest import HESRequest
+from common.YamlConfig import readConfig
 from common.marker import *
 from config.settings import *
 
@@ -21,16 +22,16 @@ class Test_HES_Register_Check:
 
     def get_db_register(action):
         register_list = []
-        client = nacos.NacosClient(server_addresses=Project.nacos_url, namespace='HES', username="nacos",
+        client = nacos.NacosClient(server_addresses=readConfig()['nacos_url'], namespace='HES', username="nacos",
                                    password="nacos")
-        data_id = Project.name
-        group = Project.group
+        data_id = readConfig()['project']
+        group = readConfig()['group']
         config = yaml.load(client.get_config(data_id, group), Loader=yaml.FullLoader)
         database = DB(source=config['DATABASE']['db_source'], host=config['DATABASE']['db_host'],
                       database=config['DATABASE']['db_database'], username=config['DATABASE']['db_user'],
                       passwd=config['DATABASE']['db_pwd'], port=config['DATABASE']['db_port'],
                       sid=config['DATABASE']['db_service'])
-        if Project().continue_last_check:
+        if readConfig()['resume']:
             table_name = database.last_result()[0]
         else:
             try:
@@ -43,7 +44,6 @@ class Test_HES_Register_Check:
         obis_sql2 = " where PTL_TYPE = (select PTL_TYPE from c_ar_model where MODEL_CODE = (select model_code from c_ar_meter where meter_no = '{}'))".format(
             config['Device']['device_number'])
         sql = obis_sql1 + '{}'.format(table_name) + obis_sql2.format()
-        print(sql)
         db_queue = database.fetchall_dict(sql)
         for queue in db_queue:
             if queue.get('RW') == action:
@@ -51,11 +51,11 @@ class Test_HES_Register_Check:
         return register_list
 
     @OBISTest
-    @pytest.mark.parametrize('register_get', get_db_register('r'))
+    @pytest.mark.parametrize('register_get', get_db_register('r'),indirect=False)
     def test_register_get(self, register_get, dbConnect, caseData, device, requestMessage):
         """Get Register Check"""
         print("Register_ID:{}".format(register_get))
-        data = caseData('testData/OBISCheck/register_get.json'.format(Project.name))[
+        data = caseData('testData/OBISCheck/register_get.json'.format(readConfig()['project']))[
             'register_get']
         requestData = data['request']
         requestData['payload'][0]['data'][0]['registerId'] = register_get
