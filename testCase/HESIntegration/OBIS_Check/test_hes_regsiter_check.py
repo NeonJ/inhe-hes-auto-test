@@ -6,13 +6,13 @@
 # version    ：python 3.7
 """
 
-import nacos
+import nacos,yaml
 
 from common.DB import *
 from common.HESRequest import HESRequest
 from common.YamlConfig import readConfig
 from common.marker import *
-from config.settings import *
+
 
 
 class Test_HES_Register_Check:
@@ -31,7 +31,7 @@ class Test_HES_Register_Check:
                       database=config['DATABASE']['db_database'], username=config['DATABASE']['db_user'],
                       passwd=config['DATABASE']['db_pwd'], port=config['DATABASE']['db_port'],
                       sid=config['DATABASE']['db_service'])
-        if readConfig()['resume']:
+        if readConfig()['resume'] == 'True':
             table_name = database.last_result()[0]
         else:
             try:

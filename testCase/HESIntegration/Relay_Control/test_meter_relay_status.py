@@ -13,7 +13,6 @@ import requests
 
 from common.HESRequest import HESRequest
 from common.marker import *
-from config.settings import *
 
 
 class Test_Meter_Relay_Status:

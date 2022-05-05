@@ -8,13 +8,12 @@
 import time
 from common.marker import *
 from common.HESRequest import HESRequest
-from config.settings import *
 
 
 class Test_Key_Change:
 
     @hesAsyncTest
-    def test_key_change_Akey(self, caseData, get_database):
+    def test_key_change_Akey(self, caseData, get_database,device,requestMessage):
         """
         正常修改GPRS电表key - A key
         """
@@ -48,7 +47,7 @@ class Test_Key_Change:
         assert db_queue[0]['TASK_STATE'] == 3
 
     @hesAsyncTest
-    def test_key_change_Ekey(self, caseData,get_database):
+    def test_key_change_Ekey(self, caseData,get_database,device,requestMessage):
         """
         正常修改GPRS电表key - E key
         """

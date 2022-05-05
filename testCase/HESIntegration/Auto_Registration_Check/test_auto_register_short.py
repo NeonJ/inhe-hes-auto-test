@@ -8,10 +8,11 @@
 import time
 
 from kafka import KafkaProducer, KafkaConsumer
+
+from common.YamlConfig import readConfig
 from common.marker import *
 
 from common.UtilTools import *
-from config.settings import *
 
 
 class Test_Auto_Register_Short:

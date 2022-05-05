@@ -1,7 +1,7 @@
 group: QA
 nacos_url: http://10.32.234.198:8848
 path: /
-project: empower
+project: octopus
 resume: 'False'
 retry: '0'
-tag: OBISTest
+tag: smokeTest
