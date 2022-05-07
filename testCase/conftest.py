@@ -31,8 +31,7 @@ def config(request):  # 获取参数值,与上述添加对应
 
 @pytest.fixture(scope='session', autouse=True)
 def readConfig():
-    current_path = os.path.abspath(__file__)
-    config_file_path = os.path.join(os.path.abspath(os.path.dirname(current_path) + os.path.sep + ".." + os.path.sep + 'config'),
+    config_file_path = os.path.join(os.path.abspath(os.path.dirname(os.path.dirname(__file__)) + os.path.sep + 'config'),
                                     'settings.yaml')
     with open(config_file_path, 'r') as f:
         result = yaml.load(f.read(), Loader=yaml.FullLoader)

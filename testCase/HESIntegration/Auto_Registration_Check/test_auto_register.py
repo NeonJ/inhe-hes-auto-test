@@ -11,14 +11,12 @@ from kafka import KafkaProducer, KafkaConsumer
 
 from common.DB import *
 from common.YamlConfig import readConfig
-# from common.confuluentKafka import c_kafka
 from common.marker import *
-import confluent_kafka
 
 
 class Test_Auto_Register:
 
-    @smokeTest1
+    @hesAsyncTest
     def test_meter_register(self, caseData, device, dbConnect, kafkaURL):
         """
         验证GPRS电表正常自动注册流程
@@ -31,13 +29,13 @@ class Test_Auto_Register:
         requestData = data['pl']
         requestData[0]['dn'] = device['device_number']
         conf = {'bootstrap.servers':kafkaURL}
-        confuluentKafka = confluent_kafka.Producer(**conf)
-        confuluentKafka.produce('register-event-process',key=b'KafkaBatchPush',value=json.dumps(data).encode())
-        confuluentKafka.poll(0)
-        # producer = KafkaProducer(bootstrap_servers=kafkaURL)
-        # producer.send('register-event-process', key=b'KafkaBatchPush', value=json.dumps(data).encode())
-        # producer.close()
-        # time.sleep(5)
+        # confuluentKafka = confluent_kafka.Producer(**conf)
+        # confuluentKafka.produce('register-event-process',key=b'KafkaBatchPush',value=json.dumps(data).encode())
+        # confuluentKafka.poll(0)
+        producer = KafkaProducer(bootstrap_servers=kafkaURL)
+        producer.send('register-event-process', key=b'KafkaBatchPush', value=json.dumps(data).encode())
+        producer.close()
+        time.sleep(5)
         sql1 = "select AUTO_RUN_ID from H_TASK_RUNNING where NODE_NO='{}' and JOB_TYPE='DeviceRegist'".format(
             device['device_number'])
         db_queue = dbConnect.fetchall_dict(sql1)
