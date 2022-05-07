@@ -1,6 +1,7 @@
 import argparse
 import logging
 import time
+
 import yaml
 
 from common.AllureReport import *
@@ -11,8 +12,9 @@ logging.basicConfig(level=logging.DEBUG)
 logging.info('''测试前准备，清理历史数据..............................................''')
 
 # 创建result目录
-if os.path.exists('./result/'):
-    shutil.rmtree('./result/')  # 清空历史数据,系统自动创建resulthe report路径
+result_path = os.path.join(os.path.dirname(__file__), 'result')
+if os.path.exists(result_path):
+    shutil.rmtree(result_path)  # 清空历史数据,系统自动创建resulthe report路径
 else:
     print('清楚历史执行明细')
 
@@ -60,41 +62,39 @@ writeConfig()
 if args.tag != 'fullTest':
 
     os.system(
-        'pytest  --reruns %s --reruns-delay 1 --json-report  -v  testCase/   -m  %s  -s %s   --alluredir  ./result/' % (
-            args.retry, args.tag, var))  # 按模块指定标签测试
+        'pytest  --reruns %s --reruns-delay 1 --json-report  -v  testCase/   -m  %s  -s %s   --alluredir  %s' % (
+            args.retry, args.tag, var, result_path))  # 按模块指定标签测试
 
 else:
 
     os.system(
-        'pytest --reruns %s --reruns-delay 1 --json-report  -v  testCase/  -s %s --alluredir  ./result/' % args.retry,
-        var)  # 模块全量测试
+        'pytest --reruns %s --reruns-delay 1 --json-report  -v  testCase/  -s %s --alluredir  %s' % args.retry,
+        var, result_path)  # 模块全量测试
 
 # Allure报告
-if os.listdir('./result') != []:
-    if not os.path.exists('./report/'):
-        os.mkdir('./report/')
-    if not os.path.exists('./report/{}'.format(args.project)):
-        os.mkdir('./report/{}'.format(args.project))
+report_path = os.path.join(os.path.dirname(__file__), 'report')
+if os.listdir(result_path) != []:
+    if not os.path.exists(report_path):
+        os.mkdir(report_path)
+    if not os.path.exists(report_path + '/{}'.format(args.project)):
+        os.mkdir(report_path + '/{}'.format(args.project))
     buildOrder, old_data = get_dirname()
     environment()
-    os.system("allure  generate  ./result/  -o  ./report/{}/{}  --clean".format(args.project, buildOrder))
+    os.system("allure  generate  {}  -o  {}/{}/{}  --clean".format(result_path, report_path, args.project, buildOrder))
     all_data, reportUrl = update_trend_data(buildOrder, old_data)
-    if not os.path.exists('./report/report_history'):
-        os.mkdir('./report/report_history')
-    shutil.copytree('./report/{}/{}'.format(args.project, buildOrder), './report/report_history/{}'.format(buildOrder))
+    if not os.path.exists('{}/report_history'.format(report_path)):
+        os.mkdir('{}/report_history'.format(report_path))
+    print(report_path)
+    shutil.copytree('{}/{}/{}'.format(report_path, args.project, buildOrder),
+                    '{}/report_history/{}'.format(report_path, buildOrder))
     report_date = time.strftime('%y%m%d%H%M%S', time.localtime())
-    report_path = './report/report_history/{}'.format(args.project + '-' + report_date)
-    os.rename('./report/report_history/{}'.format(buildOrder),
-              './report/report_history/{}'.format(args.project + '-' + report_date))
-    # Linux环境推送测试报告到Tomcat
-    # child = spawn("scp -r {} root@10.32.233.164:/opt/tomcat/webapps".format(report_path))
-    # child.expect ("password")
-    # child.sendline ("kaifa123")
-    # child.read()
-
-    # Win环境推送测试报告到Tomcat
+    history_path = '{}/report_history/{}'.format(report_path, args.project + '-' + report_date)
+    print(history_path)
+    os.rename('{}/report_history/{}'.format(report_path, buildOrder),
+              '{}/report_history/{}'.format(report_path, args.project + '-' + report_date))
+    #推送报告到报告仓库
     warehouse_dir = r'/opt/tomcat/webapps'
-    local_report_dir = r'./report/report_history/{}'.format(args.project + '-' + report_date)
+    local_report_dir = r'{}/report_history/{}'.format(report_path,args.project + '-' + report_date)
     host = Linux('10.32.233.164', 'root', 'kaifa123')
     host.sftp_put_dir(local_report_dir, warehouse_dir)
     print('Report URL == http://10.32.233.164:9090/{}/'.format(args.project + '-' + report_date))
