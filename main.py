@@ -68,8 +68,8 @@ if args.tag != 'fullTest':
     #     args.retry, os.path.dirname(__file__), args.tag, var, result_path))  # 按模块指定标签测试
 else:
     os.system(
-        'pytest --reruns %s --reruns-delay 1 --json-report  -v  %s/testCase/  --alluredir  %s' % args.retry,
-        result_path)  # 模块全量测试
+        'pytest --reruns %s --reruns-delay 1 --json-report  -v  %s/testCase/  --alluredir  %s' % (args.retry,
+        os.path.dirname(__file__), result_path))  # 模块全量测试
 
 # Allure报告
 report_path = os.path.join(os.path.dirname(__file__), 'report')
