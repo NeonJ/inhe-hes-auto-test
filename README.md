@@ -2,16 +2,17 @@
 
     1.Python3.7.4
     2.安装依赖库：pip install -r requirements.txt
+    3.需要Oracle外部组件支持instantclient-basic, 设置oracle客户端环境变量
+    4.需要Allure外部组件，设置Allure环境变量，依赖Java
 
 --------------------------------------------------------------------
 
 **目录说明**
 
     ./common                     公共函数，第三方插件(webdriver,allure)
-    ./config/settings.py         配置文件，项目环境配置
-    ./config/hesCase.py          配置文件，HES用例相关变量配置
-    ./testCase                   测试用例，子目录对应不同project
-    ./testData                   测试数据，目录结构与projects对应
+    ./config/settings.yaml       配置文件，项目环境配置，从命令行输入中得到
+    ./testCase                   测试用例
+    ./testData                   测试数据
     ./result                     运行后的结果文件
     ./report                     HTML格式的测试报告，allure生成
     ./requirements.txt           第三方依赖库
@@ -21,7 +22,6 @@
 
 
 ----------------------------------------------------------------------
-
 
 **基本规范**
 
