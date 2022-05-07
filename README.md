@@ -10,7 +10,7 @@
 **目录说明**
 
     ./common                     公共函数，第三方插件(webdriver,allure)
-    ./config/settings.yaml       配置文件，项目环境配置，从命令行输入中得到
+    ./config/settings.yaml       配置文件，项目环境配置，Nacos地址和命令行输入
     ./testCase                   测试用例
     ./testData                   测试数据
     ./result                     运行后的结果文件
