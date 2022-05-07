@@ -7,26 +7,26 @@ import os,yaml
 from common.DB import *
 
 
-def pytest_addoption(parser):  # 定义命令行参数,参数必须保持两个--
-    parser.addoption("--project", action="store", help="project")  # 服务名称
-    parser.addoption("--tag", action="store", help="case tag")  # marker，用例标签
-    parser.addoption("--path", action="store", help="report  path")
-    parser.addoption("--resume", action="store", help="continue last obis check")
-    parser.addoption("--retry", action="store", help='failed retries')
-    parser.addoption("--group", action="store", help='nacos group')
-
-
-@pytest.fixture(scope='session', autouse=True)
-def config(request):  # 获取参数值,与上述添加对应
-    config_dict = {}
-    config_dict['nacos_url'] = 'http://10.32.234.198:8848'
-    config_dict['project'] = request.config.getoption("--project")
-    config_dict['tag'] = request.config.getoption("--tag")
-    config_dict['path'] = request.config.getoption("--path")
-    config_dict['resume'] = request.config.getoption("--resume")
-    config_dict['retry'] = request.config.getoption("--retry")
-    config_dict['group'] = request.config.getoption("--group")
-    return config_dict
+# def pytest_addoption(parser):  # 定义命令行参数,参数必须保持两个--
+#     parser.addoption("--project", action="store", help="project")  # 服务名称
+#     parser.addoption("--tag", action="store", help="case tag")  # marker，用例标签
+#     parser.addoption("--path", action="store", help="report  path")
+#     parser.addoption("--resume", action="store", help="continue last obis check")
+#     parser.addoption("--retry", action="store", help='failed retries')
+#     parser.addoption("--group", action="store", help='nacos group')
+#
+#
+# @pytest.fixture(scope='session', autouse=True)
+# def config(request):  # 获取参数值,与上述添加对应
+#     config_dict = {}
+#     config_dict['nacos_url'] = 'http://10.32.234.198:8848'
+#     config_dict['project'] = request.config.getoption("--project")
+#     config_dict['tag'] = request.config.getoption("--tag")
+#     config_dict['path'] = request.config.getoption("--path")
+#     config_dict['resume'] = request.config.getoption("--resume")
+#     config_dict['retry'] = request.config.getoption("--retry")
+#     config_dict['group'] = request.config.getoption("--group")
+#     return config_dict
 
 
 @pytest.fixture(scope='session', autouse=True)

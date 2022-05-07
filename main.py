@@ -1,5 +1,6 @@
 import argparse
 import logging
+import socket
 import time
 
 import yaml
@@ -60,16 +61,15 @@ print(var)
 writeConfig()
 
 if args.tag != 'fullTest':
-
     os.system(
-        'pytest  --reruns %s --reruns-delay 1 --json-report  -v  testCase/   -m  %s  -s %s   --alluredir  %s' % (
-            args.retry, args.tag, var, result_path))  # 按模块指定标签测试
-
+        'pytest --reruns %s --reruns-delay 1 --json-report  -v  %s/testCase/ -m  %s  --alluredir  %s' % (
+            args.retry, os.path.dirname(__file__), args.tag, result_path))  # 按模块指定标签测试
+    # 'pytest  --reruns %s --reruns-delay 1 --json-report  -v  %s/testCase/   -m  %s  -s %s   --alluredir  %s' % (
+    #     args.retry, os.path.dirname(__file__), args.tag, var, result_path))  # 按模块指定标签测试
 else:
-
     os.system(
-        'pytest --reruns %s --reruns-delay 1 --json-report  -v  testCase/  -s %s --alluredir  %s' % args.retry,
-        var, result_path)  # 模块全量测试
+        'pytest --reruns %s --reruns-delay 1 --json-report  -v  %s/testCase/  --alluredir  %s' % args.retry,
+        result_path)  # 模块全量测试
 
 # Allure报告
 report_path = os.path.join(os.path.dirname(__file__), 'report')
@@ -91,12 +91,14 @@ if os.listdir(result_path) != []:
     history_path = '{}/report_history/{}'.format(report_path, args.project + '-' + report_date)
     print(history_path)
     os.rename('{}/report_history/{}'.format(report_path, buildOrder),
-              '{}/report_history/{}'.format(report_path, args.project + '-' + report_date))
-    #推送报告到报告仓库
+              '{}/report_history/{}'.format(report_path, args.project + '-' + socket.gethostname() + '-' + report_date))
+    # 推送报告到报告仓库
     warehouse_dir = r'/opt/tomcat/webapps'
-    local_report_dir = r'{}/report_history/{}'.format(report_path,args.project + '-' + report_date)
+    local_report_dir = r'{}/report_history/{}'.format(report_path,
+                                                      args.project + '-' + socket.gethostname() + '-' + report_date)
     host = Linux('10.32.233.164', 'root', 'kaifa123')
     host.sftp_put_dir(local_report_dir, warehouse_dir)
-    print('Report URL == http://10.32.233.164:9090/{}/'.format(args.project + '-' + report_date))
+    print('Report URL == http://10.32.233.164:9090/{}/'.format(
+        args.project + '-' + socket.gethostname() + '-' + report_date))
 else:
     print('无结果数据，无法生成报告')
