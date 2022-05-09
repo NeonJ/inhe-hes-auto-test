@@ -115,7 +115,7 @@ class Test_Relay_Control:
         requestData = data['test_RelayControl_OnTask']['request']
         # 设定三分钟异步任务，三分钟后失效
         currentTime = datetime.datetime.now().strftime('%y%m%d%H%M%S')
-        endTime = (datetime.datetime.now() + datetime.timedelta(minutes=3)).strftime('%y%m%d%H%M%S')
+        endTime = (datetime.datetime.now() + datetime.timedelta(minutes=5)).strftime('%y%m%d%H%M%S')
 
         requestData['payload'][0]['startTime'] = currentTime
         requestData['payload'][0]['endTime'] = endTime
@@ -160,7 +160,7 @@ class Test_Relay_Control:
         requestData = data['test_RelayControl_OffTask']['request']
         # 设定三分钟异步任务，三分钟后失效
         currentTime = datetime.datetime.now().strftime('%y%m%d%H%M%S')
-        endTime = (datetime.datetime.now() + datetime.timedelta(minutes=3)).strftime('%y%m%d%H%M%S')
+        endTime = (datetime.datetime.now() + datetime.timedelta(minutes=5)).strftime('%y%m%d%H%M%S')
 
         requestData['payload'][0]['startTime'] = currentTime
         requestData['payload'][0]['endTime'] = endTime
@@ -205,7 +205,7 @@ class Test_Relay_Control:
         requestData = data['test_RelayControl_OnTask']['request']
         # 设定三分钟异步任务，三分钟后失效
         currentTime = datetime.datetime.now().strftime('%y%m%d%H%M%S')
-        endTime = (datetime.datetime.now() + datetime.timedelta(minutes=3)).strftime('%y%m%d%H%M%S')
+        endTime = (datetime.datetime.now() + datetime.timedelta(minutes=5)).strftime('%y%m%d%H%M%S')
 
         requestData['payload'][0]['startTime'] = currentTime
         requestData['payload'][0]['endTime'] = endTime
@@ -250,7 +250,7 @@ class Test_Relay_Control:
         requestData = data['test_RelayControl_OffTask']['request']
         # 设定三分钟异步任务，三分钟后失效
         currentTime = datetime.datetime.now().strftime('%y%m%d%H%M%S')
-        endTime = (datetime.datetime.now() + datetime.timedelta(minutes=3)).strftime('%y%m%d%H%M%S')
+        endTime = (datetime.datetime.now() + datetime.timedelta(minutes=5)).strftime('%y%m%d%H%M%S')
 
         requestData['payload'][0]['startTime'] = currentTime
         requestData['payload'][0]['endTime'] = endTime
