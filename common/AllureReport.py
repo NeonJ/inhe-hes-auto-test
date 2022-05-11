@@ -53,7 +53,8 @@ def update_trend_data(dirname, old_data: list):
 def environment():
     shutil.copyfile(f"{os.path.dirname(os.path.dirname(__file__))}/categories.json", f"{os.path.dirname(os.path.dirname(__file__))}/result/categories.json")
     file = open(f"{os.path.dirname(os.path.dirname(__file__))}/result/environment.properties", "w")
-    env = open("{}/nacos-data/snapshot/{}+{}+HES".format(os.path.dirname(os.path.dirname(__file__)),readConfig()['project'],readConfig()['group']),encoding="utf-8")
+    # env = open("{}/nacos-data/snapshot/{}+{}+HES".format(os.path.dirname(os.path.dirname(__file__)),readConfig()['project'],readConfig()['group']),encoding="utf-8")
+    env = open(os.path.join(os.path.dirname(os.path.dirname(__file__)),'config/settings.yaml'),encoding='utf-8')
     # file.write(setting[Project.name].__str__().replace("{", '').replace("}", '').replace("': '","'='").replace(",","\n").replace("'",''))
     file.write(env.readlines().__str__())
 
