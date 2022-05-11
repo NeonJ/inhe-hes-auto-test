@@ -81,7 +81,7 @@ if os.listdir(result_path) != []:
     if not os.path.exists(report_path + '/{}'.format(args.project)):
         os.mkdir(report_path + '/{}'.format(args.project))
     buildOrder, old_data = get_dirname()
-    environment()
+    # environment()
     os.system("allure  generate  {}  -o  {}/{}/{}  --clean".format(result_path, report_path, args.project, buildOrder))
     all_data, reportUrl = update_trend_data(buildOrder, old_data)
     if not os.path.exists('{}/report_history'.format(report_path)):
