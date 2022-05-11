@@ -14,6 +14,8 @@
     python main.py --project empower --tag=smokeTest --tester Neon --retry 0 --groyp QA --resume False
     3.可以通过docker自动执行
     docker run --rm -e project=empower -e tag=smokeTest -e tester=Neon -e retry=0 -e group=QA -e resume=False 10.32.233.112/test/py36-test
+    
+    ***测试还需要在NACOS上正确编辑测试环境，测试用例变量后才能正确执行***
 
 --------------------------------------------------------------------
 
@@ -28,10 +30,6 @@
     ./report                     HTML格式的测试报告，allure生成
     ./requirements.txt           第三方依赖库
     ./main.py                    启动文件，启动方式：python  main.py
-    
-    测试还需要在NACOS上正确编辑测试环境，测试用例变量后才能正确执行
-
-
 
 ----------------------------------------------------------------------
 
