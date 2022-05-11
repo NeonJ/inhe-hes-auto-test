@@ -1,11 +1,22 @@
 **环境准备**
 
-    1.Python3.7.4
+    1.Python3.6.9
     2.安装依赖库：pip install -r requirements.txt
     3.需要Oracle外部组件支持instantclient-basic, 设置oracle客户端环境变量
     4.需要Allure外部组件，设置Allure环境变量，依赖Java
 
 --------------------------------------------------------------------
+
+**测试执行**
+
+    1.可以通过pytest单用例执行
+    2.可以通过main.py执行
+    python main.py --project empower --tag=smokeTest --tester Neon --retry 0 --groyp QA --resume False
+    3.可以通过docker自动执行
+    docker run --rm -e project=empower -e tag=smokeTest -e tester=Neon -e retry=0 -e group=QA -e resume=False 10.32.233.112/test/py36-test
+
+--------------------------------------------------------------------
+
 
 **目录说明**
 
@@ -17,7 +28,8 @@
     ./report                     HTML格式的测试报告，allure生成
     ./requirements.txt           第三方依赖库
     ./main.py                    启动文件，启动方式：python  main.py
-                     
+    
+    测试还需要在NACOS上正确编辑测试环境，测试用例变量后才能正确执行
 
 
 
@@ -34,10 +46,9 @@
 
     项目结构
 
-        1.多个项目通过路径区分：projects/{moduletname}/test_*.py
-        2.测试数据目录结构与case路径对应：testData/{projectname}/file
+        1.多个项目通过路径区分：testCase/模块名称/test_*.py
+        2.测试数据目录结构与case路径对应：testData/
         3.所有测试数据文件建议采用json文件
- 
 
     项目管理
 
