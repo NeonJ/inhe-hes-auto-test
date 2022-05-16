@@ -102,10 +102,10 @@ class Linux(object):
         for x in all_files:
             filename = os.path.split(x)[-1]
             remote_filename = x.replace(local_dir, remote_dir)
-            print(remote_filename)
+            # print(remote_filename)
             remote_filename = remote_filename.replace("\\", "/")
-            print(x)
-            print(remote_filename)
+            # print(x)
+            # print(remote_filename)
             if os.path.isdir(x):
                 sftp.mkdir(remote_filename)
                 print(u'Put文件夹%s创建中...' % filename)
