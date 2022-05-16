@@ -37,7 +37,7 @@ args = parser.parse_args()
 
 def config():
     config_dict = {}
-    config_dict['nacos_url'] = 'http://10.32.234.198:8848'
+    config_dict['nacos_url'] = 'http://10.32.233.164:18848'
     config_dict['project'] = args.project
     config_dict['tag'] = args.tag
     config_dict['path'] = args.path
