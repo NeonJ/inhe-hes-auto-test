@@ -108,10 +108,10 @@ class Linux(object):
             # print(remote_filename)
             if os.path.isdir(x):
                 sftp.mkdir(remote_filename)
-                print(u'Put文件夹%s创建中...' % filename)
+                # print(u'Put文件夹%s创建中...' % filename)
                 continue
             else:
-                print(u'Put文件%s传输中...' % filename)
+                # print(u'Put文件%s传输中...' % filename)
                 sftp.put(x, remote_filename)
 
 
