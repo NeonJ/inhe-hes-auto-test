@@ -26,6 +26,8 @@ class Test_Set_Meter_Tariff:
         requestData['payload'][0]['startTime'] = currentTime
         requestData['payload'][0]['endTime'] = endTime
         requestData['payload'][0]['deviceNo'] = device['device_number']
+        transactionId = str(device['device_number']) + '_' + time.strftime('%y%m%d%H%M%S',time.localtime())
+        requestData['payload'][0]['transactionId'] = transactionId
         response = requests.post(url=requestMessage, json=requestData)
         assert response.status_code == 200
 

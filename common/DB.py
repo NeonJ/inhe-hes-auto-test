@@ -131,11 +131,11 @@ class DB:
             cur.close()
             con.close()
 
-    def save_result(self, table_name, result_type, result, register_id):
+    def save_result(self, table_name, result_column, result, value_column, value, elapsed, register_id):
         try:
             con = self.connect()
             cur = con.cursor()
-            sql = f"update {table_name} set {result_type}='{json.dumps(result)}' where register_id='{register_id}'"
+            sql = f"update {table_name} set {result_column}='{json.dumps(result)}',{value_column}='{json.dumps(value)}',elapsed='{elapsed}' where register_id='{register_id}'"
             cur.execute(sql)
             con.commit()
             return
@@ -159,9 +159,8 @@ class DB:
 
     def initial_result(self, meter_no):
         """初始化OBIS Check结果表"""
-        table_name = 'H_CONFIG_REGISTER_CHECK_' + datetime.datetime.now().strftime('%Y%m%d')
+        table_name = 'H_CONFIG_REGISTER_CHECK_' + str(meter_no) + '_' + datetime.datetime.now().strftime('%y%m%d')
         try:
-            print('112313',table_name)
             con = self.connect()
             cur = con.cursor()
             cur.execute(
@@ -173,6 +172,7 @@ class DB:
             cur.execute(f"alter table {table_name} add action_result varchar(128)")
             cur.execute(f"alter table {table_name} add action_value varchar(128)")
             cur.execute(f"alter table {table_name} add default_value varchar(1024)")
+            cur.execute(f"alter table {table_name} add elapsed varchar(128)")
             con.commit()
             return table_name
         except Exception as e:
@@ -181,12 +181,12 @@ class DB:
             cur.close()
             con.close()
 
-    def last_result(self):
+    def last_result(self, meter_no):
         if self.source == 'Postgre':
             try:
                 con = self.connect()
                 cur = con.cursor()
-                sql = "select tablename from pg_tables where tablename like 'h_ptl_register_check%' order by tablename desc limit 1"
+                sql = f"select tablename from pg_tables where tablename like 'h_ptl_register_check_{meter_no}%' order by tablename desc limit 1"
                 cur.execute(sql)
                 fc = cur.fetchone()
                 return fc
@@ -199,7 +199,7 @@ class DB:
             try:
                 con = self.connect()
                 cur = con.cursor()
-                sql = "select table_name from user_tables where table_name like 'H_CONFIG_REGISTER_CHECK_%' and ROWNUM=1 order by table_name desc"
+                sql = f"select table_name from user_tables where table_name like 'H_CONFIG_REGISTER_CHECK_{meter_no}%' and ROWNUM=1 order by table_name desc"
                 cur.execute(sql)
                 fc = cur.fetchone()
                 return fc

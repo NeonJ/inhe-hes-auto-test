@@ -2,7 +2,7 @@
 # @Time : 2021/12/22 17:30
 # @Author : JingYang
 # @File : test_GetMeterTariff.py
-from common.HESRequest import HESRequest
+from common.HESRequest import *
 from common.marker import *
 
 
@@ -16,7 +16,7 @@ class Test_Get_Meter_Tariff:
         requestData['meterNo'] = device['device_number']
 
         expectResJson = requestData['response']
-        response = HESRequest().get(url=url, params=requestData)
+        response, elapsed = HESRequest().get(url=url, params=requestData)
         print('Response --- ', response)
         assert 'activeTariff' in str(response)
         # assert AssertIn().checkIn(expectResJson,response.json()) is True
@@ -29,7 +29,7 @@ class Test_Get_Meter_Tariff:
         requestData['meterNo'] = device['device_number']
 
         expectResJson = requestData['response']
-        response = HESRequest().get(url=url, params=requestData)
+        response, elapsed = HESRequest().get(url=url, params=requestData)
         print('Response --- ', response)
         assert 'Neon' in str(response)
         # assert AssertIn().checkIn(expectResJson, response.json()) is True
@@ -43,8 +43,9 @@ class Test_Get_Meter_Tariff:
         requestData = data['test_GetMeterTariff_All']
         requestData['meterNo'] = device['device_number']
 
+
         expectResJson = requestData['response']
-        response = HESRequest().get(url=url, params=requestData)
+        response, elapsed = HESRequest().get(url=url, params=requestData)
         print('Response --- ', response)
         assert 'Neon' in str(response)
         # assert AssertIn().checkIn(expectResJson, response.json()) is True

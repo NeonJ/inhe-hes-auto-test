@@ -58,7 +58,7 @@ def writeConfig():
 
 
 var = '--project {} --tag {} --tester {} --resume {} --retry {} --group {}'.format(args.project, args.tag, args.tester,
-                                                                                 args.resume, args.retry, args.group)
+                                                                                   args.resume, args.retry, args.group)
 print(var)
 writeConfig()
 
@@ -71,7 +71,9 @@ if args.tag != 'fullTest':
 else:
     os.system(
         'pytest --reruns %s --reruns-delay 1 --json-report  -v  %s/testCase/  --alluredir  %s' % (args.retry,
-        os.path.dirname(__file__), result_path))  # 模块全量测试
+                                                                                                  os.path.dirname(
+                                                                                                      __file__),
+                                                                                                  result_path))  # 模块全量测试
 
 # Allure报告
 report_path = os.path.join(os.path.dirname(__file__), 'report')

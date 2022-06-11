@@ -8,7 +8,7 @@
 
 import requests,time
 
-from common.HESRequest import HESRequest
+from common.HESRequest import *
 from common.marker import *
 
 
@@ -20,17 +20,17 @@ class Test_Meter_Status:
         验证接口获取电表状态字
         """
         data = "/Mdm/GetMeterStatus?MeterNo={}".format(device['device_number'])
-        response = HESRequest().get(url=hesURL + data, params=None)
+        response, elapsed = HESRequest().get(url=hesURL + data, params=None)
         print(response)
         assert response['code'] == 200
 
     @smokeTest
-    def test_get_meter_time(self,device,hesURL):
+    def test_get_meter_time(self, device, hesURL):
         """
         同步读取时间，同步修改时间
         """
         data = "/Mdm/getTime?deviceNo={}&deviceType=1&taskType=0".format(device['device_number'])
-        response = HESRequest().get(url=hesURL + data, params=None)
+        response, elapsed = HESRequest().get(url=hesURL + data, params=None)
         assert response['code'] == 200
         assert response['data']['year'] == int(time.strftime("%Y"))
         assert response['data']['month'] == int(time.strftime("%m"))
@@ -46,11 +46,11 @@ class Test_Meter_Status:
         }
         params.update(response['data'])
         data = "/Mdm/setTime"
-        response = HESRequest().post(url=hesURL + data, params=params)
+        response, elapsed = HESRequest().post(url=hesURL + data, params=params)
         assert response['code'] == 200
 
     @smokeTest
-    def test_get_device_online1(self,device,hesURL):
+    def test_get_device_online1(self, device, hesURL):
         """
         验证接口获取电表和DCU上下线状态 GetOnlineDevice
         """
@@ -59,16 +59,16 @@ class Test_Meter_Status:
         assert str(device['device_number']) in response.text
 
     @smokeTest
-    def test_get_device_online2(self,device,hesURL):
+    def test_get_device_online2(self, device, hesURL):
         """
         验证接口获取电表和DCU上下线状态 getMeterOnlineStatus
         """
         data = "/Mdm/getMeterOnlineStatus?meterNo={}".format(device['device_number'])
         response = requests.get(url=hesURL + data, params=None)
-        assert  "Online" in response.text
+        assert "Online" in response.text
 
     @smokeTest
-    def test_get_device_online3(self,device,hesURL):
+    def test_get_device_online3(self, device, hesURL):
         """
         验证接口获取电表和DCU上下线状态 getDeviceNoOnlineStatus
         """
@@ -77,31 +77,31 @@ class Test_Meter_Status:
         assert "Online" in response.text
 
     @smokeTest
-    def test_MasterCoreState(self,hesURL):
+    def test_MasterCoreState(self, hesURL):
         """
         验证接口获取MasterCore任务状态
         """
         data = "/Monitor/GetMasterCoreState"
         response = requests.get(url=hesURL + data)
-        print('Response --- ',response.json())
+        print('Response --- ', response.json())
         assert response.json()['CurrentTime'] != ''
 
     @smokeTest
-    def test_SuspendMasterCoreTask1(self,hesURL):
+    def test_SuspendMasterCoreTask1(self, hesURL):
         """
         验证接口暂停MasterCore任务生成，加载，分发
         """
         data = "/Monitor/SuspendMasterCoreTask?signal=2"  # 暂停
         response = requests.get(url=hesURL + data)
-        print('Response --- ',response.text)
+        print('Response --- ', response.text)
         assert 'Suspend' in response.text
 
     @smokeTest
-    def test_SuspendMasterCoreTask2(self,hesURL):
+    def test_SuspendMasterCoreTask2(self, hesURL):
         """
         验证接口启动MasterCore任务生成，加载，分发
         """
         data = "/Monitor/SuspendMasterCoreTask?signal=1"  # 启动
         response = requests.get(url=hesURL + data)
-        print('Response --- ',response.text)
+        print('Response --- ', response.text)
         assert 'Start' in response.text

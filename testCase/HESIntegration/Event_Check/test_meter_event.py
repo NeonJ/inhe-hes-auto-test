@@ -19,8 +19,10 @@ class Test_Meter_Event:
         data = caseData('testData/MeterFrozenData/meter_event_data.json')
         requestData = data['meter_daily_event_entries']['request']
         requestData['payload'][0]['deviceNo'] = device['device_number']
+        transactionId = str(device['device_number']) + '_' + time.strftime('%y%m%d%H%M%S',time.localtime())
+        requestData['payload'][0]['transactionId'] = transactionId
         requestData['payload'][0]['data'][0]['registerId'] = event['entries_register_id']
-        response = HESRequest().post(url=requestMessage, params=requestData)
+        response, elapsed = HESRequest().post(url=requestMessage, params=requestData)
         print('Response --- ', response)
         assert int(
             response.get('payload')[0].get('data')[0].get('resultValue').get('dataItemValue')) != len(
@@ -35,8 +37,10 @@ class Test_Meter_Event:
         data = caseData('testData/MeterFrozenData/meter_event_data.json')
         requestData = data['meter_standard_event']['request']
         requestData['payload'][0]['deviceNo'] = device['device_number']
+        transactionId = str(device['device_number']) + '_' + time.strftime('%y%m%d%H%M%S',time.localtime())
+        requestData['payload'][0]['transactionId'] = transactionId
         requestData['payload'][0]['data'][0]['registerId'] = event['standard_register_id']
-        response = HESRequest().post(url=requestMessage, params=requestData)
+        response, elapsed = HESRequest().post(url=requestMessage, params=requestData)
         if response.get('reply')['replyCode'] != 200:
             print(response.get('payload')[0]['desc'])
             assert False
@@ -48,7 +52,7 @@ class Test_Meter_Event:
         requestData['payload'][0]['data'][0]['parameter']['dataFetchMode'] = 1
         requestData['payload'][0]['data'][0]['parameter']['startTime'] = startTime
         requestData['payload'][0]['data'][0]['parameter']['endTime'] = startTime
-        response = HESRequest().post(url=requestMessage, params=requestData)
+        response, elapsed = HESRequest().post(url=requestMessage, params=requestData)
         if response.get('reply')['replyCode'] != 200:
             assert False
         else:

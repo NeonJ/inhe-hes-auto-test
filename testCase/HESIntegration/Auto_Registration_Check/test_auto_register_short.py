@@ -7,130 +7,65 @@
 """
 import time
 
-from kafka import KafkaProducer, KafkaConsumer
+import allure
 
-from common.YamlConfig import readConfig
+from common.HESRequest import HESRequest
 from common.marker import *
-
-from common.UtilTools import *
 
 
 class Test_Auto_Register_Short:
 
-    # @hesAsyncTest
-    def test_meter_register_short(self, get_database, caseData, kafkaURL, device):
+    # @hesAsyncTest1
+    def test_meter_register_short(self, caseData, device, dbConnect, requestMessage):
         """
-        验证GPRS服务端短连接电表正常自动注册流程
+        验证GPRS电表正常自动注册流程，前提是短链接电表以及设置了push的前置机地址
         """
+
         count = 1
-        data = caseData('testData/AutoRegistration/register-event-process.json'.format(readConfig()['project']))['short_meter']
-        requestData = data['pl']
-        requestData[0]['dn'] = device['device_number']
-        producer = KafkaProducer(bootstrap_servers=kafkaURL)
-        producer.send('register-event-process', key=b'KafkaBatchPush', value=json.dumps(data).encode())
-        producer.close()
-        time.sleep(5)
-        sql1 = "select AUTO_RUN_ID from H_TASK_RUNNING where NODE_NO='{}' and JOB_TYPE='DeviceRegist'".format(
-            device['device_number'])
-        db_queue = get_database.orcl_fetchall_dict(sql1)
-        while len(db_queue) == 0 and count < 10:
-            time.sleep(6)
-            db_queue = get_database.orcl_fetchall_dict(sql1)
+        with allure.step('查找项目中的push connectivity register_id'):
+            sql = f"select REGISTER_ID from H_CONFIG_REGISTER where OBIS = '0.0.25.9.0.255' and REGISTER_TYPE = 1 and PTL_TYPE = (select PTL_TYPE from c_ar_model where MODEL_CODE = (select model_code from c_ar_meter where METER_NO = '{device['device_number']}'))"
+            push_register = dbConnect.fetchall_dict(sql)[0]
+
+        with allure.step('电表档案初始化'):
+            dbConnect.meter_init(device['device_number'])
+
+        with allure.step('执行服务端电表的push connectivity的配置设置'):
+            pass
+
+        with allure.step('执行服务端电表push connectivity的命令触发'):
+            data = caseData('testData/OBISCheck/register_set.json')
+            requestData = data['register_get']['request']
+            requestData['payload'][0]['data'][0]['registerId'] = push_register
+            requestData['payload'][0]['deviceNo'] = device['device_number']
+            transactionId = str(device['device_number']) + '_' + time.strftime('%y%m%d%H%M%S', time.localtime())
+            requestData['payload'][0]['transactionId'] = transactionId
+            re = HESRequest().post(url=requestMessage, params=requestData)
+            assert re.status_code == 200
+            assert re.json()['code'] == 200
+
+        with allure.setp('自动注册检查'):
+            sql1 = "select AUTO_RUN_ID from H_TASK_RUNNING where NODE_NO='{}' and JOB_TYPE='DeviceRegist'".format(
+                device['device_number'])
+            db_queue = dbConnect.fetchall_dict(sql1)
+            while len(db_queue) == 0 and count < 10:
+                time.sleep(6)
+                db_queue = dbConnect.fetchall_dict(sql1)
+                print(db_queue)
+                print('Waiting for Reg Tasks to Create...')
+                count = count + 1
+
+            sql2 = "select TASK_STATE from h_task_run_his where AUTO_RUN_ID='{}'".format(db_queue[0]['AUTO_RUN_ID'])
+            db_queue = dbConnect.fetchall_dict(sql2)
+            while len(db_queue) == 0 and count < 20:
+                time.sleep(8)
+                db_queue = dbConnect.fetchall_dict(sql2)
+                print(db_queue)
+                print('Waiting for Reg Tasks to finish...')
+                count = count + 1
+            assert db_queue[0]['TASK_STATE'] == 3
+
+            sql3 = "select DEV_STATUS, from c_ar_meter where METER_NO='{}'".format(device['device_number'])
+            db_queue = dbConnect.fetchall_dict(sql3)
             print(db_queue)
-            print('Waiting for Reg Tasks to Create...')
-            count = count + 1
-
-        sql2 = "select TASK_STATE from h_task_run_his where AUTO_RUN_ID='{}'".format(db_queue[0]['AUTO_RUN_ID'])
-        db_queue = get_database.orcl_fetchall_dict(sql2)
-        while len(db_queue) == 0 and count < 20:
-            time.sleep(8)
-            db_queue = get_database.orcl_fetchall_dict(sql2)
-            print(db_queue)
-            print('Waiting for Reg Tasks to finish...')
-            count = count + 1
-        assert db_queue[0]['TASK_STATE'] == 3
-
-        sql3 = "select DEV_STATUS from c_ar_meter where METER_NO='{}'".format(device['device_number'])
-        db_queue = get_database.orcl_fetchall_dict(sql3)
-        print(db_queue)
-        assert db_queue[0]['DEV_STATUS'] == 4
-
-    # @hesAsyncTest
-    def test_meter_register_short_exception_1(self, get_database, caseData, device,kafkaURL):
-        """
-        验证GPRS电表未安装不会自动注册
-        """
-        count = 1
-        data = caseData('testData/AutoRegistration/register-event-process.json'.format(readConfig()['project']))['short_meter']
-        requestData = data['pl']
-        requestData[0]['dn'] = device['device_number']
-        producer = KafkaProducer(bootstrap_servers=kafkaURL)
-        producer.send('register-event-process', key=b'KafkaBatchPush', value=json.dumps(data).encode())
-        producer.close()
-        sql1 = "select AUTO_RUN_ID from H_TASK_RUNNING where NODE_NO='{}' and JOB_TYPE='DeviceRegist'".format(
-            device['device_number'])
-        db_queue = get_database.orcl_fetchall_dict(sql1)
-        while len(db_queue) == 0 and count < 2:
-            time.sleep(5)
-            db_queue = get_database.orcl_fetchall_dict(sql1)
-            print(db_queue)
-            print('Waiting for Reg Tasks to Create...')
-            count = count + 1
-        fetch_data_list = []
-        consumer = KafkaConsumer('comm-event-process', group_id='tester',
-                                 bootstrap_servers=kafkaURL)
-        while count < 10:
-            fetch_data_dict = consumer.poll(timeout_ms=2000, max_records=20)
-            for keys, values in fetch_data_dict.items():
-                for i in values:
-                    print(i.value)
-                    print(i.key)
-                    print(i.topic)
-                    print(i.partition)
-            time.sleep(2)
-            count = count + 1
-            fetch_data_list.append(fetch_data_dict)
-        assert 'AR_UNINSTALLED_REG_DEVICE' in fetch_data_list.__str__()
-
-    # @hesAsyncTest
-    def test_meter_register_short_exception_2(self, get_database, caseData, device,kafkaURL):
-        """
-        验证系统档案中电表档案不是GPRS电表但是通过了FEP请求注册,会将设备档案修改conn_type=1, communication_type=2后进行自动注册
-        如果之前是已经注册到DCU下的电表还会生成REG_DEL_ARCHIVES删除集中器内档案任务和修改master_no=null,meter_seq=null
-        """
-        count = 1
-        data = caseData('testData/AutoRegistration/register-event-process.json'.format(readConfig()['project']))['short_meter']
-        requestData = data['pl']
-        requestData[0]['dn'] = device['device_number']
-        producer = KafkaProducer(bootstrap_servers=kafkaURL)
-        producer.send('register-event-process', key=b'KafkaBatchPush', value=json.dumps(data).encode())
-        producer.close()
-        sql1 = "select AUTO_RUN_ID from H_TASK_RUNNING where NODE_NO='{}' and JOB_TYPE='DeviceRegist'".format(
-            device['device_number'])
-        db_queue = get_database.orcl_fetchall_dict(sql1)
-        while len(db_queue) == 0 and count < 10:
-            time.sleep(6)
-            db_queue = get_database.orcl_fetchall_dict(sql1)
-            print(db_queue)
-            print('Waiting for Reg Tasks to Create...')
-            count = count + 1
-
-        sql2 = "select TASK_STATE from h_task_run_his where AUTO_RUN_ID='{}'".format(db_queue[0]['AUTO_RUN_ID'])
-        db_queue = get_database.orcl_fetchall_dict(sql2)
-        while len(db_queue) == 0 and count < 20:
-            time.sleep(8)
-            db_queue = get_database.orcl_fetchall_dict(sql2)
-            print(db_queue)
-            print('Waiting for Reg Tasks to finish...')
-            count = count + 1
-        assert db_queue[0]['TASK_STATE'] == 3
-
-        sql3 = "select DEV_STATUS,CONN_TYPE,COMMUNICATION_TYPE,MASTER_NO,METER_SEQ from c_ar_meter where METER_NO='{}'".format(
-            device['device_number'])
-        db_queue = get_database.orcl_fetchall_dict(sql3)
-
-        assert db_queue[0]['DEV_STATUS'] == 4
-        assert db_queue[0]['CONN_TYPE'] == 1
-        assert db_queue[0]['COMMUNICATION_TYPE'] == 2
-        assert db_queue[0]['MASTER_NO'] == None
-        assert db_queue[0]['METER_SEQ'] == None
+            assert db_queue[0]['DEV_STATUS'] == 4
+            assert db_queue[0]['CONN_TYPE'] == 7

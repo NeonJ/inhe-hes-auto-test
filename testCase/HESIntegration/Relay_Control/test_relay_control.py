@@ -11,7 +11,7 @@ import time
 
 import requests
 
-from common.HESRequest import HESRequest
+from common.HESRequest import *
 from common.marker import *
 
 
@@ -25,9 +25,11 @@ class Test_Relay_Control:
         data = caseData('testData/RelayControlTask/relayControl.json')
         requestData = data['test_RELAY_CONTROL_RELAYON']['request']
         requestData['payload'][0]['deviceNo'] = device['device_number']
-        response = HESRequest().post(url=requestMessage, params=requestData)
+        transactionId = str(device['device_number']) + '_' + time.strftime('%y%m%d%H%M%S',time.localtime())
+        requestData['payload'][0]['transactionId'] = transactionId
+        response, elapsed = HESRequest().post(url=requestMessage, params=requestData)
         assert 'CONNECTED' in str(response)
-        response = HESRequest().post(url=requestMessage, params=requestData)
+        response, elapsed = HESRequest().post(url=requestMessage, params=requestData)
         print('Response --- ', response)
         assert 'CONNECTED' in str(response)
 
@@ -39,12 +41,14 @@ class Test_Relay_Control:
         data = caseData('testData/RelayControlTask/relayControl.json')
         requestData = data['test_RELAY_CONTROL_RELAYOFF']['request']
         requestData['payload'][0]['deviceNo'] = device['device_number']
-        response = HESRequest().post(url=requestMessage, params=requestData)
+        response, elapsed = HESRequest().post(url=requestMessage, params=requestData)
         assert 'DISCONNECTED' in str(response)
         data = caseData('testData/RelayControlTask/relayControl.json')
         requestData = data['test_RELAY_CONTROL_RELAYON']['request']
         requestData['payload'][0]['deviceNo'] = device['device_number']
-        response = HESRequest().post(url=requestMessage, params=requestData)
+        transactionId = str(device['device_number']) + '_' + time.strftime('%y%m%d%H%M%S',time.localtime())
+        requestData['payload'][0]['transactionId'] = transactionId
+        response, elapsed = HESRequest().post(url=requestMessage, params=requestData)
         print('Response --- ', response)
         assert 'CONNECTED' in str(response)
 
@@ -56,12 +60,14 @@ class Test_Relay_Control:
         data = caseData('testData/RelayControlTask/relayControl.json')
         requestData = data['test_RELAY_CONTROL_RELAYON']['request']
         requestData['payload'][0]['deviceNo'] = device['device_number']
-        response = HESRequest().post(url=requestMessage, params=requestData)
+        transactionId = str(device['device_number']) + '_' + time.strftime('%y%m%d%H%M%S',time.localtime())
+        requestData['payload'][0]['transactionId'] = transactionId
+        response, elapsed = HESRequest().post(url=requestMessage, params=requestData)
         assert 'CONNECTED' in str(response)
         data = caseData('testData/RelayControlTask/relayControl.json')
         requestData = data['test_RELAY_CONTROL_RELAYOFF']['request']
         requestData['payload'][0]['deviceNo'] = device['device_number']
-        response = HESRequest().post(url=requestMessage, params=requestData)
+        response, elapsed = HESRequest().post(url=requestMessage, params=requestData)
         print('Response --- ', response)
         assert 'DISCONNECTED' in str(response)
 
@@ -73,9 +79,11 @@ class Test_Relay_Control:
         data = caseData('testData/RelayControlTask/relayControl.json')
         requestData = data['test_RELAY_CONTROL_RELAYOFF']['request']
         requestData['payload'][0]['deviceNo'] = device['device_number']
-        response = HESRequest().post(url=requestMessage, params=requestData)
+        transactionId = str(device['device_number']) + '_' + time.strftime('%y%m%d%H%M%S',time.localtime())
+        requestData['payload'][0]['transactionId'] = transactionId
+        response, elapsed = HESRequest().post(url=requestMessage, params=requestData)
         assert 'DISCONNECTED' in str(response)
-        response = HESRequest().post(url=requestMessage, params=requestData)
+        response, elapsed = HESRequest().post(url=requestMessage, params=requestData)
         print('Response --- ', response)
         assert 'DISCONNECTED' in str(response)
         # assert AssertIn().checkIn(expectResJson, response.json()) is True
@@ -88,7 +96,9 @@ class Test_Relay_Control:
         data = caseData('testData/RelayControlTask/relayControl.json')
         requestData = data['test_relay_on_home_sync']['request']
         requestData['payload'][0]['deviceNo'] = device['device_number']
-        response = HESRequest().post(url=requestMessage, params=requestData)
+        transactionId = str(device['device_number']) + '_' + time.strftime('%y%m%d%H%M%S',time.localtime())
+        requestData['payload'][0]['transactionId'] = transactionId
+        response, elapsed = HESRequest().post(url=requestMessage, params=requestData)
         print('Response --- ', response)
         assert "CONNECTED" in str(response)
 
@@ -100,7 +110,9 @@ class Test_Relay_Control:
         data = caseData('testData/RelayControlTask/relayControl.json')
         requestData = data['test_relay_off_home_sync']['request']
         requestData['payload'][0]['deviceNo'] = device['device_number']
-        response = HESRequest().post(url=requestMessage, params=requestData)
+        transactionId = str(device['device_number']) + '_' + time.strftime('%y%m%d%H%M%S',time.localtime())
+        requestData['payload'][0]['transactionId'] = transactionId
+        response, elapsed = HESRequest().post(url=requestMessage, params=requestData)
         print('Response --- ', response)
         assert "DISCONNECTED" in str(response)
 
@@ -120,6 +132,8 @@ class Test_Relay_Control:
         requestData['payload'][0]['startTime'] = currentTime
         requestData['payload'][0]['endTime'] = endTime
         requestData['payload'][0]['deviceNo'] = device['device_number']
+        transactionId = str(device['device_number']) + '_' + time.strftime('%y%m%d%H%M%S',time.localtime())
+        requestData['payload'][0]['transactionId'] = transactionId
         response = requests.post(url=requestMessage, json=requestData)
         assert response.status_code == 200
 
@@ -165,6 +179,8 @@ class Test_Relay_Control:
         requestData['payload'][0]['startTime'] = currentTime
         requestData['payload'][0]['endTime'] = endTime
         requestData['payload'][0]['deviceNo'] = device['device_number']
+        transactionId = str(device['device_number']) + '_' + time.strftime('%y%m%d%H%M%S',time.localtime())
+        requestData['payload'][0]['transactionId'] = transactionId
         response = requests.post(url=requestMessage, json=requestData)
         assert response.status_code == 200
 
@@ -210,6 +226,8 @@ class Test_Relay_Control:
         requestData['payload'][0]['startTime'] = currentTime
         requestData['payload'][0]['endTime'] = endTime
         requestData['payload'][0]['deviceNo'] = device['device_number']
+        transactionId = str(device['device_number']) + '_' + time.strftime('%y%m%d%H%M%S',time.localtime())
+        requestData['payload'][0]['transactionId'] = transactionId
         response = requests.post(url=requestMessage, json=requestData)
         assert response.status_code == 200
 
@@ -255,6 +273,8 @@ class Test_Relay_Control:
         requestData['payload'][0]['startTime'] = currentTime
         requestData['payload'][0]['endTime'] = endTime
         requestData['payload'][0]['deviceNo'] = device['device_number']
+        transactionId = str(device['device_number']) + '_' + time.strftime('%y%m%d%H%M%S',time.localtime())
+        requestData['payload'][0]['transactionId'] = transactionId
         response = requests.post(url=requestMessage, json=requestData)
         assert response.status_code == 200
 

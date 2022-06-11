@@ -7,29 +7,29 @@
 """
 
 import datetime
-import time
 
-import requests
-
-from common.HESRequest import HESRequest
+from common.HESRequest import *
 from common.marker import *
 
 
 class Test_Meter_Relay_Status:
 
     @smokeTest
-    def test_read_relay_status_sync(self, requestMessage, caseData,device):
+    def test_read_relay_status_sync(self, requestMessage, caseData, device):
         """
         使用同步读取的方式去对电表进行读取闸状态
          """
         data = caseData('testData/RelayControlTask/read_RelayControlStatus.json')
         requestData = data['ReadRelayControlStatusSync']['request']
         requestData['payload'][0]['deviceNo'] = device['device_number']
-        response = HESRequest().post(url=requestMessage, params=requestData)
+        transactionId = str(device['device_number']) + '_' + time.strftime('%y%m%d%H%M%S', time.localtime())
+        requestData['payload'][0]['transactionId'] = transactionId
+        response, elapsed = HESRequest().post(url=requestMessage, params=requestData)
+        print('Request ---  ', response)
         assert '636F6E6E6563746564' in str(response) or '646973636F6E6E6563746564' in str(response)
 
     @hesAsyncTest
-    def test_read_relay_status_async(self, device,requestMessage, dbConnect, caseData):
+    def test_read_relay_status_async(self, device, requestMessage, dbConnect, caseData):
         """
         使用异步读取的方式去对电表进行读取闸状态
          """
@@ -44,6 +44,8 @@ class Test_Meter_Relay_Status:
         requestData['payload'][0]['startTime'] = currentTime
         requestData['payload'][0]['endTime'] = endTime
         requestData['payload'][0]['deviceNo'] = device['device_number']
+        transactionId = str(device['device_number']) + '_' + time.strftime('%y%m%d%H%M%S', time.localtime())
+        requestData['payload'][0]['transactionId'] = transactionId
         response = requests.post(url=requestMessage, json=requestData)
         assert response.status_code == 200
 

@@ -14,11 +14,35 @@
     "traceRegex": ".*FileNotFoundException.*"
   },
   {
-    "name": "Product defects",
+    "name": "Total Defects",
     "matchedStatuses": ["failed"]
   },
   {
     "name": "Test defects",
     "matchedStatuses": ["broken"]
+  },
+  {
+    "name": "-Socket connect failed-",
+    "messageRegex": ".*Socket connect device failed.*"
+  },
+  {
+    "name": "-Device return error-",
+    "messageRegex": ".*Device return error.*"
+  },
+  {
+    "name": "-Device return failed-",
+    "messageRegex": ".*Device return failed.*"
+  },
+  {
+    "name": "-Register is duplicated-",
+    "messageRegex": ".*register id has.*"
+  },
+  {
+    "name": "-Feature map error-",
+    "messageRegex": ".*Feature map configuration is.*"
+  },
+  {
+    "name": "-Expection error-",
+    "messageRegex": ".*Exception error.*"
   }
 ]

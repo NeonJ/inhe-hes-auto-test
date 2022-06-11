@@ -171,7 +171,7 @@ if __name__ == "__main__":
     topic = "RELAY-CONFIG"
     groupid = "Neon"
     brokerlist = "10.32.233.63:30359"
-    #
+
     # consumer = KafkaConsumer(bootstrap_servers=brokerlist,
     #                          auto_offset_reset='latest',
     #                          enable_auto_commit=True,  # 自动提交消费数据的offset

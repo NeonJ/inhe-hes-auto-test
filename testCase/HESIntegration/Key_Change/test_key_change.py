@@ -7,7 +7,7 @@
 """
 import time
 from common.marker import *
-from common.HESRequest import HESRequest
+from common.HESRequest import *
 
 
 class Test_Key_Change:
@@ -21,8 +21,10 @@ class Test_Key_Change:
         data = caseData('testData/KeyChange/key_change_task.json')
         requestData = data['ChangeKey']['request']
         requestData['payload'][0]['deviceNo'] = device['device_number']
+        transactionId = str(device['device_number']) + '_' + time.strftime('%y%m%d%H%M%S',time.localtime())
+        requestData['payload'][0]['transactionId'] = transactionId
         print(requestData)
-        response = HESRequest().post(url=requestMessage, params=requestData)
+        response, elapsed = HESRequest().post(url=requestMessage, params=requestData)
         assert response.status_code == 200
 
         time.sleep(3)
@@ -56,8 +58,10 @@ class Test_Key_Change:
         requestData = data['ChangeKey']['request']
         requestData['payload'][0]['deviceNo'] = device['device_number']
         requestData['payload'][0]['data'][0]['parameter']['KeyType'] = 0
+        transactionId = str(device['device_number']) + '_' + time.strftime('%y%m%d%H%M%S',time.localtime())
+        requestData['payload'][0]['transactionId'] = transactionId
         print(requestData)
-        response = HESRequest().post(url=requestMessage, params=requestData)
+        response, elapsed = HESRequest().post(url=requestMessage, params=requestData)
         assert response.status_code == 200
 
         time.sleep(3)

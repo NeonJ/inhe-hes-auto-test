@@ -3,7 +3,7 @@
 # @Author    : Jiannan Cao
 # @FileName  : test_phase_vector.py.py
 
-from common.HESRequest import HESRequest
+from common.HESRequest import *
 from common.marker import *
 
 
@@ -17,7 +17,9 @@ class Test_Phase_Vector:
         data = caseData('testData/PhaseVector/phase_vector.json')
         requestData = data['vector']['request']
         requestData['payload'][0]['deviceNo'] = device['device_number']
-        response = HESRequest().post(url=requestMessage, params=requestData)
+        transactionId = str(device['device_number']) + '_' + time.strftime('%y%m%d%H%M%S',time.localtime())
+        requestData['payload'][0]['transactionId'] = transactionId
+        response, elapsed = HESRequest().post(url=requestMessage, params=requestData)
         print('Response --- ',response)
         assert response.get('reply')['replyCode'] == 200
         assert len(response.get('payload')[0].get('data')[0]) == 18
