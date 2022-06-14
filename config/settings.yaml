@@ -1,8 +1,8 @@
 group: QA
 nacos_url: http://10.32.233.164:18848
 path: /
-project: empower
+project: camel10-CT
 resume: 'False'
 retry: '0'
-tag: hesAsyncTest
+tag: smokeTest
 tester: jncpc

@@ -11,6 +11,7 @@
         "replyAddress": null,
         "replyType": null,
         "messageType": "REQUEST",
+        "securityLevel": 0,
         "asyncReplyFlag": false
       },
       "payload": [
@@ -27,15 +28,15 @@
           "data": [
             {
               "clientId": null,
-              "registerId": "9300",
+              "registerId": "pushConnectivityAction",
               "accessSelector": 0,
               "parameter": {
-                "scalar": "0",
-                "unit": null,
-                "dataItemType": 9,
-                "dataItemValue": "07E50C0C07032330FF800002"
-              },
-              "featurePoint": null
+                "dataItemName": "",
+                "dataItemType": 15,
+                "dataItemValue": "0",
+                "scalar": 0,
+                "unit": ""
+              }
             }
           ]
         }

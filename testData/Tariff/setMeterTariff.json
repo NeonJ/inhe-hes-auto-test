@@ -11,6 +11,7 @@
         "replyAddress": "hes-change-meter-tariff",
         "replyType": "MQ",
         "messageType": "REQUEST",
+        "securityLevel": 0,
         "asyncReplyFlag": true
       },
       "payload": [

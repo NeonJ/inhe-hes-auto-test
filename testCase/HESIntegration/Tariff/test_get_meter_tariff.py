@@ -31,7 +31,7 @@ class Test_Get_Meter_Tariff:
         expectResJson = requestData['response']
         response, elapsed = HESRequest().get(url=url, params=requestData)
         print('Response --- ', response)
-        assert 'Neon' in str(response)
+        assert 'scriptSelector' in str(response)
         # assert AssertIn().checkIn(expectResJson, response.json()) is True
 
     @smokeTest
@@ -47,5 +47,5 @@ class Test_Get_Meter_Tariff:
         expectResJson = requestData['response']
         response, elapsed = HESRequest().get(url=url, params=requestData)
         print('Response --- ', response)
-        assert 'Neon' in str(response)
+        assert 'scriptSelector' in str(response)
         # assert AssertIn().checkIn(expectResJson, response.json()) is True

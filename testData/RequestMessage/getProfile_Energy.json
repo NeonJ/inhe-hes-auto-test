@@ -9,6 +9,7 @@
         "businessType": "GET_PROFILE",
         "source": "MDM",
         "messageType": "REQUEST",
+        "securityLevel": 0,
         "asyncReplyFlag": false
       },
       "payload": [

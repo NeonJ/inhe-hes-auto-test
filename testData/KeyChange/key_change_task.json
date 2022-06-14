@@ -11,6 +11,7 @@
         "replyAddress": "hes-key-change",
         "replyType": "MQ",
         "messageType": "REQUEST",
+        "securityLevel": 0,
         "asyncReplyFlag": true
       },
       "payload": [

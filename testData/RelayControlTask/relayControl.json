@@ -9,6 +9,7 @@
         "businessType": "RELAY_CONTROL",
         "source": "MDM",
         "messageType": "REQUEST",
+        "securityLevel": 0,
         "asyncReplyFlag": false
       },
       "payload": [
@@ -61,6 +62,7 @@
         "businessType": "RELAY_CONTROL",
         "source": "MDM",
         "messageType": "REQUEST",
+        "securityLevel": 0,
         "asyncReplyFlag": false
       },
       "payload": [
@@ -113,6 +115,7 @@
         "businessType": "RELAY_CONTROL",
         "source": "MDM",
         "messageType": "REQUEST",
+        "securityLevel": 0,
         "asyncReplyFlag": false
       },
       "payload": [
@@ -165,6 +168,7 @@
         "businessType": "RELAY_CONTROL",
         "source": "MDM",
         "messageType": "REQUEST",
+        "securityLevel": 0,
         "asyncReplyFlag": false
       },
       "payload": [
@@ -219,6 +223,7 @@
         "replyAddress": null,
         "replyType": null,
         "messageType": "REQUEST",
+        "securityLevel": 0,
         "asyncReplyFlag": true
       },
       "payload": [
@@ -258,6 +263,7 @@
         "replyAddress": null,
         "replyType": null,
         "messageType": "REQUEST",
+        "securityLevel": 0,
         "asyncReplyFlag": true
       },
       "payload": [

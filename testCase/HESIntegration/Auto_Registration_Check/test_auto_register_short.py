@@ -15,7 +15,7 @@ from common.marker import *
 
 class Test_Auto_Register_Short:
 
-    # @hesAsyncTest1
+    @hesAsyncTest
     def test_meter_register_short(self, caseData, device, dbConnect, requestMessage):
         """
         验证GPRS电表正常自动注册流程，前提是短链接电表以及设置了push的前置机地址
@@ -34,16 +34,15 @@ class Test_Auto_Register_Short:
 
         with allure.step('执行服务端电表push connectivity的命令触发'):
             data = caseData('testData/OBISCheck/register_set.json')
-            requestData = data['register_get']['request']
-            requestData['payload'][0]['data'][0]['registerId'] = push_register
+            requestData = data['register_set']['request']
+            requestData['payload'][0]['data'][0]['registerId'] = push_register['register_id']
             requestData['payload'][0]['deviceNo'] = device['device_number']
             transactionId = str(device['device_number']) + '_' + time.strftime('%y%m%d%H%M%S', time.localtime())
             requestData['payload'][0]['transactionId'] = transactionId
-            re = HESRequest().post(url=requestMessage, params=requestData)
-            assert re.status_code == 200
-            assert re.json()['code'] == 200
+            re,elapsed = HESRequest().post(url=requestMessage, params=requestData)
+            assert re.get('reply')['replyCode'] == 200
 
-        with allure.setp('自动注册检查'):
+        with allure.step('自动注册检查'):
             sql1 = "select AUTO_RUN_ID from H_TASK_RUNNING where NODE_NO='{}' and JOB_TYPE='DeviceRegist'".format(
                 device['device_number'])
             db_queue = dbConnect.fetchall_dict(sql1)

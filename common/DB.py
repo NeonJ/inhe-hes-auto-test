@@ -7,7 +7,12 @@
 import datetime
 import json
 
+import yaml
+
+from common.YamlConfig import readConfig
+
 import cx_Oracle
+import nacos
 import psycopg2
 import psycopg2.extras
 
@@ -186,7 +191,7 @@ class DB:
             try:
                 con = self.connect()
                 cur = con.cursor()
-                sql = f"select tablename from pg_tables where tablename like 'h_ptl_register_check_{meter_no}%' order by tablename desc limit 1"
+                sql = f"select tablename from pg_tables where tablename like 'h_config_register_check_{meter_no}%' order by tablename desc limit 1"
                 cur.execute(sql)
                 fc = cur.fetchone()
                 return fc
@@ -250,3 +255,15 @@ class DB:
         finally:
             cur.close()
             con.close()
+
+# if __name__ == '__main__':
+#     client = nacos.NacosClient(server_addresses=readConfig()['nacos_url'], namespace='HES', username="nacos",
+#                                password="nacos")
+#     data_id = readConfig()['project']
+#     group = readConfig()['group']
+#     config = yaml.load(client.get_config(data_id, group), Loader=yaml.FullLoader)
+#     database = DB(source=config['DATABASE']['db_source'], host=config['DATABASE']['db_host'],
+#                   database=config['DATABASE']['db_database'], username=config['DATABASE']['db_user'],
+#                   passwd=config['DATABASE']['db_pwd'], port=config['DATABASE']['db_port'],
+#                   sid=config['DATABASE']['db_service'])
+#     table_name = database.initial_result(meter_no=config['Device']['device_number'])

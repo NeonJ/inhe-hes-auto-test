@@ -16,7 +16,7 @@ from common.marker import *
 
 class Test_Auto_Register:
 
-    @hesAsyncTest
+    # @hesAsyncTest
     def test_meter_register(self, caseData, device, dbConnect, kafkaURL):
         """
         验证GPRS电表正常自动注册流程

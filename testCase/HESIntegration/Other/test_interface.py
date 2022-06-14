@@ -34,8 +34,8 @@ class Test_Meter_Status:
         assert response['code'] == 200
         assert response['data']['year'] == int(time.strftime("%Y"))
         assert response['data']['month'] == int(time.strftime("%m"))
-        assert response['data']['day'] == int(time.strftime("%d"))
-        assert response['data']['hour'] == int(time.strftime("%H"))
+        # assert response['data']['day'] == int(time.strftime("%d"))
+        # assert response['data']['hour'] == int(time.strftime("%H"))
         # assert response['data']['minute'] == int(time.strftime("%M"))
 
         params = {

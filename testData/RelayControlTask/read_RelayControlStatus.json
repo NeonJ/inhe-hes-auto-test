@@ -11,6 +11,7 @@
         "replyAddress": null,
         "replyType": null,
         "messageType": "REQUEST",
+        "securityLevel": 0,
         "asyncReplyFlag": false
       },
       "payload": [
@@ -53,6 +54,7 @@
         "replyAddress": null,
         "replyType": null,
         "messageType": "REQUEST",
+        "securityLevel": 0,
         "asyncReplyFlag": true
       },
       "payload": [
