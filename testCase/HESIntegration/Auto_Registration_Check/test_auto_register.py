@@ -5,30 +5,32 @@
 # Author     ：cao jiann
 # version    ：python 3.7
 """
+
 import time
 
 from kafka import KafkaProducer, KafkaConsumer
 
 from common.DB import *
+from common.YamlConfig import nacosConfig
 from common.YamlConfig import readConfig
 from common.marker import *
 
 
+@pytest.mark.skipif(nacosConfig()['Device']['connect_type'] == 'Short', reason='Test meter is short connection')
 class Test_Auto_Register:
 
-    # @hesAsyncTest
+    @hesAsyncTest
     def test_meter_register(self, caseData, device, dbConnect, kafkaURL):
         """
         验证GPRS电表正常自动注册流程
         """
-
         dbConnect.meter_init(device['device_number'])
 
         count = 1
         data = caseData('testData/AutoRegistration/register-event-process.json')['gprs_meter']
         requestData = data['pl']
         requestData[0]['dn'] = device['device_number']
-        conf = {'bootstrap.servers':kafkaURL}
+        conf = {'bootstrap.servers': kafkaURL}
         # confuluentKafka = confluent_kafka.Producer(**conf)
         # confuluentKafka.produce('register-event-process',key=b'KafkaBatchPush',value=json.dumps(data).encode())
         # confuluentKafka.poll(0)
@@ -36,7 +38,7 @@ class Test_Auto_Register:
         producer.send('register-event-process', key=b'KafkaBatchPush', value=json.dumps(data).encode())
         producer.close()
         time.sleep(5)
-        sql1 = "select AUTO_RUN_ID from H_TASK_RUNNING where NODE_NO='{}' and JOB_TYPE='DeviceRegist'".format(
+        sql1 = "select auto_run_id from H_TASK_RUNNING where NODE_NO='{}' and JOB_TYPE='DeviceRegist'".format(
             device['device_number'])
         db_queue = dbConnect.fetchall_dict(sql1)
         while len(db_queue) == 0 and count < 10:
@@ -46,7 +48,7 @@ class Test_Auto_Register:
             print('Waiting for Reg Tasks to Create...')
             count = count + 1
 
-        sql2 = "select TASK_STATE from h_task_run_his where AUTO_RUN_ID='{}'".format(db_queue[0]['AUTO_RUN_ID'])
+        sql2 = "select task_state from h_task_run_his where auto_run_id='{}'".format(db_queue[0]['auto_run_id'])
         db_queue = dbConnect.fetchall_dict(sql2)
         while len(db_queue) == 0 and count < 20:
             time.sleep(8)
@@ -54,7 +56,7 @@ class Test_Auto_Register:
             print(db_queue)
             print('Waiting for Reg Tasks to finish...')
             count = count + 1
-        assert db_queue[0]['TASK_STATE'] == 3
+        assert db_queue[0]['task_state'] == 3
 
         sql3 = "select DEV_STATUS from c_ar_meter where METER_NO='{}'".format(device['device_number'])
         db_queue = dbConnect.fetchall_dict(sql3)
@@ -73,13 +75,14 @@ class Test_Auto_Register:
         database.meter_init_except_1(device['device_number'])
 
         count = 1
-        data = caseData('testData/AutoRegistration/register-event-process.json'.format(readConfig()['project']))['gprs_meter']
+        data = caseData('testData/AutoRegistration/register-event-process.json'.format(readConfig()['project']))[
+            'gprs_meter']
         requestData = data['pl']
         requestData[0]['dn'] = device['device_number']
         producer = KafkaProducer(bootstrap_servers=kafkaURL)
         producer.send('register-event-process', key=b'KafkaBatchPush', value=json.dumps(data).encode())
         producer.close()
-        sql1 = "select AUTO_RUN_ID from H_TASK_RUNNING where NODE_NO='{}' and JOB_TYPE='DeviceRegist'".format(
+        sql1 = "select auto_run_id from H_TASK_RUNNING where NODE_NO='{}' and JOB_TYPE='DeviceRegist'".format(
             device['device_number'])
         db_queue = database.fetchall_dict(sql1)
         while len(db_queue) == 0 and count < 2:
@@ -111,19 +114,20 @@ class Test_Auto_Register:
         如果之前是已经注册到DCU下的电表还会生成REG_DEL_ARCHIVES删除集中器内档案任务和修改master_no=null,meter_seq=null
         """
         database = DB(source=databaseConfig['db_source'], host=databaseConfig['db_host'],
-                          database=databaseConfig['db_database'], username=databaseConfig['db_user'],
-                          passwd=databaseConfig['db_pwd'], port=databaseConfig['db_port'],
-                          sid=databaseConfig['db_service'])
+                      database=databaseConfig['db_database'], username=databaseConfig['db_user'],
+                      passwd=databaseConfig['db_pwd'], port=databaseConfig['db_port'],
+                      sid=databaseConfig['db_service'])
         database.meter_init_except_2(device['device_number'])
-        
+
         count = 1
-        data = caseData('testData/AutoRegistration/register-event-process.json'.format(readConfig()['project']))['gprs_meter']
+        data = caseData('testData/AutoRegistration/register-event-process.json'.format(readConfig()['project']))[
+            'gprs_meter']
         requestData = data['pl']
         requestData[0]['dn'] = device['device_number']
         producer = KafkaProducer(bootstrap_servers=kafkaURL)
         producer.send('register-event-process', key=b'KafkaBatchPush', value=json.dumps(data).encode())
         producer.close()
-        sql1 = "select AUTO_RUN_ID from H_TASK_RUNNING where NODE_NO='{}' and JOB_TYPE='DeviceRegist'".format(
+        sql1 = "select auto_run_id from H_TASK_RUNNING where NODE_NO='{}' and JOB_TYPE='DeviceRegist'".format(
             device['device_number'])
         db_queue = database.fetchall_dict(sql1)
         while len(db_queue) == 0 and count < 10:
@@ -133,7 +137,7 @@ class Test_Auto_Register:
             print('Waiting for Reg Tasks to Create...')
             count = count + 1
 
-        sql2 = "select TASK_STATE from h_task_run_his where AUTO_RUN_ID='{}'".format(db_queue[0]['AUTO_RUN_ID'])
+        sql2 = "select task_state from h_task_run_his where auto_run_id='{}'".format(db_queue[0]['auto_run_id'])
         db_queue = database.fetchall_dict(sql2)
         while len(db_queue) == 0 and count < 20:
             time.sleep(8)
@@ -141,7 +145,7 @@ class Test_Auto_Register:
             print(db_queue)
             print('Waiting for Reg Tasks to finish...')
             count = count + 1
-        assert db_queue[0]['TASK_STATE'] == 3
+        assert db_queue[0]['task_state'] == 3
 
         sql3 = "select DEV_STATUS,CONN_TYPE,COMMUNICATION_TYPE,MASTER_NO,METER_SEQ from c_ar_meter where METER_NO='{}'".format(
             device['device_number'])

@@ -19,7 +19,7 @@ class Test_Meter_Profile:
         data = caseData('testData/MeterFrozenData/meter_profile_data.json')
         requestData = data['meter_lp_entries']['request']
         requestData['payload'][0]['deviceNo'] = device['device_number']
-        transactionId = str(device['device_number']) + '_' + time.strftime('%y%m%d%H%M%S',time.localtime())
+        transactionId = str(device['device_number']) + '_' + time.strftime('%y%m%d%H%M%S', time.localtime())
         requestData['payload'][0]['transactionId'] = transactionId
         requestData['payload'][0]['data'][0]['registerId'] = lp['entries_register_id']
         response, elapsed = HESRequest().post(url=requestMessage, params=requestData)
@@ -38,7 +38,7 @@ class Test_Meter_Profile:
         data = caseData('testData/MeterFrozenData/meter_profile_data.json')
         requestData = data['meter_lp_data']['request']
         requestData['payload'][0]['deviceNo'] = device['device_number']
-        transactionId = str(device['device_number']) + '_' + time.strftime('%y%m%d%H%M%S',time.localtime())
+        transactionId = str(device['device_number']) + '_' + time.strftime('%y%m%d%H%M%S', time.localtime())
         requestData['payload'][0]['transactionId'] = transactionId
         requestData['payload'][0]['data'][0]['registerId'] = lp['register_id']
         response, elapsed = HESRequest().post(url=requestMessage, params=requestData)
@@ -66,7 +66,7 @@ class Test_Meter_Profile:
         data = caseData('testData/MeterFrozenData/meter_profile_data.json')
         requestData = data['meter_pq_entries']['request']
         requestData['payload'][0]['deviceNo'] = device['device_number']
-        transactionId = str(device['device_number']) + '_' + time.strftime('%y%m%d%H%M%S',time.localtime())
+        transactionId = str(device['device_number']) + '_' + time.strftime('%y%m%d%H%M%S', time.localtime())
         requestData['payload'][0]['transactionId'] = transactionId
         requestData['payload'][0]['data'][0]['registerId'] = pq['entries_register_id']
         response, elapsed = HESRequest().post(url=requestMessage, params=requestData)
@@ -86,11 +86,11 @@ class Test_Meter_Profile:
         data = caseData('testData/MeterFrozenData/meter_profile_data.json')
         requestData = data['meter_pq_data']['request']
         requestData['payload'][0]['deviceNo'] = device['device_number']
-        transactionId = str(device['device_number']) + '_' + time.strftime('%y%m%d%H%M%S',time.localtime())
+        transactionId = str(device['device_number']) + '_' + time.strftime('%y%m%d%H%M%S', time.localtime())
         requestData['payload'][0]['transactionId'] = transactionId
         requestData['payload'][0]['data'][0]['registerId'] = pq['register_id']
         response, elapsed = HESRequest().post(url=requestMessage, params=requestData)
-        print('Response --- ',response)
+        print('Response --- ', response)
         if response.get('reply')['replyCode'] != 200:
             assert False
         else:

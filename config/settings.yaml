@@ -5,4 +5,4 @@ project: camel10-CT
 resume: 'False'
 retry: '0'
 tag: smokeTest
-tester: jncpc
+tester: jncPC

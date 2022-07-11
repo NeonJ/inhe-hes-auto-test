@@ -188,10 +188,12 @@ class DB:
 
     def last_result(self, meter_no):
         if self.source == 'Postgre':
+            meter_no = str(meter_no).lower()
             try:
                 con = self.connect()
                 cur = con.cursor()
                 sql = f"select tablename from pg_tables where tablename like 'h_config_register_check_{meter_no}%' order by tablename desc limit 1"
+                print(sql)
                 cur.execute(sql)
                 fc = cur.fetchone()
                 return fc
@@ -220,7 +222,7 @@ class DB:
         try:
             con = self.connect()
             cur = con.cursor()
-            sql = "update c_ar_meter set DEV_STATUS=2 where METER_NO='{}'".format(meter_no)
+            sql = "update c_ar_meter set dev_status=2 where meter_no='{}'".format(meter_no)
             cur.execute(sql)
             con.commit()
         except Exception as e:
@@ -256,14 +258,14 @@ class DB:
             cur.close()
             con.close()
 
-# if __name__ == '__main__':
-#     client = nacos.NacosClient(server_addresses=readConfig()['nacos_url'], namespace='HES', username="nacos",
-#                                password="nacos")
-#     data_id = readConfig()['project']
-#     group = readConfig()['group']
-#     config = yaml.load(client.get_config(data_id, group), Loader=yaml.FullLoader)
-#     database = DB(source=config['DATABASE']['db_source'], host=config['DATABASE']['db_host'],
-#                   database=config['DATABASE']['db_database'], username=config['DATABASE']['db_user'],
-#                   passwd=config['DATABASE']['db_pwd'], port=config['DATABASE']['db_port'],
-#                   sid=config['DATABASE']['db_service'])
-#     table_name = database.initial_result(meter_no=config['Device']['device_number'])
+if __name__ == '__main__':
+    client = nacos.NacosClient(server_addresses=readConfig()['nacos_url'], namespace='HES', username="nacos",
+                               password="nacos")
+    data_id = readConfig()['project']
+    group = readConfig()['group']
+    config = yaml.load(client.get_config(data_id, group), Loader=yaml.FullLoader)
+    database = DB(source=config['DATABASE']['db_source'], host=config['DATABASE']['db_host'],
+                  database=config['DATABASE']['db_database'], username=config['DATABASE']['db_user'],
+                  passwd=config['DATABASE']['db_pwd'], port=config['DATABASE']['db_port'],
+                  sid=config['DATABASE']['db_service'])
+    table_name = database.meter_init(meter_no=config['Device']['device_number'])

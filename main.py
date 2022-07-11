@@ -24,8 +24,7 @@ logging.info('Testing  Start....................................................
 # 设置参数
 parser = argparse.ArgumentParser()
 parser.add_argument("--project", help="project", required=True)  # 服务名称
-parser.add_argument("--tag", help="case tag", default='smokeTest',
-                    choices=['smokeTest', 'fullTest', 'hesAsyncTest', 'OBISTest', 'smokeTest1'])  # marker，用例标签
+parser.add_argument("--tag", help="case tag", default='smokeTest')  # marker，用例标签
 parser.add_argument("--path", help="report  path", default='/')
 parser.add_argument("--resume", help="continue last obis check", default='False', choices=['False', 'True'])
 parser.add_argument("--retry", help='failed retries', default='0')
@@ -61,11 +60,12 @@ var = '--project {} --tag {} --tester {} --resume {} --retry {} --group {}'.form
                                                                                    args.resume, args.retry, args.group)
 print(var)
 writeConfig()
+tag = str(args.tag).replace(',',' and ')
 
 if args.tag != 'fullTest':
     os.system(
         'pytest --reruns %s --reruns-delay 1 --json-report  -v  %s/testCase/ -m  %s  --alluredir  %s' % (
-            args.retry, os.path.dirname(__file__), args.tag, result_path))  # 按模块指定标签测试
+            args.retry, os.path.dirname(__file__), tag, result_path))  # 按模块指定标签测试
     # 'pytest  --reruns %s --reruns-delay 1 --json-report  -v  %s/testCase/   -m  %s  -s %s   --alluredir  %s' % (
     #     args.retry, os.path.dirname(__file__), args.tag, var, result_path))  # 按模块指定标签测试
 else:

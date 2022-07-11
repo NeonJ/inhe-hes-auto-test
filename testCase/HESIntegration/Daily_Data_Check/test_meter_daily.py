@@ -6,11 +6,13 @@
 # version    ：python 3.7
 """
 from common.HESRequest import *
+from common.YamlConfig import nacosConfig
 from common.marker import *
+
 
 class Test_Meter_Daily:
 
-
+    @pytest.mark.skipif(nacosConfig()['Device']['connect_type'] == 'Long', reason='Short Meter no register')
     @smokeTest1
     def test_get_daily_entries1(self, caseData, requestMessage, device, daily):
         """
@@ -19,10 +21,10 @@ class Test_Meter_Daily:
         data = caseData('testData/MeterFrozenData/meter_daily_data.json')
         requestData = data['meter_daily_entries']['request']
         requestData['payload'][0]['deviceNo'] = device['device_number']
-        transactionId = str(device['device_number']) + '_' + time.strftime('%y%m%d%H%M%S',time.localtime())
+        transactionId = str(device['device_number']) + '_' + time.strftime('%y%m%d%H%M%S', time.localtime())
         requestData['payload'][0]['transactionId'] = transactionId
         requestData['payload'][0]['data'][0]['registerId'] = daily['entries_register_id']
-        response,elapsed = HESRequest().post(url=requestMessage, params=requestData)
+        response, elapsed = HESRequest().post(url=requestMessage, params=requestData)
         print('Response --- ', response)
         assert response.get('reply')['replyCode'] == 200
         assert int(response.get('payload')[0].get('data')[0].get('resultValue').get(
@@ -36,7 +38,7 @@ class Test_Meter_Daily:
         data = caseData('testData/MeterFrozenData/meter_daily_data.json')
         requestData = data['meter_daily_entries']['request']
         requestData['payload'][0]['deviceNo'] = device['device_number']
-        transactionId = str(device['device_number']) + '_' + time.strftime('%y%m%d%H%M%S',time.localtime())
+        transactionId = str(device['device_number']) + '_' + time.strftime('%y%m%d%H%M%S', time.localtime())
         requestData['payload'][0]['transactionId'] = transactionId
         requestData['payload'][0]['data'][0]['registerId'] = daily['entries_register_id']
         response, elapsed = HESRequest().post(url=requestMessage, params=requestData)
@@ -54,7 +56,7 @@ class Test_Meter_Daily:
         data = caseData('testData/MeterFrozenData/meter_daily_data.json')
         requestData = data['meter_daily_data']['request']
         requestData['payload'][0]['deviceNo'] = device['device_number']
-        transactionId = str(device['device_number']) + '_' + time.strftime('%y%m%d%H%M%S',time.localtime())
+        transactionId = str(device['device_number']) + '_' + time.strftime('%y%m%d%H%M%S', time.localtime())
         requestData['payload'][0]['transactionId'] = transactionId
         requestData['payload'][0]['data'][0]['registerId'] = daily['register_id']
         response, elapsed = HESRequest().post(url=requestMessage, params=requestData)

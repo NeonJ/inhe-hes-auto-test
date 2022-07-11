@@ -1,0 +1,36 @@
+{
+	"get_tariff": {
+		"request": {
+			"header": {
+				"correlationId": "9a60e16f-3464-456c-b743-e3ea6db21d2a",
+				"messageId": "2185a410-d1c8-40f1-9b4f-90a632e1d18b",
+				"createTime": "210810192027",
+				"serviceType": "GET_TARIFF",
+				"businessType": "GET_TARIFF",
+				"source": "MDM",
+				"messageType": "REQUEST",
+				"asyncReplyFlag": false,
+				"securityLevel": 0
+			},
+			"payload": [
+				{
+					"deviceNo": "43000000",
+					"deviceType": "METER",
+					"transactionId": "293c542c-6876-41a5-86b6-e51ed2bdcba2",
+					"data": [
+						{
+							"featurePoint": null,
+							"registerId": null,
+							"parameter": {
+								"tariffType": 2
+							}
+						}
+					]
+				}
+			]
+		},
+		"response": {
+			"remark": "Ek = 0,Bk = 1,Ak = 2,Kek=3,HLSk=4,LLSk=5"
+		}
+	}
+}

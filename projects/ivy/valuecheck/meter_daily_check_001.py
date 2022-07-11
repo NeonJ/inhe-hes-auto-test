@@ -67,7 +67,7 @@ def meter_daily_check_001():
         error(f"** Create Task Failed **")
         return -1
 
-    sql = "select TASK_STATE from h_task_run_his where INSTANCE_ID='{}'".format(transactionId)
+    sql = "select task_state from h_task_run_his where INSTANCE_ID='{}'".format(transactionId)
     db_queue = database.orcl_fetchall_dict(sql)
 
     while len(db_queue) == 0:
@@ -77,7 +77,7 @@ def meter_daily_check_001():
     end_time = time.time()
     info(f"Total cost {end_time - start_time} seconds")
 
-    if db_queue[0]['TASK_STATE'] == 3:
+    if db_queue[0]['task_state'] == 3:
         return 0
     else:
         return -1

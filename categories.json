@@ -44,5 +44,22 @@
   {
     "name": "-Expection error-",
     "messageRegex": ".*Exception error.*"
+  },
+    {
+    "name": "-Time Out-",
+    "messageRegex": ".*Timed Out.*"
+  },
+    {
+    "name": "-Offline-",
+    "messageRegex": ".*Offline.*"
+  },
+    {
+    "name": "-Gateway 504-",
+    "messageRegex": ".*505*"
+  }
+  ,
+    {
+    "name": "-Device Busying-",
+    "messageRegex": ".*Device is busy.*"
   }
 ]

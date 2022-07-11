@@ -5,8 +5,9 @@
 
 from common.HESRequest import *
 from common.marker import *
+from common.YamlConfig import nacosConfig
 
-
+@pytest.mark.skipif(nacosConfig()['Device']['device_type'] == 'Single', reason='Test meter is single phase')
 class Test_Phase_Vector:
 
     @smokeTest

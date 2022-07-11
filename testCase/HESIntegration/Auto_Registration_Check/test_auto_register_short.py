@@ -11,8 +11,10 @@ import allure
 
 from common.HESRequest import HESRequest
 from common.marker import *
+from common.YamlConfig import nacosConfig
 
 
+@pytest.mark.skipif(nacosConfig()['Device']['connect_type'] == 'Long', reason='Test meter is long connection')
 class Test_Auto_Register_Short:
 
     @hesAsyncTest
@@ -25,6 +27,7 @@ class Test_Auto_Register_Short:
         with allure.step('查找项目中的push connectivity register_id'):
             sql = f"select REGISTER_ID from H_CONFIG_REGISTER where OBIS = '0.0.25.9.0.255' and REGISTER_TYPE = 1 and PTL_TYPE = (select PTL_TYPE from c_ar_model where MODEL_CODE = (select model_code from c_ar_meter where METER_NO = '{device['device_number']}'))"
             push_register = dbConnect.fetchall_dict(sql)[0]
+            print(push_register)
 
         with allure.step('电表档案初始化'):
             dbConnect.meter_init(device['device_number'])
@@ -39,32 +42,34 @@ class Test_Auto_Register_Short:
             requestData['payload'][0]['deviceNo'] = device['device_number']
             transactionId = str(device['device_number']) + '_' + time.strftime('%y%m%d%H%M%S', time.localtime())
             requestData['payload'][0]['transactionId'] = transactionId
-            re,elapsed = HESRequest().post(url=requestMessage, params=requestData)
+            re, elapsed = HESRequest().post(url=requestMessage, params=requestData)
+            print(re)
             assert re.get('reply')['replyCode'] == 200
 
         with allure.step('自动注册检查'):
-            sql1 = "select AUTO_RUN_ID from H_TASK_RUNNING where NODE_NO='{}' and JOB_TYPE='DeviceRegist'".format(
+            sql1 = "select auto_run_id from H_TASK_RUNNING where NODE_NO='{}' and JOB_TYPE='DeviceRegist'".format(
                 device['device_number'])
             db_queue = dbConnect.fetchall_dict(sql1)
-            while len(db_queue) == 0 and count < 10:
+            print(db_queue)
+            while len(db_queue) == 0 and count < 20:
                 time.sleep(6)
                 db_queue = dbConnect.fetchall_dict(sql1)
                 print(db_queue)
                 print('Waiting for Reg Tasks to Create...')
                 count = count + 1
 
-            sql2 = "select TASK_STATE from h_task_run_his where AUTO_RUN_ID='{}'".format(db_queue[0]['AUTO_RUN_ID'])
+            sql2 = "select task_state from h_task_run_his where auto_run_id='{}'".format(db_queue[0]['auto_run_id'])
             db_queue = dbConnect.fetchall_dict(sql2)
-            while len(db_queue) == 0 and count < 20:
+            while len(db_queue) == 0 and count < 30:
                 time.sleep(8)
                 db_queue = dbConnect.fetchall_dict(sql2)
                 print(db_queue)
                 print('Waiting for Reg Tasks to finish...')
                 count = count + 1
-            assert db_queue[0]['TASK_STATE'] == 3
+            assert db_queue[0]['task_state'] == 3
 
-            sql3 = "select DEV_STATUS, from c_ar_meter where METER_NO='{}'".format(device['device_number'])
+            sql3 = "select DEV_STATUS,Conn_type from c_ar_meter where METER_NO='{}'".format(device['device_number'])
             db_queue = dbConnect.fetchall_dict(sql3)
             print(db_queue)
-            assert db_queue[0]['DEV_STATUS'] == 4
-            assert db_queue[0]['CONN_TYPE'] == 7
+            assert db_queue[0]['dev_status'] == 4
+            assert db_queue[0]['conn_type'] == 7

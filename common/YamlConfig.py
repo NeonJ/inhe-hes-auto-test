@@ -4,6 +4,7 @@
 # @FileName  : YamlConfig.py.py
 import os
 import yaml
+import nacos
 
 def readConfig():
     current_path = os.path.abspath(__file__)
@@ -21,3 +22,12 @@ def writeConfig(data):
         'settings.yaml')
     with open(config_file_path, 'w') as f:
         yaml.dump(data=data, stream=f, allow_unicode=True)
+
+
+def nacosConfig():
+    client = nacos.NacosClient(server_addresses=readConfig()['nacos_url'], namespace='HES', username="nacos",
+                               password="nacos")
+    data_id = readConfig()['project']
+    group = readConfig()['group']
+    config = yaml.load(client.get_config(data_id, group), Loader=yaml.FullLoader)
+    return config

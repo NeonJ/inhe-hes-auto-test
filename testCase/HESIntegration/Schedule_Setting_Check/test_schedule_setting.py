@@ -65,10 +65,10 @@ class Test_Schedule_Setting:
             schedule_id = re.json()['data']['pageData'][0]['scheduleId']
 
         with allure.step('获取电表object ID'):
-            sql = "select  METER_ID,INSTALL_METER_NO from C_AR_METER_PNT where  DEV_STATUS=4 and FULL_AREA_ID is not null  and COMMUNICATION_TYPE !=0 and  INSTALL_METER_NO='{}'".format(
+            sql = "select  meter_id,install_meter_no from C_AR_METER_PNT where  DEV_STATUS=4 and FULL_AREA_ID is not null  and COMMUNICATION_TYPE !=0 and  install_meter_no='{}'".format(
                 device['device_number'])
-            object_id = dbConnect.fetchall_dict(sql)[0]['METER_ID']
-            meter_no = dbConnect.fetchall_dict(sql)[0]['INSTALL_METER_NO']
+            object_id = dbConnect.fetchall_dict(sql)[0]['meter_id']
+            meter_no = dbConnect.fetchall_dict(sql)[0]['install_meter_no']
 
         with allure.step('添加设备到Task'):
             url = gatewayURL + '/api/hes-service/schedule/object/{}'.format(schedule_id)
@@ -165,10 +165,10 @@ class Test_Schedule_Setting:
             schedule_id = re.json()['data']['pageData'][0]['scheduleId']
 
         with allure.step('获取电表object ID'):
-            sql = "select  METER_ID,INSTALL_METER_NO from C_AR_METER_PNT where  DEV_STATUS=4 and FULL_AREA_ID is not null  and COMMUNICATION_TYPE !=0 and  INSTALL_METER_NO='{}'".format(
+            sql = "select  meter_id,install_meter_no from C_AR_METER_PNT where  DEV_STATUS=4 and FULL_AREA_ID is not null  and COMMUNICATION_TYPE !=0 and  install_meter_no='{}'".format(
                 device['device_number'])
-            object_id = dbConnect.fetchall_dict(sql)[0]['METER_ID']
-            meter_no = dbConnect.fetchall_dict(sql)[0]['INSTALL_METER_NO']
+            object_id = dbConnect.fetchall_dict(sql)[0]['meter_id']
+            meter_no = dbConnect.fetchall_dict(sql)[0]['install_meter_no']
             print(object_id, meter_no)
 
         with allure.step('添加设备到Task'):
@@ -263,10 +263,10 @@ class Test_Schedule_Setting:
             schedule_id = re.json()['data']['pageData'][0]['scheduleId']
 
         with allure.step('获取电表object ID'):
-            sql = "select  METER_ID,INSTALL_METER_NO from C_AR_METER_PNT where  DEV_STATUS=4 and FULL_AREA_ID is not null  and COMMUNICATION_TYPE !=0 and  INSTALL_METER_NO='{}'".format(
+            sql = "select  meter_id,install_meter_no from C_AR_METER_PNT where  DEV_STATUS=4 and FULL_AREA_ID is not null  and COMMUNICATION_TYPE !=0 and  install_meter_no='{}'".format(
                 device['device_number'])
-            object_id = dbConnect.fetchall_dict(sql)[0]['METER_ID']
-            meter_no = dbConnect.fetchall_dict(sql)[0]['INSTALL_METER_NO']
+            object_id = dbConnect.fetchall_dict(sql)[0]['meter_id']
+            meter_no = dbConnect.fetchall_dict(sql)[0]['install_meter_no']
             print(object_id, meter_no)
 
         with allure.step('添加设备到Task'):
@@ -361,10 +361,10 @@ class Test_Schedule_Setting:
             schedule_id = re.json()['data']['pageData'][0]['scheduleId']
 
         with allure.step('获取电表object ID'):
-            sql = "select  METER_ID,INSTALL_METER_NO from C_AR_METER_PNT where  DEV_STATUS=4 and FULL_AREA_ID is not null  and COMMUNICATION_TYPE !=0 and  INSTALL_METER_NO='{}'".format(
+            sql = "select  meter_id,install_meter_no from C_AR_METER_PNT where  DEV_STATUS=4 and FULL_AREA_ID is not null  and COMMUNICATION_TYPE !=0 and  install_meter_no='{}'".format(
                 device['device_number'])
-            object_id = dbConnect.fetchall_dict(sql)[0]['METER_ID']
-            meter_no = dbConnect.fetchall_dict(sql)[0]['INSTALL_METER_NO']
+            object_id = dbConnect.fetchall_dict(sql)[0]['meter_id']
+            meter_no = dbConnect.fetchall_dict(sql)[0]['install_meter_no']
             print(object_id, meter_no)
 
         with allure.step('添加设备到Task'):
@@ -443,9 +443,6 @@ class Test_Schedule_Setting:
                 "scheduleName": scheduleName,
                 "startTime": sstime  # "25/12/2021 00:00:00"
             }
-            print(url)
-            print(token)
-            print(data)
             response = requests.post(url=url, headers=token, json=data)
             assert response.status_code == 200
             assert response.json()['code'] == 200
@@ -459,9 +456,9 @@ class Test_Schedule_Setting:
             schedule_id = re.json()['data']['pageData'][0]['scheduleId']
 
         with allure.step('获取区域TR object ID'):
-            sql = "select FUNC_GET_TR_REGION_ID(FULL_AREA_ID) ID from c_ar_meter_pnt where INSTALL_METER_NO='{}'".format(
+            sql = "select FUNC_GET_TR_REGION_ID(FULL_AREA_ID) ID from c_ar_meter_pnt where install_meter_no='{}'".format(
                 device['device_number'])
-            object_id = dbConnect.fetchall_dict(sql)[0]['ID']
+            object_id = dbConnect.fetchall_dict(sql)[0]['id']
 
         with allure.step('添加TR到Task'):
             url = gatewayURL + '/api/hes-service/schedule/object/{}'.format(schedule_id)
@@ -482,7 +479,7 @@ class Test_Schedule_Setting:
             assert re.json()['desc'] == 'OK'
 
         with allure.step('查看生成任务和执行结果'):
-            sql1 = "select AUTO_RUN_ID from H_TASK_RUNNING where NODE_NO='{}' and JOB_TYPE='SetTime'".format(
+            sql1 = "select auto_run_id from H_TASK_RUNNING where NODE_NO='{}' and JOB_TYPE='SetTime'".format(
                 device['device_number'])
             db_queue = dbConnect.fetchall_dict(sql1)
             while len(db_queue) == 0 and count < 20:
@@ -492,7 +489,7 @@ class Test_Schedule_Setting:
                 print('Waiting for Reg Tasks to Create...')
                 count = count + 1
 
-            sql2 = "select TASK_STATE from h_task_run_his where AUTO_RUN_ID='{}'".format(db_queue[0]['AUTO_RUN_ID'])
+            sql2 = "select task_state from h_task_run_his where auto_run_id='{}'".format(db_queue[0]['auto_run_id'])
             db_queue = dbConnect.fetchall_dict(sql2)
             while len(db_queue) == 0 and count < 30:
                 time.sleep(10)
@@ -500,7 +497,7 @@ class Test_Schedule_Setting:
                 print(db_queue)
                 print('Waiting for Reg Tasks to finish...')
                 count = count + 1
-            assert db_queue[0]['TASK_STATE'] == 3
+            assert db_queue[0]['task_state'] == 3
 
         with allure.step('停止周期任务'):
             url = gatewayURL + '/api/hes-service/schedule/status/{}'.format(schedule_id)
@@ -556,10 +553,10 @@ class Test_Schedule_Setting:
             schedule_id = re.json()['data']['pageData'][0]['scheduleId']
 
         with allure.step('获取电表object ID'):
-            sql = "select  METER_ID,INSTALL_METER_NO from C_AR_METER_PNT where  DEV_STATUS=4 and FULL_AREA_ID is not null  and COMMUNICATION_TYPE !=0 and  INSTALL_METER_NO='{}'".format(
+            sql = "select  meter_id,install_meter_no from C_AR_METER_PNT where  DEV_STATUS=4 and FULL_AREA_ID is not null  and COMMUNICATION_TYPE !=0 and  install_meter_no='{}'".format(
                 device['device_number'])
-            object_id = dbConnect.fetchall_dict(sql)[0]['METER_ID']
-            meter_no = dbConnect.fetchall_dict(sql)[0]['INSTALL_METER_NO']
+            object_id = dbConnect.fetchall_dict(sql)[0]['meter_id']
+            meter_no = dbConnect.fetchall_dict(sql)[0]['install_meter_no']
             print(object_id, meter_no)
 
         with allure.step('添加设备到Task'):

@@ -118,7 +118,7 @@ def meter_daily_check_003():
     else:
         # print(response.get('reply')['replyDesc'])
         info(f"** Read Successfully **")
-        sql = "select TASK_STATE from h_task_run_his where INSTANCE_ID='{}'".format(transactionId)
+        sql = "select task_state from h_task_run_his where INSTANCE_ID='{}'".format(transactionId)
         db_queue = database.orcl_fetchall_dict(sql)
 
         while len(db_queue) == 0:

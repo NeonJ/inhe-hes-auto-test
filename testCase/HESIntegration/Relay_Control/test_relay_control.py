@@ -140,8 +140,8 @@ class Test_Relay_Control:
         # Step2 生成异步任务后，任务正常执行完毕进入his，进入his表，则认为任务结束
         # 过期时间到，也会进入his表，这里暂不考虑
         time.sleep(5)
-        # 查询生成Core执行的任务的 AUTO_RUN_ID
-        sql_running = "select AUTO_RUN_ID from H_TASK_RUNNING where NODE_NO='{}' and JOB_TYPE='RELAY_CONTROL'".format(
+        # 查询生成Core执行的任务的 auto_run_id
+        sql_running = "select auto_run_id from H_TASK_RUNNING where NODE_NO='{}' and JOB_TYPE='RELAY_CONTROL'".format(
             device['device_number'])
         db_queue = dbConnect.fetchall_dict(sql_running)
         while len(db_queue) == 0 and count < 2:
@@ -153,7 +153,7 @@ class Test_Relay_Control:
 
         # Step3 验证读任务执行结束，task正常移入his表
         # 查询生成Core执行结束后，his表任务状态
-        sql_his = "select TASK_STATE from H_TASK_RUN_HIS where AUTO_RUN_ID='{}'".format(db_queue[0]['AUTO_RUN_ID'])
+        sql_his = "select task_state from H_TASK_RUN_HIS where auto_run_id='{}'".format(db_queue[0]['auto_run_id'])
         db_queue = dbConnect.fetchall_dict(sql_his)
         while len(db_queue) == 0 and count < 50:
             time.sleep(5)
@@ -161,7 +161,7 @@ class Test_Relay_Control:
             print(db_queue)
             print('Waiting for read relay_control Tasks to finish...')
             count = count + 1
-        assert db_queue[0]['TASK_STATE'] == 3
+        assert db_queue[0]['task_state'] == 3
 
     @hesAsyncTest
     def test_relay_off_task(self, requestMessage, device, dbConnect, caseData):
@@ -187,8 +187,8 @@ class Test_Relay_Control:
         # Step2 生成异步任务后，任务正常执行完毕进入his，进入his表，则认为任务结束
         # 过期时间到，也会进入his表，这里暂不考虑
         time.sleep(5)
-        # 查询生成Core执行的任务的 AUTO_RUN_ID
-        sql_running = "select AUTO_RUN_ID from H_TASK_RUNNING where NODE_NO='{}' and JOB_TYPE='RELAY_CONTROL'".format(
+        # 查询生成Core执行的任务的 auto_run_id
+        sql_running = "select auto_run_id from H_TASK_RUNNING where NODE_NO='{}' and JOB_TYPE='RELAY_CONTROL'".format(
             device['device_number'])
         db_queue = dbConnect.fetchall_dict(sql_running)
         while len(db_queue) == 0 and count < 2:
@@ -200,7 +200,7 @@ class Test_Relay_Control:
 
         # Step3 验证读任务执行结束，task正常移入his表
         # 查询生成Core执行结束后，his表任务状态
-        sql_his = "select TASK_STATE from H_TASK_RUN_HIS where AUTO_RUN_ID='{}'".format(db_queue[0]['AUTO_RUN_ID'])
+        sql_his = "select task_state from H_TASK_RUN_HIS where auto_run_id='{}'".format(db_queue[0]['auto_run_id'])
         db_queue = dbConnect.fetchall_dict(sql_his)
         while len(db_queue) == 0 and count < 50:
             time.sleep(5)
@@ -208,7 +208,7 @@ class Test_Relay_Control:
             print(db_queue)
             print('Waiting for read relay_control Tasks to finish...')
             count = count + 1
-        assert db_queue[0]['TASK_STATE'] == 3
+        assert db_queue[0]['task_state'] == 3
 
     @hesAsyncTest
     def test_relay_on_task_billing(self, requestMessage, device, dbConnect, caseData):
@@ -234,8 +234,8 @@ class Test_Relay_Control:
         # Step2 生成异步任务后，任务正常执行完毕进入his，进入his表，则认为任务结束
         # 过期时间到，也会进入his表，这里暂不考虑
         time.sleep(5)
-        # 查询生成Core执行的任务的 AUTO_RUN_ID
-        sql_running = "select AUTO_RUN_ID from H_TASK_RUNNING where NODE_NO='{}' and JOB_TYPE='RELAY_CONTROL'".format(
+        # 查询生成Core执行的任务的 auto_run_id
+        sql_running = "select auto_run_id from H_TASK_RUNNING where NODE_NO='{}' and JOB_TYPE='RELAY_CONTROL'".format(
             device['device_number'])
         db_queue = dbConnect.fetchall_dict(sql_running)
         while len(db_queue) == 0 and count < 2:
@@ -247,7 +247,7 @@ class Test_Relay_Control:
 
         # Step3 验证读任务执行结束，task正常移入his表
         # 查询生成Core执行结束后，his表任务状态
-        sql_his = "select TASK_STATE from H_TASK_RUN_HIS where AUTO_RUN_ID='{}'".format(db_queue[0]['AUTO_RUN_ID'])
+        sql_his = "select task_state from H_TASK_RUN_HIS where auto_run_id='{}'".format(db_queue[0]['auto_run_id'])
         db_queue = dbConnect.fetchall_dict(sql_his)
         while len(db_queue) == 0 and count < 50:
             time.sleep(5)
@@ -255,7 +255,7 @@ class Test_Relay_Control:
             print(db_queue)
             print('Waiting for read relay_control Tasks to finish...')
             count = count + 1
-        assert db_queue[0]['TASK_STATE'] == 3
+        assert db_queue[0]['task_state'] == 3
 
     @hesAsyncTest
     def test_relay_off_task_billing(self, requestMessage, device, dbConnect, caseData):
@@ -281,8 +281,8 @@ class Test_Relay_Control:
         # Step2 生成异步任务后，任务正常执行完毕进入his，进入his表，则认为任务结束
         # 过期时间到，也会进入his表，这里暂不考虑
         time.sleep(5)
-        # 查询生成Core执行的任务的 AUTO_RUN_ID
-        sql_running = "select AUTO_RUN_ID from H_TASK_RUNNING where NODE_NO='{}' and JOB_TYPE='RELAY_CONTROL'".format(
+        # 查询生成Core执行的任务的 auto_run_id
+        sql_running = "select auto_run_id from H_TASK_RUNNING where NODE_NO='{}' and JOB_TYPE='RELAY_CONTROL'".format(
             device['device_number'])
         db_queue = dbConnect.fetchall_dict(sql_running)
         while len(db_queue) == 0 and count < 2:
@@ -294,7 +294,7 @@ class Test_Relay_Control:
 
         # Step3 验证读任务执行结束，task正常移入his表
         # 查询生成Core执行结束后，his表任务状态
-        sql_his = "select TASK_STATE from H_TASK_RUN_HIS where AUTO_RUN_ID='{}'".format(db_queue[0]['AUTO_RUN_ID'])
+        sql_his = "select task_state from H_TASK_RUN_HIS where auto_run_id='{}'".format(db_queue[0]['auto_run_id'])
         db_queue = dbConnect.fetchall_dict(sql_his)
         while len(db_queue) == 0 and count < 50:
             time.sleep(5)
@@ -302,4 +302,4 @@ class Test_Relay_Control:
             print(db_queue)
             print('Waiting for read relay_control Tasks to finish...')
             count = count + 1
-        assert db_queue[0]['TASK_STATE'] == 3
+        assert db_queue[0]['task_state'] == 3

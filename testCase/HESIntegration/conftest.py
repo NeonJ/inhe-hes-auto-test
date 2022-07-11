@@ -29,6 +29,7 @@ def get_daily_date(caseData, device, requestMessage, daily):
     data = caseData('testData/MeterFrozenData/meter_daily_data.json')['meter_daily_data']
     requestData = data['request']
     requestData['payload'][0]['deviceNo'] = device['device_number']
+    requestData['payload'][0]['data'][0]['registerId'] = daily['register_id']
     response, elapsed = HESRequest().post(url=requestMessage, params=requestData)
     if response.get('reply')['replyCode'] != 200:
         print(response.get('payload')[0]['desc'])
@@ -45,6 +46,7 @@ def get_monthly_date(caseData, device, requestMessage, monthly):
     data = caseData('testData/MeterFrozenData/meter_monthly_data.json')['meter_monthly_data']
     requestData = data['request']
     requestData['payload'][0]['deviceNo'] = device['device_number']
+    requestData['payload'][0]['data'][0]['registerId'] = monthly['register_id']
     response, elapsed = HESRequest().post(url=requestMessage, params=requestData)
     if response.get('reply')['replyCode'] != 200:
         print(response.get('payload')[0]['desc'])
@@ -61,6 +63,7 @@ def get_lp_date(caseData, device, requestMessage, lp):
     data = caseData('testData/MeterFrozenData/meter_profile_data.json')['meter_lp_data']
     requestData = data['request']
     requestData['payload'][0]['deviceNo'] = device['device_number']
+    requestData['payload'][0]['data'][0]['registerId'] = lp['register_id']
     response, elapsed = HESRequest().post(url=requestMessage, params=requestData)
     if response.get('reply')['replyCode'] != 200:
         print(response.get('payload')[0]['desc'])
@@ -77,6 +80,7 @@ def get_daily_event(caseData, device, requestMessage, event):
     data = caseData('testData/MeterFrozenData/meter_event_data.json')['meter_daily_event']
     requestData = data['request']
     requestData['payload'][0]['deviceNo'] = device['device_number']
+    requestData['payload'][0]['data'][0]['registerId'] = event['register_id']
     response, elapsed = HESRequest().post(url=requestMessage, params=requestData)
     if response.get('reply')['replyCode'] != 200:
         print(response.get('payload')[0]['desc'])
@@ -93,6 +97,7 @@ def get_event_standard(caseData, device, requestMessage, event):
     data = caseData('testData/MeterFrozenData/meter_event_data.json')['meter_standard_event']
     requestData = data['request']
     requestData['payload'][0]['deviceNo'] = device['device_number']
+    requestData['payload'][0]['data'][0]['registerId'] = event['register_id']
     response, elapsed = HESRequest().post(url=requestMessage, params=requestData)
     if response.get('reply')['replyCode'] != 200:
         print(response.get('payload')[0]['desc'])

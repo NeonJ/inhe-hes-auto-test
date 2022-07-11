@@ -10,6 +10,7 @@ import requests,time
 
 from common.HESRequest import *
 from common.marker import *
+from common.YamlConfig import nacosConfig
 
 
 class Test_Meter_Status:
@@ -50,6 +51,7 @@ class Test_Meter_Status:
         assert response['code'] == 200
 
     @smokeTest
+    @pytest.mark.skipif(nacosConfig()['Device']['connect_type'] == 'Short', reason='Short Meter no online status')
     def test_get_device_online1(self, device, hesURL):
         """
         验证接口获取电表和DCU上下线状态 GetOnlineDevice
@@ -59,6 +61,7 @@ class Test_Meter_Status:
         assert str(device['device_number']) in response.text
 
     @smokeTest
+    @pytest.mark.skipif(nacosConfig()['Device']['connect_type'] == 'Short', reason='Short Meter no online status')
     def test_get_device_online2(self, device, hesURL):
         """
         验证接口获取电表和DCU上下线状态 getMeterOnlineStatus
@@ -68,6 +71,7 @@ class Test_Meter_Status:
         assert "Online" in response.text
 
     @smokeTest
+    @pytest.mark.skipif(nacosConfig()['Device']['connect_type'] == 'Short', reason='Short Meter no online status')
     def test_get_device_online3(self, device, hesURL):
         """
         验证接口获取电表和DCU上下线状态 getDeviceNoOnlineStatus
