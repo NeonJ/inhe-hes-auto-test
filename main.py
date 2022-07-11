@@ -60,11 +60,11 @@ var = '--project {} --tag {} --tester {} --resume {} --retry {} --group {}'.form
                                                                                    args.resume, args.retry, args.group)
 print(var)
 writeConfig()
-tag = str(args.tag).replace(',',' and ')
+tag = str(args.tag).replace(',',' or ')
 
 if args.tag != 'fullTest':
     os.system(
-        'pytest --reruns %s --reruns-delay 1 --json-report  -v  %s/testCase/ -m  %s  --alluredir  %s' % (
+        'pytest --reruns %s --reruns-delay 1 --json-report  -v  %s/testCase/ -m "%s"  --alluredir  %s' % (
             args.retry, os.path.dirname(__file__), tag, result_path))  # 按模块指定标签测试
     # 'pytest  --reruns %s --reruns-delay 1 --json-report  -v  %s/testCase/   -m  %s  -s %s   --alluredir  %s' % (
     #     args.retry, os.path.dirname(__file__), args.tag, var, result_path))  # 按模块指定标签测试
