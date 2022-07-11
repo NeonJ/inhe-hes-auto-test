@@ -38,7 +38,14 @@
     3.可以通过docker自动执行
     docker run --rm -e project=empower -e tag=smokeTest,asyncTest -e tester=Neon -e retry=0 -e group=QA -e resume=False 10.32.233.112/test/py36-test
     
-    ***测试还需要在NACOS上正确编辑测试环境，测试用例变量后才能正确执行***
+    ***测试还需要在NACOS(http://10.32.233.164:18848/nacos/)上正确编辑测试环境和测试变量后才能正确执行***
+    project, 对应nacose中的data id
+    tag, 默认为smoketTest
+    tester, 默认为执行主机名
+    retry, 0表示用例执行失败不重新执行
+    group, QA表示测试环境, DEV表示开发环境
+    resume, True表示obisTest继续上一次测试结束点继续执行, False表示开始新的obisTest
+
 
 --------------------------------------------------------------------
 
@@ -73,11 +80,10 @@
 
     项目管理
 
-        1.HES根据配置确定不同项目
-        2.HES多个项目采用配置文件区分
-            1).可通过不同文件夹区分
-            2).采用项目名作为配置文件名称
-        3.配置文件建议采用: yaml或py文件
+        1.HES尽可能使用相同的测试用例
+        2.HES使用NACOS传惨方式进行测试设备和测试环境和测试变量的维护
+            如果NACOS不可用本地调试可以直接使用本地的nacos-data文件进行用例编写和测试
+        3.配置文件建议采用: yaml格式
 
 
 --------------------------------------------------------------------
