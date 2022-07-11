@@ -19,13 +19,24 @@
 
 --------------------------------------------------------------------
 
+**Case Tag**
+
+    1.smokeTest      冒烟测试，主要针对设备的实时操作
+    2.asyncTest      HES异步任务测试，主要是HES系统对设备的异步任务操作
+    3.obisTest       对所选电表的register_id进行测试并保存到数据库测试表中，支持Read、Set，支持断点续测
+    4.interfaceTest  HES非设备操作的接口测试
+    5.fullTest       除开obisTest之外的所有Tag测试
+    ***多tag执行使用,号连接
+
+--------------------------------------------------------------------
+
 **测试执行**
 
     1.可以通过pytest单用例执行
     2.可以通过main.py执行
-    python main.py --project empower --tag=smokeTest,hesAsyncTest --tester Neon --retry 0 --group QA --resume False
+    python main.py --project empower --tag=smokeTest,asyncTest --tester Neon --retry 0 --group QA --resume False
     3.可以通过docker自动执行
-    docker run --rm -e project=empower -e tag=smokeTest,hesAsyncTest -e tester=Neon -e retry=0 -e group=QA -e resume=False 10.32.233.112/test/py36-test
+    docker run --rm -e project=empower -e tag=smokeTest,asyncTest -e tester=Neon -e retry=0 -e group=QA -e resume=False 10.32.233.112/test/py36-test
     
     ***测试还需要在NACOS上正确编辑测试环境，测试用例变量后才能正确执行***
 

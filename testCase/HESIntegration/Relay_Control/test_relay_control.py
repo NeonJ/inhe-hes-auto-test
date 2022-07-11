@@ -116,7 +116,7 @@ class Test_Relay_Control:
         print('Response --- ', response)
         assert "DISCONNECTED" in str(response)
 
-    @hesAsyncTest
+    @asyncTest
     def test_relay_on_task(self, requestMessage, device, dbConnect, caseData):
         """
         调用异步Relay Control
@@ -163,7 +163,7 @@ class Test_Relay_Control:
             count = count + 1
         assert db_queue[0]['task_state'] == 3
 
-    @hesAsyncTest
+    @asyncTest
     def test_relay_off_task(self, requestMessage, device, dbConnect, caseData):
         """
         调用异步Relay Control
@@ -210,7 +210,7 @@ class Test_Relay_Control:
             count = count + 1
         assert db_queue[0]['task_state'] == 3
 
-    @hesAsyncTest
+    @asyncTest
     def test_relay_on_task_billing(self, requestMessage, device, dbConnect, caseData):
         """
         调用异步Relay Control
@@ -257,7 +257,7 @@ class Test_Relay_Control:
             count = count + 1
         assert db_queue[0]['task_state'] == 3
 
-    @hesAsyncTest
+    @asyncTest
     def test_relay_off_task_billing(self, requestMessage, device, dbConnect, caseData):
         """
         调用异步Relay Control

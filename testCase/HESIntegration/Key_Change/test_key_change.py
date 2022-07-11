@@ -12,7 +12,7 @@ from common.HESRequest import *
 
 class Test_Key_Change:
 
-    @hesAsyncTest
+    @asyncTest
     def test_key_change_Akey(self, caseData, get_database,device,requestMessage):
         """
         正常修改GPRS电表key - A key
@@ -48,7 +48,7 @@ class Test_Key_Change:
             count = count + 1
         assert db_queue[0]['task_state'] == 3
 
-    @hesAsyncTest
+    @asyncTest
     def test_key_change_Ekey(self, caseData,get_database,device,requestMessage):
         """
         正常修改GPRS电表key - E key

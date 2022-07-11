@@ -19,7 +19,7 @@ faker = Faker(locale='en_US')
 
 class Test_Schedule_Setting:
 
-    @hesAsyncTest
+    @asyncTest
     def test_meter_schedule_setting_daily(self, gatewayURL, dbConnect, token, get_daily_date, device):
         """
         验证chedule Setting生成采集GPRS电表日结
@@ -117,7 +117,7 @@ class Test_Schedule_Setting:
             print(re.json())
             assert re.json()['data']['pageData'][0]['taskStatus'] == 'SUCCESS'
 
-    @hesAsyncTest
+    @asyncTest
     def test_meter_schedule_setting_monthly(self, gatewayURL, dbConnect, token, get_monthly_date, device):
         """
         验证Schedule Setting生成采集GPRS电表月结
@@ -217,7 +217,7 @@ class Test_Schedule_Setting:
             assert re.json()['code'] == 200
             assert re.json()['data']['pageData'][0]['taskStatus'] == 'SUCCESS'
 
-    @hesAsyncTest
+    @asyncTest
     def test_meter_schedule_setting_lp(self, gatewayURL, dbConnect, token, get_lp_date, device):
         """
         验证Schedule Setting生成采集GPRS电表曲线
@@ -315,7 +315,7 @@ class Test_Schedule_Setting:
             assert re.json()['code'] == 200
             assert re.json()['data']['pageData'][0]['taskStatus'] == 'SUCCESS'
 
-    @hesAsyncTest
+    @asyncTest
     def test_meter_schedule_setting_daily_event(self, gatewayURL, dbConnect, token, get_daily_event, device):
         """
         验证Schedule Setting生成采集GPRS电表日事件
@@ -413,7 +413,7 @@ class Test_Schedule_Setting:
             assert re.json()['code'] == 200
             assert re.json()['data']['pageData'][0]['taskStatus'] == 'SUCCESS'
 
-    @hesAsyncTest
+    @asyncTest
     def test_meter_schedule_setting_st(self, dbConnect, token, gatewayURL, device):
         """
         验证Schedule Setting生成区域GPRS校时任务
@@ -507,7 +507,7 @@ class Test_Schedule_Setting:
             assert re.json()['code'] == 200
             assert re.json()['desc'] == 'OK'
 
-    @hesAsyncTest
+    @asyncTest
     def test_meter_schedule_setting_event(self, gatewayURL, dbConnect, token, get_event_standard,device):
         """
         验证Schedule Setting生成采集GPRS电表事件采集

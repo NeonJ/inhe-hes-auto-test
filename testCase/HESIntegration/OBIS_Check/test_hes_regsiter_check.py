@@ -52,7 +52,7 @@ class Test_HES_Register_Check:
                 register_list.append(queue.get('REGISTER_ID'))
         return register_list
 
-    # @OBISTest
+    # @obisTest
     @pytest.mark.parametrize('register_get', get_db_register('r'), indirect=False)
     def test_register_get(self, register_get, dbConnect, caseData, device, requestMessage):
         """Get Register Check"""
@@ -84,7 +84,7 @@ class Test_HES_Register_Check:
                                       data.get('resultValue'), elapsed, register_get)
                 assert data.get('resultDesc') == 'OK'
 
-    # @OBISTest
+    # @obisTest
     @pytest.mark.parametrize('register_set', get_db_register('rw'))
     def test_register_set(self, register_set, dbConnect, caseData, device, requestMessage):
         """Set Register Check"""

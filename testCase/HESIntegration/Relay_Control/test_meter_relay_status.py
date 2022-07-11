@@ -28,7 +28,7 @@ class Test_Meter_Relay_Status:
         print('Request ---  ', response)
         assert '636F6E6E6563746564' in str(response) or '646973636F6E6E6563746564' in str(response)
 
-    @hesAsyncTest
+    @asyncTest
     def test_read_relay_status_async(self, device, requestMessage, dbConnect, caseData):
         """
         使用异步读取的方式去对电表进行读取闸状态

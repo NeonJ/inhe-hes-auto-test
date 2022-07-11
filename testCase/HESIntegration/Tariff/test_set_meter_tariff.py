@@ -12,7 +12,7 @@ from common.marker import *
 
 class Test_Set_Meter_Tariff:
 
-    @hesAsyncTest
+    @asyncTest
     def test_SetMeterTariff(self, requestMessage, dbConnect,device, caseData):
         """使用异步方式设置测试费率到电表"""
         count = 0

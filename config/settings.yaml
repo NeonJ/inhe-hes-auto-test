@@ -4,5 +4,5 @@ path: /
 project: camel10-CT
 resume: 'False'
 retry: '0'
-tag: smokeTest
+tag: smokeTest,asyncTest
 tester: jncPC

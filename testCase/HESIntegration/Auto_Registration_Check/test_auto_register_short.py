@@ -17,7 +17,7 @@ from common.YamlConfig import nacosConfig
 @pytest.mark.skipif(nacosConfig()['Device']['connect_type'] == 'Long', reason='Test meter is long connection')
 class Test_Auto_Register_Short:
 
-    @hesAsyncTest
+    @asyncTest
     def test_meter_register_short(self, caseData, device, dbConnect, requestMessage):
         """
         验证GPRS电表正常自动注册流程，前提是短链接电表以及设置了push的前置机地址
