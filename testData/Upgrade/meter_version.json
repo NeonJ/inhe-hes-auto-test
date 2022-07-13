@@ -1,0 +1,125 @@
+{
+  "app_version": {
+    "request": {
+      "header": {
+        "correlationId": "ab71594e-7842-4b52-83b0-397b5649e5bb",
+        "messageId": "ae225f79-cddd-4a29-85fb-3fae6578372e",
+        "serviceType": "GET_COMMON",
+        "businessType": "GET_COMMON",
+        "source": "MDM",
+        "createTime": "220420132335",
+        "replyAddress": "hes-read-version-dev",
+        "replyType": "MQ",
+        "messageType": "REQUEST",
+        "securityLevel": 0,
+        "asyncReplyFlag": true
+      },
+      "payload": [
+        {
+          "deviceNo": "0CHM2221000001",
+          "deviceType": "METER",
+          "retryCount": 0,
+          "retryInterval": 0,
+          "priority": 0,
+          "endTime": null,
+          "startTime": null,
+          "transactionId": "56733333-6898-440e-a067-473ccb5cb06a",
+          "jobUniqueFlag": false,
+          "data": [
+            {
+              "clientId": null,
+              "registerId": "APP_VERSION",
+              "accessSelector": 1,
+              "parameter": null,
+              "featurePoint": ""
+            }
+          ]
+        }
+      ]
+    },
+    "response": {
+    }
+  },
+  "legal_version": {
+    "request": {
+      "header": {
+        "correlationId": "ab71594e-7842-4b52-83b0-397b5649e5bb",
+        "messageId": "ae225f79-cddd-4a29-85fb-3fae6578372e",
+        "serviceType": "GET_COMMON",
+        "businessType": "GET_COMMON",
+        "source": "MDM",
+        "createTime": "220420132335",
+        "replyAddress": "hes-read-version-dev",
+        "replyType": "MQ",
+        "messageType": "REQUEST",
+        "securityLevel": 0,
+        "asyncReplyFlag": true
+      },
+      "payload": [
+        {
+          "deviceNo": "0CHM2221000001",
+          "deviceType": "METER",
+          "retryCount": 0,
+          "retryInterval": 0,
+          "priority": 0,
+          "endTime": null,
+          "startTime": null,
+          "transactionId": "56733333-6898-440e-a067-473ccb5cb06a",
+          "jobUniqueFlag": false,
+          "data": [
+            {
+              "clientId": null,
+              "registerId": "LEGAL_VERSION",
+              "accessSelector": 1,
+              "parameter": null,
+              "featurePoint": ""
+            }
+          ]
+        }
+      ]
+    },
+    "response": {
+    }
+  },
+  "module_version": {
+    "request": {
+      "header": {
+        "correlationId": "ab71594e-7842-4b52-83b0-397b5649e5bb",
+        "messageId": "ae225f79-cddd-4a29-85fb-3fae6578372e",
+        "serviceType": "GET_COMMON",
+        "businessType": "GET_COMMON",
+        "source": "MDM",
+        "createTime": "220420132335",
+        "replyAddress": "hes-read-version-dev",
+        "replyType": "MQ",
+        "messageType": "REQUEST",
+        "securityLevel": 0,
+        "asyncReplyFlag": true
+      },
+      "payload": [
+        {
+          "deviceNo": "0CHM2221000001",
+          "deviceType": "METER",
+          "retryCount": 0,
+          "retryInterval": 0,
+          "priority": 0,
+          "endTime": null,
+          "startTime": null,
+          "transactionId": "56733333-6898-440e-a067-473ccb5cb06a",
+          "jobUniqueFlag": false,
+          "data": [
+            {
+              "clientId": null,
+              "registerId": "MODULE_VERSION",
+              "accessSelector": 1,
+              "parameter": null,
+              "featurePoint": ""
+            }
+          ]
+        }
+      ]
+    },
+    "response": {
+    }
+  }
+}
