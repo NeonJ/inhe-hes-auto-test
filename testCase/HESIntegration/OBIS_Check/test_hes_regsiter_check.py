@@ -5,6 +5,7 @@
 # Author     ：cao jiann
 # version    ：python 3.7
 """
+import json
 import time
 
 import nacos
@@ -14,7 +15,7 @@ import re
 
 from common.DB import *
 from common.HESRequest import *
-from common.YamlConfig import readConfig
+from common.YamlConfig import *
 from common.marker import *
 
 
@@ -81,21 +82,23 @@ class Test_HES_Register_Check:
             if json.loads(get_result.text).get('message') == 'SUCCESS':
                 if json.loads(get_result.text).get('result').get('result') == 'S':
                     result_data = json.loads(get_result.text).get('result').get('data')
-                    print('点抄执行成功: ', result_data)
+                    print('Command executed successfully: ', result_data)
                     re_result = re.findall('(?<==).*$', result_data)
                     print(re_result)
                     dbConnect.save_result(table_name, 'get_result', 'Success', 'get_value',
                                           re_result, 0, register_get)
                     assert len(re_result) != 0
                     break
+                elif json.loads(get_result.text).get('result').get('result') == 'W':
+                    time.sleep(2)
+                    i = + 1
+                    continue
                 elif json.loads(get_result.text).get('result').get('result') == 'F':
                     if '-' in json.loads(get_result.text).get('result').get('data'):
                         pool = redis.ConnectionPool(host='1.14.167.253', port=6379, db=0, password='test123')
                         r = redis.Redis(connection_pool=pool)
                         keys = 'h:ApiResponse:' + cmdID
                         p = eval(json.dumps(r.get(keys).decode('utf-8')))
-                        print(type(p), p)
-                        print(type(json.loads(p).get('RetType')))
                         if json.loads(p).get('RetType') == -99999:
                             print('Running...')
                             time.sleep(2)
@@ -105,8 +108,8 @@ class Test_HES_Register_Check:
                             print('Running...')
                             continue
                         else:
-                            print('[Error Type]',json.loads(p).get('RetType'))
-                            print('[Error Data]',json.loads(p).get('RetData'))
+                            print('[Error Type]', json.loads(p).get('RetType'))
+                            print('[Error Data]', json.loads(p).get('RetData'))
                             dbConnect.save_result(table_name, 'get_result', json.loads(p).get('RetType'), 'get_value',
                                                   json.loads(p).get('RetData'), 0, register_get)
                             assert False
@@ -116,11 +119,16 @@ class Test_HES_Register_Check:
 
             else:
                 assert json.loads(get_result.text).get('message') == 'SUCCESS'
+        if i == 14:
+            print('the command was executed over 30s')
+            dbConnect.save_result(table_name, 'get_result', 'time out', 'get_value',
+                                  '30s', 0, register_get)
+            assert False
 
-    # @obisTest
+    @obisTest
     @pytest.mark.parametrize('register_set', get_db_register(2), indirect=False)
     def test_register_set(self, register_set, dbConnect, caseData, device, realExec, realGet):
-        """Setp 1 GetValue"""
+        """Setp 1 Get Value"""
         print("Register_ID:{}".format(register_set))
 
         data = f"dev={device['device_number']}&field={register_set}&invalid_time=2022-11-19%2000%3A00%3A00&operator=neon&module_type=1&save_flag=1"
@@ -136,33 +144,34 @@ class Test_HES_Register_Check:
             if json.loads(get_result.text).get('message') == 'SUCCESS':
                 if json.loads(get_result.text).get('result').get('result') == 'S':
                     result_data = json.loads(get_result.text).get('result').get('data')
-                    print('点抄执行成功: ', result_data)
+                    print('Command executed successfully: ', result_data)
                     re_result = re.findall('(?<==).*$', result_data)
                     print(re_result)
                     dbConnect.save_result(table_name, 'get_result', 'Success', 'get_value',
                                           re_result, 0, register_set)
                     assert len(re_result) != 0
                     break
+                elif json.loads(get_result.text).get('result').get('result') == 'W':
+                    time.sleep(2)
+                    i = + 1
+                    continue
                 elif json.loads(get_result.text).get('result').get('result') == 'F':
                     if '-' in json.loads(get_result.text).get('result').get('data'):
                         pool = redis.ConnectionPool(host='1.14.167.253', port=6379, db=0, password='test123')
                         r = redis.Redis(connection_pool=pool)
                         keys = 'h:ApiResponse:' + cmdID
                         p = eval(json.dumps(r.get(keys).decode('utf-8')))
-                        print(type(p), p)
-                        print(type(json.loads(p).get('RetType')))
                         if json.loads(p).get('RetType') == -99999:
-                            print('Running...1')
+                            print('Running...')
                             time.sleep(2)
                             i = + 1
                             continue
                         elif json.loads(p).get('RetType') == 0:
-                            print('Running...2')
-                            i = + 1
+                            print('Running...')
                             continue
                         else:
-                            print('[Error Type]',json.loads(p).get('RetType'))
-                            print('[Error Data]',json.loads(p).get('RetData'))
+                            print('[Error Type]', json.loads(p).get('RetType'))
+                            print('[Error Data]', json.loads(p).get('RetData'))
                             dbConnect.save_result(table_name, 'get_result', json.loads(p).get('RetType'), 'get_value',
                                                   json.loads(p).get('RetData'), 0, register_set)
                             assert False
@@ -172,12 +181,16 @@ class Test_HES_Register_Check:
 
             else:
                 assert json.loads(get_result.text).get('message') == 'SUCCESS'
+        if i == 14:
+            print('the command was executed over 30s')
+            dbConnect.save_result(table_name, 'get_result', 'time out', 'get_value',
+                                  '30s', 0, register_set)
+            assert False
 
-        """Setp 2 SetValue"""
-        data = f"dev={device['device_number']}&field={register_set}&invalid_time=2022-11-19%2000%3A00%3A00&operator=neon&module_type=1&save_flag=1"
+        """Setp 2 Set Value"""
+        set_value = strToBase64(re_result)
+        data = f"dev={device['device_number']}&field={register_set}&invalid_time=2022-11-19%2000%3A00%3A00&operator=neon&module_type=1&save_flag=1&value={set_value}"
         response = requests.get(url=realExec, params=data)
-        table_name = dbConnect.last_result(device['device_number'])[0]
-        print('Result Table Name: ', table_name)
         assert json.loads(response.text).get('message') == 'SUCCESS'
         cmdID = json.loads(response.text).get('result')
         print(cmdID)
@@ -187,29 +200,35 @@ class Test_HES_Register_Check:
             if json.loads(get_result.text).get('message') == 'SUCCESS':
                 if json.loads(get_result.text).get('result').get('result') == 'S':
                     result_data = json.loads(get_result.text).get('result').get('data')
-                    print('点抄执行成功: ', result_data)
+                    print('Command executed successfully: ', result_data)
                     re_result = re.findall('(?<==).*$', result_data)
                     print(re_result)
                     dbConnect.save_result(table_name, 'get_result', 'Success', 'get_value',
                                           re_result, 0, register_set)
                     assert len(re_result) != 0
                     break
+                elif json.loads(get_result.text).get('result').get('result') == 'W':
+                    time.sleep(2)
+                    i = + 1
+                    continue
                 elif json.loads(get_result.text).get('result').get('result') == 'F':
                     if '-' in json.loads(get_result.text).get('result').get('data'):
                         pool = redis.ConnectionPool(host='1.14.167.253', port=6379, db=0, password='test123')
                         r = redis.Redis(connection_pool=pool)
                         keys = 'h:ApiResponse:' + cmdID
                         p = eval(json.dumps(r.get(keys).decode('utf-8')))
-                        print(type(p), p)
-                        print(type(json.loads(p).get('RetType')))
                         if json.loads(p).get('RetType') == -99999:
+                            print('Running...')
                             time.sleep(2)
                             i = + 1
                             continue
+                        elif json.loads(p).get('RetType') == 0:
+                            print('Running...')
+                            continue
                         else:
-                            print(json.loads(p).get('RetType'))
-                            print(json.loads(p).get('RetData'))
-                            dbConnect.save_result(table_name, 'get_result', json.loads(p).get('RetType'), 'get_value',
+                            print('[Error Type]', json.loads(p).get('RetType'))
+                            print('[Error Data]', json.loads(p).get('RetData'))
+                            dbConnect.save_result(table_name, 'set_result', json.loads(p).get('RetType'), 'set_value',
                                                   json.loads(p).get('RetData'), 0, register_set)
                             assert False
                 else:
@@ -218,3 +237,8 @@ class Test_HES_Register_Check:
 
             else:
                 assert json.loads(get_result.text).get('message') == 'SUCCESS'
+        if i == 14:
+            print('the command was executed over 30s')
+            dbConnect.save_result(table_name, 'set_result', 'time out', 'set_value',
+                                  '30s', 0, register_set)
+            assert False

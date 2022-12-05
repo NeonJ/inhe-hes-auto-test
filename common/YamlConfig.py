@@ -2,6 +2,7 @@
 # @Time      : 2022/5/5 16:50
 # @Author    : Jiannan Cao
 # @FileName  : YamlConfig.py.py
+import base64
 import os
 import yaml
 import nacos
@@ -31,3 +32,22 @@ def nacosConfig():
     group = readConfig()['group']
     config = yaml.load(client.get_config(data_id, group), Loader=yaml.FullLoader)
     return config
+
+
+def strToBase64(str):
+    '''
+    将字符串转换为base64字符串
+    :param s:
+    :return:
+    '''
+    strEncode = base64.b64encode(str.encode('utf8'))
+    return str(strEncode, encoding='utf8')
+
+def base64ToStr(base64):
+    '''
+    将base64字符串转换为字符串
+    :param s:
+    :return:
+    '''
+    strDecode = base64.b64decode(bytes(base64, encoding='gbk'))
+    return str(strDecode, encoding='gbk')
