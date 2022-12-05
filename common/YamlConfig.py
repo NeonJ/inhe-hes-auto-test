@@ -34,13 +34,13 @@ def nacosConfig():
     return config
 
 
-def strToBase64(str):
+def strToBase64(s):
     '''
     将字符串转换为base64字符串
     :param s:
     :return:
     '''
-    strEncode = base64.b64encode(str.encode('utf8'))
+    strEncode = base64.b64encode(s.encode('utf8'))
     return str(strEncode, encoding='utf8')
 
 def base64ToStr(base64):
@@ -51,3 +51,6 @@ def base64ToStr(base64):
     '''
     strDecode = base64.b64decode(bytes(base64, encoding='gbk'))
     return str(strDecode, encoding='gbk')
+
+if __name__ == '__main__':
+    print(strToBase64('00000101'))

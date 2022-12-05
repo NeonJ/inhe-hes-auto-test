@@ -78,6 +78,11 @@ class Test_HES_Register_Check:
         print(cmdID)
         data = 'cmd=' + cmdID
         for i in range(15):
+            if i == 14:
+                print('the command was executed over 30s')
+                dbConnect.save_result(table_name, 'get_result', 'time out', 'get_value',
+                                      '30s', 0, register_get)
+                assert False
             get_result = requests.get(url=realGet, params=data)
             if json.loads(get_result.text).get('message') == 'SUCCESS':
                 if json.loads(get_result.text).get('result').get('result') == 'S':
@@ -119,19 +124,15 @@ class Test_HES_Register_Check:
 
             else:
                 assert json.loads(get_result.text).get('message') == 'SUCCESS'
-        if i == 14:
-            print('the command was executed over 30s')
-            dbConnect.save_result(table_name, 'get_result', 'time out', 'get_value',
-                                  '30s', 0, register_get)
-            assert False
+
 
     @obisTest
     @pytest.mark.parametrize('register_set', get_db_register(2), indirect=False)
     def test_register_set(self, register_set, dbConnect, caseData, device, realExec, realGet):
         """Setp 1 Get Value"""
         print("Register_ID:{}".format(register_set))
-
-        data = f"dev={device['device_number']}&field={register_set}&invalid_time=2022-11-19%2000%3A00%3A00&operator=neon&module_type=1&save_flag=1"
+        register = register_set.replace('W','')
+        data = f"dev={device['device_number']}&field={register}&invalid_time=2022-11-19%2000%3A00%3A00&operator=neon&module_type=1&save_flag=1"
         response = requests.get(url=realExec, params=data)
         table_name = dbConnect.last_result(device['device_number'])[0]
         print('Result Table Name: ', table_name)
@@ -140,6 +141,11 @@ class Test_HES_Register_Check:
         print(cmdID)
         data = 'cmd=' + cmdID
         for i in range(15):
+            if i == 14:
+                print('the command was executed over 30s')
+                dbConnect.save_result(table_name, 'get_result', 'time out', 'get_value',
+                                      '30s', 0, register_set)
+                assert False
             get_result = requests.get(url=realGet, params=data)
             if json.loads(get_result.text).get('message') == 'SUCCESS':
                 if json.loads(get_result.text).get('result').get('result') == 'S':
@@ -181,14 +187,15 @@ class Test_HES_Register_Check:
 
             else:
                 assert json.loads(get_result.text).get('message') == 'SUCCESS'
-        if i == 14:
-            print('the command was executed over 30s')
-            dbConnect.save_result(table_name, 'get_result', 'time out', 'get_value',
-                                  '30s', 0, register_set)
-            assert False
+            print(i)
+            if i == 14:
+                print('the command was executed over 30s')
+                dbConnect.save_result(table_name, 'get_result', 'time out', 'get_value',
+                                      '30s', 0, register_set)
+                assert False
 
         """Setp 2 Set Value"""
-        set_value = strToBase64(re_result)
+        set_value = strToBase64(''.join(re_result))
         data = f"dev={device['device_number']}&field={register_set}&invalid_time=2022-11-19%2000%3A00%3A00&operator=neon&module_type=1&save_flag=1&value={set_value}"
         response = requests.get(url=realExec, params=data)
         assert json.loads(response.text).get('message') == 'SUCCESS'
@@ -196,6 +203,11 @@ class Test_HES_Register_Check:
         print(cmdID)
         data = 'cmd=' + cmdID
         for i in range(15):
+            if i == 14:
+                print('the command was executed over 30s')
+                dbConnect.save_result(table_name, 'get_result', 'time out', 'get_value',
+                                      '30s', 0, register_set)
+                assert False
             get_result = requests.get(url=realGet, params=data)
             if json.loads(get_result.text).get('message') == 'SUCCESS':
                 if json.loads(get_result.text).get('result').get('result') == 'S':
@@ -203,7 +215,7 @@ class Test_HES_Register_Check:
                     print('Command executed successfully: ', result_data)
                     re_result = re.findall('(?<==).*$', result_data)
                     print(re_result)
-                    dbConnect.save_result(table_name, 'get_result', 'Success', 'get_value',
+                    dbConnect.save_result(table_name, 'set_result', 'Success', 'set_value',
                                           re_result, 0, register_set)
                     assert len(re_result) != 0
                     break
@@ -237,8 +249,9 @@ class Test_HES_Register_Check:
 
             else:
                 assert json.loads(get_result.text).get('message') == 'SUCCESS'
-        if i == 14:
-            print('the command was executed over 30s')
-            dbConnect.save_result(table_name, 'set_result', 'time out', 'set_value',
-                                  '30s', 0, register_set)
-            assert False
+            print(i)
+            if i == 14:
+                print('the command was executed over 30s')
+                dbConnect.save_result(table_name, 'set_result', 'time out', 'set_value',
+                                      '30s', 0, register_set)
+                assert False
