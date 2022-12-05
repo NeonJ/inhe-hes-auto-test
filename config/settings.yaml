@@ -1,8 +1,8 @@
 group: QA
-nacos_url: http://10.32.233.164:18848
+nacos_url: http://192.168.215.76:1848
 path: /
-project: camel10-CT
+project: DDZ1513-RF-SP
 resume: 'False'
 retry: '0'
-tag: smokeTest,asyncTest
-tester: jncPC
+tag: obisTest
+tester: Neon

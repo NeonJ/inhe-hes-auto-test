@@ -53,6 +53,15 @@ def nacosData(readConfig):
 def hesURL(nacosData):
     yield nacosData['URL']['hes_url']
 
+@allure.step("获取实时命令发送URL")
+@pytest.fixture(scope='session')
+def realExec(nacosData):
+    yield nacosData['URL']['hes_url'] + '/api/Real/rest/Exec'
+
+@allure.step("获取实时命令结果URL")
+@pytest.fixture(scope='session')
+def realGet(nacosData):
+    yield nacosData['URL']['hes_url'] + '/api/Real/rest/Get'
 
 @allure.step("RequestMessage")
 @pytest.fixture(scope='session')

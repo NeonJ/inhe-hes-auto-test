@@ -140,7 +140,7 @@ class DB:
         try:
             con = self.connect()
             cur = con.cursor()
-            sql = f"update {table_name} set {result_column}='{json.dumps(result)}',{value_column}='{json.dumps(value)}',elapsed='{elapsed}' where register_id='{register_id}'"
+            sql = f"update {table_name} set {result_column}='{json.dumps(result)}',{value_column}='{json.dumps(value)}',elapsed='{elapsed}' where item_id='{register_id}'"
             cur.execute(sql)
             con.commit()
             return
@@ -164,12 +164,12 @@ class DB:
 
     def initial_result(self, meter_no):
         """初始化OBIS Check结果表"""
-        table_name = 'H_CONFIG_REGISTER_CHECK_' + str(meter_no) + '_' + datetime.datetime.now().strftime('%y%m%d')
+        table_name = 'HES_PARSE_DLMS_ITEM_' + str(meter_no) + '_' + datetime.datetime.now().strftime('%y%m%d')
         try:
             con = self.connect()
             cur = con.cursor()
             cur.execute(
-                f"create table {table_name} as select * from H_CONFIG_REGISTER where  ptl_type =(select PTL_TYPE from c_ar_model where MODEL_CODE = (select model_code from c_ar_meter where meter_no='{meter_no}'))")
+                f"create table {table_name} as select * from HES_PARSE_DLMS_ITEM where  PTL_CODE = (select PTL_CODE from (select substr(MODEL_CODE_PTL, 0, instr(MODEL_CODE_PTL, '_', 1) - 1) as model_code, PTL_CODE from HES_PARSE_DLMS_PTL) ptl where ptl.model_code = (select METER_MODEL from AM_DEVICE d where d.DEVICE_ADDRESS = '{meter_no}'))")
             cur.execute(f"alter table {table_name} add get_result varchar(128)")
             cur.execute(f"alter table {table_name} add get_value varchar(1280)")
             cur.execute(f"alter table {table_name} add set_result varchar(128)")
@@ -192,7 +192,7 @@ class DB:
             try:
                 con = self.connect()
                 cur = con.cursor()
-                sql = f"select tablename from pg_tables where tablename like 'h_config_register_check_{meter_no}%' order by tablename desc limit 1"
+                sql = f"select tablename from pg_tables where tablename like 'hes_parse_dlms_item_{meter_no}%' order by tablename desc limit 1"
                 print(sql)
                 cur.execute(sql)
                 fc = cur.fetchone()
@@ -206,7 +206,7 @@ class DB:
             try:
                 con = self.connect()
                 cur = con.cursor()
-                sql = f"select table_name from user_tables where table_name like 'H_CONFIG_REGISTER_CHECK_{meter_no}%' and ROWNUM=1 order by table_name desc"
+                sql = f"select * from (select table_name from user_tables where table_name like 'HES_PARSE_DLMS_ITEM_{meter_no}%' order by table_name desc) where ROWNUM=1"
                 cur.execute(sql)
                 fc = cur.fetchone()
                 return fc
