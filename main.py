@@ -95,12 +95,12 @@ if os.listdir(result_path) != []:
     os.rename('{}/report_history/{}'.format(report_path, buildOrder),
               '{}/report_history/{}'.format(report_path, args.project + '-' + args.tester + '-' + report_date))
     # 推送报告到报告仓库
-    # warehouse_dir = r'/opt/tomcat/webapps'
-    # local_report_dir = r'{}/report_history/{}'.format(report_path,
-    #                                                   args.project + '-' + args.tester + '-' + report_date)
-    # host = Linux('10.32.233.164', 'root', 'kaifa123')
-    # host.sftp_put_dir(local_report_dir, warehouse_dir)
-    # print('Report URL == http://10.32.233.164:9090/{}/'.format(
-    #     args.project + '-' + args.tester + '-' + report_date))
+    warehouse_dir = r'/opt/report'
+    local_report_dir = r'{}/report_history/{}'.format(report_path,
+                                                      args.project + '-' + args.tester + '-' + report_date)
+    host = Linux('192.168.215.89', 'root', 'inhe1234')
+    host.sftp_put_dir(local_report_dir, warehouse_dir)
+    print('Report URL == http://192.168.215.89:8090/{}/'.format(
+        args.project + '-' + args.tester + '-' + report_date))
 else:
     print('无结果数据，无法生成报告')

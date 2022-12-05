@@ -63,7 +63,7 @@ class Test_HES_Register_Check:
                 register_list.append(queue.get('ITEM_ID'))
         return register_list
 
-    @obisTest
+    # @obisTest
     @pytest.mark.parametrize('register_get', get_db_register(0), indirect=False)
     def test_register_get(self, register_get, dbConnect, caseData, device, realExec, realGet):
         """Get Register Check"""
