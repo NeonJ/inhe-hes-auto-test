@@ -63,6 +63,7 @@ def realExec(nacosData):
 def realGet(nacosData):
     yield nacosData['URL']['hes_url'] + '/api/Real/rest/Get'
 
+
 @allure.step("RequestMessage")
 @pytest.fixture(scope='session')
 def requestMessage(nacosData):
@@ -80,6 +81,20 @@ def gatewayURL(nacosData):
 def kafkaURL(nacosData):
     yield nacosData['URL']['kafka_url']
 
+@allure.step("获取Redis地址")
+@pytest.fixture(scope='session')
+def redisURL(nacosData):
+    yield nacosData['URL']['redis_url']
+
+@allure.step("获取Redis端口")
+@pytest.fixture(scope='session')
+def redisPort(nacosData):
+    yield nacosData['URL']['redis_port']
+
+@allure.step("获取Redis密码")
+@pytest.fixture(scope='session')
+def redisPWD(nacosData):
+    yield nacosData['URL']['redis_pwd']
 
 @allure.step("获取请求体")
 @pytest.fixture(scope='session')

@@ -65,7 +65,7 @@ class Test_HES_Register_Check:
 
     # @obisTest
     @pytest.mark.parametrize('register_get', get_db_register(0), indirect=False)
-    def test_register_get(self, register_get, dbConnect, caseData, device, realExec, realGet):
+    def test_register_get(self, register_get, dbConnect, caseData, device, realExec, realGet,redisURL,redisPort,redisPWD):
         """Get Register Check"""
         print("Register_ID:{}".format(register_get))
 
@@ -100,7 +100,7 @@ class Test_HES_Register_Check:
                     continue
                 elif json.loads(get_result.text).get('result').get('result') == 'F':
                     if '-' in json.loads(get_result.text).get('result').get('data'):
-                        pool = redis.ConnectionPool(host='1.14.167.253', port=6379, db=0, password='test123')
+                        pool = redis.ConnectionPool(host=redisURL, port=redisPort, db=0, password=redisPWD)
                         r = redis.Redis(connection_pool=pool)
                         keys = 'h:ApiResponse:' + cmdID
                         p = eval(json.dumps(r.get(keys).decode('utf-8')))
@@ -128,7 +128,7 @@ class Test_HES_Register_Check:
 
     @obisTest
     @pytest.mark.parametrize('register_set', get_db_register(2), indirect=False)
-    def test_register_set(self, register_set, dbConnect, caseData, device, realExec, realGet):
+    def test_register_set(self, register_set, dbConnect, caseData, device, realExec, realGet,redisURL,redisPort,redisPWD):
         """Setp 1 Get Value"""
         print("Register_ID:{}".format(register_set))
         register = register_set.replace('W','')
@@ -163,7 +163,7 @@ class Test_HES_Register_Check:
                     continue
                 elif json.loads(get_result.text).get('result').get('result') == 'F':
                     if '-' in json.loads(get_result.text).get('result').get('data'):
-                        pool = redis.ConnectionPool(host='1.14.167.253', port=6379, db=0, password='test123')
+                        pool = redis.ConnectionPool(host=redisURL, port=redisPort, db=0, password=redisPWD)
                         r = redis.Redis(connection_pool=pool)
                         keys = 'h:ApiResponse:' + cmdID
                         p = eval(json.dumps(r.get(keys).decode('utf-8')))
@@ -225,7 +225,7 @@ class Test_HES_Register_Check:
                     continue
                 elif json.loads(get_result.text).get('result').get('result') == 'F':
                     if '-' in json.loads(get_result.text).get('result').get('data'):
-                        pool = redis.ConnectionPool(host='1.14.167.253', port=6379, db=0, password='test123')
+                        pool = redis.ConnectionPool(host=redisURL, port=redisPort, db=0, password=redisPWD)
                         r = redis.Redis(connection_pool=pool)
                         keys = 'h:ApiResponse:' + cmdID
                         p = eval(json.dumps(r.get(keys).decode('utf-8')))
