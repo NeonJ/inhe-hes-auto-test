@@ -100,7 +100,7 @@ if os.listdir(result_path) != []:
                                                       args.project + '-' + args.tester + '-' + report_date)
     host = Linux('192.168.2.200', 'root', 'inhe1234')
     host.sftp_put_dir(local_report_dir, warehouse_dir)
-    print('Report URL == http://192.168.215.89:8090/{}/'.format(
+    print('Report URL == http://192.168.2.200:8090/{}/'.format(
         args.project + '-' + args.tester + '-' + report_date))
 else:
     print('无结果数据，无法生成报告')
