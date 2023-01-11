@@ -50,7 +50,7 @@ class Test_HES_Register_Check:
         obis_sql2 = " where  PTL_TYPE = (select PTL_TYPE from c_ar_model where MODEL_CODE = (select model_code from c_ar_meter where meter_no = '{}'))".format(
             config['Device']['device_number'])
         items_sql1 = "select ITEM_ID,OBIS,CLASS_ID,INDEX_ID,INDEX_TYPE from "
-        items_sql2 = " where PTL_CODE = (select PTL_CODE from (select substr(MODEL_CODE_PTL, 0, instr(MODEL_CODE_PTL, '_', 1) - 1) as model_code, PTL_CODE from HES_PARSE_DLMS_PTL) ptl where ptl.model_code = (select METER_MODEL from AM_DEVICE d where d.DEVICE_ADDRESS = '{}'))".format(
+        items_sql2 = " where PTL_CODE = (select PTL_CODE from (select substr(MODEL_CODE_PTL, 0, instr(MODEL_CODE_PTL, '_', 1) - 1) as model_code, PTL_CODE from HES_PARSE_DLMS_PTL) ptl where ptl.model_code = (select METER_MODEL from AM_DEVICE d where d.DEVICE_ADDRESS = '{}')) or PTL_CODE = (select PARENT_PTL_CODE from (select substr(MODEL_CODE_PTL, 0, instr(MODEL_CODE_PTL, '_', 1) - 1) as model_code, PARENT_PTL_CODE from HES_PARSE_DLMS_PTL) ptl where ptl.model_code = (select METER_MODEL from AM_DEVICE d where d.DEVICE_ADDRESS = '{}'))".format(
             config['Device']['device_number'])
         sql = items_sql1 + '{}'.format(table_name) + items_sql2.format()
         print(sql)
@@ -65,7 +65,8 @@ class Test_HES_Register_Check:
 
     @obisTest
     @pytest.mark.parametrize('register_get', get_db_register(0), indirect=False)
-    def test_register_get(self, register_get, dbConnect, caseData, device, realExec, realGet,redisURL,redisPort,redisPWD):
+    def test_register_get(self, register_get, dbConnect, caseData, device, realExec, realGet, redisURL, redisPort,
+                          redisPWD):
         """Get Register Check"""
         print("Register_ID:{}".format(register_get))
 
@@ -125,13 +126,13 @@ class Test_HES_Register_Check:
             else:
                 assert json.loads(get_result.text).get('message') == 'SUCCESS'
 
-
     @obisTest
     @pytest.mark.parametrize('register_set', get_db_register(2), indirect=False)
-    def test_register_set(self, register_set, dbConnect, caseData, device, realExec, realGet,redisURL,redisPort,redisPWD):
+    def test_register_set(self, register_set, dbConnect, caseData, device, realExec, realGet, redisURL, redisPort,
+                          redisPWD):
         """Setp 1 Get Value"""
         print("Register_ID:{}".format(register_set))
-        register = register_set.replace('W','')
+        register = register_set.replace('W', '')
         data = f"dev={device['device_number']}&field={register}&invalid_time=2022-11-19%2000%3A00%3A00&operator=neon&module_type=1&save_flag=1"
         response = requests.get(url=realExec, params=data)
         table_name = dbConnect.last_result(device['device_number'])[0]
