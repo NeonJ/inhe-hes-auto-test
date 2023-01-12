@@ -51,7 +51,7 @@ class Test_HES_Register_Check:
             config['Device']['device_number'])
         items_sql1 = "select ITEM_ID,OBIS,CLASS_ID,INDEX_ID,INDEX_TYPE from "
         items_sql2 = " where PTL_CODE = (select PTL_CODE from (select substr(MODEL_CODE_PTL, 0, instr(MODEL_CODE_PTL, '_', 1) - 1) as model_code, PTL_CODE from HES_PARSE_DLMS_PTL) ptl where ptl.model_code = (select METER_MODEL from AM_DEVICE d where d.DEVICE_ADDRESS = '{}')) or PTL_CODE = (select PARENT_PTL_CODE from (select substr(MODEL_CODE_PTL, 0, instr(MODEL_CODE_PTL, '_', 1) - 1) as model_code, PARENT_PTL_CODE from HES_PARSE_DLMS_PTL) ptl where ptl.model_code = (select METER_MODEL from AM_DEVICE d where d.DEVICE_ADDRESS = '{}'))".format(
-            config['Device']['device_number'])
+            config['Device']['device_number'],config['Device']['device_number'])
         sql = items_sql1 + '{}'.format(table_name) + items_sql2.format()
         print(sql)
         db_queue = database.fetchall_dict(sql)
