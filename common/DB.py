@@ -169,7 +169,7 @@ class DB:
             con = self.connect()
             cur = con.cursor()
             cur.execute(
-                f"create table {table_name} as select * from HES_PARSE_DLMS_ITEM where  PTL_CODE = (select PTL_CODE from (select substr(MODEL_CODE_PTL, 0, instr(MODEL_CODE_PTL, '_', 1) - 1) as model_code, PTL_CODE from HES_PARSE_DLMS_PTL) ptl where ptl.model_code = (select METER_MODEL from AM_DEVICE d where d.DEVICE_ADDRESS = '{meter_no}'))")
+                f"create table {table_name} as select * from HES_PARSE_DLMS_ITEM where  PTL_CODE = (select PTL_CODE from (select substr(MODEL_CODE_PTL, 0, instr(MODEL_CODE_PTL, '_', 1) - 1) as model_code, PTL_CODE from HES_PARSE_DLMS_PTL) ptl where ptl.model_code = (select METER_MODEL from AM_DEVICE d where d.DEVICE_ADDRESS = '{meter_no}')) or PTL_CODE = (select PARENT_PTL_CODE from (select substr(MODEL_CODE_PTL, 0, instr(MODEL_CODE_PTL, '_', 1) - 1) as model_code, PARENT_PTL_CODE from HES_PARSE_DLMS_PTL) ptl where ptl.model_code = (select METER_MODEL from AM_DEVICE d where d.DEVICE_ADDRESS = '{meter_no}'))")
             cur.execute(f"alter table {table_name} add get_result varchar(128)")
             cur.execute(f"alter table {table_name} add get_value varchar(1280)")
             cur.execute(f"alter table {table_name} add set_result varchar(128)")
