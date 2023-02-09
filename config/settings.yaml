@@ -1,8 +1,8 @@
 group: QA
-nacos_url: http://192.168.215.76:1848
+nacos_url: http://192.168.205.200:8848
 path: /
-project: DDZ1513-RF-SP
+project: i310-GPRS-TP
 resume: 'False'
-retry: '1'
+retry: '0'
 tag: obisTest
 tester: Neon

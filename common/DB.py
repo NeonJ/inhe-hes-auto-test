@@ -164,12 +164,12 @@ class DB:
 
     def initial_result(self, meter_no):
         """初始化OBIS Check结果表"""
-        table_name = 'HES_PARSE_DLMS_ITEM_' + str(meter_no) + '_' + datetime.datetime.now().strftime('%y%m%d')
+        table_name = 'HES_PARSE_ITEM_' + str(meter_no) + '_' + datetime.datetime.now().strftime('%y%m%d')
         try:
             con = self.connect()
             cur = con.cursor()
             cur.execute(
-                f"create table {table_name} as select * from HES_PARSE_DLMS_ITEM where  PTL_CODE = (select PTL_CODE from (select substr(MODEL_CODE_PTL, 0, instr(MODEL_CODE_PTL, '_', 1) - 1) as model_code, PTL_CODE from HES_PARSE_DLMS_PTL) ptl where ptl.model_code = (select METER_MODEL from AM_DEVICE d where d.DEVICE_ADDRESS = '{meter_no}')) or PTL_CODE = (select PARENT_PTL_CODE from (select substr(MODEL_CODE_PTL, 0, instr(MODEL_CODE_PTL, '_', 1) - 1) as model_code, PARENT_PTL_CODE from HES_PARSE_DLMS_PTL) ptl where ptl.model_code = (select METER_MODEL from AM_DEVICE d where d.DEVICE_ADDRESS = '{meter_no}'))")
+                f"create table {table_name} as select * from HES_PARSE_ITEM where PTL_CODE = (select ptl_code from (select MODEL_CODE, PTL_CODE, PARENT_PTL_CODE from HES_PARSE_PTL_MODEL) ptl where ptl.model_code = (select METER_MODEL from AM_DEVICE d where d.DEVICE_ADDRESS = '{meter_no}'))or PTL_CODE = (select PARENT_PTL_CODE from (select MODEL_CODE, PARENT_PTL_CODE from HES_PARSE_PTL_MODEL) ptl where ptl.model_code = (select METER_MODEL from AM_DEVICE d where d.DEVICE_ADDRESS = '{meter_no}'))")
             cur.execute(f"alter table {table_name} add get_result varchar(128)")
             cur.execute(f"alter table {table_name} add get_value varchar(1280)")
             cur.execute(f"alter table {table_name} add set_result varchar(128)")
@@ -206,7 +206,7 @@ class DB:
             try:
                 con = self.connect()
                 cur = con.cursor()
-                sql = f"select * from (select table_name from user_tables where table_name like 'HES_PARSE_DLMS_ITEM_{meter_no}%' order by table_name desc) where ROWNUM=1"
+                sql = f"select * from (select table_name from user_tables where table_name like 'HES_PARSE_ITEM_{meter_no}%' order by table_name desc) where ROWNUM=1"
                 cur.execute(sql)
                 fc = cur.fetchone()
                 return fc
